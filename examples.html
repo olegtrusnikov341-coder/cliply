@@ -6,8 +6,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="auth.js"></script>
- <link rel="stylesheet" href="toast.css">
+<link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
+<link rel="stylesheet" href="transitions.css">
+<script src="transitions.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; }
@@ -17,13 +19,11 @@
   .logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
   .nav-links a { color: #A0A0B0; text-decoration: none; margin-left: 32px; font-size: 14px; transition: 0.2s; }
   .nav-links a:hover { color: #fff; }
-  .nav-links a.btn-nav { border: 2px solid #6C5CE7; padding: 10px 24px; border-radius: 10px; color: #fff !important; font-weight: 600; }
-  .nav-links a.btn-nav:hover { background: #6C5CE7; }
-  
+  .nav-links a:last-child { border: 2px solid #6C5CE7; padding: 10px 24px; border-radius: 10px; color: #fff !important; font-weight: 600; }
+  .nav-links a:last-child:hover { background: #6C5CE7; }
   .page-header { padding: 80px 0 40px; text-align: center; }
   .page-header h1 { font-size: 48px; margin-bottom: 16px; }
   .page-header p { font-size: 18px; color: #A0A0B0; }
-  
   .examples-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding: 40px 0 80px; }
   .example-card { background: #15151F; border-radius: 16px; overflow: hidden; border: 1px solid #1f1f2e; transition: 0.2s; }
   .example-card:hover { border-color: #6C5CE7; transform: translateY(-4px); }
@@ -31,9 +31,7 @@
   .example-info { padding: 20px; }
   .example-info h3 { font-size: 18px; margin-bottom: 8px; }
   .example-info p { color: #A0A0B0; font-size: 14px; }
-  
   footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
-  
   @media (max-width: 768px) {
     .examples-grid { grid-template-columns: 1fr; }
     .page-header h1 { font-size: 32px; }
@@ -44,76 +42,50 @@
 <div class="container">
   <nav>
     <a href="index.html" class="logo">Cliply</a>
-    <div class="nav-links" id="navLinks">
+    <div class="nav-links">
       <a href="features.html">Возможности</a>
       <a href="pricing.html">Тарифы</a>
       <a href="examples.html">Примеры</a>
-      <a href="login.html" class="btn-nav" id="navAuthBtn">Войти</a>
+      <a href="login.html" id="navAuthBtn">Войти</a>
     </div>
   </nav>
-  
   <div class="page-header">
     <h1>Примеры работ</h1>
     <p>Видео, созданные с помощью Cliply для разных категорий товаров</p>
   </div>
-  
   <div class="examples-grid">
     <div class="example-card">
       <div class="example-preview">💄</div>
-      <div class="example-info">
-        <h3>Косметика</h3>
-        <p>Увлажняющий крем для лица</p>
-      </div>
+      <div class="example-info"><h3>Косметика</h3><p>Увлажняющий крем для лица</p></div>
     </div>
     <div class="example-card">
       <div class="example-preview">🎧</div>
-      <div class="example-info">
-        <h3>Электроника</h3>
-        <p>Беспроводные наушники</p>
-      </div>
+      <div class="example-info"><h3>Электроника</h3><p>Беспроводные наушники</p></div>
     </div>
     <div class="example-card">
-      <div class="example-preview">👕</div>
-      <div class="example-info">
-        <h3>Одежда</h3>
-        <p>Мужская футболка премиум</p>
-      </div>
+      <div class="example-preview"></div>
+      <div class="example-info"><h3>Одежда</h3><p>Мужская футболка премиум</p></div>
     </div>
     <div class="example-card">
       <div class="example-preview">🏠</div>
-      <div class="example-info">
-        <h3>Товары для дома</h3>
-        <p>Органайзер для кухни</p>
-      </div>
+      <div class="example-info"><h3>Товары для дома</h3><p>Органайзер для кухни</p></div>
     </div>
     <div class="example-card">
       <div class="example-preview">💊</div>
-      <div class="example-info">
-        <h3>БАДы и витамины</h3>
-        <p>Омега-3 капсулы</p>
-      </div>
+      <div class="example-info"><h3>БАДы и витамины</h3><p>Омега-3 капсулы</p></div>
     </div>
     <div class="example-card">
       <div class="example-preview">⚽</div>
-      <div class="example-info">
-        <h3>Спорт</h3>
-        <p>Фитнес-резинки набор</p>
-      </div>
+      <div class="example-info"><h3>Спорт</h3><p>Фитнес-резинки набор</p></div>
     </div>
   </div>
 </div>
 <footer>© 2026 Cliply</footer>
-
 <script>
 (async () => {
-  if (typeof getCurrentUser !== 'undefined') {
-    const user = await getCurrentUser();
-    const btn = document.getElementById('navAuthBtn');
-    if (user) {
-      btn.textContent = 'Создать';
-      btn.href = 'dashboard.html';
-    }
-  }
+  const user = await getCurrentUser();
+  const btn = document.getElementById('navAuthBtn');
+  if (user && btn) { btn.textContent = 'Создать'; btn.href = 'dashboard.html'; }
 })();
 </script>
 </body>
