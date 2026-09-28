@@ -346,11 +346,11 @@
         <aside class="sidebar">
             <a href="index.html" class="sidebar-logo">Cliply</a>
             <ul class="nav-menu">
-                <li><a href="#" class="active"><span class="nav-icon">📊</span> Дашборд</a></li>
-                <li><a href="#"><span class="nav-icon">🎬</span> Мои проекты</a></li>
-                <li><a href="#"><span class="nav-icon">💎</span> Тарифы</a></li>
-                <li><a href="#"><span class="nav-icon">⚙️</span> Настройки</a></li>
-            </ul>
+  <li><a href="dashboard.html" class="active"><span class="nav-icon"></span> Дашборд</a></li>
+  <li><a href="dashboard.html#projects"><span class="nav-icon"></span> Мои проекты</a></li>
+  <li><a href="pricing.html"><span class="nav-icon">💎</span> Тарифы</a></li>
+  <li><a href="settings.html"><span class="nav-icon">⚙️</span> Настройки</a></li>
+</ul>
             <a href="index.html" class="btn-logout">← На лендинг</a>
         </aside>
 
@@ -391,7 +391,7 @@
                     </select>
                 </div>
 
-                <button class="btn-generate" onclick="alert('Это демо-версия. Реальная генерация будет подключена на следующем этапе.')">
+                <button class="btn-generate" onclick="startGeneration()">Сгенерировать видео →</button>
                     Сгенерировать видео →
                 </button>
             </div>
@@ -458,5 +458,23 @@
             </div>
         </main>
     </div>
+    <script>
+function startGeneration() {
+  const btn = document.querySelector('.btn-generate');
+  btn.textContent = '⏳ Генерация...';
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+  
+  setTimeout(() => {
+    btn.textContent = '✅ Видео готово!';
+    btn.style.opacity = '1';
+    alert('Видео успешно сгенерировано! (Это демо-версия)');
+    setTimeout(() => {
+      btn.textContent = 'Сгенерировать видео →';
+      btn.disabled = false;
+    }, 2000);
+  }, 3000);
+}
+</script>
 </body>
 </html>
