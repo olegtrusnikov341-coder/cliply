@@ -29,9 +29,74 @@
   .create-card h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; font-family: 'Manrope'; }
   .upload-zone { border: 2px dashed #6C5CE7; border-radius: 12px; padding: 48px 24px; text-align: center; margin-bottom: 24px; background: rgba(108, 92, 231, 0.05); cursor: pointer; transition: 0.2s; }
   .upload-zone:hover { background: rgba(108, 92, 231, 0.1); border-color: #A29BFE; }
+  .upload-zone.drag-over { background: rgba(108, 92, 231, 0.15); border-color: #A29BFE; transform: scale(1.02); }
   .upload-icon { font-size: 48px; margin-bottom: 12px; }
   .upload-text { color: #A0A0B0; font-size: 15px; }
   .upload-text strong { color: #fff; }
+  .upload-hint { color: #6C5CE7; font-size: 13px; margin-top: 8px; }
+  
+  /* Превью фото */
+  .photo-preview-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  
+  .photo-preview {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #27272a;
+    transition: 0.2s;
+  }
+  
+  .photo-preview:hover {
+    border-color: #6C5CE7;
+  }
+  
+  .photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .photo-remove {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    background: rgba(239, 68, 68, 0.9);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    line-height: 1;
+  }
+  
+  .photo-remove:hover {
+    background: #ef4444;
+    transform: scale(1.1);
+  }
+  
+  .photo-counter {
+    text-align: center;
+    color: #A0A0B0;
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+  
+  .photo-counter strong {
+    color: #6C5CE7;
+  }
+  
   .form-group { margin-bottom: 20px; }
   .form-group label { display: block; font-size: 14px; color: #A0A0B0; margin-bottom: 8px; font-weight: 500; }
   .form-group input, .form-group textarea, .form-group select { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 8px; padding: 12px 16px; color: #fff; font-size: 15px; font-family: inherit; }
@@ -44,6 +109,7 @@
   .btn-prompt:disabled { opacity: 0.5; cursor: not-allowed; }
   .btn-generate { width: 100%; background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 16px; border-radius: 12px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
+  .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   .projects-section h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; font-family: 'Manrope'; }
   .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
   .project-card { background: #141414; border: 1px solid #27272a; border-radius: 12px; overflow: hidden; transition: 0.2s; }
@@ -63,6 +129,7 @@
     .sidebar { display: none; }
     .main { padding: 20px; }
     .prompt-row { flex-direction: column; }
+    .photo-preview-container { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
   }
 </style>
 </head>
@@ -84,11 +151,14 @@
     </div>
     <div class="create-card">
       <h2>Создать новое видео</h2>
-      <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
         <div class="upload-icon">📸</div>
-        <div class="upload-text"><strong>Перетащите фото товара сюда</strong><br>или нажмите, чтобы выбрать (3-5 фото)</div>
-        <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+        <div class="upload-text"><strong>Перетащите фото товара сюда</strong><br>или нажмите, чтобы выбрать</div>
+        <div class="upload-hint">3-5 фото • JPG, PNG, WebP • до 10 МБ каждое</div>
+        <input type="file" id="fileInput" multiple accept="image/jpeg,image/png,image/webp" style="display: none;">
       </div>
+      <div id="photoPreviewContainer" class="photo-preview-container" style="display: none;"></div>
+      <div id="photoCounter" class="photo-counter" style="display: none;">Выбрано фото: <strong id="photoCount">0</strong> из 5</div>
       <div class="form-group">
         <label>Описание товара и ключевые преимущества</label>
         <div class="prompt-row">
@@ -107,7 +177,7 @@
           <option>Сравнение с аналогами</option>
         </select>
       </div>
-      <button class="btn-generate" onclick="startGeneration()">Сгенерировать видео →</button>
+      <button class="btn-generate" onclick="startGeneration()" id="btnGenerate">Сгенерировать видео →</button>
     </div>
     <div class="projects-section">
       <h2>Ваши видео</h2>
@@ -133,7 +203,7 @@
           </div>
         </div>
         <div class="project-card">
-          <div class="project-preview">🎬<span class="project-status status-done">Готово</span></div>
+          <div class="project-preview"><span class="project-status status-done">Готово</span></div>
           <div class="project-info">
             <div class="project-title">Рюкзак городской</div>
             <div class="project-actions">
@@ -156,6 +226,8 @@
   </main>
 </div>
 <script>
+let uploadedPhotos = [];
+
 async function initDashboard() {
   const user = await requireAuth();
   if (!user) return;
@@ -173,6 +245,96 @@ async function initDashboard() {
     menu.insertBefore(adminLink, menu.children[1]);
   }
 }
+
+// Drag & Drop
+const uploadZone = document.getElementById('uploadZone');
+const fileInput = document.getElementById('fileInput');
+
+uploadZone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  uploadZone.classList.add('drag-over');
+});
+
+uploadZone.addEventListener('dragleave', () => {
+  uploadZone.classList.remove('drag-over');
+});
+
+uploadZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadZone.classList.remove('drag-over');
+  const files = Array.from(e.dataTransfer.files);
+  handleFiles(files);
+});
+
+fileInput.addEventListener('change', (e) => {
+  const files = Array.from(e.target.files);
+  handleFiles(files);
+  fileInput.value = '';
+});
+
+function handleFiles(files) {
+  const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+  const maxSize = 10 * 1024 * 1024; // 10 МБ
+  
+  files.forEach(file => {
+    if (uploadedPhotos.length >= 5) {
+      showToast('Максимум 5 фото', 'warning');
+      return;
+    }
+    
+    if (!validTypes.includes(file.type)) {
+      showToast(`${file.name}: неподдерживаемый формат. Только JPG, PNG, WebP`, 'error');
+      return;
+    }
+    
+    if (file.size > maxSize) {
+      showToast(`${file.name}: файл слишком большой. Максимум 10 МБ`, 'error');
+      return;
+    }
+    
+    uploadedPhotos.push(file);
+  });
+  
+  updatePhotoPreview();
+}
+
+function updatePhotoPreview() {
+  const container = document.getElementById('photoPreviewContainer');
+  const counter = document.getElementById('photoCounter');
+  const count = document.getElementById('photoCount');
+  
+  if (uploadedPhotos.length === 0) {
+    container.style.display = 'none';
+    counter.style.display = 'none';
+    return;
+  }
+  
+  container.style.display = 'grid';
+  counter.style.display = 'block';
+  count.textContent = uploadedPhotos.length;
+  
+  container.innerHTML = '';
+  uploadedPhotos.forEach((photo, index) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const div = document.createElement('div');
+      div.className = 'photo-preview';
+      div.innerHTML = `
+        <img src="${e.target.result}" alt="${photo.name}">
+        <button class="photo-remove" onclick="removePhoto(${index})" title="Удалить">×</button>
+      `;
+      container.appendChild(div);
+    };
+    reader.readAsDataURL(photo);
+  });
+}
+
+function removePhoto(index) {
+  uploadedPhotos.splice(index, 1);
+  updatePhotoPreview();
+  showToast('Фото удалено', 'info');
+}
+
 async function generatePrompt() {
   const textarea = document.getElementById('productDescription');
   const btn = document.getElementById('btnGeneratePrompt');
@@ -198,16 +360,26 @@ async function generatePrompt() {
   btn.disabled = false;
   btn.textContent = '✨ Улучшить промпт';
 }
+
 function startGeneration() {
-  const btn = document.querySelector('.btn-generate');
+  const btn = document.getElementById('btnGenerate');
   const description = document.getElementById('productDescription').value.trim();
-  if (!description) { showToast('Введите описание товара', 'warning'); return; }
+  
+  if (uploadedPhotos.length < 3) {
+    showToast('Загрузите минимум 3 фото товара', 'warning');
+    return;
+  }
+  
+  if (!description) {
+    showToast('Введите описание товара', 'warning');
+    return;
+  }
+  
   btn.textContent = '⏳ Генерация...';
   btn.disabled = true;
-  btn.style.opacity = '0.6';
+  
   setTimeout(() => {
     btn.textContent = '✅ Видео готово!';
-    btn.style.opacity = '1';
     showToast('Видео успешно сгенерировано! (Демо-режим)', 'success');
     setTimeout(() => {
       btn.textContent = 'Сгенерировать видео →';
@@ -215,6 +387,7 @@ function startGeneration() {
     }, 2000);
   }, 3000);
 }
+
 initDashboard();
 </script>
 </body>
