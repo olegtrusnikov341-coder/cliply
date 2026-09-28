@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Cliply — Возможности</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  h1, h2 { font-family: 'Manrope', sans-serif; }
+  nav { padding: 24px 0; display: flex; justify-content: space-between; align-items: center; }
+  .logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+  .nav-links a { color: #A0A0B0; text-decoration: none; margin-left: 32px; font-size: 14px; transition: 0.2s; }
+  .nav-links a:hover { color: #fff; }
+  .nav-links a:last-child { border: 2px solid #6C5CE7; padding: 10px 24px; border-radius: 10px; color: #fff !important; font-weight: 600; }
+  .nav-links a:last-child:hover { background: #6C5CE7; }
+  
+  .page-header { padding: 80px 0 40px; text-align: center; }
+  .page-header h1 { font-size: 48px; margin-bottom: 16px; }
+  .page-header p { font-size: 18px; color: #A0A0B0; }
+  
+  .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; padding: 40px 0 80px; }
+  .feature-card { background: #15151F; padding: 32px; border-radius: 16px; border: 1px solid #1f1f2e; transition: 0.2s; }
+  .feature-card:hover { border-color: #6C5CE7; transform: translateY(-4px); }
+  .feature-icon { font-size: 48px; margin-bottom: 16px; }
+  .feature-card h3 { font-size: 22px; margin-bottom: 12px; }
+  .feature-card p { color: #A0A0B0; font-size: 15px; line-height: 1.6; }
+  
+  footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
+  
+  @media (max-width: 768px) {
+    .features-grid { grid-template-columns: 1fr; }
+    .page-header h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <nav>
+    <a href="index.html" class="logo">Cliply</a>
+    <div class="nav-links">
+      <a href="features.html">Возможности</a>
+      <a href="pricing.html">Тарифы</a>
+      <a href="examples.html">Примеры</a>
+      <a href="dashboard.html">Войти</a>
+    </div>
+  </nav>
+  
+  <div class="page-header">
+    <h1>Возможности Cliply</h1>
+    <p>Всё, что нужно для создания продающих видео</p>
+  </div>
+  
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon"></div>
+      <h3>AI-генерация сценариев</h3>
+      <p>Нейросеть анализирует ваш товар и создаёт продающие сценарии: обзоры, отзывы, сравнения, распаковки.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎬</div>
+      <h3>Автоматический монтаж</h3>
+      <p>Система сама анимирует фото, добавляет переходы, музыку и субтитры. Никаких навыков монтажа не нужно.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎙️</div>
+      <h3>AI-озвучка</h3>
+      <p>Профессиональные голоса для озвучки вашего видео. Поддержка русского и английского языков.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📱</div>
+      <h3>Вертикальный формат 9:16</h3>
+      <p>Все видео оптимизированы для Reels, Shorts, TikTok и карточек маркетплейсов.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Генерация за 2 минуты</h3>
+      <p>Получите 5-10 готовых роликов быстрее, чем заварите кофе.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎨</div>
+      <h3>5+ шаблонов сценариев</h3>
+      <p>Выбирайте из готовых форматов: "3 причины купить", "Проблема → Решение", "Обзор" и другие.</p>
+    </div>
+  </div>
+</div>
+<footer>© 2026 Cliply</footer>
+</body>
+</html>
