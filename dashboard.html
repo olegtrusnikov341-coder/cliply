@@ -6,6 +6,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="auth.js"></script>
+<link rel="stylesheet" href="toast.css">
+<script src="toast.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; }
@@ -70,7 +72,7 @@
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu" id="navMenu">
       <li><a href="dashboard.html" class="active">📊 Дашборд</a></li>
-      <li><a href="pricing.html"> Тарифы</a></li>
+      <li><a href="pricing.html">💎 Тарифы</a></li>
       <li><a href="settings.html">⚙️ Настройки</a></li>
     </ul>
     <div class="btn-logout" onclick="logout()">Выйти</div>
@@ -121,7 +123,7 @@
           </div>
         </div>
         <div class="project-card">
-          <div class="project-preview"><span class="project-status status-done">Готово</span></div>
+          <div class="project-preview">🎬<span class="project-status status-done">Готово</span></div>
           <div class="project-info">
             <div class="project-title">Крем для лица увлажняющий</div>
             <div class="project-actions">
@@ -175,7 +177,7 @@ async function generatePrompt() {
   const textarea = document.getElementById('productDescription');
   const btn = document.getElementById('btnGeneratePrompt');
   const originalText = textarea.value.trim();
-  if (!originalText) { alert('Сначала введите описание товара'); return; }
+  if (!originalText) { showToast('Сначала введите описание товара', 'warning'); return; }
   btn.disabled = true;
   btn.textContent = '⏳ Генерация...';
   await new Promise(resolve => setTimeout(resolve, 2000));
@@ -199,14 +201,14 @@ async function generatePrompt() {
 function startGeneration() {
   const btn = document.querySelector('.btn-generate');
   const description = document.getElementById('productDescription').value.trim();
-  if (!description) { alert('Введите описание товара'); return; }
+  if (!description) { showToast('Введите описание товара', 'warning'); return; }
   btn.textContent = '⏳ Генерация...';
   btn.disabled = true;
   btn.style.opacity = '0.6';
   setTimeout(() => {
     btn.textContent = '✅ Видео готово!';
     btn.style.opacity = '1';
-    alert('Видео успешно сгенерировано! (Демо-режим)');
+    showToast('Видео успешно сгенерировано! (Демо-режим)', 'success');
     setTimeout(() => {
       btn.textContent = 'Сгенерировать видео →';
       btn.disabled = false;
