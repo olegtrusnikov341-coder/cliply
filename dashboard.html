@@ -8,6 +8,8 @@
 <script src="auth.js"></script>
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
+<link rel="stylesheet" href="skeleton.css">
+<script src="skeleton.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; }
@@ -50,7 +52,6 @@
   .upload-text strong { color: #fff; }
   .upload-hint { color: #6C5CE7; font-size: 13px; margin-top: 8px; }
   
-  /* Прогресс-бар загрузки */
   .upload-progress {
     width: 100%;
     height: 6px;
@@ -85,7 +86,6 @@
     display: block;
   }
   
-  /* Превью фото */
   .photo-preview-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -226,16 +226,16 @@
   <aside class="sidebar">
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu" id="navMenu">
-      <li><a href="dashboard.html" class="active">📊 Дашборд</a></li>
+      <li><a href="dashboard.html" class="active"> Дашборд</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
-      <li><a href="settings.html">️ Настройки</a></li>
+      <li><a href="settings.html">⚙️ Настройки</a></li>
     </ul>
     <div class="btn-logout" onclick="logout()">Выйти</div>
   </aside>
   <main class="main">
     <div class="header">
-      <h1 id="welcomeText">Добро пожаловать!</h1>
-      <div class="balance-badge" id="roleBadge">Загрузка...</div>
+      <h1 id="welcomeText" class="skeleton skeleton-title">Загрузка...</h1>
+      <div class="balance-badge skeleton skeleton-badge" id="roleBadge">Загрузка...</div>
     </div>
     <div class="create-card">
       <h2>Создать новое видео</h2>
@@ -273,46 +273,8 @@
     </div>
     <div class="projects-section">
       <h2>Ваши видео</h2>
-      <div class="projects-grid">
-        <div class="project-card">
-          <div class="project-preview">🎬<span class="project-status status-done">Готово</span></div>
-          <div class="project-info">
-            <div class="project-title">Бутылка для воды 1л</div>
-            <div class="project-actions">
-              <button class="btn-small primary">Скачать</button>
-              <button class="btn-small">Перегенерировать</button>
-            </div>
-          </div>
-        </div>
-        <div class="project-card">
-          <div class="project-preview">🎬<span class="project-status status-done">Готово</span></div>
-          <div class="project-info">
-            <div class="project-title">Крем для лица увлажняющий</div>
-            <div class="project-actions">
-              <button class="btn-small primary">Скачать</button>
-              <button class="btn-small">Перегенерировать</button>
-            </div>
-          </div>
-        </div>
-        <div class="project-card">
-          <div class="project-preview">🎬<span class="project-status status-done">Готово</span></div>
-          <div class="project-info">
-            <div class="project-title">Рюкзак городской</div>
-            <div class="project-actions">
-              <button class="btn-small primary">Скачать</button>
-              <button class="btn-small">Перегенерировать</button>
-            </div>
-          </div>
-        </div>
-        <div class="project-card">
-          <div class="project-preview"><span class="project-status status-progress">В процессе</span></div>
-          <div class="project-info">
-            <div class="project-title">Наушники беспроводные</div>
-            <div class="project-actions">
-              <button class="btn-small" disabled>Ожидание...</button>
-            </div>
-          </div>
-        </div>
+      <div class="projects-grid" id="projectsGrid">
+        <!-- Skeleton loaders будут показаны здесь -->
       </div>
     </div>
   </main>
@@ -321,21 +283,84 @@
 let uploadedPhotos = [];
 
 async function initDashboard() {
+  // Показываем skeleton для карточек видео
+  showVideoCardSkeleton('#projectsGrid', 4);
+  
   const user = await requireAuth();
   if (!user) return;
+  
+  // Имитация загрузки данных (в реальности это запрос к БД)
+  await new Promise(resolve => setTimeout(resolve, 800));
+  
+  // Убираем skeleton с заголовка и бейджа
+  document.getElementById('welcomeText').classList.remove('skeleton', 'skeleton-title');
   document.getElementById('welcomeText').textContent = `Добро пожаловать, ${user.profile.full_name || 'Селлер'}!`;
+  showContentWithAnimation('#welcomeText');
+  
+  document.getElementById('roleBadge').classList.remove('skeleton', 'skeleton-badge');
   const role = ROLES[user.profile.role_level];
   const badge = document.getElementById('roleBadge');
   badge.textContent = `${role.name} • ${user.email}`;
   badge.style.color = role.color;
   badge.style.borderColor = role.color + '4D';
   badge.style.background = role.color + '26';
+  showContentWithAnimation('#roleBadge');
+  
   if (user.profile.role_level <= 2) {
     const menu = document.getElementById('navMenu');
     const adminLink = document.createElement('li');
     adminLink.innerHTML = '<a href="admin.html">👑 Админ-панель</a>';
     menu.insertBefore(adminLink, menu.children[1]);
   }
+  
+  // Загружаем реальные видео (пока заглушки)
+  await new Promise(resolve => setTimeout(resolve, 500));
+  loadRealVideos();
+}
+
+function loadRealVideos() {
+  const grid = document.getElementById('projectsGrid');
+  grid.innerHTML = `
+    <div class="project-card content-fade-in">
+      <div class="project-preview">🎬<span class="project-status status-done">Готово</span></div>
+      <div class="project-info">
+        <div class="project-title">Бутылка для воды 1л</div>
+        <div class="project-actions">
+          <button class="btn-small primary">Скачать</button>
+          <button class="btn-small">Перегенерировать</button>
+        </div>
+      </div>
+    </div>
+    <div class="project-card content-fade-in">
+      <div class="project-preview">🎬<span class="project-status status-done">Готово</span></div>
+      <div class="project-info">
+        <div class="project-title">Крем для лица увлажняющий</div>
+        <div class="project-actions">
+          <button class="btn-small primary">Скачать</button>
+          <button class="btn-small">Перегенерировать</button>
+        </div>
+      </div>
+    </div>
+    <div class="project-card content-fade-in">
+      <div class="project-preview">🎬<span class="project-status status-done">Готово</span></div>
+      <div class="project-info">
+        <div class="project-title">Рюкзак городской</div>
+        <div class="project-actions">
+          <button class="btn-small primary">Скачать</button>
+          <button class="btn-small">Перегенерировать</button>
+        </div>
+      </div>
+    </div>
+    <div class="project-card content-fade-in">
+      <div class="project-preview">⏳<span class="project-status status-progress">В процессе</span></div>
+      <div class="project-info">
+        <div class="project-title">Наушники беспроводные</div>
+        <div class="project-actions">
+          <button class="btn-small" disabled>Ожидание...</button>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 const uploadZone = document.getElementById('uploadZone');
@@ -407,7 +432,6 @@ async function handleFiles(files) {
   
   if (filesToAdd.length === 0) return;
   
-  // Имитация прогресса загрузки
   uploadZone.classList.add('uploading');
   uploadProgress.classList.add('active');
   uploadProgressText.classList.add('active');
