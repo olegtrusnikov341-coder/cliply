@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>Cliply — Настройки</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; }
@@ -15,7 +17,7 @@
   .nav-menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; transition: 0.2s; }
   .nav-menu a:hover { background: #1f1f23; color: #fff; }
   .nav-menu a.active { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; border: 1px solid rgba(108, 92, 231, 0.3); }
-  .btn-logout { padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; border: 1px solid #27272a; text-align: center; transition: 0.2s; }
+  .btn-logout { padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; border: 1px solid #27272a; text-align: center; transition: 0.2s; cursor: pointer; }
   .btn-logout:hover { border-color: #6C5CE7; color: #fff; }
   
   .main { padding: 32px 48px; }
@@ -48,7 +50,7 @@
       <li><a href="pricing.html">💎 Тарифы</a></li>
       <li><a href="settings.html" class="active">⚙️ Настройки</a></li>
     </ul>
-    <a href="index.html" class="btn-logout">← На лендинг</a>
+    <div class="btn-logout" onclick="logout()">Выйти</div>
   </aside>
   
   <main class="main">
@@ -60,32 +62,45 @@
       <h2>Личная информация</h2>
       <div class="form-group">
         <label>Имя</label>
-        <input type="text" value="Селлер" placeholder="Ваше имя">
+        <input type="text" id="userName" placeholder="Ваше имя">
       </div>
       <div class="form-group">
         <label>Email</label>
-        <input type="email" value="seller@example.com" placeholder="your@email.com">
+        <input type="email" id="userEmail" disabled style="opacity: 0.6; cursor: not-allowed;">
       </div>
-      <div class="form-group">
-        <label>Телефон</label>
-        <input type="tel" value="+7 (999) 123-45-67" placeholder="+7 (___) ___-__-__">
-      </div>
-      <button class="btn-save" onclick="alert('Настройки сохранены!')">Сохранить изменения</button>
-    </div>
-    
-    <div class="settings-section">
-      <h2>Безопасность</h2>
-      <div class="form-group">
-        <label>Текущий пароль</label>
-        <input type="password" placeholder="Введите текущий пароль">
-      </div>
-      <div class="form-group">
-        <label>Новый пароль</label>
-        <input type="password" placeholder="Введите новый пароль">
-      </div>
-      <button class="btn-save" onclick="alert('Пароль изменён!')">Изменить пароль</button>
+      <button class="btn-save" onclick="saveProfile()">Сохранить изменения</button>
     </div>
   </main>
 </div>
+
+<script>
+let currentUser = null;
+
+async function init() {
+  currentUser = await requireAuth();
+  if (!currentUser) return;
+  
+  document.getElementById('userName').value = currentUser.profile.full_name || '';
+  document.getElementById('userEmail').value = currentUser.email;
+}
+
+async function saveProfile() {
+  const newName = document.getElementById('userName').value.trim();
+  if (!newName) { alert('Имя не может быть пустым'); return; }
+  
+  const { error } = await supabaseClient
+    .from('profiles')
+    .update({ full_name: newName })
+    .eq('id', currentUser.id);
+    
+  if (error) {
+    alert('Ошибка сохранения: ' + error.message);
+  } else {
+    alert('Профиль успешно обновлен!');
+  }
+}
+
+init();
+</script>
 </body>
 </html>
