@@ -1,0 +1,320 @@
+/* Микроанимации для production-ready интерфейса */
+
+/* ===== Кнопки: эффект "проваливания" при клике ===== */
+
+.btn,
+.btn-generate,
+.btn-prompt,
+.btn-save,
+.btn-add,
+.btn-small,
+.btn-login,
+.nav-links a:last-child,
+.cta-button,
+.tab,
+.btn-logout {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.btn:active,
+.btn-generate:active,
+.btn-prompt:active,
+.btn-save:active,
+.btn-add:active,
+.btn-small:active,
+.btn-login:active,
+.nav-links a:last-child:active,
+.cta-button:active,
+.tab:active,
+.btn-logout:active {
+  transform: translateY(1px) scale(0.98) !important;
+}
+
+/* ===== Ripple-эффект для основных кнопок ===== */
+
+.ripple-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(0);
+  animation: ripple-animation 0.6s ease-out;
+  pointer-events: none;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* ===== Карточки: улучшенный hover ===== */
+
+.step-card,
+.feature-card,
+.example-card,
+.pricing-card,
+.project-card,
+.settings-section,
+.admin-section,
+.form {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.step-card:hover,
+.feature-card:hover,
+.example-card:hover,
+.project-card:hover,
+.settings-section:hover,
+.admin-section:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(108, 92, 231, 0.15);
+}
+
+.pricing-card.popular:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 25px 50px rgba(108, 92, 231, 0.25);
+}
+
+/* ===== Иконки: subtle bounce при наведении ===== */
+
+.step-icon,
+.feature-icon,
+.upload-icon {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: inline-block;
+}
+
+.step-card:hover .step-icon,
+.feature-card:hover .feature-icon {
+  transform: scale(1.15) rotate(-5deg);
+}
+
+.upload-zone:hover .upload-icon {
+  transform: scale(1.1);
+}
+
+.upload-zone.drag-over .upload-icon {
+  animation: iconBounce 0.6s ease infinite;
+}
+
+@keyframes iconBounce {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50% { transform: scale(1.1) translateY(-8px); }
+}
+
+/* ===== Навигационные ссылки: underline-эффект ===== */
+
+.nav-links a {
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #6C5CE7;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-links a:not(:last-child):hover::after {
+  width: 100%;
+}
+
+/* ===== Бейджи и бейджи ролей: pulse при обновлении ===== */
+
+.balance-badge,
+.user-badge,
+.role-badge,
+.popular-badge,
+.project-status {
+  transition: all 0.3s ease;
+}
+
+@keyframes badgePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.badge-updated {
+  animation: badgePulse 0.4s ease;
+}
+
+/* ===== Фото-превью: улучшенная анимация появления ===== */
+
+.photo-preview {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.photo-preview:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(108, 92, 231, 0.3);
+}
+
+.photo-preview:hover img {
+  transform: scale(1.05);
+}
+
+.photo-preview img {
+  transition: transform 0.4s ease;
+}
+
+/* ===== Кнопка удаления фото: rotate при наведении ===== */
+
+.photo-remove {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.photo-remove:hover {
+  transform: rotate(90deg) scale(1.2) !important;
+}
+
+/* ===== Прогресс-бар: shimmer-эффект ===== */
+
+.upload-progress-bar {
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  100% { left: 100%; }
+}
+
+/* ===== Поля ввода: glow при фокусе ===== */
+
+input:focus,
+textarea:focus,
+select:focus {
+  box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
+  transition: all 0.2s ease;
+}
+
+/* ===== Зона загрузки: pulse-кольцо при drag ===== */
+
+.upload-zone.drag-over::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 2px solid #6C5CE7;
+  border-radius: 14px;
+  animation: pulse-ring 1.5s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.05);
+    opacity: 0;
+  }
+}
+
+/* ===== Toast: slide-in с bounce ===== */
+
+.toast {
+  animation: toastSlideInBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes toastSlideInBounce {
+  0% {
+    opacity: 0;
+    transform: translateX(100px) scale(0.9);
+  }
+  60% {
+    transform: translateX(-5px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* ===== Таблицы: row hover ===== */
+
+.users-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.users-table tbody tr:hover {
+  background: rgba(108, 92, 231, 0.05);
+}
+
+/* ===== Skeleton: улучшенный shimmer ===== */
+
+.skeleton {
+  background: linear-gradient(90deg, #1a1a2e 25%, #252540 37%, #1a1a2e 63%);
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+/* ===== Уважение к prefers-reduced-motion ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .btn:active,
+  .btn-generate:active,
+  .btn-prompt:active,
+  .btn-save:active,
+  .btn-add:active,
+  .btn-small:active {
+    transform: none !important;
+  }
+  
+  .step-card:hover,
+  .feature-card:hover,
+  .example-card:hover,
+  .project-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  
+  .photo-preview:hover {
+    transform: none !important;
+  }
+  
+  .photo-preview:hover img {
+    transform: none !important;
+  }
+  
+  .photo-remove:hover {
+    transform: scale(1.15) !important;
+  }
+}
