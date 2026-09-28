@@ -1,0 +1,8 @@
+# Cliply robots.txt
+User-agent: *
+Allow: /
+Disallow: /dashboard.html
+Disallow: /admin.html
+Disallow: /settings.html
+
+Sitemap: https://olegtrusnikov341-coder.github.io/cliply/sitemap.xml
