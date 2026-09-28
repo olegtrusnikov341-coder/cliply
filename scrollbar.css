@@ -1,0 +1,185 @@
+/* Кастомный скроллбар для тёмной темы */
+
+/* ===== WebKit браузеры (Chrome, Safari, Edge, Opera) ===== */
+
+/* Ширина скроллбара */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Фон скроллбара (трек) */
+::-webkit-scrollbar-track {
+  background: #0A0A0F;
+  border-radius: 10px;
+}
+
+/* Ползунок скроллбара */
+::-webkit-scrollbar-thumb {
+  background: #2a2a3e;
+  border-radius: 10px;
+  border: 2px solid #0A0A0F;
+  transition: background 0.2s ease;
+}
+
+/* Ползунок при наведении */
+::-webkit-scrollbar-thumb:hover {
+  background: #6C5CE7;
+}
+
+/* Ползунок при активном перетаскивании */
+::-webkit-scrollbar-thumb:active {
+  background: #A29BFE;
+}
+
+/* Угловой элемент (пересечение горизонтального и вертикального скроллбаров) */
+::-webkit-scrollbar-corner {
+  background: #0A0A0F;
+}
+
+/* ===== Firefox ===== */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a3e #0A0A0F;
+}
+
+/* ===== Для элементов с внутренним скроллом ===== */
+
+/* Боковое меню в личном кабинете */
+.sidebar {
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a3e #141414;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #141414;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #2a2a3e;
+  border-radius: 10px;
+  border: 1px solid #141414;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #6C5CE7;
+}
+
+/* Основная область контента */
+.main {
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a3e #0A0A0F;
+}
+
+.main::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main::-webkit-scrollbar-track {
+  background: #0A0A0F;
+}
+
+.main::-webkit-scrollbar-thumb {
+  background: #2a2a3e;
+  border-radius: 10px;
+  border: 2px solid #0A0A0F;
+}
+
+.main::-webkit-scrollbar-thumb:hover {
+  background: #6C5CE7;
+}
+
+/* Зона загрузки фото */
+.upload-zone {
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a3e rgba(108, 92, 231, 0.05);
+}
+
+.upload-zone::-webkit-scrollbar {
+  width: 6px;
+}
+
+.upload-zone::-webkit-scrollbar-track {
+  background: rgba(108, 92, 231, 0.05);
+  border-radius: 10px;
+}
+
+.upload-zone::-webkit-scrollbar-thumb {
+  background: #2a2a3e;
+  border-radius: 10px;
+}
+
+.upload-zone::-webkit-scrollbar-thumb:hover {
+  background: #6C5CE7;
+}
+
+/* Текстовые поля (textarea) */
+textarea {
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a3e #0A0A0F;
+}
+
+textarea::-webkit-scrollbar {
+  width: 6px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background: #0A0A0F;
+  border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: #2a2a3e;
+  border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+  background: #6C5CE7;
+}
+
+/* Таблицы в админ-панели */
+.users-table {
+  scrollbar-width: thin;
+  scrollbar-color: #2a2a3e #141414;
+}
+
+.users-table::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.users-table::-webkit-scrollbar-track {
+  background: #141414;
+}
+
+.users-table::-webkit-scrollbar-thumb {
+  background: #2a2a3e;
+  border-radius: 10px;
+}
+
+.users-table::-webkit-scrollbar-thumb:hover {
+  background: #6C5CE7;
+}
+
+/* ===== Плавная прокрутка для всей страницы ===== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ===== Отключение кастомного скроллбара для пользователей с prefers-reduced-motion ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  ::-webkit-scrollbar-thumb {
+    transition: none;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+}
