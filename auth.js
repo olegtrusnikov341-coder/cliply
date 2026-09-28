@@ -64,3 +64,7 @@ window.requireAuth = requireAuth;
 window.requireRole = requireRole;
 window.logout = logout;
 window.ROLES = ROLES;
+
+// Для админских операций (создание/удаление пользователей)
+// ВНИМАНИЕ: service_role key нельзя публиковать в открытом доступе!
+// Для MVP используем через Supabase Edge Function (см. ниже)
