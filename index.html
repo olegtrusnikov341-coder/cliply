@@ -71,6 +71,16 @@
   /* ... твой существующий <style> без изменений ... */
 </style>
 </head>
+  <script>
+// Регистрация Service Worker для PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/cliply/service-worker.js')
+      .then(reg => console.log('[SW] Зарегистрирован:', reg.scope))
+      .catch(err => console.warn('[SW] Ошибка регистрации:', err));
+  });
+}
+</script>
 <body>
 <div class="container">
   <nav>
