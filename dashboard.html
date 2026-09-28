@@ -10,6 +10,8 @@
 <script src="toast.js"></script>
 <link rel="stylesheet" href="skeleton.css">
 <script src="skeleton.js"></script>
+<link rel="stylesheet" href="transitions.css">
+<script src="transitions.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; }
@@ -226,7 +228,7 @@
   <aside class="sidebar">
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu" id="navMenu">
-      <li><a href="dashboard.html" class="active"> Дашборд</a></li>
+      <li><a href="dashboard.html" class="active">📊 Дашборд</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
       <li><a href="settings.html">⚙️ Настройки</a></li>
     </ul>
@@ -274,7 +276,6 @@
     <div class="projects-section">
       <h2>Ваши видео</h2>
       <div class="projects-grid" id="projectsGrid">
-        <!-- Skeleton loaders будут показаны здесь -->
       </div>
     </div>
   </main>
@@ -283,16 +284,13 @@
 let uploadedPhotos = [];
 
 async function initDashboard() {
-  // Показываем skeleton для карточек видео
   showVideoCardSkeleton('#projectsGrid', 4);
   
   const user = await requireAuth();
   if (!user) return;
   
-  // Имитация загрузки данных (в реальности это запрос к БД)
   await new Promise(resolve => setTimeout(resolve, 800));
   
-  // Убираем skeleton с заголовка и бейджа
   document.getElementById('welcomeText').classList.remove('skeleton', 'skeleton-title');
   document.getElementById('welcomeText').textContent = `Добро пожаловать, ${user.profile.full_name || 'Селлер'}!`;
   showContentWithAnimation('#welcomeText');
@@ -313,7 +311,6 @@ async function initDashboard() {
     menu.insertBefore(adminLink, menu.children[1]);
   }
   
-  // Загружаем реальные видео (пока заглушки)
   await new Promise(resolve => setTimeout(resolve, 500));
   loadRealVideos();
 }
@@ -352,7 +349,7 @@ function loadRealVideos() {
       </div>
     </div>
     <div class="project-card content-fade-in">
-      <div class="project-preview">⏳<span class="project-status status-progress">В процессе</span></div>
+      <div class="project-preview"><span class="project-status status-progress">В процессе</span></div>
       <div class="project-info">
         <div class="project-title">Наушники беспроводные</div>
         <div class="project-actions">
