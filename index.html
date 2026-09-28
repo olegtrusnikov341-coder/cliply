@@ -4,20 +4,25 @@
 <meta charset="UTF-8">
 <title>Cliply — AI-генерация видео для маркетплейсов</title>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; }
   .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
   h1, h2 { font-family: 'Manrope', sans-serif; }
   nav { padding: 24px 0; display: flex; justify-content: space-between; align-items: center; }
-  .logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .nav-links a { color: #A0A0B0; text-decoration: none; margin-left: 32px; font-size: 14px; }
+  .logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+  .nav-links a { color: #A0A0B0; text-decoration: none; margin-left: 32px; font-size: 14px; transition: 0.2s; }
+  .nav-links a:hover { color: #fff; }
+  .nav-links a.btn { border: 2px solid #6C5CE7; padding: 10px 24px; border-radius: 10px; color: #fff !important; font-weight: 600; }
+  .nav-links a.btn:hover { background: #6C5CE7; }
   .hero { padding: 80px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
   .badge { display: inline-block; background: rgba(108, 92, 231, 0.15); color: #6C5CE7; padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 500; margin-bottom: 24px; border: 1px solid rgba(108, 92, 231, 0.3); }
   .hero h1 { font-size: 56px; line-height: 1.1; margin-bottom: 24px; font-weight: 800; }
   .hero p { font-size: 18px; color: #A0A0B0; margin-bottom: 32px; }
-  .btn { display: inline-block; background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; transition: all 0.2s; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
-  .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
+  .btn-main { display: inline-block; background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; transition: all 0.2s; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
+  .btn-main:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
   .preview-box { background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 20px; aspect-ratio: 9/16; max-height: 520px; display: flex; align-items: center; justify-content: center; font-size: 100px; box-shadow: 0 30px 80px rgba(108, 92, 231, 0.3); border: 1px solid rgba(108, 92, 231, 0.2); }
   .steps { padding: 80px 0; }
   .steps h2 { font-size: 40px; text-align: center; margin-bottom: 48px; }
@@ -29,40 +34,41 @@
   .step-card h3 { font-size: 20px; margin-bottom: 8px; }
   .step-card p { color: #A0A0B0; font-size: 15px; }
   footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
- .nav-links a:last-child { border: 2px solid #6C5CE7; padding: 10px 24px; border-radius: 10px; color: #fff !important; font-weight: 600; transition: 0.2s; }
-.nav-links a:last-child:hover { background: #6C5CE7; box-shadow: 0 0 20px rgba(108, 92, 231, 0.5); }
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; padding: 40px 0; }
+    .hero h1 { font-size: 36px; }
+    .steps-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
 <div class="container">
   <nav>
-  <a href="index.html" class="logo">Cliply</a>
-  <div class="nav-links" id="navLinks">
-    <a href="features.html">Возможности</a>
-    <a href="pricing.html">Тарифы</a>
-    <a href="examples.html">Примеры</a>
-    <a href="login.html" class="btn" id="navAuthBtn">Войти</a>
-  </div>
-</nav>
-  <a href="examples.html">Примеры</a>
-  <a href="login.html" class="btn">Войти</a>
-</div>
+    <a href="index.html" class="logo">Cliply</a>
+    <div class="nav-links">
+      <a href="features.html">Возможности</a>
+      <a href="pricing.html">Тарифы</a>
+      <a href="examples.html">Примеры</a>
+      <a href="login.html" class="btn" id="navAuthBtn">Войти</a>
+    </div>
   </nav>
+  
   <section class="hero">
     <div>
       <span class="badge">🚀 AI-генерация видео для маркетплейсов</span>
       <h1>Преврати 3 фото товара в продающее видео за 2 минуты</h1>
       <p>Без видеографа, монтажера и студии. Просто загрузи фото — получи готовый Reels для Wildberries и Ozon.</p>
-      <a href="login.html" class="btn">Попробовать бесплатно →</a>
+      <a href="login.html" class="btn-main" id="heroCtaBtn">Попробовать бесплатно →</a>
     </div>
     <div class="preview-box">🎬</div>
   </section>
+  
   <section class="steps">
     <h2>Три шага до готового видео</h2>
     <div class="steps-grid">
       <div class="step-card">
         <div class="step-num">01</div>
-        <div class="step-icon">📸</div>
+        <div class="step-icon"></div>
         <h3>Загрузи фото</h3>
         <p>3–5 фотографий товара с телефона или из карточки на WB/Ozon</p>
       </div>
@@ -82,15 +88,15 @@
   </section>
 </div>
 <footer>© 2026 Cliply</footer>
- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="auth.js"></script>
+
 <script>
 (async () => {
   const user = await getCurrentUser();
-  const btn = document.getElementById('navAuthBtn');
-  if (user && btn) {
-    btn.textContent = 'Создать';
-    btn.href = 'dashboard.html';
+  const navBtn = document.getElementById('navAuthBtn');
+  const heroBtn = document.getElementById('heroCtaBtn');
+  if (user) {
+    if (navBtn) { navBtn.textContent = 'Создать'; navBtn.href = 'dashboard.html'; }
+    if (heroBtn) { heroBtn.href = 'dashboard.html'; }
   }
 })();
 </script>
