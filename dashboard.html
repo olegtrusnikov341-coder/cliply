@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="micro-animations.css">
 <script src="transitions.js"></script>
 <script src="micro-animations.js"></script>
+<script src="draft.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; }
@@ -33,7 +34,8 @@
   .header h1 { font-size: 28px; font-weight: 700; font-family: 'Manrope'; }
   .balance-badge { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; padding: 10px 20px; border-radius: 100px; font-size: 14px; font-weight: 500; border: 1px solid rgba(108, 92, 231, 0.3); }
   .create-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 32px; margin-bottom: 40px; }
-  .create-card h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; font-family: 'Manrope'; }
+  .create-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .create-card h2 { font-size: 22px; font-weight: 700; font-family: 'Manrope'; }
   .upload-zone { border: 2px dashed #6C5CE7; border-radius: 12px; padding: 48px 24px; text-align: center; margin-bottom: 24px; background: rgba(108, 92, 231, 0.05); cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
   .upload-zone:hover { background: rgba(108, 92, 231, 0.1); border-color: #A29BFE; }
   .upload-zone.drag-over { background: rgba(108, 92, 231, 0.2); border-color: #A29BFE; border-style: solid; transform: scale(1.01); box-shadow: 0 0 40px rgba(108, 92, 231, 0.3); }
@@ -217,12 +219,73 @@
   .btn-small { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #27272a; background: transparent; color: #A0A0B0; font-size: 13px; cursor: pointer; transition: 0.2s; }
   .btn-small:hover { border-color: #6C5CE7; color: #fff; }
   .btn-small.primary { background: #6C5CE7; border-color: #6C5CE7; color: #fff; }
+  
+  /* Индикатор автосохранения */
+  .draft-indicator {
+    font-size: 13px;
+    color: #A0A0B0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+  }
+  
+  .draft-indicator.draft-saving {
+    color: #f59e0b;
+  }
+  
+  .draft-indicator.draft-saved {
+    color: #10b981;
+  }
+  
+  .draft-indicator.draft-error {
+    color: #ef4444;
+  }
+  
+  .draft-indicator::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    display: inline-block;
+  }
+  
+  .draft-indicator.draft-saving::before {
+    animation: draftPulse 1s ease infinite;
+  }
+  
+  @keyframes draftPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  
+  .btn-clear-draft {
+    background: transparent;
+    border: 1px solid #27272a;
+    color: #A0A0B0;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .btn-clear-draft:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+  }
+  
   @media (max-width: 768px) {
     .layout { grid-template-columns: 1fr; }
     .sidebar { display: none; }
     .main { padding: 20px; }
     .prompt-row { flex-direction: column; }
     .photo-preview-container { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+    .create-card-header { flex-direction: column; align-items: flex-start; gap: 8px; }
   }
 </style>
 </head>
@@ -231,7 +294,7 @@
   <aside class="sidebar">
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu" id="navMenu">
-      <li><a href="dashboard.html" class="active"> Дашборд</a></li>
+      <li><a href="dashboard.html" class="active">📊 Дашборд</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
       <li><a href="settings.html">⚙️ Настройки</a></li>
     </ul>
@@ -243,7 +306,13 @@
       <div class="balance-badge skeleton skeleton-badge" id="roleBadge">Загрузка...</div>
     </div>
     <div class="create-card">
-      <h2>Создать новое видео</h2>
+      <div class="create-card-header">
+        <h2>Создать новое видео</h2>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <span id="draftIndicator" class="draft-indicator"></span>
+          <button id="clearDraftBtn" class="btn-clear-draft" style="display: none;">🗑 Очистить черновик</button>
+        </div>
+      </div>
       <div class="upload-zone" id="uploadZone">
         <div class="upload-icon">📸</div>
         <div class="upload-text"><strong>Перетащите фото товара сюда</strong><br>или нажмите, чтобы выбрать</div>
@@ -285,6 +354,7 @@
 </div>
 <script>
 let uploadedPhotos = [];
+let draftManager = null;
 
 async function initDashboard() {
   showVideoCardSkeleton('#projectsGrid', 4);
@@ -310,14 +380,24 @@ async function initDashboard() {
   if (user.profile.role_level <= 2) {
     const menu = document.getElementById('navMenu');
     const adminLink = document.createElement('li');
-    adminLink.innerHTML = '<a href="admin.html"> Админ-панель</a>';
+    adminLink.innerHTML = '<a href="admin.html">👑 Админ-панель</a>';
     menu.insertBefore(adminLink, menu.children[1]);
   }
+  
+  // Инициализируем менеджер черновиков
+  draftManager = new DraftManager({
+    userId: user.id,
+    descriptionSelector: '#productDescription',
+    scenarioSelector: '#scenarioSelect',
+    indicatorSelector: '#draftIndicator',
+    clearButtonSelector: '#clearDraftBtn',
+    debounceMs: 500
+  });
+  draftManager.init();
   
   await new Promise(resolve => setTimeout(resolve, 500));
   loadRealVideos();
   
-  // Инициализируем ripple-эффект после загрузки контента
   if (window.microAnimations) {
     window.microAnimations.initRipple();
   }
@@ -347,7 +427,7 @@ function loadRealVideos() {
       </div>
     </div>
     <div class="project-card content-fade-in">
-      <div class="project-preview"><span class="project-status status-done">Готово</span></div>
+      <div class="project-preview">🎬<span class="project-status status-done">Готово</span></div>
       <div class="project-info">
         <div class="project-title">Рюкзак городской</div>
         <div class="project-actions">
@@ -357,7 +437,7 @@ function loadRealVideos() {
       </div>
     </div>
     <div class="project-card content-fade-in">
-      <div class="project-preview">⏳<span class="project-status status-progress">В процессе</span></div>
+      <div class="project-preview"><span class="project-status status-progress">В процессе</span></div>
       <div class="project-info">
         <div class="project-title">Наушники беспроводные</div>
         <div class="project-actions">
@@ -529,6 +609,9 @@ async function generatePrompt() {
   textarea.value = enhancedPrompt;
   btn.disabled = false;
   btn.textContent = '✨ Улучшить промпт';
+  
+  // Сохраняем улучшенный промпт в черновик
+  if (draftManager) draftManager.save();
 }
 
 function startGeneration() {
@@ -551,6 +634,10 @@ function startGeneration() {
   setTimeout(() => {
     btn.textContent = '✅ Видео готово!';
     showToast('Видео успешно сгенерировано! (Демо-режим)', 'success');
+    
+    // Очищаем черновик после успешной генерации
+    if (draftManager) draftManager.clear();
+    
     setTimeout(() => {
       btn.textContent = 'Сгенерировать видео →';
       btn.disabled = false;
