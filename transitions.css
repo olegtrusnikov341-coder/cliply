@@ -1,0 +1,93 @@
+// Плавные переходы между страницами
+
+(function() {
+  'use strict';
+  
+  // Проверяем поддержку View Transitions API
+  const supportsViewTransitions = 'startViewTransition' in document;
+  
+  // Добавляем класс page-content к основному контенту
+  function initPageTransition() {
+    const mainContent = document.querySelector('main, .container, body');
+    if (mainContent && !mainContent.classList.contains('page-content')) {
+      mainContent.classList.add('page-content');
+    }
+  }
+  
+  // Обработка кликов по навигационным ссылкам
+  function handleNavigationLinks() {
+    const links = document.querySelectorAll('a[href]');
+    
+    links.forEach(link => {
+      // Пропускаем внешние ссылки, якоря, mailto, tel
+      const href = link.getAttribute('href');
+      if (!href || 
+          href.startsWith('#') || 
+          href.startsWith('mailto:') || 
+          href.startsWith('tel:') ||
+          href.startsWith('http://') ||
+          href.startsWith('https://') ||
+          link.hasAttribute('target') ||
+          link.hasAttribute('download')) {
+        return;
+      }
+      
+      // Проверяем, что ссылка ведёт на ту же страницу
+      const currentPath = window.location.pathname;
+      const linkPath = new URL(href, window.location.origin).pathname;
+      
+      if (currentPath === linkPath) {
+        return;
+      }
+      
+      link.addEventListener('click', function(e) {
+        // Если браузер поддерживает View Transitions API — используем его
+        if (supportsViewTransitions) {
+          e.preventDefault();
+          
+          document.startViewTransition(() => {
+            window.location.href = href;
+          });
+        } else {
+          // Fallback для старых браузеров
+          e.preventDefault();
+          
+          const body = document.body;
+          body.classList.add('page-exit');
+          
+          setTimeout(() => {
+            window.location.href = href;
+          }, 280);
+        }
+      });
+    });
+  }
+  
+  // Добавляем stagger-анимацию к карточкам
+  function initStaggerAnimations() {
+    const grids = document.querySelectorAll('.projects-grid, .features-grid, .examples-grid, .pricing-grid, .steps-grid');
+    
+    grids.forEach(grid => {
+      const items = grid.children;
+      for (let i = 0; i < items.length; i++) {
+        if (i < 6) { // Максимум 6 элементов с задержкой
+          items[i].classList.add('stagger-item');
+        }
+      }
+    });
+  }
+  
+  // Инициализация при загрузке страницы
+  document.addEventListener('DOMContentLoaded', () => {
+    initPageTransition();
+    handleNavigationLinks();
+    initStaggerAnimations();
+  });
+  
+  // Экспорт для использования в других скриптах
+  window.pageTransitions = {
+    init: initPageTransition,
+    handleNavigation: handleNavigationLinks,
+    initStagger: initStaggerAnimations
+  };
+})();
