@@ -1,333 +1,80 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cliply — AI-генерация видео для маркетплейсов</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
-            background: #0a0a0a;
-            color: #ffffff;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Навигация */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .nav-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 72px;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 800;
-            color: #fff;
-            text-decoration: none;
-            letter-spacing: -0.5px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #a1a1aa;
-            text-decoration: none;
-            font-size: 15px;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: #fff;
-        }
-
-        .nav-links .btn-login {
-            border: 2px solid #8b5cf6;
-            padding: 10px 24px;
-            border-radius: 10px;
-            color: #fff;
-            font-weight: 600;
-            transition: all 0.2s;
-            background: transparent;
-            text-decoration: none;
-        }
-
-        .nav-links .btn-login:hover {
-            background: #8b5cf6;
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
-            transform: translateY(-1px);
-        }
-
-        /* Hero секция */
-        .hero {
-            padding: 160px 0 100px;
-        }
-
-        .hero-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .badge {
-            display: inline-block;
-            background: rgba(139, 92, 246, 0.15);
-            color: #a78bfa;
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 24px;
-            border: 1px solid rgba(139, 92, 246, 0.3);
-        }
-
-        .hero h1 {
-            font-size: 56px;
-            font-weight: 800;
-            line-height: 1.1;
-            letter-spacing: -1.5px;
-            margin-bottom: 24px;
-        }
-
-        .hero p {
-            font-size: 18px;
-            color: #a1a1aa;
-            margin-bottom: 32px;
-            max-width: 500px;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            color: #fff;
-            padding: 16px 32px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 16px;
-            transition: all 0.3s;
-            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.4);
-            border: none;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 50px rgba(139, 92, 246, 0.6);
-            color: #fff;
-        }
-
-        /* Мокап телефона */
-        .phone-mockup {
-            width: 280px;
-            height: 560px;
-            background: #141414;
-            border-radius: 40px;
-            margin: 0 auto;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #27272a;
-            box-shadow: 0 0 80px rgba(139, 92, 246, 0.3);
-        }
-
-        .phone-mockup::before {
-            content: '';
-            position: absolute;
-            top: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 20px;
-            background: #0a0a0a;
-            border-radius: 100px;
-        }
-
-        .video-icon {
-            font-size: 80px;
-            opacity: 0.9;
-        }
-
-        /* Секция шагов */
-        .steps {
-            padding: 100px 0;
-        }
-
-        .steps h2 {
-            text-align: center;
-            font-size: 40px;
-            font-weight: 800;
-            margin-bottom: 60px;
-            letter-spacing: -1px;
-        }
-
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-
-        .step-card {
-            background: #141414;
-            border: 1px solid #27272a;
-            border-radius: 16px;
-            padding: 32px;
-            transition: all 0.3s;
-        }
-
-        .step-card:hover {
-            border-color: #8b5cf6;
-            transform: translateY(-4px);
-        }
-
-        .step-number {
-            font-size: 14px;
-            color: #8b5cf6;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        .step-icon {
-            font-size: 32px;
-            margin-bottom: 16px;
-        }
-
-        .step-card h3 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .step-card p {
-            color: #a1a1aa;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        /* Футер */
-        footer {
-            padding: 40px 0;
-            text-align: center;
-            color: #52525b;
-            font-size: 14px;
-            border-top: 1px solid #1a1a1a;
-        }
-
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            .hero-content {
-                grid-template-columns: 1fr;
-                padding: 120px 0 60px;
-                text-align: center;
-            }
-            
-            .hero h1 {
-                font-size: 36px;
-            }
-            
-            .hero p {
-                margin: 0 auto 32px;
-            }
-            
-            .steps-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            .phone-mockup {
-                width: 240px;
-                height: 480px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Cliply — AI-генерация видео для маркетплейсов</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  h1, h2 { font-family: 'Manrope', sans-serif; }
+  nav { padding: 24px 0; display: flex; justify-content: space-between; align-items: center; }
+  .logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .nav-links a { color: #A0A0B0; text-decoration: none; margin-left: 32px; font-size: 14px; }
+  .hero { padding: 80px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .badge { display: inline-block; background: rgba(108, 92, 231, 0.15); color: #6C5CE7; padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 500; margin-bottom: 24px; border: 1px solid rgba(108, 92, 231, 0.3); }
+  .hero h1 { font-size: 56px; line-height: 1.1; margin-bottom: 24px; font-weight: 800; }
+  .hero p { font-size: 18px; color: #A0A0B0; margin-bottom: 32px; }
+  .btn { display: inline-block; background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; transition: all 0.2s; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
+  .preview-box { background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 20px; aspect-ratio: 9/16; max-height: 520px; display: flex; align-items: center; justify-content: center; font-size: 100px; box-shadow: 0 30px 80px rgba(108, 92, 231, 0.3); border: 1px solid rgba(108, 92, 231, 0.2); }
+  .steps { padding: 80px 0; }
+  .steps h2 { font-size: 40px; text-align: center; margin-bottom: 48px; }
+  .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .step-card { background: #15151F; padding: 32px; border-radius: 16px; border: 1px solid #1f1f2e; transition: all 0.2s; }
+  .step-card:hover { border-color: #6C5CE7; transform: translateY(-4px); }
+  .step-num { color: #6C5CE7; font-weight: 700; font-size: 13px; margin-bottom: 12px; letter-spacing: 2px; }
+  .step-icon { font-size: 40px; margin-bottom: 16px; }
+  .step-card h3 { font-size: 20px; margin-bottom: 8px; }
+  .step-card p { color: #A0A0B0; font-size: 15px; }
+  footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
+</style>
 </head>
 <body>
-    <nav>
-        <div class="container nav-content">
-            <a href="index.html" class="logo">Cliply</a>
-            <div class="nav-links">
-                <a href="#features">Возможности</a>
-                <a href="#pricing">Тарифы</a>
-                <a href="#examples">Примеры</a>
-                <a href="dashboard.html" class="btn-login">Войти</a>
-            </div>
-        </div>
-    </nav>
-
-    <section class="hero">
-        <div class="container hero-content">
-            <div>
-                <div class="badge">🚀 AI-генерация видео для маркетплейсов</div>
-                <h1>Преврати 3 фото товара в продающее видео за 2 минуты</h1>
-                <p>Без видеографа, монтажера и студии. Просто загрузи фото — получи готовый Reels для Wildberries и Ozon.</p>
-                <a href="dashboard.html" class="cta-button">Попробовать бесплатно →</a>
-            </div>
-            <div>
-                <div class="phone-mockup">
-                    <div class="video-icon"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="steps">
-        <div class="container">
-            <h2>Три шага до готового видео</h2>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-number">01</div>
-                    <div class="step-icon">📷</div>
-                    <h3>Загрузи фото</h3>
-                    <p>3-5 фотографий товара с телефона или из карточки на WB/Ozon</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">02</div>
-                    <div class="step-icon"></div>
-                    <h3>AI создаёт магию</h3>
-                    <p>Нейросеть пишет сценарий, озвучку и анимирует каждый кадр</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">03</div>
-                    <div class="step-icon"></div>
-                    <h3>Скачай видео</h3>
-                    <p>Вертикальный ролик 0:15 с музыкой и титрами — готов к публикации</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            © 2026 Cliply
-        </div>
-    </footer>
+<div class="container">
+  <nav>
+    <div class="logo">Cliply</div>
+    <div class="nav-links">
+      <a href="#">Возможности</a>
+      <a href="#">Тарифы</a>
+      <a href="#">Примеры</a>
+      <a href="#">Войти</a>
+    </div>
+  </nav>
+  <section class="hero">
+    <div>
+      <span class="badge">🚀 AI-генерация видео для маркетплейсов</span>
+      <h1>Преврати 3 фото товара в продающее видео за 2 минуты</h1>
+      <p>Без видеографа, монтажера и студии. Просто загрузи фото — получи готовый Reels для Wildberries и Ozon.</p>
+      <a href="dashboard.html" class="cta-button">Попробовать бесплатно →</a>
+    </div>
+    <div class="preview-box">🎬</div>
+  </section>
+  <section class="steps">
+    <h2>Три шага до готового видео</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-icon">📸</div>
+        <h3>Загрузи фото</h3>
+        <p>3–5 фотографий товара с телефона или из карточки на WB/Ozon</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-icon">🤖</div>
+        <h3>AI создаёт магию</h3>
+        <p>Нейросеть пишет сценарий, озвучку и анимирует каждый кадр</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-icon">🎬</div>
+        <h3>Скачай видео</h3>
+        <p>Вертикальный ролик 9:16 с музыкой и титрами — готов к публикации</p>
+      </div>
+    </div>
+  </section>
+</div>
+<footer>© 2026 Cliply</footer>
 </body>
 </html>
