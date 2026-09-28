@@ -6,8 +6,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="auth.js"></script>
- <link rel="stylesheet" href="toast.css">
+<link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
+<link rel="stylesheet" href="transitions.css">
+<script src="transitions.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; }
@@ -17,13 +19,11 @@
   .logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
   .nav-links a { color: #A0A0B0; text-decoration: none; margin-left: 32px; font-size: 14px; transition: 0.2s; }
   .nav-links a:hover { color: #fff; }
-  .nav-links a.btn-nav { border: 2px solid #6C5CE7; padding: 10px 24px; border-radius: 10px; color: #fff !important; font-weight: 600; }
-  .nav-links a.btn-nav:hover { background: #6C5CE7; }
-  
+  .nav-links a:last-child { border: 2px solid #6C5CE7; padding: 10px 24px; border-radius: 10px; color: #fff !important; font-weight: 600; }
+  .nav-links a:last-child:hover { background: #6C5CE7; }
   .page-header { padding: 80px 0 40px; text-align: center; }
   .page-header h1 { font-size: 48px; margin-bottom: 16px; }
   .page-header p { font-size: 18px; color: #A0A0B0; }
-  
   .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding: 40px 0 80px; }
   .pricing-card { background: #15151F; padding: 32px; border-radius: 16px; border: 1px solid #1f1f2e; text-align: center; transition: 0.2s; display: flex; flex-direction: column; }
   .pricing-card:hover { transform: translateY(-4px); }
@@ -37,9 +37,7 @@
   .features li:before { content: "✓ "; color: #6C5CE7; font-weight: 700; }
   .btn { display: inline-block; background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; transition: 0.2s; width: 100%; margin-top: auto; border: none; cursor: pointer; font-size: 15px; }
   .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
-  
   footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
-  
   @media (max-width: 768px) {
     .pricing-grid { grid-template-columns: 1fr; }
     .page-header h1 { font-size: 32px; }
@@ -50,19 +48,17 @@
 <div class="container">
   <nav>
     <a href="index.html" class="logo">Cliply</a>
-    <div class="nav-links" id="navLinks">
+    <div class="nav-links">
       <a href="features.html">Возможности</a>
       <a href="pricing.html">Тарифы</a>
       <a href="examples.html">Примеры</a>
-      <a href="login.html" class="btn-nav" id="navAuthBtn">Войти</a>
+      <a href="login.html" id="navAuthBtn">Войти</a>
     </div>
   </nav>
-  
   <div class="page-header">
     <h1>Тарифы</h1>
     <p>Выберите план, который подходит вашему бизнесу</p>
   </div>
-  
   <div class="pricing-grid">
     <div class="pricing-card">
       <h3>Starter</h3>
@@ -75,7 +71,6 @@
       </ul>
       <a href="dashboard.html" class="btn">Начать</a>
     </div>
-    
     <div class="pricing-card popular">
       <h3>Pro</h3>
       <div class="popular-badge">Популярный</div>
@@ -89,7 +84,6 @@
       </ul>
       <a href="dashboard.html" class="btn">Начать</a>
     </div>
-    
     <div class="pricing-card">
       <h3>Agency</h3>
       <div class="price">19 990 ₽<span>/мес</span></div>
@@ -105,17 +99,11 @@
   </div>
 </div>
 <footer>© 2026 Cliply</footer>
-
 <script>
 (async () => {
-  if (typeof getCurrentUser !== 'undefined') {
-    const user = await getCurrentUser();
-    const btn = document.getElementById('navAuthBtn');
-    if (user) {
-      btn.textContent = 'Создать';
-      btn.href = 'dashboard.html';
-    }
-  }
+  const user = await getCurrentUser();
+  const btn = document.getElementById('navAuthBtn');
+  if (user && btn) { btn.textContent = 'Создать'; btn.href = 'dashboard.html'; }
 })();
 </script>
 </body>
