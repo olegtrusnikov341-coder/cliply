@@ -6,6 +6,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="auth.js"></script>
+<link rel="stylesheet" href="toast.css">
+<script src="toast.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; }
@@ -19,21 +21,17 @@
   .nav-menu a.active { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; border: 1px solid rgba(108, 92, 231, 0.3); }
   .btn-logout { padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; border: 1px solid #27272a; text-align: center; transition: 0.2s; cursor: pointer; }
   .btn-logout:hover { border-color: #6C5CE7; color: #fff; }
-  
   .main { padding: 32px 48px; }
   .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid #27272a; }
   .header h1 { font-size: 28px; font-weight: 700; font-family: 'Manrope'; }
   .user-badge { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; padding: 8px 16px; border-radius: 100px; font-size: 14px; font-weight: 600; border: 1px solid rgba(108, 92, 231, 0.3); }
-  
   .admin-section { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 32px; margin-bottom: 24px; }
   .admin-section h2 { font-size: 20px; margin-bottom: 24px; font-family: 'Manrope'; }
-  
   .add-user-form { display: grid; grid-template-columns: 2fr 2fr 1fr auto; gap: 12px; margin-bottom: 24px; }
   .add-user-form input, .add-user-form select { background: #0A0A0F; border: 1px solid #27272a; border-radius: 8px; padding: 12px 16px; color: #fff; font-size: 14px; font-family: inherit; }
   .add-user-form input:focus, .add-user-form select:focus { outline: none; border-color: #6C5CE7; }
   .btn-add { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 12px 24px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
   .btn-add:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
-  
   .users-table { width: 100%; border-collapse: collapse; }
   .users-table th { text-align: left; padding: 12px 16px; color: #A0A0B0; font-size: 13px; font-weight: 500; border-bottom: 1px solid #27272a; }
   .users-table td { padding: 16px; border-bottom: 1px solid #1f1f2e; font-size: 14px; }
@@ -41,13 +39,11 @@
   .role-1 { background: rgba(108, 92, 231, 0.2); color: #A29BFE; border: 1px solid rgba(108, 92, 231, 0.3); }
   .role-2 { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
   .role-3 { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-  
   .btn-small { padding: 6px 12px; border-radius: 6px; border: 1px solid #27272a; background: transparent; color: #A0A0B0; font-size: 12px; cursor: pointer; margin-right: 4px; transition: 0.2s; }
   .btn-small:hover { border-color: #6C5CE7; color: #fff; }
   .btn-danger { border-color: rgba(239, 68, 68, 0.3); color: #ef4444; }
   .btn-danger:hover { background: rgba(239, 68, 68, 0.1); border-color: #ef4444; }
   select.role-select { background: #0A0A0F; border: 1px solid #27272a; border-radius: 6px; padding: 6px 12px; color: #fff; font-size: 12px; cursor: pointer; }
-  
   @media (max-width: 768px) {
     .layout { grid-template-columns: 1fr; }
     .sidebar { display: none; }
@@ -67,13 +63,11 @@
     </ul>
     <div class="btn-logout" onclick="logout()">Выйти</div>
   </aside>
-  
   <main class="main">
     <div class="header">
       <h1>Админ-панель</h1>
       <div class="user-badge" id="userBadge">Загрузка...</div>
     </div>
-    
     <div class="admin-section">
       <h2>Добавить участника команды</h2>
       <div class="add-user-form">
@@ -88,7 +82,6 @@
       </div>
       <p style="color: #A0A0B0; font-size: 13px;">Система сгенерирует временный пароль. Покажите его участнику, он сможет сменить его в настройках.</p>
     </div>
-    
     <div class="admin-section">
       <h2>Пользователи системы</h2>
       <table class="users-table">
@@ -107,31 +100,24 @@
     </div>
   </main>
 </div>
-
 <script>
 let currentUser = null;
-
 async function init() {
   const checkOwner = requireRole(1);
   currentUser = await checkOwner();
   if (!currentUser) return;
-  
   const role = ROLES[currentUser.profile.role_level];
   document.getElementById('userBadge').textContent = `${currentUser.profile.full_name || currentUser.email} • ${role.name}`;
   await loadUsers();
 }
-
 async function loadUsers() {
   const { data, error } = await supabaseClient.from('profiles').select('*').order('created_at', { ascending: false });
-  if (error) { console.error('Ошибка:', error); return; }
-  
+  if (error) { showToast('Ошибка загрузки: ' + error.message, 'error'); return; }
   const tbody = document.getElementById('usersTableBody');
   tbody.innerHTML = '';
-  
   data.forEach(user => {
     const role = ROLES[user.role_level];
     const isCurrentUser = user.id === currentUser.id;
-    
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${user.full_name || '—'}</td>
@@ -151,42 +137,35 @@ async function loadUsers() {
     tbody.appendChild(tr);
   });
 }
-
 async function addUser() {
   const name = document.getElementById('newUserName').value.trim();
   const email = document.getElementById('newUserEmail').value.trim();
   const role = parseInt(document.getElementById('newUserRole').value);
-  
-  if (!name || !email) { alert('Заполните имя и email'); return; }
-  
+  if (!name || !email) { showToast('Заполните имя и email', 'warning'); return; }
   const tempPassword = 'Cliply' + Math.random().toString(36).slice(-6);
-  
   const { data, error } = await supabaseClient.rpc('create_user_with_role', {
     p_email: email, p_password: tempPassword, p_full_name: name, p_role_level: role
   });
-  
-  if (error) { alert('Ошибка: ' + error.message); return; }
-  
-  alert(`Пользователь ${name} создан!\nEmail: ${email}\nВременный пароль: ${tempPassword}\n\nСообщите этот пароль участнику.`);
+  if (error) { showToast('Ошибка: ' + error.message, 'error'); return; }
+  showToast(`Пользователь ${name} создан! Временный пароль: ${tempPassword}`, 'success', 6000);
   document.getElementById('newUserName').value = '';
   document.getElementById('newUserEmail').value = '';
   await loadUsers();
 }
-
 async function changeRole(userId, newRole) {
-  if (!confirm(`Изменить уровень доступа?`)) return;
+  if (!confirm('Изменить уровень доступа?')) return;
   const { error } = await supabaseClient.from('profiles').update({ role_level: parseInt(newRole) }).eq('id', userId);
-  if (error) { alert('Ошибка: ' + error.message); return; }
+  if (error) { showToast('Ошибка: ' + error.message, 'error'); return; }
+  showToast('Уровень доступа изменён', 'success');
   await loadUsers();
 }
-
 async function deleteUser(userId) {
   if (!confirm('Удалить этого пользователя навсегда?')) return;
   const { error } = await supabaseClient.rpc('delete_user_by_id', { p_user_id: userId });
-  if (error) { alert('Ошибка: ' + error.message); return; }
+  if (error) { showToast('Ошибка: ' + error.message, 'error'); return; }
+  showToast('Пользователь удалён', 'success');
   await loadUsers();
 }
-
 init();
 </script>
 </body>
