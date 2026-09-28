@@ -6,6 +6,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="auth.js"></script>
+<link rel="stylesheet" href="toast.css">
+<script src="toast.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; }
@@ -19,11 +21,9 @@
   .nav-menu a.active { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; border: 1px solid rgba(108, 92, 231, 0.3); }
   .btn-logout { padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; border: 1px solid #27272a; text-align: center; transition: 0.2s; cursor: pointer; }
   .btn-logout:hover { border-color: #6C5CE7; color: #fff; }
-  
   .main { padding: 32px 48px; }
   .header { margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid #27272a; }
   .header h1 { font-size: 28px; font-weight: 700; font-family: 'Manrope'; }
-  
   .settings-section { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 32px; margin-bottom: 24px; }
   .settings-section h2 { font-size: 20px; margin-bottom: 8px; font-family: 'Manrope'; }
   .settings-section .subtitle { color: #A0A0B0; font-size: 14px; margin-bottom: 24px; }
@@ -35,10 +35,8 @@
   .form-group input:disabled { opacity: 0.6; cursor: not-allowed; }
   .btn-save { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 14px 32px; border-radius: 12px; border: none; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.2s; }
   .btn-save:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
-  
   .prompt-hint { background: rgba(108, 92, 231, 0.1); border: 1px solid rgba(108, 92, 231, 0.3); border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; font-size: 13px; color: #A0A0B0; line-height: 1.6; }
   .prompt-hint strong { color: #A29BFE; }
-  
   @media (max-width: 768px) {
     .layout { grid-template-columns: 1fr; }
     .sidebar { display: none; }
@@ -53,16 +51,12 @@
     <ul class="nav-menu">
       <li><a href="dashboard.html">📊 Дашборд</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
-      <li><a href="settings.html" class="active">⚙️ Настройки</a></li>
+      <li><a href="settings.html" class="active">️ Настройки</a></li>
     </ul>
     <div class="btn-logout" onclick="logout()">Выйти</div>
   </aside>
-  
   <main class="main">
-    <div class="header">
-      <h1>Настройки профиля</h1>
-    </div>
-    
+    <div class="header"><h1>Настройки профиля</h1></div>
     <div class="settings-section">
       <h2>Личная информация</h2>
       <p class="subtitle">Ваши основные данные</p>
@@ -76,7 +70,6 @@
       </div>
       <button class="btn-save" onclick="saveProfile()">Сохранить изменения</button>
     </div>
-    
     <div class="settings-section">
       <h2>Смена пароля</h2>
       <p class="subtitle">Обновите пароль для входа в аккаунт</p>
@@ -94,7 +87,6 @@
       </div>
       <button class="btn-save" onclick="changePassword()">Изменить пароль</button>
     </div>
-    
     <div class="settings-section">
       <h2>Универсальный промпт</h2>
       <p class="subtitle">Дополнительная информация, которая будет учитываться при каждой генерации видео</p>
@@ -109,78 +101,49 @@
     </div>
   </main>
 </div>
-
 <script>
 let currentUser = null;
-
 async function init() {
   currentUser = await requireAuth();
   if (!currentUser) return;
-  
   document.getElementById('userName').value = currentUser.profile.full_name || '';
   document.getElementById('userEmail').value = currentUser.email;
-  
-  const { data } = await supabaseClient
-    .from('profiles')
-    .select('custom_prompt')
-    .eq('id', currentUser.id)
-    .single();
-  
+  const { data } = await supabaseClient.from('profiles').select('custom_prompt').eq('id', currentUser.id).single();
   if (data && data.custom_prompt) {
     document.getElementById('customPrompt').value = data.custom_prompt;
   }
 }
-
 async function saveProfile() {
   const newName = document.getElementById('userName').value.trim();
-  if (!newName) { alert('Имя не может быть пустым'); return; }
-  
-  const { error } = await supabaseClient
-    .from('profiles')
-    .update({ full_name: newName })
-    .eq('id', currentUser.id);
-    
-  if (error) { alert('Ошибка сохранения: ' + error.message); }
-  else { alert('Профиль успешно обновлен!'); }
+  if (!newName) { showToast('Имя не может быть пустым', 'warning'); return; }
+  const { error } = await supabaseClient.from('profiles').update({ full_name: newName }).eq('id', currentUser.id);
+  if (error) { showToast('Ошибка сохранения: ' + error.message, 'error'); }
+  else { showToast('Профиль успешно обновлен!', 'success'); }
 }
-
 async function changePassword() {
   const current = document.getElementById('currentPassword').value;
   const newPass = document.getElementById('newPassword').value;
   const confirm = document.getElementById('confirmPassword').value;
-  
-  if (!current || !newPass || !confirm) { alert('Заполните все поля'); return; }
-  if (newPass.length < 6) { alert('Пароль должен содержать минимум 6 символов'); return; }
-  if (newPass !== confirm) { alert('Новые пароли не совпадают'); return; }
-  
-  const { error: signInError } = await supabaseClient.auth.signInWithPassword({
-    email: currentUser.email, password: current
-  });
-  
-  if (signInError) { alert('Неверный текущий пароль'); return; }
-  
+  if (!current || !newPass || !confirm) { showToast('Заполните все поля', 'warning'); return; }
+  if (newPass.length < 6) { showToast('Пароль должен содержать минимум 6 символов', 'warning'); return; }
+  if (newPass !== confirm) { showToast('Новые пароли не совпадают', 'error'); return; }
+  const { error: signInError } = await supabaseClient.auth.signInWithPassword({ email: currentUser.email, password: current });
+  if (signInError) { showToast('Неверный текущий пароль', 'error'); return; }
   const { error } = await supabaseClient.auth.updateUser({ password: newPass });
-  
-  if (error) { alert('Ошибка смены пароля: ' + error.message); }
+  if (error) { showToast('Ошибка смены пароля: ' + error.message, 'error'); }
   else {
-    alert('Пароль успешно изменён!');
+    showToast('Пароль успешно изменён!', 'success');
     document.getElementById('currentPassword').value = '';
     document.getElementById('newPassword').value = '';
     document.getElementById('confirmPassword').value = '';
   }
 }
-
 async function savePrompt() {
   const prompt = document.getElementById('customPrompt').value;
-  const { error } = await supabaseClient
-    .from('profiles')
-    .update({ custom_prompt: prompt })
-    .eq('id', currentUser.id);
-    
-  if (error) { alert('Ошибка сохранения: ' + error.message); }
-  else { alert('Универсальный промпт сохранён! Он будет учитываться при каждой генерации.'); }
+  const { error } = await supabaseClient.from('profiles').update({ custom_prompt: prompt }).eq('id', currentUser.id);
+  if (error) { showToast('Ошибка сохранения: ' + error.message, 'error'); }
+  else { showToast('Универсальный промпт сохранён! Он будет учитываться при каждой генерации.', 'success'); }
 }
-
 init();
 </script>
 </body>
