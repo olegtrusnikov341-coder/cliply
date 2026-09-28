@@ -6,6 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="transitions.css">
 <link rel="stylesheet" href="scrollbar.css">
+<link rel="stylesheet" href="micro-animations.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; }
@@ -54,7 +55,7 @@
       <p>Без видеографа, монтажера и студии. Просто загрузи фото — получи готовый Reels для Wildberries и Ozon.</p>
       <a href="login.html" class="btn">Попробовать бесплатно →</a>
     </div>
-    <div class="preview-box"></div>
+    <div class="preview-box">🎬</div>
   </section>
   <section class="steps">
     <h2>Три шага до готового видео</h2>
@@ -67,7 +68,7 @@
       </div>
       <div class="step-card">
         <div class="step-num">02</div>
-        <div class="step-icon">🤖</div>
+        <div class="step-icon"></div>
         <h3>AI создаёт магию</h3>
         <p>Нейросеть пишет сценарий, озвучку и анимирует каждый кадр</p>
       </div>
@@ -87,6 +88,7 @@
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
 <script src="transitions.js"></script>
+<script src="micro-animations.js"></script>
 <script>
 (async () => {
   const user = await getCurrentUser();
