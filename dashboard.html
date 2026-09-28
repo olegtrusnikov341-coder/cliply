@@ -27,13 +27,63 @@
   .balance-badge { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; padding: 10px 20px; border-radius: 100px; font-size: 14px; font-weight: 500; border: 1px solid rgba(108, 92, 231, 0.3); }
   .create-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 32px; margin-bottom: 40px; }
   .create-card h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; font-family: 'Manrope'; }
-  .upload-zone { border: 2px dashed #6C5CE7; border-radius: 12px; padding: 48px 24px; text-align: center; margin-bottom: 24px; background: rgba(108, 92, 231, 0.05); cursor: pointer; transition: 0.2s; }
+  .upload-zone { border: 2px dashed #6C5CE7; border-radius: 12px; padding: 48px 24px; text-align: center; margin-bottom: 24px; background: rgba(108, 92, 231, 0.05); cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
   .upload-zone:hover { background: rgba(108, 92, 231, 0.1); border-color: #A29BFE; }
-  .upload-zone.drag-over { background: rgba(108, 92, 231, 0.15); border-color: #A29BFE; transform: scale(1.02); }
-  .upload-icon { font-size: 48px; margin-bottom: 12px; }
+  .upload-zone.drag-over { background: rgba(108, 92, 231, 0.2); border-color: #A29BFE; border-style: solid; transform: scale(1.01); box-shadow: 0 0 40px rgba(108, 92, 231, 0.3); }
+  .upload-zone.drag-over .upload-icon { animation: bounce 0.6s ease infinite; }
+  .upload-zone.uploading { border-color: #f59e0b; background: rgba(245, 158, 11, 0.05); }
+  .upload-zone.uploading .upload-icon { animation: pulse 1s ease infinite; }
+  .upload-zone.success { border-color: #10b981; background: rgba(16, 185, 129, 0.05); border-style: solid; }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+  }
+  
+  .upload-icon { font-size: 48px; margin-bottom: 12px; transition: transform 0.3s; }
   .upload-text { color: #A0A0B0; font-size: 15px; }
   .upload-text strong { color: #fff; }
   .upload-hint { color: #6C5CE7; font-size: 13px; margin-top: 8px; }
+  
+  /* Прогресс-бар загрузки */
+  .upload-progress {
+    width: 100%;
+    height: 6px;
+    background: #27272a;
+    border-radius: 3px;
+    margin-top: 20px;
+    overflow: hidden;
+    display: none;
+  }
+  
+  .upload-progress.active {
+    display: block;
+  }
+  
+  .upload-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #6C5CE7, #A29BFE);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+  
+  .upload-progress-text {
+    text-align: center;
+    font-size: 13px;
+    color: #A0A0B0;
+    margin-top: 8px;
+    display: none;
+  }
+  
+  .upload-progress-text.active {
+    display: block;
+  }
   
   /* Превью фото */
   .photo-preview-container {
@@ -49,11 +99,24 @@
     border-radius: 8px;
     overflow: hidden;
     border: 2px solid #27272a;
-    transition: 0.2s;
+    transition: all 0.3s ease;
+    animation: photoAppear 0.4s ease-out;
+  }
+  
+  @keyframes photoAppear {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
   
   .photo-preview:hover {
     border-color: #6C5CE7;
+    transform: translateY(-2px);
   }
   
   .photo-preview img {
@@ -62,28 +125,49 @@
     object-fit: cover;
   }
   
+  .photo-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    padding: 20px 6px 6px;
+    font-size: 11px;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
   .photo-remove {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 24px;
-    height: 24px;
-    background: rgba(239, 68, 68, 0.9);
+    top: 6px;
+    right: 6px;
+    width: 22px;
+    height: 22px;
+    background: rgba(239, 68, 68, 0.95);
     border: none;
     border-radius: 50%;
     color: #fff;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: 0.2s;
+    transition: all 0.2s;
     line-height: 1;
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  
+  .photo-preview:hover .photo-remove {
+    opacity: 1;
+    transform: scale(1);
   }
   
   .photo-remove:hover {
     background: #ef4444;
-    transform: scale(1.1);
+    transform: scale(1.15) !important;
   }
   
   .photo-counter {
@@ -91,6 +175,10 @@
     color: #A0A0B0;
     font-size: 14px;
     margin-bottom: 16px;
+    padding: 10px;
+    background: rgba(108, 92, 231, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(108, 92, 231, 0.2);
   }
   
   .photo-counter strong {
@@ -140,7 +228,7 @@
     <ul class="nav-menu" id="navMenu">
       <li><a href="dashboard.html" class="active">📊 Дашборд</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
-      <li><a href="settings.html">⚙️ Настройки</a></li>
+      <li><a href="settings.html">️ Настройки</a></li>
     </ul>
     <div class="btn-logout" onclick="logout()">Выйти</div>
   </aside>
@@ -151,14 +239,18 @@
     </div>
     <div class="create-card">
       <h2>Создать новое видео</h2>
-      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+      <div class="upload-zone" id="uploadZone">
         <div class="upload-icon">📸</div>
         <div class="upload-text"><strong>Перетащите фото товара сюда</strong><br>или нажмите, чтобы выбрать</div>
         <div class="upload-hint">3-5 фото • JPG, PNG, WebP • до 10 МБ каждое</div>
+        <div class="upload-progress" id="uploadProgress">
+          <div class="upload-progress-bar" id="uploadProgressBar"></div>
+        </div>
+        <div class="upload-progress-text" id="uploadProgressText">Загрузка...</div>
         <input type="file" id="fileInput" multiple accept="image/jpeg,image/png,image/webp" style="display: none;">
       </div>
-      <div id="photoPreviewContainer" class="photo-preview-container" style="display: none;"></div>
-      <div id="photoCounter" class="photo-counter" style="display: none;">Выбрано фото: <strong id="photoCount">0</strong> из 5</div>
+      <div id="photoCounter" class="photo-counter" style="display: none;">Выбрано фото: <strong id="photoCount">0</strong> из 5 • Общий размер: <strong id="photoSize">0 МБ</strong></div>
+      <div id="photoPreviewContainer" class="photo-preview-container"></div>
       <div class="form-group">
         <label>Описание товара и ключевые преимущества</label>
         <div class="prompt-row">
@@ -203,7 +295,7 @@
           </div>
         </div>
         <div class="project-card">
-          <div class="project-preview"><span class="project-status status-done">Готово</span></div>
+          <div class="project-preview">🎬<span class="project-status status-done">Готово</span></div>
           <div class="project-info">
             <div class="project-title">Рюкзак городской</div>
             <div class="project-actions">
@@ -213,7 +305,7 @@
           </div>
         </div>
         <div class="project-card">
-          <div class="project-preview">⏳<span class="project-status status-progress">В процессе</span></div>
+          <div class="project-preview"><span class="project-status status-progress">В процессе</span></div>
           <div class="project-info">
             <div class="project-title">Наушники беспроводные</div>
             <div class="project-actions">
@@ -246,17 +338,27 @@ async function initDashboard() {
   }
 }
 
-// Drag & Drop
 const uploadZone = document.getElementById('uploadZone');
 const fileInput = document.getElementById('fileInput');
+const uploadProgress = document.getElementById('uploadProgress');
+const uploadProgressBar = document.getElementById('uploadProgressBar');
+const uploadProgressText = document.getElementById('uploadProgressText');
+
+uploadZone.addEventListener('click', (e) => {
+  if (e.target.closest('.photo-remove')) return;
+  fileInput.click();
+});
 
 uploadZone.addEventListener('dragover', (e) => {
   e.preventDefault();
   uploadZone.classList.add('drag-over');
 });
 
-uploadZone.addEventListener('dragleave', () => {
-  uploadZone.classList.remove('drag-over');
+uploadZone.addEventListener('dragleave', (e) => {
+  e.preventDefault();
+  if (!uploadZone.contains(e.relatedTarget)) {
+    uploadZone.classList.remove('drag-over');
+  }
 });
 
 uploadZone.addEventListener('drop', (e) => {
@@ -272,46 +374,83 @@ fileInput.addEventListener('change', (e) => {
   fileInput.value = '';
 });
 
-function handleFiles(files) {
+function formatFileSize(bytes) {
+  if (bytes < 1024) return bytes + ' Б';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' КБ';
+  return (bytes / (1024 * 1024)).toFixed(2) + ' МБ';
+}
+
+function getTotalSize() {
+  return uploadedPhotos.reduce((sum, f) => sum + f.size, 0);
+}
+
+async function handleFiles(files) {
   const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
-  const maxSize = 10 * 1024 * 1024; // 10 МБ
+  const maxSize = 10 * 1024 * 1024;
+  const filesToAdd = [];
   
-  files.forEach(file => {
-    if (uploadedPhotos.length >= 5) {
+  for (const file of files) {
+    if (uploadedPhotos.length + filesToAdd.length >= 5) {
       showToast('Максимум 5 фото', 'warning');
-      return;
+      break;
     }
-    
     if (!validTypes.includes(file.type)) {
-      showToast(`${file.name}: неподдерживаемый формат. Только JPG, PNG, WebP`, 'error');
-      return;
+      showToast(`${file.name}: неподдерживаемый формат`, 'error');
+      continue;
     }
-    
     if (file.size > maxSize) {
-      showToast(`${file.name}: файл слишком большой. Максимум 10 МБ`, 'error');
-      return;
+      showToast(`${file.name}: файл больше 10 МБ`, 'error');
+      continue;
     }
-    
-    uploadedPhotos.push(file);
-  });
+    filesToAdd.push(file);
+  }
+  
+  if (filesToAdd.length === 0) return;
+  
+  // Имитация прогресса загрузки
+  uploadZone.classList.add('uploading');
+  uploadProgress.classList.add('active');
+  uploadProgressText.classList.add('active');
+  uploadProgressText.textContent = 'Загрузка фото...';
+  
+  for (let i = 0; i < filesToAdd.length; i++) {
+    const progress = ((uploadedPhotos.length + i + 1) / 5) * 100;
+    uploadProgressBar.style.width = progress + '%';
+    uploadProgressText.textContent = `Загрузка ${i + 1} из ${filesToAdd.length}...`;
+    await new Promise(resolve => setTimeout(resolve, 400));
+    uploadedPhotos.push(filesToAdd[i]);
+  }
+  
+  uploadZone.classList.remove('uploading');
+  uploadZone.classList.add('success');
+  uploadProgressText.textContent = '✓ Фото загружены';
+  
+  setTimeout(() => {
+    uploadProgress.classList.remove('active');
+    uploadProgressText.classList.remove('active');
+    uploadProgressBar.style.width = '0%';
+    uploadZone.classList.remove('success');
+  }, 1500);
   
   updatePhotoPreview();
+  showToast(`Загружено фото: ${filesToAdd.length}`, 'success');
 }
 
 function updatePhotoPreview() {
   const container = document.getElementById('photoPreviewContainer');
   const counter = document.getElementById('photoCounter');
   const count = document.getElementById('photoCount');
+  const size = document.getElementById('photoSize');
   
   if (uploadedPhotos.length === 0) {
-    container.style.display = 'none';
     counter.style.display = 'none';
+    container.innerHTML = '';
     return;
   }
   
-  container.style.display = 'grid';
   counter.style.display = 'block';
   count.textContent = uploadedPhotos.length;
+  size.textContent = formatFileSize(getTotalSize());
   
   container.innerHTML = '';
   uploadedPhotos.forEach((photo, index) => {
@@ -321,6 +460,7 @@ function updatePhotoPreview() {
       div.className = 'photo-preview';
       div.innerHTML = `
         <img src="${e.target.result}" alt="${photo.name}">
+        <div class="photo-info">${photo.name}</div>
         <button class="photo-remove" onclick="removePhoto(${index})" title="Удалить">×</button>
       `;
       container.appendChild(div);
@@ -330,9 +470,10 @@ function updatePhotoPreview() {
 }
 
 function removePhoto(index) {
+  const name = uploadedPhotos[index].name;
   uploadedPhotos.splice(index, 1);
   updatePhotoPreview();
-  showToast('Фото удалено', 'info');
+  showToast(`Фото "${name}" удалено`, 'info');
 }
 
 async function generatePrompt() {
