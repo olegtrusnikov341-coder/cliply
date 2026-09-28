@@ -52,7 +52,6 @@
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu">
       <li><a href="dashboard.html">📊 Дашборд</a></li>
-      <li><a href="dashboard.html#projects">🎬 Мои проекты</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
       <li><a href="settings.html" class="active">⚙️ Настройки</a></li>
     </ul>
@@ -121,7 +120,6 @@ async function init() {
   document.getElementById('userName').value = currentUser.profile.full_name || '';
   document.getElementById('userEmail').value = currentUser.email;
   
-  // Загружаем сохранённый промпт
   const { data } = await supabaseClient
     .from('profiles')
     .select('custom_prompt')
@@ -142,11 +140,8 @@ async function saveProfile() {
     .update({ full_name: newName })
     .eq('id', currentUser.id);
     
-  if (error) {
-    alert('Ошибка сохранения: ' + error.message);
-  } else {
-    alert('Профиль успешно обновлен!');
-  }
+  if (error) { alert('Ошибка сохранения: ' + error.message); }
+  else { alert('Профиль успешно обновлен!'); }
 }
 
 async function changePassword() {
@@ -154,36 +149,20 @@ async function changePassword() {
   const newPass = document.getElementById('newPassword').value;
   const confirm = document.getElementById('confirmPassword').value;
   
-  if (!current || !newPass || !confirm) {
-    alert('Заполните все поля');
-    return;
-  }
-  if (newPass.length < 6) {
-    alert('Пароль должен содержать минимум 6 символов');
-    return;
-  }
-  if (newPass !== confirm) {
-    alert('Новые пароли не совпадают');
-    return;
-  }
+  if (!current || !newPass || !confirm) { alert('Заполните все поля'); return; }
+  if (newPass.length < 6) { alert('Пароль должен содержать минимум 6 символов'); return; }
+  if (newPass !== confirm) { alert('Новые пароли не совпадают'); return; }
   
-  // Сначала проверяем текущий пароль — пытаемся войти с ним
   const { error: signInError } = await supabaseClient.auth.signInWithPassword({
-    email: currentUser.email,
-    password: current
+    email: currentUser.email, password: current
   });
   
-  if (signInError) {
-    alert('Неверный текущий пароль');
-    return;
-  }
+  if (signInError) { alert('Неверный текущий пароль'); return; }
   
-  // Меняем пароль
   const { error } = await supabaseClient.auth.updateUser({ password: newPass });
   
-  if (error) {
-    alert('Ошибка смены пароля: ' + error.message);
-  } else {
+  if (error) { alert('Ошибка смены пароля: ' + error.message); }
+  else {
     alert('Пароль успешно изменён!');
     document.getElementById('currentPassword').value = '';
     document.getElementById('newPassword').value = '';
@@ -193,17 +172,13 @@ async function changePassword() {
 
 async function savePrompt() {
   const prompt = document.getElementById('customPrompt').value;
-  
   const { error } = await supabaseClient
     .from('profiles')
     .update({ custom_prompt: prompt })
     .eq('id', currentUser.id);
     
-  if (error) {
-    alert('Ошибка сохранения: ' + error.message);
-  } else {
-    alert('Универсальный промпт сохранён! Он будет учитываться при каждой генерации.');
-  }
+  if (error) { alert('Ошибка сохранения: ' + error.message); }
+  else { alert('Универсальный промпт сохранён! Он будет учитываться при каждой генерации.'); }
 }
 
 init();
