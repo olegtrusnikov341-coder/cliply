@@ -38,7 +38,7 @@
   .users-table th { text-align: left; padding: 12px 16px; color: #A0A0B0; font-size: 13px; font-weight: 500; border-bottom: 1px solid #27272a; }
   .users-table td { padding: 16px; border-bottom: 1px solid #1f1f2e; font-size: 14px; }
   .role-badge { padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 600; display: inline-block; }
-  .role-1 { background: rgba(139, 92, 246, 0.2); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.3); }
+  .role-1 { background: rgba(108, 92, 231, 0.2); color: #A29BFE; border: 1px solid rgba(108, 92, 231, 0.3); }
   .role-2 { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
   .role-3 { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
   
@@ -46,7 +46,6 @@
   .btn-small:hover { border-color: #6C5CE7; color: #fff; }
   .btn-danger { border-color: rgba(239, 68, 68, 0.3); color: #ef4444; }
   .btn-danger:hover { background: rgba(239, 68, 68, 0.1); border-color: #ef4444; }
-  
   select.role-select { background: #0A0A0F; border: 1px solid #27272a; border-radius: 6px; padding: 6px 12px; color: #fff; font-size: 12px; cursor: pointer; }
   
   @media (max-width: 768px) {
@@ -63,7 +62,7 @@
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu">
       <li><a href="dashboard.html">📊 Дашборд</a></li>
-      <li><a href="admin.html" class="active"> Админ-панель</a></li>
+      <li><a href="admin.html" class="active">👑 Админ-панель</a></li>
       <li><a href="settings.html">⚙️ Настройки</a></li>
     </ul>
     <div class="btn-logout" onclick="logout()">Выйти</div>
@@ -76,18 +75,18 @@
     </div>
     
     <div class="admin-section">
-      <h2>Добавить нового пользователя</h2>
+      <h2>Добавить участника команды</h2>
       <div class="add-user-form">
-        <input type="text" id="newUserName" placeholder="Имя пользователя">
+        <input type="text" id="newUserName" placeholder="Имя (напр. Дмитрий Культиков)">
         <input type="email" id="newUserEmail" placeholder="Email">
         <select id="newUserRole">
           <option value="3">Moderator (ур. 3)</option>
           <option value="2">Admin (ур. 2)</option>
           <option value="1">Owner (ур. 1)</option>
         </select>
-        <button class="btn-add" onclick="addUser()">Добавить</button>
+        <button class="btn-add" onclick="addUser()">Создать</button>
       </div>
-      <p style="color: #A0A0B0; font-size: 13px;">Пользователь получит письмо с паролем на указанный email. После регистрации вы сможете изменить его уровень доступа.</p>
+      <p style="color: #A0A0B0; font-size: 13px;">Система сгенерирует временный пароль. Покажите его участнику, он сможет сменить его в настройках.</p>
     </div>
     
     <div class="admin-section">
@@ -98,12 +97,11 @@
             <th>Имя</th>
             <th>Email</th>
             <th>Уровень доступа</th>
-            <th>Дата регистрации</th>
             <th>Действия</th>
           </tr>
         </thead>
         <tbody id="usersTableBody">
-          <tr><td colspan="5" style="text-align:center; color:#A0A0B0;">Загрузка...</td></tr>
+          <tr><td colspan="4" style="text-align:center; color:#A0A0B0;">Загрузка...</td></tr>
         </tbody>
       </table>
     </div>
@@ -114,29 +112,18 @@
 let currentUser = null;
 
 async function init() {
-  // Проверка: только Owner (уровень 1) имеет доступ
   const checkOwner = requireRole(1);
   currentUser = await checkOwner();
   if (!currentUser) return;
   
-  // Показать бейдж
   const role = ROLES[currentUser.profile.role_level];
   document.getElementById('userBadge').textContent = `${currentUser.profile.full_name || currentUser.email} • ${role.name}`;
-  
-  // Загрузить список пользователей
   await loadUsers();
 }
 
 async function loadUsers() {
-  const { data, error } = await supabaseClient
-    .from('profiles')
-    .select('*')
-    .order('created_at', { ascending: false });
-  
-  if (error) {
-    console.error('Ошибка загрузки:', error);
-    return;
-  }
+  const { data, error } = await supabaseClient.from('profiles').select('*').order('created_at', { ascending: false });
+  if (error) { console.error('Ошибка:', error); return; }
   
   const tbody = document.getElementById('usersTableBody');
   tbody.innerHTML = '';
@@ -144,14 +131,12 @@ async function loadUsers() {
   data.forEach(user => {
     const role = ROLES[user.role_level];
     const isCurrentUser = user.id === currentUser.id;
-    const date = new Date(user.created_at).toLocaleDateString('ru-RU');
     
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${user.full_name || '—'}</td>
       <td>${user.email}</td>
       <td><span class="role-badge role-${user.role_level}">${role.name}</span></td>
-      <td>${date}</td>
       <td>
         ${!isCurrentUser ? `
           <select class="role-select" onchange="changeRole('${user.id}', this.value)">
@@ -172,78 +157,33 @@ async function addUser() {
   const email = document.getElementById('newUserEmail').value.trim();
   const role = parseInt(document.getElementById('newUserRole').value);
   
-  if (!name || !email) {
-    alert('Заполните имя и email');
-    return;
-  }
+  if (!name || !email) { alert('Заполните имя и email'); return; }
   
-  // Генерируем временный пароль
   const tempPassword = 'Cliply' + Math.random().toString(36).slice(-6);
   
-  const { data, error } = await supabaseClient.auth.admin.createUser({
-    email,
-    password: tempPassword,
-    email_confirm: true,
-    user_metadata: { full_name: name }
+  const { data, error } = await supabaseClient.rpc('create_user_with_role', {
+    p_email: email, p_password: tempPassword, p_full_name: name, p_role_level: role
   });
   
-  if (error) {
-    alert('Ошибка: ' + error.message);
-    return;
-  }
+  if (error) { alert('Ошибка: ' + error.message); return; }
   
-  // Устанавливаем роль
-  await supabaseClient
-    .from('profiles')
-    .update({ role_level: role })
-    .eq('id', data.user.id);
-  
-  alert(`Пользователь ${name} создан!\nEmail: ${email}\nВременный пароль: ${tempPassword}\n\nПередайте пароль пользователю — он сможет изменить его в настройках.`);
-  
+  alert(`Пользователь ${name} создан!\nEmail: ${email}\nВременный пароль: ${tempPassword}\n\nСообщите этот пароль участнику.`);
   document.getElementById('newUserName').value = '';
   document.getElementById('newUserEmail').value = '';
-  document.getElementById('newUserRole').value = '3';
-  
   await loadUsers();
 }
 
 async function changeRole(userId, newRole) {
-  if (!confirm(`Изменить уровень доступа пользователя?`)) return;
-  
-  const { error } = await supabaseClient
-    .from('profiles')
-    .update({ role_level: parseInt(newRole) })
-    .eq('id', userId);
-  
-  if (error) {
-    alert('Ошибка: ' + error.message);
-    return;
-  }
-  
+  if (!confirm(`Изменить уровень доступа?`)) return;
+  const { error } = await supabaseClient.from('profiles').update({ role_level: parseInt(newRole) }).eq('id', userId);
+  if (error) { alert('Ошибка: ' + error.message); return; }
   await loadUsers();
 }
 
 async function deleteUser(userId) {
-  if (!confirm('Удалить этого пользователя? Это действие нельзя отменить.')) return;
-  
-  // Сначала удаляем профиль
-  const { error: profileError } = await supabaseClient
-    .from('profiles')
-    .delete()
-    .eq('id', userId);
-  
-  if (profileError) {
-    alert('Ошибка удаления профиля: ' + profileError.message);
-    return;
-  }
-  
-  // Потом удаляем пользователя из auth
-  const { error: authError } = await supabaseClient.auth.admin.deleteUser(userId);
-  
-  if (authError) {
-    alert('Пользователь удалён из базы, но ошибка auth: ' + authError.message);
-  }
-  
+  if (!confirm('Удалить этого пользователя навсегда?')) return;
+  const { error } = await supabaseClient.rpc('delete_user_by_id', { p_user_id: userId });
+  if (error) { alert('Ошибка: ' + error.message); return; }
   await loadUsers();
 }
 
