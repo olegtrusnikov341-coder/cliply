@@ -1,6 +1,6 @@
 // Подключение Supabase
-const SUPABASE_URL = 'https://ВАШ-PROJECT-ID.supabase.co';
-const SUPABASE_ANON_KEY = 'ВАШ-ANON-KEY-ЗДЕСЬ';
+const SUPABASE_URL = 'https://djvdklcahpqbjotukmxt.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_-uFh8AQYODLNnTSqXc1nJg_cirR4QCV';
 
 // Подключаем клиент Supabase через CDN
 const { createClient } = supabase;
