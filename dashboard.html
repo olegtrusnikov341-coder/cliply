@@ -177,6 +177,30 @@
     transform: scale(1.15) !important;
   }
   
+  .photo-status-icon {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  
+  .photo-status-icon.valid {
+    background: rgba(16, 185, 129, 0.9);
+    color: #fff;
+  }
+  
+  .photo-status-icon.invalid {
+    background: rgba(239, 68, 68, 0.9);
+    color: #fff;
+  }
+  
   .photo-counter {
     text-align: center;
     color: #A0A0B0;
@@ -192,6 +216,35 @@
     color: #6C5CE7;
   }
   
+  .validation-errors {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: none;
+  }
+  
+  .validation-errors.active {
+    display: block;
+  }
+  
+  .validation-errors ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .validation-errors li {
+    color: #ef4444;
+    font-size: 13px;
+    padding: 4px 0;
+  }
+  
+  .validation-errors li::before {
+    content: "⚠ ";
+  }
+  
   .form-group { margin-bottom: 20px; }
   .form-group label { display: block; font-size: 14px; color: #A0A0B0; margin-bottom: 8px; font-weight: 500; }
   .form-group input, .form-group textarea, .form-group select { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 8px; padding: 12px 16px; color: #fff; font-size: 15px; font-family: inherit; }
@@ -205,20 +258,79 @@
   .btn-generate { width: 100%; background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 16px; border-radius: 12px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
   .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-  .projects-section h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; font-family: 'Manrope'; }
+  
+  /* Секция истории видео */
+  .videos-section { margin-top: 40px; }
+  .videos-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+  .videos-section h2 { font-size: 22px; font-weight: 700; font-family: 'Manrope'; }
+  .videos-controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .search-input {
+    background: #141414;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    padding: 10px 16px;
+    color: #fff;
+    font-size: 14px;
+    width: 240px;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus {
+    outline: none;
+    border-color: #6C5CE7;
+  }
+  .filter-select {
+    background: #141414;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    padding: 10px 16px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .filter-select:focus {
+    outline: none;
+    border-color: #6C5CE7;
+  }
+  
   .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-  .project-card { background: #141414; border: 1px solid #27272a; border-radius: 12px; overflow: hidden; transition: 0.2s; }
+  .project-card { background: #141414; border: 1px solid #27272a; border-radius: 12px; overflow: hidden; transition: 0.2s; position: relative; }
   .project-card:hover { border-color: #6C5CE7; transform: translateY(-2px); }
   .project-preview { height: 160px; background: linear-gradient(135deg, #1a1a2e, #16213e); display: flex; align-items: center; justify-content: center; font-size: 48px; position: relative; }
   .project-status { position: absolute; top: 12px; right: 12px; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 600; }
   .status-done { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
   .status-progress { background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
+  .status-failed { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
   .project-info { padding: 16px; }
-  .project-title { font-size: 15px; font-weight: 600; margin-bottom: 12px; }
+  .project-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+  .project-date { font-size: 12px; color: #A0A0B0; margin-bottom: 12px; }
   .project-actions { display: flex; gap: 8px; }
   .btn-small { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #27272a; background: transparent; color: #A0A0B0; font-size: 13px; cursor: pointer; transition: 0.2s; }
   .btn-small:hover { border-color: #6C5CE7; color: #fff; }
   .btn-small.primary { background: #6C5CE7; border-color: #6C5CE7; color: #fff; }
+  .btn-small.danger { border-color: rgba(239, 68, 68, 0.3); color: #ef4444; }
+  .btn-small.danger:hover { background: rgba(239, 68, 68, 0.1); border-color: #ef4444; }
+  
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #A0A0B0;
+  }
+  
+  .empty-state-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+  
+  .empty-state-text {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  
+  .empty-state-subtext {
+    font-size: 14px;
+    opacity: 0.7;
+  }
   
   /* Индикатор автосохранения */
   .draft-indicator {
@@ -286,6 +398,9 @@
     .prompt-row { flex-direction: column; }
     .photo-preview-container { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
     .create-card-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .videos-section-header { flex-direction: column; align-items: flex-start; }
+    .videos-controls { width: 100%; }
+    .search-input { width: 100%; }
   }
 </style>
 </head>
@@ -296,7 +411,7 @@
     <ul class="nav-menu" id="navMenu">
       <li><a href="dashboard.html" class="active">📊 Дашборд</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
-      <li><a href="settings.html">⚙️ Настройки</a></li>
+      <li><a href="settings.html">️ Настройки</a></li>
     </ul>
     <div class="btn-logout" onclick="logout()">Выйти</div>
   </aside>
@@ -325,6 +440,9 @@
       </div>
       <div id="photoCounter" class="photo-counter" style="display: none;">Выбрано фото: <strong id="photoCount">0</strong> из 5 • Общий размер: <strong id="photoSize">0 МБ</strong></div>
       <div id="photoPreviewContainer" class="photo-preview-container"></div>
+      <div id="validationErrors" class="validation-errors">
+        <ul id="validationErrorsList"></ul>
+      </div>
       <div class="form-group">
         <label>Описание товара и ключевые преимущества</label>
         <div class="prompt-row">
@@ -345,8 +463,20 @@
       </div>
       <button class="btn-generate" onclick="startGeneration()" id="btnGenerate">Сгенерировать видео →</button>
     </div>
-    <div class="projects-section">
-      <h2>Ваши видео</h2>
+    
+    <div class="videos-section">
+      <div class="videos-section-header">
+        <h2>Ваши видео</h2>
+        <div class="videos-controls">
+          <input type="text" id="searchInput" class="search-input" placeholder="🔍 Поиск по названию...">
+          <select id="statusFilter" class="filter-select">
+            <option value="all">Все статусы</option>
+            <option value="done">Готово</option>
+            <option value="processing">В процессе</option>
+            <option value="failed">Ошибка</option>
+          </select>
+        </div>
+      </div>
       <div class="projects-grid" id="projectsGrid">
       </div>
     </div>
@@ -355,38 +485,39 @@
 <script>
 let uploadedPhotos = [];
 let draftManager = null;
+let currentUser = null;
+let allVideos = [];
 
 async function initDashboard() {
   showVideoCardSkeleton('#projectsGrid', 4);
   
-  const user = await requireAuth();
-  if (!user) return;
+  currentUser = await requireAuth();
+  if (!currentUser) return;
   
   await new Promise(resolve => setTimeout(resolve, 800));
   
   document.getElementById('welcomeText').classList.remove('skeleton', 'skeleton-title');
-  document.getElementById('welcomeText').textContent = `Добро пожаловать, ${user.profile.full_name || 'Селлер'}!`;
+  document.getElementById('welcomeText').textContent = `Добро пожаловать, ${currentUser.profile.full_name || 'Селлер'}!`;
   showContentWithAnimation('#welcomeText');
   
   document.getElementById('roleBadge').classList.remove('skeleton', 'skeleton-badge');
-  const role = ROLES[user.profile.role_level];
+  const role = ROLES[currentUser.profile.role_level];
   const badge = document.getElementById('roleBadge');
-  badge.textContent = `${role.name} • ${user.email}`;
+  badge.textContent = `${role.name} • ${currentUser.email}`;
   badge.style.color = role.color;
   badge.style.borderColor = role.color + '4D';
   badge.style.background = role.color + '26';
   showContentWithAnimation('#roleBadge');
   
-  if (user.profile.role_level <= 2) {
+  if (currentUser.profile.role_level <= 2) {
     const menu = document.getElementById('navMenu');
     const adminLink = document.createElement('li');
     adminLink.innerHTML = '<a href="admin.html">👑 Админ-панель</a>';
     menu.insertBefore(adminLink, menu.children[1]);
   }
   
-  // Инициализируем менеджер черновиков
   draftManager = new DraftManager({
-    userId: user.id,
+    userId: currentUser.id,
     descriptionSelector: '#productDescription',
     scenarioSelector: '#scenarioSelect',
     indicatorSelector: '#draftIndicator',
@@ -395,58 +526,139 @@ async function initDashboard() {
   });
   draftManager.init();
   
-  await new Promise(resolve => setTimeout(resolve, 500));
-  loadRealVideos();
+  await loadVideos();
   
   if (window.microAnimations) {
     window.microAnimations.initRipple();
   }
 }
 
-function loadRealVideos() {
-  const grid = document.getElementById('projectsGrid');
-  grid.innerHTML = `
-    <div class="project-card content-fade-in">
-      <div class="project-preview">🎬<span class="project-status status-done">Готово</span></div>
-      <div class="project-info">
-        <div class="project-title">Бутылка для воды 1л</div>
-        <div class="project-actions">
-          <button class="btn-small primary">Скачать</button>
-          <button class="btn-small">Перегенерировать</button>
-        </div>
-      </div>
-    </div>
-    <div class="project-card content-fade-in">
-      <div class="project-preview">🎬<span class="project-status status-done">Готово</span></div>
-      <div class="project-info">
-        <div class="project-title">Крем для лица увлажняющий</div>
-        <div class="project-actions">
-          <button class="btn-small primary">Скачать</button>
-          <button class="btn-small">Перегенерировать</button>
-        </div>
-      </div>
-    </div>
-    <div class="project-card content-fade-in">
-      <div class="project-preview">🎬<span class="project-status status-done">Готово</span></div>
-      <div class="project-info">
-        <div class="project-title">Рюкзак городской</div>
-        <div class="project-actions">
-          <button class="btn-small primary">Скачать</button>
-          <button class="btn-small">Перегенерировать</button>
-        </div>
-      </div>
-    </div>
-    <div class="project-card content-fade-in">
-      <div class="project-preview"><span class="project-status status-progress">В процессе</span></div>
-      <div class="project-info">
-        <div class="project-title">Наушники беспроводные</div>
-        <div class="project-actions">
-          <button class="btn-small" disabled>Ожидание...</button>
-        </div>
-      </div>
-    </div>
-  `;
+async function loadVideos() {
+  const { data, error } = await supabaseClient
+    .from('videos')
+    .select('*')
+    .eq('user_id', currentUser.id)
+    .order('created_at', { ascending: false });
+  
+  if (error) {
+    showToast('Ошибка загрузки видео: ' + error.message, 'error');
+    return;
+  }
+  
+  allVideos = data || [];
+  renderVideos();
 }
+
+function renderVideos() {
+  const grid = document.getElementById('projectsGrid');
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+  const statusFilter = document.getElementById('statusFilter').value;
+  
+  let filteredVideos = allVideos.filter(video => {
+    const matchesSearch = video.product_name.toLowerCase().includes(searchTerm) ||
+                         video.product_description.toLowerCase().includes(searchTerm);
+    const matchesStatus = statusFilter === 'all' || video.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+  
+  if (filteredVideos.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column: 1 / -1;">
+        <div class="empty-state-icon"></div>
+        <div class="empty-state-text">${allVideos.length === 0 ? 'У вас ещё нет видео' : 'Ничего не найдено'}</div>
+        <div class="empty-state-subtext">${allVideos.length === 0 ? 'Создайте первое видео выше' : 'Попробуйте изменить фильтры'}</div>
+      </div>
+    `;
+    return;
+  }
+  
+  grid.innerHTML = filteredVideos.map(video => {
+    const statusClass = video.status === 'done' ? 'status-done' : 
+                       video.status === 'processing' ? 'status-progress' : 'status-failed';
+    const statusText = video.status === 'done' ? 'Готово' : 
+                      video.status === 'processing' ? 'В процессе' : 'Ошибка';
+    const date = new Date(video.created_at).toLocaleDateString('ru-RU', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    
+    return `
+      <div class="project-card content-fade-in">
+        <div class="project-preview">
+          ${video.status === 'done' ? '🎬' : video.status === 'processing' ? '⏳' : '❌'}
+          <span class="project-status ${statusClass}">${statusText}</span>
+        </div>
+        <div class="project-info">
+          <div class="project-title">${video.product_name || 'Без названия'}</div>
+          <div class="project-date">${date}</div>
+          <div class="project-actions">
+            ${video.status === 'done' ? `
+              <button class="btn-small primary" onclick="downloadVideo('${video.id}')">Скачать</button>
+            ` : ''}
+            <button class="btn-small" onclick="regenerateVideo('${video.id}')">Перегенерировать</button>
+            <button class="btn-small danger" onclick="deleteVideo('${video.id}')">Удалить</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function downloadVideo(videoId) {
+  const video = allVideos.find(v => v.id === videoId);
+  if (!video || !video.video_url) {
+    showToast('Видео недоступно', 'error');
+    return;
+  }
+  
+  // Создаём ссылку для скачивания
+  const link = document.createElement('a');
+  link.href = video.video_url;
+  link.download = `${video.product_name || 'video'}.mp4`;
+  link.target = '_blank';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  showToast('Скачивание началось', 'success');
+}
+
+async function regenerateVideo(videoId) {
+  const video = allVideos.find(v => v.id === videoId);
+  if (!video) return;
+  
+  showToast('Перегенерация начата (демо)', 'info');
+  
+  // В реальности здесь был бы вызов AI API
+  setTimeout(() => {
+    showToast('Видео перегенерировано (демо)', 'success');
+  }, 3000);
+}
+
+async function deleteVideo(videoId) {
+  if (!confirm('Удалить это видео? Это действие нельзя отменить.')) return;
+  
+  const { error } = await supabaseClient
+    .from('videos')
+    .delete()
+    .eq('id', videoId);
+  
+  if (error) {
+    showToast('Ошибка удаления: ' + error.message, 'error');
+    return;
+  }
+  
+  allVideos = allVideos.filter(v => v.id !== videoId);
+  renderVideos();
+  showToast('Видео удалено', 'success');
+}
+
+// Слушатели для поиска и фильтрации
+document.getElementById('searchInput').addEventListener('input', renderVideos);
+document.getElementById('statusFilter').addEventListener('change', renderVideos);
 
 const uploadZone = document.getElementById('uploadZone');
 const fileInput = document.getElementById('fileInput');
@@ -497,22 +709,37 @@ function getTotalSize() {
 async function handleFiles(files) {
   const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
   const maxSize = 10 * 1024 * 1024;
+  const errors = [];
   const filesToAdd = [];
   
   for (const file of files) {
     if (uploadedPhotos.length + filesToAdd.length >= 5) {
-      showToast('Максимум 5 фото', 'warning');
-      break;
+      errors.push(`${file.name}: максимум 5 фото`);
+      continue;
     }
     if (!validTypes.includes(file.type)) {
-      showToast(`${file.name}: неподдерживаемый формат`, 'error');
+      errors.push(`${file.name}: неподдерживаемый формат (только JPG, PNG, WebP)`);
       continue;
     }
     if (file.size > maxSize) {
-      showToast(`${file.name}: файл больше 10 МБ`, 'error');
+      errors.push(`${file.name}: файл больше 10 МБ (${formatFileSize(file.size)})`);
       continue;
     }
     filesToAdd.push(file);
+  }
+  
+  // Показываем ошибки валидации
+  const errorsContainer = document.getElementById('validationErrors');
+  const errorsList = document.getElementById('validationErrorsList');
+  
+  if (errors.length > 0) {
+    errorsList.innerHTML = errors.map(e => `<li>${e}</li>`).join('');
+    errorsContainer.classList.add('active');
+    setTimeout(() => {
+      errorsContainer.classList.remove('active');
+    }, 5000);
+  } else {
+    errorsContainer.classList.remove('active');
   }
   
   if (filesToAdd.length === 0) return;
@@ -568,6 +795,7 @@ function updatePhotoPreview() {
       const div = document.createElement('div');
       div.className = 'photo-preview';
       div.innerHTML = `
+        <div class="photo-status-icon valid">✓</div>
         <img src="${e.target.result}" alt="${photo.name}">
         <div class="photo-info">${photo.name}</div>
         <button class="photo-remove" onclick="removePhoto(${index})" title="Удалить">×</button>
@@ -610,38 +838,80 @@ async function generatePrompt() {
   btn.disabled = false;
   btn.textContent = '✨ Улучшить промпт';
   
-  // Сохраняем улучшенный промпт в черновик
   if (draftManager) draftManager.save();
 }
 
-function startGeneration() {
+async function startGeneration() {
   const btn = document.getElementById('btnGenerate');
   const description = document.getElementById('productDescription').value.trim();
+  const scenario = document.getElementById('scenarioSelect').value;
+  
+  const errors = [];
   
   if (uploadedPhotos.length < 3) {
-    showToast('Загрузите минимум 3 фото товара', 'warning');
-    return;
+    errors.push('Загрузите минимум 3 фото товара');
   }
   
   if (!description) {
-    showToast('Введите описание товара', 'warning');
+    errors.push('Введите описание товара');
+  }
+  
+  if (errors.length > 0) {
+    const errorsContainer = document.getElementById('validationErrors');
+    const errorsList = document.getElementById('validationErrorsList');
+    errorsList.innerHTML = errors.map(e => `<li>${e}</li>`).join('');
+    errorsContainer.classList.add('active');
+    setTimeout(() => {
+      errorsContainer.classList.remove('active');
+    }, 5000);
     return;
   }
   
   btn.textContent = '⏳ Генерация...';
   btn.disabled = true;
   
-  setTimeout(() => {
-    btn.textContent = '✅ Видео готово!';
-    showToast('Видео успешно сгенерировано! (Демо-режим)', 'success');
+  // Создаём запись в БД
+  const { data: video, error } = await supabaseClient
+    .from('videos')
+    .insert({
+      user_id: currentUser.id,
+      product_name: description.split(',')[0] || 'Новое видео',
+      product_description: description,
+      scenario: scenario,
+      status: 'processing'
+    })
+    .select()
+    .single();
+  
+  if (error) {
+    showToast('Ошибка создания видео: ' + error.message, 'error');
+    btn.textContent = 'Сгенерировать видео →';
+    btn.disabled = false;
+    return;
+  }
+  
+  allVideos.unshift(video);
+  renderVideos();
+  
+  // Имитация генерации
+  setTimeout(async () => {
+    const { error: updateError } = await supabaseClient
+      .from('videos')
+      .update({ status: 'done', video_url: 'https://example.com/video.mp4' })
+      .eq('id', video.id);
     
-    // Очищаем черновик после успешной генерации
-    if (draftManager) draftManager.clear();
+    if (updateError) {
+      showToast('Ошибка обновления статуса', 'error');
+    } else {
+      showToast('Видео успешно сгенерировано!', 'success');
+      await loadVideos();
+      
+      // Очищаем черновик
+      if (draftManager) draftManager.clear();
+    }
     
-    setTimeout(() => {
-      btn.textContent = 'Сгенерировать видео →';
-      btn.disabled = false;
-    }, 2000);
+    btn.textContent = 'Сгенерировать видео →';
+    btn.disabled = false;
   }, 3000);
 }
 
