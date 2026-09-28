@@ -21,11 +21,11 @@
   .btn-logout:hover { border-color: #6C5CE7; color: #fff; }
   
   .main { padding: 32px 48px; }
-  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid #27272a; }
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid #27272a; }
   .header h1 { font-size: 28px; font-weight: 700; font-family: 'Manrope'; }
   .balance-badge { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; padding: 10px 20px; border-radius: 100px; font-size: 14px; font-weight: 500; border: 1px solid rgba(108, 92, 231, 0.3); }
   
-  .create-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 32px; margin-bottom: 40px; }
+  .create-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 32px; margin-bottom: 24px; }
   .create-card h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; font-family: 'Manrope'; }
   .upload-zone { border: 2px dashed #6C5CE7; border-radius: 12px; padding: 48px 24px; text-align: center; margin-bottom: 24px; background: rgba(108, 92, 231, 0.05); cursor: pointer; transition: 0.2s; }
   .upload-zone:hover { background: rgba(108, 92, 231, 0.1); border-color: #A29BFE; }
@@ -37,28 +37,22 @@
   .form-group input, .form-group textarea, .form-group select { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 8px; padding: 12px 16px; color: #fff; font-size: 15px; font-family: inherit; }
   .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: #6C5CE7; }
   .form-group textarea { resize: vertical; min-height: 80px; }
+  
+  .prompt-row { display: flex; gap: 12px; align-items: flex-start; }
+  .prompt-row textarea { flex: 1; }
+  .btn-prompt { background: transparent; border: 1px solid #6C5CE7; color: #6C5CE7; padding: 12px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; white-space: nowrap; }
+  .btn-prompt:hover { background: #6C5CE7; color: #fff; }
+  .btn-prompt:disabled { opacity: 0.5; cursor: not-allowed; }
+  
   .btn-generate { width: 100%; background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 16px; border-radius: 12px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
-  
-  .projects-section h2 { font-size: 22px; font-weight: 700; margin-bottom: 24px; font-family: 'Manrope'; }
-  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-  .project-card { background: #141414; border: 1px solid #27272a; border-radius: 12px; overflow: hidden; transition: 0.2s; }
-  .project-card:hover { border-color: #6C5CE7; transform: translateY(-2px); }
-  .project-preview { height: 160px; background: linear-gradient(135deg, #1a1a2e, #16213e); display: flex; align-items: center; justify-content: center; font-size: 48px; position: relative; }
-  .project-status { position: absolute; top: 12px; right: 12px; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 600; }
-  .status-done { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-  .status-progress { background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
-  .project-info { padding: 16px; }
-  .project-title { font-size: 15px; font-weight: 600; margin-bottom: 12px; }
-  .project-actions { display: flex; gap: 8px; }
-  .btn-small { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #27272a; background: transparent; color: #A0A0B0; font-size: 13px; cursor: pointer; transition: 0.2s; }
-  .btn-small:hover { border-color: #6C5CE7; color: #fff; }
-  .btn-small.primary { background: #6C5CE7; border-color: #6C5CE7; color: #fff; }
+  .btn-generate:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
   
   @media (max-width: 768px) {
     .layout { grid-template-columns: 1fr; }
     .sidebar { display: none; }
     .main { padding: 20px; }
+    .prompt-row { flex-direction: column; }
   }
 </style>
 </head>
@@ -68,9 +62,8 @@
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu" id="navMenu">
       <li><a href="dashboard.html" class="active">📊 Дашборд</a></li>
-      <li><a href="#projects">🎬 Мои проекты</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
-      <li><a href="settings.html">⚙️ Настройки</a></li>
+      <li><a href="settings.html">️ Настройки</a></li>
     </ul>
     <div class="btn-logout" onclick="logout()">Выйти</div>
   </aside>
@@ -83,50 +76,34 @@
 
     <div class="create-card">
       <h2>Создать новое видео</h2>
+      
       <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
         <div class="upload-icon">📸</div>
         <div class="upload-text"><strong>Перетащите фото товара сюда</strong><br>или нажмите, чтобы выбрать (3-5 фото)</div>
         <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
       </div>
+      
       <div class="form-group">
         <label>Описание товара и ключевые преимущества</label>
-        <textarea placeholder="Например: Бутылка для воды 1л, экологичный пластик..."></textarea>
+        <div class="prompt-row">
+          <textarea id="productDescription" placeholder="Например: Бутылка для воды 1л, экологичный пластик, не протекает, удобная крышка..."></textarea>
+          <button class="btn-prompt" onclick="generatePrompt()" id="btnGeneratePrompt">✨ Улучшить промпт</button>
+        </div>
       </div>
+      
       <div class="form-group">
         <label>Выберите сценарий</label>
-        <select>
+        <select id="scenarioSelect">
           <option>Обзор товара</option>
           <option>3 причины купить</option>
           <option>Проблема → Решение</option>
           <option>Распаковка</option>
+          <option>Отзыв покупателя</option>
+          <option>Сравнение с аналогами</option>
         </select>
       </div>
+      
       <button class="btn-generate" onclick="startGeneration()">Сгенерировать видео →</button>
-    </div>
-
-    <div class="projects-section" id="projects">
-      <h2>Ваши видео</h2>
-      <div class="projects-grid">
-        <div class="project-card">
-          <div class="project-preview">🎬<span class="project-status status-done">Готово</span></div>
-          <div class="project-info">
-            <div class="project-title">Бутылка для воды 1л</div>
-            <div class="project-actions">
-              <button class="btn-small primary">Скачать</button>
-              <button class="btn-small">Перегенерировать</button>
-            </div>
-          </div>
-        </div>
-        <div class="project-card">
-          <div class="project-preview">⏳<span class="project-status status-progress">В процессе</span></div>
-          <div class="project-info">
-            <div class="project-title">Наушники беспроводные</div>
-            <div class="project-actions">
-              <button class="btn-small" disabled>Ожидание...</button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </main>
 </div>
@@ -138,27 +115,68 @@ async function initDashboard() {
   
   document.getElementById('welcomeText').textContent = `Добро пожаловать, ${user.profile.full_name || 'Селлер'}!`;
   const role = ROLES[user.profile.role_level];
-  document.getElementById('roleBadge').textContent = `${role.name} • ${user.email}`;
-  document.getElementById('roleBadge').style.color = role.color;
-  document.getElementById('roleBadge').style.borderColor = role.color + '4D';
-  document.getElementById('roleBadge').style.background = role.color + '26';
+  const badge = document.getElementById('roleBadge');
+  badge.textContent = `${role.name} • ${user.email}`;
+  badge.style.color = role.color;
+  badge.style.borderColor = role.color + '4D';
+  badge.style.background = role.color + '26';
 
   if (user.profile.role_level <= 2) {
     const menu = document.getElementById('navMenu');
     const adminLink = document.createElement('li');
     adminLink.innerHTML = '<a href="admin.html">👑 Админ-панель</a>';
-    menu.insertBefore(adminLink, menu.children[2]);
+    menu.insertBefore(adminLink, menu.children[1]);
   }
+}
+
+async function generatePrompt() {
+  const textarea = document.getElementById('productDescription');
+  const btn = document.getElementById('btnGeneratePrompt');
+  const originalText = textarea.value.trim();
+  
+  if (!originalText) {
+    alert('Сначала введите описание товара');
+    return;
+  }
+  
+  btn.disabled = true;
+  btn.textContent = '⏳ Генерация...';
+  
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  
+  const enhancedPrompt = `${originalText}
+
+[AI-улучшенная версия]:
+Создай динамичное вертикальное видео (9:16) длительностью 15 секунд для маркетплейса. 
+
+Ключевые акценты:
+• Покажи товар с разных ракурсов (крупный план, в использовании)
+• Подчеркни главные преимущества через текст на экране
+• Используй современный минималистичный стиль
+• Добавь энергичную фоновую музыку
+• Заверши призывом к действию "Закажи сейчас"
+
+Целевая аудитория: покупатели маркетплейсов, ищущие качественный товар по доступной цене.`;
+  
+  textarea.value = enhancedPrompt;
+  btn.disabled = false;
+  btn.textContent = '✨ Улучшить промпт';
 }
 
 function startGeneration() {
   const btn = document.querySelector('.btn-generate');
+  const description = document.getElementById('productDescription').value.trim();
+  
+  if (!description) {
+    alert('Введите описание товара');
+    return;
+  }
+  
   btn.textContent = '⏳ Генерация...';
   btn.disabled = true;
-  btn.style.opacity = '0.6';
+  
   setTimeout(() => {
     btn.textContent = '✅ Видео готово!';
-    btn.style.opacity = '1';
     alert('Видео успешно сгенерировано! (Демо-режим)');
     setTimeout(() => {
       btn.textContent = 'Сгенерировать видео →';
