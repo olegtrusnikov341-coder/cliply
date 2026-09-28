@@ -2,22 +2,6 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Cliply — Личный кабинет</title>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="auth.js"></script>
-<link rel="stylesheet" href="toast.css">
-<script src="toast.js"></script>
-<link rel="stylesheet" href="skeleton.css">
-<script src="skeleton.js"></script>
-<link rel="stylesheet" href="transitions.css">
-<link rel="stylesheet" href="scrollbar.css">
-<link rel="stylesheet" href="micro-animations.css">
-<script src="transitions.js"></script>
-<script src="micro-animations.js"></script>
-<script src="draft.js"></script>
-<head>
-<meta charset="UTF-8">
 <title>Личный кабинет Cliply — создание видео</title>
 <meta name="description" content="Создавайте продающие видео для маркетплейсов с помощью AI. Загрузите фото, опишите товар — получите готовое видео.">
 <meta name="robots" content="noindex, nofollow">
@@ -50,7 +34,389 @@
 <script src="micro-animations.js"></script>
 <script src="draft.js"></script>
 <style>
-  /* ... твой существующий <style> без изменений ... */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; }
+  .layout { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+  .sidebar { background: #141414; border-right: 1px solid #27272a; padding: 24px 16px; display: flex; flex-direction: column; }
+  .sidebar-logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; margin-bottom: 40px; display: block; }
+  .nav-menu { list-style: none; flex: 1; }
+  .nav-menu li { margin-bottom: 4px; }
+  .nav-menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; transition: 0.2s; }
+  .nav-menu a:hover { background: #1f1f23; color: #fff; }
+  .nav-menu a.active { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; border: 1px solid rgba(108, 92, 231, 0.3); }
+  .btn-logout { padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; border: 1px solid #27272a; text-align: center; transition: 0.2s; cursor: pointer; }
+  .btn-logout:hover { border-color: #6C5CE7; color: #fff; }
+  .main { padding: 32px 48px; }
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid #27272a; }
+  .header h1 { font-size: 28px; font-weight: 700; font-family: 'Manrope'; }
+  .balance-badge { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; padding: 10px 20px; border-radius: 100px; font-size: 14px; font-weight: 500; border: 1px solid rgba(108, 92, 231, 0.3); }
+  .create-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 32px; margin-bottom: 40px; }
+  .create-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .create-card h2 { font-size: 22px; font-weight: 700; font-family: 'Manrope'; }
+  .upload-zone { border: 2px dashed #6C5CE7; border-radius: 12px; padding: 48px 24px; text-align: center; margin-bottom: 24px; background: rgba(108, 92, 231, 0.05); cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
+  .upload-zone:hover { background: rgba(108, 92, 231, 0.1); border-color: #A29BFE; }
+  .upload-zone.drag-over { background: rgba(108, 92, 231, 0.2); border-color: #A29BFE; border-style: solid; transform: scale(1.01); box-shadow: 0 0 40px rgba(108, 92, 231, 0.3); }
+  .upload-zone.drag-over .upload-icon { animation: bounce 0.6s ease infinite; }
+  .upload-zone.uploading { border-color: #f59e0b; background: rgba(245, 158, 11, 0.05); }
+  .upload-zone.uploading .upload-icon { animation: pulse 1s ease infinite; }
+  .upload-zone.success { border-color: #10b981; background: rgba(16, 185, 129, 0.05); border-style: solid; }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.1); }
+  }
+  
+  .upload-icon { font-size: 48px; margin-bottom: 12px; transition: transform 0.3s; }
+  .upload-text { color: #A0A0B0; font-size: 15px; }
+  .upload-text strong { color: #fff; }
+  .upload-hint { color: #6C5CE7; font-size: 13px; margin-top: 8px; }
+  
+  .upload-progress {
+    width: 100%;
+    height: 6px;
+    background: #27272a;
+    border-radius: 3px;
+    margin-top: 20px;
+    overflow: hidden;
+    display: none;
+  }
+  
+  .upload-progress.active {
+    display: block;
+  }
+  
+  .upload-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #6C5CE7, #A29BFE);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+  
+  .upload-progress-text {
+    text-align: center;
+    font-size: 13px;
+    color: #A0A0B0;
+    margin-top: 8px;
+    display: none;
+  }
+  
+  .upload-progress-text.active {
+    display: block;
+  }
+  
+  .photo-preview-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  
+  .photo-preview {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #27272a;
+    transition: all 0.3s ease;
+    animation: photoAppear 0.4s ease-out;
+  }
+  
+  @keyframes photoAppear {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .photo-preview:hover {
+    border-color: #6C5CE7;
+    transform: translateY(-2px);
+  }
+  
+  .photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .photo-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    padding: 20px 6px 6px;
+    font-size: 11px;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .photo-remove {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 22px;
+    height: 22px;
+    background: rgba(239, 68, 68, 0.95);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    line-height: 1;
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  
+  .photo-preview:hover .photo-remove {
+    opacity: 1;
+    transform: scale(1);
+  }
+  
+  .photo-remove:hover {
+    background: #ef4444;
+    transform: scale(1.15) !important;
+  }
+  
+  .photo-status-icon {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  
+  .photo-status-icon.valid {
+    background: rgba(16, 185, 129, 0.9);
+    color: #fff;
+  }
+  
+  .photo-status-icon.invalid {
+    background: rgba(239, 68, 68, 0.9);
+    color: #fff;
+  }
+  
+  .photo-counter {
+    text-align: center;
+    color: #A0A0B0;
+    font-size: 14px;
+    margin-bottom: 16px;
+    padding: 10px;
+    background: rgba(108, 92, 231, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(108, 92, 231, 0.2);
+  }
+  
+  .photo-counter strong {
+    color: #6C5CE7;
+  }
+  
+  .validation-errors {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    display: none;
+  }
+  
+  .validation-errors.active {
+    display: block;
+  }
+  
+  .validation-errors ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .validation-errors li {
+    color: #ef4444;
+    font-size: 13px;
+    padding: 4px 0;
+  }
+  
+  .validation-errors li::before {
+    content: "⚠ ";
+  }
+  
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-size: 14px; color: #A0A0B0; margin-bottom: 8px; font-weight: 500; }
+  .form-group input, .form-group textarea, .form-group select { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 8px; padding: 12px 16px; color: #fff; font-size: 15px; font-family: inherit; }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: #6C5CE7; }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .prompt-row { display: flex; gap: 12px; align-items: flex-start; }
+  .prompt-row textarea { flex: 1; }
+  .btn-prompt { background: transparent; border: 1px solid #6C5CE7; color: #6C5CE7; padding: 12px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; white-space: nowrap; }
+  .btn-prompt:hover { background: #6C5CE7; color: #fff; }
+  .btn-prompt:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-generate { width: 100%; background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 16px; border-radius: 12px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
+  .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
+  .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  
+  .videos-section { margin-top: 40px; }
+  .videos-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+  .videos-section h2 { font-size: 22px; font-weight: 700; font-family: 'Manrope'; }
+  .videos-controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .search-input {
+    background: #141414;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    padding: 10px 16px;
+    color: #fff;
+    font-size: 14px;
+    width: 240px;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus {
+    outline: none;
+    border-color: #6C5CE7;
+  }
+  .filter-select {
+    background: #141414;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    padding: 10px 16px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .filter-select:focus {
+    outline: none;
+    border-color: #6C5CE7;
+  }
+  
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+  .project-card { background: #141414; border: 1px solid #27272a; border-radius: 12px; overflow: hidden; transition: 0.2s; position: relative; }
+  .project-card:hover { border-color: #6C5CE7; transform: translateY(-2px); }
+  .project-preview { height: 160px; background: linear-gradient(135deg, #1a1a2e, #16213e); display: flex; align-items: center; justify-content: center; font-size: 48px; position: relative; }
+  .project-status { position: absolute; top: 12px; right: 12px; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 600; }
+  .status-done { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+  .status-progress { background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
+  .status-failed { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+  .project-info { padding: 16px; }
+  .project-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+  .project-date { font-size: 12px; color: #A0A0B0; margin-bottom: 12px; }
+  .project-actions { display: flex; gap: 8px; }
+  .btn-small { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #27272a; background: transparent; color: #A0A0B0; font-size: 13px; cursor: pointer; transition: 0.2s; }
+  .btn-small:hover { border-color: #6C5CE7; color: #fff; }
+  .btn-small.primary { background: #6C5CE7; border-color: #6C5CE7; color: #fff; }
+  .btn-small.danger { border-color: rgba(239, 68, 68, 0.3); color: #ef4444; }
+  .btn-small.danger:hover { background: rgba(239, 68, 68, 0.1); border-color: #ef4444; }
+  
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #A0A0B0;
+  }
+  
+  .empty-state-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+  
+  .empty-state-text {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  
+  .empty-state-subtext {
+    font-size: 14px;
+    opacity: 0.7;
+  }
+  
+  .draft-indicator {
+    font-size: 13px;
+    color: #A0A0B0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+  }
+  
+  .draft-indicator.draft-saving {
+    color: #f59e0b;
+  }
+  
+  .draft-indicator.draft-saved {
+    color: #10b981;
+  }
+  
+  .draft-indicator.draft-error {
+    color: #ef4444;
+  }
+  
+  .draft-indicator::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    display: inline-block;
+  }
+  
+  .draft-indicator.draft-saving::before {
+    animation: draftPulse 1s ease infinite;
+  }
+  
+  @keyframes draftPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  
+  .btn-clear-draft {
+    background: transparent;
+    border: 1px solid #27272a;
+    color: #A0A0B0;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .btn-clear-draft:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+  }
+  
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .main { padding: 20px; }
+    .prompt-row { flex-direction: column; }
+    .photo-preview-container { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+    .create-card-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .videos-section-header { flex-direction: column; align-items: flex-start; }
+    .videos-controls { width: 100%; }
+    .search-input { width: 100%; }
+  }
 </style>
 </head>
 <body>
@@ -60,7 +426,7 @@
     <ul class="nav-menu" id="navMenu">
       <li><a href="dashboard.html" class="active">📊 Дашборд</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
-      <li><a href="settings.html">️ Настройки</a></li>
+      <li><a href="settings.html">⚙️ Настройки</a></li>
     </ul>
     <div class="btn-logout" onclick="logout()">Выйти</div>
   </aside>
@@ -78,7 +444,7 @@
         </div>
       </div>
       <div class="upload-zone" id="uploadZone">
-        <div class="upload-icon">📸</div>
+        <div class="upload-icon"></div>
         <div class="upload-text"><strong>Перетащите фото товара сюда</strong><br>или нажмите, чтобы выбрать</div>
         <div class="upload-hint">3-5 фото • JPG, PNG, WebP • до 10 МБ каждое</div>
         <div class="upload-progress" id="uploadProgress">
@@ -161,7 +527,7 @@ async function initDashboard() {
   if (currentUser.profile.role_level <= 2) {
     const menu = document.getElementById('navMenu');
     const adminLink = document.createElement('li');
-    adminLink.innerHTML = '<a href="admin.html">👑 Админ-панель</a>';
+    adminLink.innerHTML = '<a href="admin.html"> Админ-панель</a>';
     menu.insertBefore(adminLink, menu.children[1]);
   }
   
@@ -213,7 +579,7 @@ function renderVideos() {
   if (filteredVideos.length === 0) {
     grid.innerHTML = `
       <div class="empty-state" style="grid-column: 1 / -1;">
-        <div class="empty-state-icon"></div>
+        <div class="empty-state-icon">🎬</div>
         <div class="empty-state-text">${allVideos.length === 0 ? 'У вас ещё нет видео' : 'Ничего не найдено'}</div>
         <div class="empty-state-subtext">${allVideos.length === 0 ? 'Создайте первое видео выше' : 'Попробуйте изменить фильтры'}</div>
       </div>
@@ -237,7 +603,7 @@ function renderVideos() {
     return `
       <div class="project-card content-fade-in">
         <div class="project-preview">
-          ${video.status === 'done' ? '🎬' : video.status === 'processing' ? '⏳' : '❌'}
+          ${video.status === 'done' ? '' : video.status === 'processing' ? '⏳' : '❌'}
           <span class="project-status ${statusClass}">${statusText}</span>
         </div>
         <div class="project-info">
@@ -263,7 +629,6 @@ async function downloadVideo(videoId) {
     return;
   }
   
-  // Создаём ссылку для скачивания
   const link = document.createElement('a');
   link.href = video.video_url;
   link.download = `${video.product_name || 'video'}.mp4`;
@@ -281,7 +646,6 @@ async function regenerateVideo(videoId) {
   
   showToast('Перегенерация начата (демо)', 'info');
   
-  // В реальности здесь был бы вызов AI API
   setTimeout(() => {
     showToast('Видео перегенерировано (демо)', 'success');
   }, 3000);
@@ -305,7 +669,6 @@ async function deleteVideo(videoId) {
   showToast('Видео удалено', 'success');
 }
 
-// Слушатели для поиска и фильтрации
 document.getElementById('searchInput').addEventListener('input', renderVideos);
 document.getElementById('statusFilter').addEventListener('change', renderVideos);
 
@@ -377,7 +740,6 @@ async function handleFiles(files) {
     filesToAdd.push(file);
   }
   
-  // Показываем ошибки валидации
   const errorsContainer = document.getElementById('validationErrors');
   const errorsList = document.getElementById('validationErrorsList');
   
@@ -445,7 +807,7 @@ function updatePhotoPreview() {
       div.className = 'photo-preview';
       div.innerHTML = `
         <div class="photo-status-icon valid">✓</div>
-        <img src="${e.target.result}" alt="${photo.name}">
+        <img src="${e.target.result}" alt="${photo.name}" loading="lazy">
         <div class="photo-info">${photo.name}</div>
         <button class="photo-remove" onclick="removePhoto(${index})" title="Удалить">×</button>
       `;
@@ -519,7 +881,6 @@ async function startGeneration() {
   btn.textContent = '⏳ Генерация...';
   btn.disabled = true;
   
-  // Создаём запись в БД
   const { data: video, error } = await supabaseClient
     .from('videos')
     .insert({
@@ -542,7 +903,6 @@ async function startGeneration() {
   allVideos.unshift(video);
   renderVideos();
   
-  // Имитация генерации
   setTimeout(async () => {
     const { error: updateError } = await supabaseClient
       .from('videos')
@@ -555,7 +915,6 @@ async function startGeneration() {
       showToast('Видео успешно сгенерировано!', 'success');
       await loadVideos();
       
-      // Очищаем черновик
       if (draftManager) draftManager.clear();
     }
     
