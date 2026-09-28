@@ -36,10 +36,14 @@
 <body>
 <div class="container">
   <nav>
-    <div class="logo">Cliply</div>
-    <div class="nav-links">
-  <a href="features.html">Возможности</a>
-  <a href="pricing.html">Тарифы</a>
+  <a href="index.html" class="logo">Cliply</a>
+  <div class="nav-links" id="navLinks">
+    <a href="features.html">Возможности</a>
+    <a href="pricing.html">Тарифы</a>
+    <a href="examples.html">Примеры</a>
+    <a href="login.html" class="btn" id="navAuthBtn">Войти</a>
+  </div>
+</nav>
   <a href="examples.html">Примеры</a>
   <a href="login.html" class="btn">Войти</a>
 </div>
@@ -78,5 +82,17 @@
   </section>
 </div>
 <footer>© 2026 Cliply</footer>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth.js"></script>
+<script>
+(async () => {
+  const user = await getCurrentUser();
+  const btn = document.getElementById('navAuthBtn');
+  if (user && btn) {
+    btn.textContent = 'Создать';
+    btn.href = 'dashboard.html';
+  }
+})();
+</script>
 </body>
 </html>
