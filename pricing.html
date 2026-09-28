@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Cliply — Тарифы</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  h1, h2 { font-family: 'Manrope', sans-serif; }
+  nav { padding: 24px 0; display: flex; justify-content: space-between; align-items: center; }
+  .logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+  .nav-links a { color: #A0A0B0; text-decoration: none; margin-left: 32px; font-size: 14px; transition: 0.2s; }
+  .nav-links a:hover { color: #fff; }
+  .nav-links a:last-child { border: 2px solid #6C5CE7; padding: 10px 24px; border-radius: 10px; color: #fff !important; font-weight: 600; }
+  .nav-links a:last-child:hover { background: #6C5CE7; }
+  
+  .page-header { padding: 80px 0 40px; text-align: center; }
+  .page-header h1 { font-size: 48px; margin-bottom: 16px; }
+  .page-header p { font-size: 18px; color: #A0A0B0; }
+  
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding: 40px 0 80px; }
+  .pricing-card { background: #15151F; padding: 32px; border-radius: 16px; border: 1px solid #1f1f2e; text-align: center; transition: 0.2s; }
+  .pricing-card:hover { transform: translateY(-4px); }
+  .pricing-card.popular { border-color: #6C5CE7; box-shadow: 0 0 40px rgba(108, 92, 231, 0.2); }
+  .popular-badge { background: #6C5CE7; color: #fff; padding: 6px 16px; border-radius: 100px; font-size: 12px; font-weight: 600; display: inline-block; margin-bottom: 16px; }
+  .pricing-card h3 { font-size: 24px; margin-bottom: 8px; }
+  .price { font-size: 48px; font-weight: 800; margin: 16px 0; font-family: 'Manrope'; }
+  .price span { font-size: 16px; color: #A0A0B0; font-weight: 400; }
+  .features { list-style: none; margin: 24px 0; text-align: left; }
+  .features li { padding: 12px 0; border-bottom: 1px solid #1f1f2e; color: #A0A0B0; font-size: 15px; }
+  .features li:before { content: "✓ "; color: #6C5CE7; font-weight: 700; }
+  .btn { display: inline-block; background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; transition: 0.2s; width: 100%; }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
+  
+  footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
+  
+  @media (max-width: 768px) {
+    .pricing-grid { grid-template-columns: 1fr; }
+    .page-header h1 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <nav>
+    <a href="index.html" class="logo">Cliply</a>
+    <div class="nav-links">
+      <a href="features.html">Возможности</a>
+      <a href="pricing.html">Тарифы</a>
+      <a href="examples.html">Примеры</a>
+      <a href="dashboard.html">Войти</a>
+    </div>
+  </nav>
+  
+  <div class="page-header">
+    <h1>Тарифы</h1>
+    <p>Выберите план, который подходит вашему бизнесу</p>
+  </div>
+  
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <h3>Starter</h3>
+      <div class="price">2 990 ₽<span>/мес</span></div>
+      <ul class="features">
+        <li>30 видео в месяц</li>
+        <li>5 шаблонов сценариев</li>
+        <li>HD качество</li>
+        <li>Базовая поддержка</li>
+      </ul>
+      <a href="dashboard.html" class="btn">Начать</a>
+    </div>
+    
+    <div class="pricing-card popular">
+      <div class="popular-badge">Популярный</div>
+      <h3>Pro</h3>
+      <div class="price">7 990 ₽<span>/мес</span></div>
+      <ul class="features">
+        <li>100 видео в месяц</li>
+        <li>Все шаблоны + AI-функции</li>
+        <li>Full HD качество</li>
+        <li>Приоритетная поддержка</li>
+        <li>API доступ</li>
+      </ul>
+      <a href="dashboard.html" class="btn">Начать</a>
+    </div>
+    
+    <div class="pricing-card">
+      <h3>Agency</h3>
+      <div class="price">19 990 ₽<span>/мес</span></div>
+      <ul class="features">
+        <li>Безлимит видео</li>
+        <li>Все функции Pro</li>
+        <li>Мультипользователь</li>
+        <li>Персональный менеджер</li>
+        <li>White-label решение</li>
+      </ul>
+      <a href="dashboard.html" class="btn">Связаться</a>
+    </div>
+  </div>
+</div>
+<footer>© 2026 Cliply</footer>
+</body>
+</html>
