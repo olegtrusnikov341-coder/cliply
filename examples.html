@@ -2,34 +2,25 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Примеры работ Cliply — видео для разных категорий товаров</title>
-<meta name="description" content="Посмотрите примеры видео, созданных с помощью Cliply: косметика, электроника, одежда, товары для дома, БАДы, спорт.">
-<meta name="keywords" content="примеры видео, кейсы, портфолио, видео для маркетплейсов">
+<title>Примеры работ Cliply</title>
+<meta name="description" content="Примеры видео для косметики, электроники, одежды и других категорий.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://olegtrusnikov341-coder.github.io/cliply/examples.html">
-
 <meta name="theme-color" content="#6C5CE7">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Cliply">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
-
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Cliply">
-<meta property="og:locale" content="ru_RU">
 <meta property="og:title" content="Примеры работ Cliply">
-<meta property="og:description" content="Видео для косметики, электроники, одежды и других категорий.">
+<meta property="og:description" content="Видео для разных категорий товаров.">
 <meta property="og:url" content="https://olegtrusnikov341-coder.github.io/cliply/examples.html">
-<meta name="twitter:card" content="summary">
-
 <link rel="preconnect" href="https://djvdklcahpqbjotukmxt.supabase.co">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="auth.js"></script>
@@ -39,6 +30,7 @@
 <link rel="stylesheet" href="scrollbar.css">
 <link rel="stylesheet" href="micro-animations.css">
 <link rel="stylesheet" href="visual-effects.css">
+<link rel="stylesheet" href="mobile.css">
 <script src="transitions.js"></script>
 <script src="micro-animations.js"></script>
 <style>
@@ -79,7 +71,18 @@
       <a href="examples.html">Примеры</a>
       <a href="login.html" id="navAuthBtn">Войти</a>
     </div>
+    <button class="burger" id="burgerBtn" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+  
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="features.html">Возможности</a>
+    <a href="pricing.html">Тарифы</a>
+    <a href="examples.html">Примеры</a>
+    <a href="login.html" id="mobileAuthBtn" class="btn-nav-mobile">Войти</a>
+  </div>
+  
   <div class="page-header">
     <h1>Примеры работ</h1>
     <p>Видео, созданные с помощью Cliply для разных категорий товаров</p>
@@ -98,7 +101,7 @@
       <div class="example-info"><h3>Одежда</h3><p>Мужская футболка премиум</p></div>
     </div>
     <div class="example-card">
-      <div class="example-preview"></div>
+      <div class="example-preview">🏠</div>
       <div class="example-info"><h3>Товары для дома</h3><p>Органайзер для кухни</p></div>
     </div>
     <div class="example-card">
@@ -113,10 +116,33 @@
 </div>
 <footer>© 2026 Cliply</footer>
 <script>
+const burgerBtn = document.getElementById('burgerBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+const mobileAuthBtn = document.getElementById('mobileAuthBtn');
+
+if (burgerBtn && mobileMenu) {
+  burgerBtn.addEventListener('click', () => {
+    burgerBtn.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+    document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+  });
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      burgerBtn.classList.remove('active');
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  });
+}
+
 (async () => {
   const user = await getCurrentUser();
   const btn = document.getElementById('navAuthBtn');
-  if (user && btn) { btn.textContent = 'Создать'; btn.href = 'dashboard.html'; }
+  if (user && btn) {
+    btn.textContent = 'Создать';
+    btn.href = 'dashboard.html';
+    if (mobileAuthBtn) { mobileAuthBtn.textContent = 'Создать'; mobileAuthBtn.href = 'dashboard.html'; }
+  }
 })();
 </script>
 </body>
