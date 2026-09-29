@@ -105,7 +105,7 @@
   .form-group label { display: block; font-size: 14px; color: #A0A0B0; margin-bottom: 8px; font-weight: 500; }
   .form-group input, .form-group textarea, .form-group select { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 8px; padding: 12px 16px; color: #fff; font-size: 15px; font-family: inherit; }
   .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: #6C5CE7; }
-  .form-group textarea { resize: vertical; min-height: 80px; }
+  .form-group textarea { resize: vertical; min-height: 150px; }
   .prompt-row { display: flex; gap: 12px; align-items: flex-start; }
   .prompt-row textarea { flex: 1; }
   .btn-prompt { background: transparent; border: 1px solid #6C5CE7; color: #6C5CE7; padding: 12px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; white-space: nowrap; }
@@ -182,14 +182,14 @@
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu" id="navMenu">
       <li><a href="dashboard.html" class="active">📊 Дашборд</a></li>
-      <li><a href="pricing.html"> Тарифы</a></li>
+      <li><a href="pricing.html">💎 Тарифы</a></li>
       <li><a href="settings.html">⚙️ Настройки</a></li>
     </ul>
     <div class="btn-logout" onclick="logout()">Выйти</div>
   </aside>
   <main class="main">
     <div id="offlineBanner" class="offline-banner">
-      <span>⚠️</span>
+      <span>️</span>
       <span>Нет подключения к интернету. Некоторые функции могут быть недоступны.</span>
     </div>
     <div class="header">
@@ -246,7 +246,7 @@
       <div class="videos-section-header">
         <h2>Ваши видео</h2>
         <div class="videos-controls">
-          <input type="text" id="searchInput" class="search-input" placeholder="🔍 Поиск по названию...">
+          <input type="text" id="searchInput" class="search-input" placeholder=" Поиск по названию...">
           <select id="statusFilter" class="filter-select">
             <option value="all">Все статусы</option>
             <option value="done">Готово</option>
@@ -316,7 +316,7 @@ async function initDashboard() {
   if (currentUser.profile.role_level <= 2) {
     const menu = document.getElementById('navMenu');
     const adminLink = document.createElement('li');
-    adminLink.innerHTML = '<a href="admin.html"> Админ-панель</a>';
+    adminLink.innerHTML = '<a href="admin.html">👑 Админ-панель</a>';
     menu.insertBefore(adminLink, menu.children[1]);
   }
   
@@ -373,7 +373,7 @@ function renderVideos() {
   if (filteredVideos.length === 0) {
     grid.innerHTML = `
       <div class="empty-state" style="grid-column: 1 / -1;">
-        <div class="empty-state-icon">🎬</div>
+        <div class="empty-state-icon"></div>
         <div class="empty-state-text">${allVideos.length === 0 ? 'У вас ещё нет видео' : 'Ничего не найдено'}</div>
         <div class="empty-state-subtext">${allVideos.length === 0 ? 'Создайте первое видео выше' : 'Попробуйте изменить фильтры'}</div>
       </div>
