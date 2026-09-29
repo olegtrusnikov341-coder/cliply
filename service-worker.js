@@ -1,5 +1,5 @@
-// Service Worker для Cliply — версия 4
-const CACHE_NAME = 'cliply-v4';
+// Service Worker для Cliply — версия 5
+const CACHE_NAME = 'cliply-v5';
 const STATIC_ASSETS = [
   '/cliply/',
   '/cliply/index.html',
@@ -23,17 +23,18 @@ const STATIC_ASSETS = [
   '/cliply/draft.js',
   '/cliply/network.js',
   '/cliply/visual-effects.css',
+  '/cliply/mobile.css',
   '/cliply/favicon.svg',
   '/cliply/manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
-  console.log('[SW v4] Установка...');
+  console.log('[SW v5] Установка...');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[SW v4] Кеширую файлы:', STATIC_ASSETS.length);
+      console.log('[SW v5] Кеширую файлы:', STATIC_ASSETS.length);
       return cache.addAll(STATIC_ASSETS).catch(err => {
-        console.warn('[SW v4] Не все ресурсы закешены:', err);
+        console.warn('[SW v5] Не все ресурсы закешены:', err);
       });
     })
   );
@@ -41,12 +42,12 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('[SW v4] Активация...');
+  console.log('[SW v5] Активация...');
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
         keys.filter(key => key !== CACHE_NAME).map(key => {
-          console.log('[SW v4] Удаляю старый кеш:', key);
+          console.log('[SW v5] Удаляю старый кеш:', key);
           return caches.delete(key);
         })
       );
