@@ -3,23 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <title>Настройки профиля Cliply</title>
-<meta name="description" content="Настройки профиля, смена пароля и универсальный промпт для генерации видео.">
+<meta name="description" content="Настройки профиля, смена пароля и универсальный промпт.">
 <meta name="robots" content="noindex, nofollow">
-
 <meta name="theme-color" content="#6C5CE7">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Cliply">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
-
 <link rel="preconnect" href="https://djvdklcahpqbjotukmxt.supabase.co">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="auth.js"></script>
@@ -29,6 +25,7 @@
 <link rel="stylesheet" href="scrollbar.css">
 <link rel="stylesheet" href="micro-animations.css">
 <link rel="stylesheet" href="visual-effects.css">
+<link rel="stylesheet" href="mobile.css">
 <script src="transitions.js"></script>
 <script src="micro-animations.js"></script>
 <style>
@@ -42,7 +39,7 @@
   .nav-menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; transition: 0.2s; }
   .nav-menu a:hover { background: #1f1f23; color: #fff; }
   .nav-menu a.active { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; border: 1px solid rgba(108, 92, 231, 0.3); }
-  .btn-logout { padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; border: 1px solid #27272a; text-align: center; transition: 0.2s; cursor: pointer; }
+  .btn-logout { padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; border: 1px solid #27272a; text-align: center; transition: 0.2s; cursor: pointer; margin-top: 16px; }
   .btn-logout:hover { border-color: #6C5CE7; color: #fff; }
   .main { padding: 32px 48px; }
   .header { margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid #27272a; }
@@ -60,19 +57,40 @@
   .btn-save:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   .prompt-hint { background: rgba(108, 92, 231, 0.1); border: 1px solid rgba(108, 92, 231, 0.3); border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; font-size: 13px; color: #A0A0B0; line-height: 1.6; }
   .prompt-hint strong { color: #A29BFE; }
+  .mobile-header { display: none; }
   @media (max-width: 768px) {
     .layout { grid-template-columns: 1fr; }
-    .sidebar { display: none; }
-    .main { padding: 20px; }
+    .sidebar { display: none !important; }
+    .main { padding: 16px !important; }
+    .mobile-header { display: flex !important; justify-content: space-between; align-items: center; padding: 16px; background: #141414; border-bottom: 1px solid #27272a; position: sticky; top: 0; z-index: 100; }
+    .mobile-header .logo { font-weight: 800; font-size: 20px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+    .settings-section { padding: 20px !important; }
+    .settings-section h2 { font-size: 18px !important; }
+    .form-group input, .form-group textarea { padding: 14px 16px !important; font-size: 16px !important; }
   }
 </style>
 </head>
 <body>
+<div class="mobile-header" id="mobileHeader">
+  <a href="index.html" class="logo">Cliply</a>
+  <button class="burger" id="burgerBtn" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="dashboard.html"> Дашборд</a>
+  <a href="pricing.html">💎 Тарифы</a>
+  <a href="settings.html" class="active">⚙️ Настройки</a>
+  <a href="index.html" class="btn-nav-mobile">← На главную</a>
+  <a href="#" onclick="logout(); return false;" style="color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); margin-top: 16px;">Выйти</a>
+</div>
+
 <div class="layout">
   <aside class="sidebar">
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu">
-      <li><a href="dashboard.html">📊 Дашборд</a></li>
+      <li><a href="dashboard.html"> Дашборд</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
       <li><a href="settings.html" class="active">⚙️ Настройки</a></li>
     </ul>
@@ -112,13 +130,13 @@
     </div>
     <div class="settings-section">
       <h2>Универсальный промпт</h2>
-      <p class="subtitle">Дополнительная информация, которая будет учитываться при каждой генерации видео</p>
+      <p class="subtitle">Дополнительная информация для генерации видео</p>
       <div class="prompt-hint">
-        <strong>💡 Как использовать:</strong> Опишите здесь стиль вашего бренда, целевую аудиторию, тон общения или любые другие пожелания. Этот текст будет автоматически добавляться к каждому запросу при генерации видео.
+        <strong>💡 Как использовать:</strong> Опишите стиль бренда, целевую аудиторию, тон общения.
       </div>
       <div class="form-group">
         <label>Ваш универсальный промпт</label>
-        <textarea id="customPrompt" placeholder="Например: Стиль бренда — минималистичный и премиальный. Целевая аудитория — женщины 25-40 лет. Тон — дружелюбный, но экспертный. Всегда упоминать экологичность материалов..."></textarea>
+        <textarea id="customPrompt" placeholder="Например: Стиль бренда — минималистичный и премиальный..."></textarea>
       </div>
       <button class="btn-save" onclick="savePrompt()">Сохранить промпт</button>
     </div>
@@ -126,6 +144,7 @@
 </div>
 <script>
 let currentUser = null;
+
 async function init() {
   currentUser = await requireAuth();
   if (!currentUser) return;
@@ -136,7 +155,25 @@ async function init() {
     document.getElementById('customPrompt').value = data.custom_prompt;
   }
   if (window.microAnimations) window.microAnimations.initRipple();
+  
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (burgerBtn && mobileMenu) {
+    burgerBtn.addEventListener('click', () => {
+      burgerBtn.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+      document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        burgerBtn.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+    });
+  }
 }
+
 async function saveProfile() {
   const newName = document.getElementById('userName').value.trim();
   if (!newName) { showToast('Имя не может быть пустым', 'warning'); return; }
@@ -144,6 +181,7 @@ async function saveProfile() {
   if (error) { showToast('Ошибка сохранения: ' + error.message, 'error'); }
   else { showToast('Профиль успешно обновлен!', 'success'); }
 }
+
 async function changePassword() {
   const current = document.getElementById('currentPassword').value;
   const newPass = document.getElementById('newPassword').value;
@@ -162,12 +200,14 @@ async function changePassword() {
     document.getElementById('confirmPassword').value = '';
   }
 }
+
 async function savePrompt() {
   const prompt = document.getElementById('customPrompt').value;
   const { error } = await supabaseClient.from('profiles').update({ custom_prompt: prompt }).eq('id', currentUser.id);
   if (error) { showToast('Ошибка сохранения: ' + error.message, 'error'); }
-  else { showToast('Универсальный промпт сохранён! Он будет учитываться при каждой генерации.', 'success'); }
+  else { showToast('Универсальный промпт сохранён!', 'success'); }
 }
+
 init();
 </script>
 </body>
