@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Личный кабинет Cliply — создание видео</title>
-<meta name="description" content="Создавайте продающие видео для маркетплейсов с помощью AI. Загрузите фото, опишите товар — получите готовое видео.">
+<meta name="description" content="Создавайте продающие видео для маркетплейсов с помощью AI.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#6C5CE7">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Cliply">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -28,6 +27,7 @@
 <link rel="stylesheet" href="scrollbar.css">
 <link rel="stylesheet" href="micro-animations.css">
 <link rel="stylesheet" href="visual-effects.css">
+<link rel="stylesheet" href="mobile.css">
 <script src="transitions.js"></script>
 <script src="micro-animations.js"></script>
 <script src="draft.js"></script>
@@ -43,7 +43,7 @@
   .nav-menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; transition: 0.2s; }
   .nav-menu a:hover { background: #1f1f23; color: #fff; }
   .nav-menu a.active { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; border: 1px solid rgba(108, 92, 231, 0.3); }
-  .btn-logout { padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; border: 1px solid #27272a; text-align: center; transition: 0.2s; cursor: pointer; }
+  .btn-logout { padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; border: 1px solid #27272a; text-align: center; transition: 0.2s; cursor: pointer; margin-top: 16px; }
   .btn-logout:hover { border-color: #6C5CE7; color: #fff; }
   .main { padding: 32px 48px; }
   .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid #27272a; }
@@ -52,26 +52,17 @@
   .balance-badge.offline { background: rgba(239, 68, 68, 0.15); color: #ef4444; border-color: rgba(239, 68, 68, 0.3); }
   .online-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; }
   .offline-dot { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; animation: pulse 1.5s ease infinite; }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
   .create-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 32px; margin-bottom: 40px; }
   .create-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
   .create-card h2 { font-size: 22px; font-weight: 700; font-family: 'Manrope'; }
   .upload-zone { border: 2px dashed #6C5CE7; border-radius: 12px; padding: 48px 24px; text-align: center; margin-bottom: 24px; background: rgba(108, 92, 231, 0.05); cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
   .upload-zone:hover { background: rgba(108, 92, 231, 0.1); border-color: #A29BFE; }
   .upload-zone.drag-over { background: rgba(108, 92, 231, 0.2); border-color: #A29BFE; border-style: solid; transform: scale(1.01); box-shadow: 0 0 40px rgba(108, 92, 231, 0.3); }
-  .upload-zone.drag-over .upload-icon { animation: bounce 0.6s ease infinite; }
   .upload-zone.uploading { border-color: #f59e0b; background: rgba(245, 158, 11, 0.05); }
-  .upload-zone.uploading .upload-icon { animation: pulse 1s ease infinite; }
   .upload-zone.success { border-color: #10b981; background: rgba(16, 185, 129, 0.05); border-style: solid; }
   .upload-zone.disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-  .upload-icon { font-size: 48px; margin-bottom: 12px; transition: transform 0.3s; }
+  .upload-icon { font-size: 48px; margin-bottom: 12px; }
   .upload-text { color: #A0A0B0; font-size: 15px; }
   .upload-text strong { color: #fff; }
   .upload-hint { color: #6C5CE7; font-size: 13px; margin-top: 8px; }
@@ -82,18 +73,14 @@
   .upload-progress-text.active { display: block; }
   .photo-preview-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; margin-bottom: 24px; }
   .photo-preview { position: relative; aspect-ratio: 1; border-radius: 8px; overflow: hidden; border: 2px solid #27272a; transition: all 0.3s ease; animation: photoAppear 0.4s ease-out; }
-  @keyframes photoAppear {
-    from { opacity: 0; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1); }
-  }
+  @keyframes photoAppear { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
   .photo-preview:hover { border-color: #6C5CE7; transform: translateY(-2px); }
   .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
   .photo-info { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 20px 6px 6px; font-size: 11px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .photo-remove { position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; background: rgba(239, 68, 68, 0.95); border: none; border-radius: 50%; color: #fff; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; line-height: 1; opacity: 0; transform: scale(0.8); }
   .photo-preview:hover .photo-remove { opacity: 1; transform: scale(1); }
   .photo-remove:hover { background: #ef4444; transform: scale(1.15) !important; }
-  .photo-status-icon { position: absolute; top: 6px; left: 6px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
-  .photo-status-icon.valid { background: rgba(16, 185, 129, 0.9); color: #fff; }
+  .photo-status-icon { position: absolute; top: 6px; left: 6px; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; background: rgba(16, 185, 129, 0.9); color: #fff; }
   .photo-counter { text-align: center; color: #A0A0B0; font-size: 14px; margin-bottom: 16px; padding: 10px; background: rgba(108, 92, 231, 0.05); border-radius: 8px; border: 1px solid rgba(108, 92, 231, 0.2); }
   .photo-counter strong { color: #6C5CE7; }
   .validation-errors { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; display: none; }
@@ -115,11 +102,7 @@
   .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
   .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   .btn-generate.rate-limited { animation: shake 0.4s ease; }
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
-  }
+  @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
   .videos-section { margin-top: 40px; }
   .videos-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
   .videos-section h2 { font-size: 22px; font-weight: 700; font-family: 'Manrope'; }
@@ -129,7 +112,7 @@
   .filter-select { background: #141414; border: 1px solid #27272a; border-radius: 8px; padding: 10px 16px; color: #fff; font-size: 14px; cursor: pointer; }
   .filter-select:focus { outline: none; border-color: #6C5CE7; }
   .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-  .project-card { background: #141414; border: 1px solid #27272a; border-radius: 12px; overflow: hidden; transition: 0.2s; position: relative; }
+  .project-card { background: #141414; border: 1px solid #27272a; border-radius: 12px; overflow: hidden; transition: 0.2s; }
   .project-card:hover { border-color: #6C5CE7; transform: translateY(-2px); }
   .project-preview { height: 160px; background: linear-gradient(135deg, #1a1a2e, #16213e); display: flex; align-items: center; justify-content: center; font-size: 48px; position: relative; }
   .project-status { position: absolute; top: 12px; right: 12px; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 600; }
@@ -155,25 +138,12 @@
   .draft-indicator.draft-error { color: #ef4444; }
   .draft-indicator::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; display: inline-block; }
   .draft-indicator.draft-saving::before { animation: draftPulse 1s ease infinite; }
-  @keyframes draftPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
+  @keyframes draftPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
   .btn-clear-draft { background: transparent; border: 1px solid #27272a; color: #A0A0B0; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 4px; }
   .btn-clear-draft:hover { border-color: #ef4444; color: #ef4444; }
   .offline-banner { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; padding: 12px 20px; border-radius: 8px; margin-bottom: 24px; display: none; align-items: center; gap: 12px; font-size: 14px; }
   .offline-banner.active { display: flex; }
-  @media (max-width: 768px) {
-    .layout { grid-template-columns: 1fr; }
-    .sidebar { display: none; }
-    .main { padding: 20px; }
-    .prompt-row { flex-direction: column; }
-    .photo-preview-container { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
-    .create-card-header { flex-direction: column; align-items: flex-start; gap: 8px; }
-    .videos-section-header { flex-direction: column; align-items: flex-start; }
-    .videos-controls { width: 100%; }
-    .search-input { width: 100%; }
-  }
+  .mobile-header { display: none; }
 </style>
 </head>
 <body>
@@ -187,6 +157,24 @@
     </ul>
     <div class="btn-logout" onclick="logout()">Выйти</div>
   </aside>
+  
+  <!-- Мобильная шапка -->
+  <div class="mobile-header" id="mobileHeader">
+    <a href="index.html" class="logo">Cliply</a>
+    <button class="burger" id="burgerBtn" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  
+  <!-- Мобильное меню -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="dashboard.html" class="active">📊 Дашборд</a>
+    <a href="pricing.html">💎 Тарифы</a>
+    <a href="settings.html">⚙️ Настройки</a>
+    <a href="index.html" class="btn-nav-mobile">← На главную</a>
+    <a href="#" onclick="logout(); return false;" style="color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); margin-top: 16px;">Выйти</a>
+  </div>
+  
   <main class="main">
     <div id="offlineBanner" class="offline-banner">
       <span>️</span>
@@ -246,7 +234,7 @@
       <div class="videos-section-header">
         <h2>Ваши видео</h2>
         <div class="videos-controls">
-          <input type="text" id="searchInput" class="search-input" placeholder=" Поиск по названию...">
+          <input type="text" id="searchInput" class="search-input" placeholder="🔍 Поиск по названию...">
           <select id="statusFilter" class="filter-select">
             <option value="all">Все статусы</option>
             <option value="done">Готово</option>
@@ -316,7 +304,7 @@ async function initDashboard() {
   if (currentUser.profile.role_level <= 2) {
     const menu = document.getElementById('navMenu');
     const adminLink = document.createElement('li');
-    adminLink.innerHTML = '<a href="admin.html">👑 Админ-панель</a>';
+    adminLink.innerHTML = '<a href="admin.html"> Админ-панель</a>';
     menu.insertBefore(adminLink, menu.children[1]);
   }
   
@@ -335,6 +323,24 @@ async function initDashboard() {
   if (window.microAnimations) {
     window.microAnimations.initRipple();
   }
+  
+  // Мобильное меню
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (burgerBtn && mobileMenu) {
+    burgerBtn.addEventListener('click', () => {
+      burgerBtn.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+      document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        burgerBtn.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+    });
+  }
 }
 
 async function loadVideos() {
@@ -343,18 +349,14 @@ async function loadVideos() {
       () => supabaseClient.from('videos').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }),
       'Загрузка видео'
     );
-    
     if (error) {
       showToast('Ошибка загрузки видео: ' + error.message, 'error');
-      networkManager.log('error', 'loadVideos error', error);
       return;
     }
-    
     allVideos = data || [];
     renderVideos();
   } catch (error) {
-    showToast('Не удалось загрузить видео. Проверьте подключение.', 'error');
-    networkManager.log('error', 'loadVideos failed', error);
+    showToast('Не удалось загрузить видео', 'error');
   }
 }
 
@@ -371,56 +373,21 @@ function renderVideos() {
   });
   
   if (filteredVideos.length === 0) {
-    grid.innerHTML = `
-      <div class="empty-state" style="grid-column: 1 / -1;">
-        <div class="empty-state-icon"></div>
-        <div class="empty-state-text">${allVideos.length === 0 ? 'У вас ещё нет видео' : 'Ничего не найдено'}</div>
-        <div class="empty-state-subtext">${allVideos.length === 0 ? 'Создайте первое видео выше' : 'Попробуйте изменить фильтры'}</div>
-      </div>
-    `;
+    grid.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;"><div class="empty-state-icon">🎬</div><div class="empty-state-text">${allVideos.length === 0 ? 'У вас ещё нет видео' : 'Ничего не найдено'}</div><div class="empty-state-subtext">${allVideos.length === 0 ? 'Создайте первое видео выше' : 'Попробуйте изменить фильтры'}</div></div>`;
     return;
   }
   
   grid.innerHTML = filteredVideos.map(video => {
-    const statusClass = video.status === 'done' ? 'status-done' : 
-                       video.status === 'processing' ? 'status-progress' : 'status-failed';
-    const statusText = video.status === 'done' ? 'Готово' : 
-                      video.status === 'processing' ? 'В процессе' : 'Ошибка';
-    const date = new Date(video.created_at).toLocaleDateString('ru-RU', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-    
-    return `
-      <div class="project-card content-fade-in">
-        <div class="project-preview">
-          ${video.status === 'done' ? '🎬' : video.status === 'processing' ? '⏳' : '❌'}
-          <span class="project-status ${statusClass}">${statusText}</span>
-        </div>
-        <div class="project-info">
-          <div class="project-title">${video.product_name || 'Без названия'}</div>
-          <div class="project-date">${date}</div>
-          <div class="project-actions">
-            ${video.status === 'done' ? `<button class="btn-small primary" onclick="downloadVideo('${video.id}')">Скачать</button>` : ''}
-            <button class="btn-small" onclick="regenerateVideo('${video.id}')">Перегенерировать</button>
-            <button class="btn-small danger" onclick="deleteVideo('${video.id}')">Удалить</button>
-          </div>
-        </div>
-      </div>
-    `;
+    const statusClass = video.status === 'done' ? 'status-done' : video.status === 'processing' ? 'status-progress' : 'status-failed';
+    const statusText = video.status === 'done' ? 'Готово' : video.status === 'processing' ? 'В процессе' : 'Ошибка';
+    const date = new Date(video.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    return `<div class="project-card content-fade-in"><div class="project-preview">${video.status === 'done' ? '🎬' : video.status === 'processing' ? '⏳' : ''}<span class="project-status ${statusClass}">${statusText}</span></div><div class="project-info"><div class="project-title">${video.product_name || 'Без названия'}</div><div class="project-date">${date}</div><div class="project-actions">${video.status === 'done' ? `<button class="btn-small primary" onclick="downloadVideo('${video.id}')">Скачать</button>` : ''}<button class="btn-small" onclick="regenerateVideo('${video.id}')">Перегенерировать</button><button class="btn-small danger" onclick="deleteVideo('${video.id}')">Удалить</button></div></div></div>`;
   }).join('');
 }
 
 async function downloadVideo(videoId) {
   const video = allVideos.find(v => v.id === videoId);
-  if (!video || !video.video_url) {
-    showToast('Видео недоступно', 'error');
-    return;
-  }
-  
+  if (!video || !video.video_url) { showToast('Видео недоступно', 'error'); return; }
   const link = document.createElement('a');
   link.href = video.video_url;
   link.download = `${video.product_name || 'video'}.mp4`;
@@ -428,42 +395,24 @@ async function downloadVideo(videoId) {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
-  
   showToast('Скачивание началось', 'success');
 }
 
 async function regenerateVideo(videoId) {
-  const video = allVideos.find(v => v.id === videoId);
-  if (!video) return;
-  
   showToast('Перегенерация начата (демо)', 'info');
-  
-  setTimeout(() => {
-    showToast('Видео перегенерировано (демо)', 'success');
-  }, 3000);
+  setTimeout(() => showToast('Видео перегенерировано (демо)', 'success'), 3000);
 }
 
 async function deleteVideo(videoId) {
-  if (!confirm('Удалить это видео? Это действие нельзя отменить.')) return;
-  
+  if (!confirm('Удалить это видео?')) return;
   try {
-    const { error } = await networkManager.supabaseRequest(
-      () => supabaseClient.from('videos').delete().eq('id', videoId),
-      'Удаление видео'
-    );
-    
-    if (error) {
-      showToast('Ошибка удаления: ' + error.message, 'error');
-      networkManager.log('error', 'deleteVideo error', error);
-      return;
-    }
-    
+    const { error } = await networkManager.supabaseRequest(() => supabaseClient.from('videos').delete().eq('id', videoId), 'Удаление видео');
+    if (error) { showToast('Ошибка удаления: ' + error.message, 'error'); return; }
     allVideos = allVideos.filter(v => v.id !== videoId);
     renderVideos();
     showToast('Видео удалено', 'success');
   } catch (error) {
     showToast('Не удалось удалить видео', 'error');
-    networkManager.log('error', 'deleteVideo failed', error);
   }
 }
 
@@ -478,42 +427,14 @@ const uploadProgressText = document.getElementById('uploadProgressText');
 
 uploadZone.addEventListener('click', (e) => {
   if (e.target.closest('.photo-remove')) return;
-  if (!networkManager.isOnline) {
-    showToast('Загрузка фото недоступна без интернета', 'error');
-    return;
-  }
+  if (!networkManager.isOnline) { showToast('Загрузка фото недоступна без интернета', 'error'); return; }
   fileInput.click();
 });
 
-uploadZone.addEventListener('dragover', (e) => {
-  e.preventDefault();
-  if (!networkManager.isOnline) return;
-  uploadZone.classList.add('drag-over');
-});
-
-uploadZone.addEventListener('dragleave', (e) => {
-  e.preventDefault();
-  if (!uploadZone.contains(e.relatedTarget)) {
-    uploadZone.classList.remove('drag-over');
-  }
-});
-
-uploadZone.addEventListener('drop', (e) => {
-  e.preventDefault();
-  uploadZone.classList.remove('drag-over');
-  if (!networkManager.isOnline) {
-    showToast('Загрузка фото недоступна без интернета', 'error');
-    return;
-  }
-  const files = Array.from(e.dataTransfer.files);
-  handleFiles(files);
-});
-
-fileInput.addEventListener('change', (e) => {
-  const files = Array.from(e.target.files);
-  handleFiles(files);
-  fileInput.value = '';
-});
+uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); if (!networkManager.isOnline) return; uploadZone.classList.add('drag-over'); });
+uploadZone.addEventListener('dragleave', (e) => { e.preventDefault(); if (!uploadZone.contains(e.relatedTarget)) uploadZone.classList.remove('drag-over'); });
+uploadZone.addEventListener('drop', (e) => { e.preventDefault(); uploadZone.classList.remove('drag-over'); if (!networkManager.isOnline) { showToast('Загрузка фото недоступна без интернета', 'error'); return; } handleFiles(Array.from(e.dataTransfer.files)); });
+fileInput.addEventListener('change', (e) => { handleFiles(Array.from(e.target.files)); fileInput.value = ''; });
 
 function formatFileSize(bytes) {
   if (bytes < 1024) return bytes + ' Б';
@@ -521,9 +442,7 @@ function formatFileSize(bytes) {
   return (bytes / (1024 * 1024)).toFixed(2) + ' МБ';
 }
 
-function getTotalSize() {
-  return uploadedPhotos.reduce((sum, f) => sum + f.size, 0);
-}
+function getTotalSize() { return uploadedPhotos.reduce((sum, f) => sum + f.size, 0); }
 
 async function handleFiles(files) {
   const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
@@ -532,30 +451,18 @@ async function handleFiles(files) {
   const filesToAdd = [];
   
   for (const file of files) {
-    if (uploadedPhotos.length + filesToAdd.length >= 5) {
-      errors.push(`${file.name}: максимум 5 фото`);
-      continue;
-    }
-    if (!validTypes.includes(file.type)) {
-      errors.push(`${file.name}: неподдерживаемый формат (только JPG, PNG, WebP)`);
-      continue;
-    }
-    if (file.size > maxSize) {
-      errors.push(`${file.name}: файл больше 10 МБ (${formatFileSize(file.size)})`);
-      continue;
-    }
+    if (uploadedPhotos.length + filesToAdd.length >= 5) { errors.push(`${file.name}: максимум 5 фото`); continue; }
+    if (!validTypes.includes(file.type)) { errors.push(`${file.name}: неподдерживаемый формат`); continue; }
+    if (file.size > maxSize) { errors.push(`${file.name}: файл больше 10 МБ`); continue; }
     filesToAdd.push(file);
   }
   
   const errorsContainer = document.getElementById('validationErrors');
   const errorsList = document.getElementById('validationErrorsList');
-  
   if (errors.length > 0) {
     errorsList.innerHTML = errors.map(e => `<li>${e}</li>`).join('');
     errorsContainer.classList.add('active');
-    setTimeout(() => {
-      errorsContainer.classList.remove('active');
-    }, 5000);
+    setTimeout(() => errorsContainer.classList.remove('active'), 5000);
   } else {
     errorsContainer.classList.remove('active');
   }
@@ -578,7 +485,6 @@ async function handleFiles(files) {
   uploadZone.classList.remove('uploading');
   uploadZone.classList.add('success');
   uploadProgressText.textContent = '✓ Фото загружены';
-  
   setTimeout(() => {
     uploadProgress.classList.remove('active');
     uploadProgressText.classList.remove('active');
@@ -612,12 +518,7 @@ function updatePhotoPreview() {
     reader.onload = (e) => {
       const div = document.createElement('div');
       div.className = 'photo-preview';
-      div.innerHTML = `
-        <div class="photo-status-icon valid">✓</div>
-        <img src="${e.target.result}" alt="${photo.name}" loading="lazy">
-        <div class="photo-info">${photo.name}</div>
-        <button class="photo-remove" onclick="removePhoto(${index})" title="Удалить">×</button>
-      `;
+      div.innerHTML = `<div class="photo-status-icon valid">✓</div><img src="${e.target.result}" alt="${photo.name}" loading="lazy"><div class="photo-info">${photo.name}</div><button class="photo-remove" onclick="removePhoto(${index})" title="Удалить">×</button>`;
       container.appendChild(div);
     };
     reader.readAsDataURL(photo);
@@ -639,29 +540,14 @@ async function generatePrompt() {
   btn.disabled = true;
   btn.textContent = '⏳ Генерация...';
   await new Promise(resolve => setTimeout(resolve, 2000));
-  const enhancedPrompt = `${originalText}
-
-[AI-улучшенная версия]:
-Создай динамичное вертикальное видео (9:16) длительностью 15 секунд для маркетплейса.
-
-Ключевые акценты:
-• Покажи товар с разных ракурсов (крупный план, в использовании)
-• Подчеркни главные преимущества через текст на экране
-• Используй современный минималистичный стиль
-• Добавь энергичную фоновую музыку
-• Заверши призывом к действию "Закажи сейчас"
-
-Целевая аудитория: покупатели маркетплейсов, ищущие качественный товар по доступной цене.`;
-  textarea.value = enhancedPrompt;
+  textarea.value = `${originalText}\n\n[AI-улучшенная версия]:\nСоздай динамичное вертикальное видео (9:16) длительностью 15 секунд для маркетплейса.\n\nКлючевые акценты:\n• Покажи товар с разных ракурсов\n• Подчеркни главные преимущества\n• Современный минималистичный стиль\n• Энергичная фоновая музыка\n• Призыв к действию "Закажи сейчас"`;
   btn.disabled = false;
   btn.textContent = '✨ Улучшить промпт';
-  
   if (draftManager) draftManager.save();
 }
 
 async function startGeneration() {
   const btn = document.getElementById('btnGenerate');
-  
   const allowed = networkManager.rateLimit('generate', () => {});
   if (!allowed) {
     btn.classList.add('rate-limited');
@@ -669,90 +555,57 @@ async function startGeneration() {
     showToast('Подождите перед повторным нажатием', 'warning');
     return;
   }
-  
-  if (!networkManager.checkOnline()) {
-    showToast('Генерация недоступна без интернета', 'error');
-    return;
-  }
+  if (!networkManager.checkOnline()) { showToast('Генерация недоступна без интернета', 'error'); return; }
   
   const description = document.getElementById('productDescription').value.trim();
   const scenario = document.getElementById('scenarioSelect').value;
-  
   const errors = [];
-  
-  if (uploadedPhotos.length < 3) {
-    errors.push('Загрузите минимум 3 фото товара');
-  }
-  
-  if (!description) {
-    errors.push('Введите описание товара');
-  }
+  if (uploadedPhotos.length < 3) errors.push('Загрузите минимум 3 фото товара');
+  if (!description) errors.push('Введите описание товара');
   
   if (errors.length > 0) {
     const errorsContainer = document.getElementById('validationErrors');
     const errorsList = document.getElementById('validationErrorsList');
     errorsList.innerHTML = errors.map(e => `<li>${e}</li>`).join('');
     errorsContainer.classList.add('active');
-    setTimeout(() => {
-      errorsContainer.classList.remove('active');
-    }, 5000);
+    setTimeout(() => errorsContainer.classList.remove('active'), 5000);
     return;
   }
   
-  btn.textContent = '⏳ Генерация...';
+  btn.textContent = ' Генерация...';
   btn.disabled = true;
   
   try {
     const { data: video, error } = await networkManager.supabaseRequest(
-      () => supabaseClient.from('videos').insert({
-        user_id: currentUser.id,
-        product_name: description.split(',')[0] || 'Новое видео',
-        product_description: description,
-        scenario: scenario,
-        status: 'processing'
-      }).select().single(),
+      () => supabaseClient.from('videos').insert({ user_id: currentUser.id, product_name: description.split(',')[0] || 'Новое видео', product_description: description, scenario: scenario, status: 'processing' }).select().single(),
       'Создание видео'
     );
-    
     if (error) {
       showToast('Ошибка создания видео: ' + error.message, 'error');
-      networkManager.log('error', 'startGeneration insert error', error);
       btn.textContent = 'Сгенерировать видео →';
       btn.disabled = false;
       return;
     }
-    
     allVideos.unshift(video);
     renderVideos();
-    
     setTimeout(async () => {
       try {
         const { error: updateError } = await networkManager.supabaseRequest(
           () => supabaseClient.from('videos').update({ status: 'done', video_url: 'https://example.com/video.mp4' }).eq('id', video.id),
-          'Обновление статуса видео'
+          'Обновление статуса'
         );
-        
-        if (updateError) {
-          showToast('Ошибка обновления статуса', 'error');
-          networkManager.log('error', 'startGeneration update error', updateError);
-        } else {
+        if (updateError) showToast('Ошибка обновления статуса', 'error');
+        else {
           showToast('Видео успешно сгенерировано!', 'success');
           await loadVideos();
-          
           if (draftManager) draftManager.clear();
         }
-      } catch (err) {
-        showToast('Ошибка при обновлении статуса видео', 'error');
-        networkManager.log('error', 'startGeneration retry failed', err);
-      }
-      
+      } catch (err) { showToast('Ошибка при обновлении статуса', 'error'); }
       btn.textContent = 'Сгенерировать видео →';
       btn.disabled = false;
     }, 3000);
-    
   } catch (error) {
-    showToast('Не удалось создать видео. Проверьте подключение.', 'error');
-    networkManager.log('error', 'startGeneration failed', error);
+    showToast('Не удалось создать видео', 'error');
     btn.textContent = 'Сгенерировать видео →';
     btn.disabled = false;
   }
