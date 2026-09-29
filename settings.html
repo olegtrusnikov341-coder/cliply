@@ -6,7 +6,7 @@
 <meta name="description" content="Настройки профиля, смена пароля и универсальный промпт.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#6C5CE7">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Cliply">
 <link rel="manifest" href="manifest.json">
@@ -209,6 +209,14 @@ async function savePrompt() {
 }
 
 init();
+</script>
+ <script>
+let lastTouchEnd = 0;
+document.addEventListener('touchend', (e) => {
+  const now = Date.now();
+  if (now - lastTouchEnd <= 300) e.preventDefault();
+  lastTouchEnd = now;
+}, { passive: false });
 </script>
 </body>
 </html>
