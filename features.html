@@ -2,13 +2,12 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Возможности Cliply — AI-функции для создания видео</title>
-<meta name="description" content="AI-генерация сценариев, автоматический монтаж, озвучка, вертикальный формат 9:16.">
-<meta name="keywords" content="AI монтаж, генерация сценариев, озвучка видео">
+<title>Возможности Cliply</title>
+<meta name="description" content="AI-генерация сценариев, автоматический монтаж, озвучка.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://olegtrusnikov341-coder.github.io/cliply/features.html">
 <meta name="theme-color" content="#6C5CE7">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Cliply">
 <link rel="manifest" href="manifest.json">
@@ -36,6 +35,7 @@
 <script src="micro-animations.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { overflow-x: hidden; max-width: 100vw; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; }
   .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
   h1, h2 { font-family: 'Manrope', sans-serif; }
@@ -55,10 +55,6 @@
   .feature-card h3 { font-size: 22px; margin-bottom: 12px; }
   .feature-card p { color: #A0A0B0; font-size: 15px; line-height: 1.6; }
   footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
-  @media (max-width: 768px) {
-    .features-grid { grid-template-columns: 1fr; }
-    .page-header h1 { font-size: 32px; }
-  }
 </style>
 </head>
 <body>
@@ -114,7 +110,7 @@
       <p>Получите 5-10 готовых роликов быстрее, чем заварите кофе.</p>
     </div>
     <div class="feature-card">
-      <div class="feature-icon">🎨</div>
+      <div class="feature-icon"></div>
       <h3>5+ шаблонов сценариев</h3>
       <p>Выбирайте из готовых форматов: "3 причины купить", "Проблема → Решение", "Обзор" и другие.</p>
     </div>
@@ -150,6 +146,13 @@ if (burgerBtn && mobileMenu) {
     if (mobileAuthBtn) { mobileAuthBtn.textContent = 'Создать'; mobileAuthBtn.href = 'dashboard.html'; }
   }
 })();
+
+let lastTouchEnd = 0;
+document.addEventListener('touchend', (e) => {
+  const now = Date.now();
+  if (now - lastTouchEnd <= 300) e.preventDefault();
+  lastTouchEnd = now;
+}, { passive: false });
 </script>
 </body>
 </html>
