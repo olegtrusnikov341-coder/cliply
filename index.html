@@ -109,7 +109,7 @@
     <div class="grid-background"></div>
     <div class="particles-container" id="particles"></div>
     <div>
-      <span class="badge">🚀 AI-генерация видео для маркетплейсов</span>
+      <span class="badge"> AI-генерация видео для маркетплейсов</span>
       <h1>Преврати 3 фото товара в продающее видео за 2 минуты</h1>
       <p>Без видеографа, монтажера и студии. Просто загрузи фото — получи готовый Reels для Wildberries и Ozon.</p>
       <a href="login.html" class="btn">Попробовать бесплатно →</a>
@@ -121,19 +121,19 @@
     <div class="steps-grid">
       <div class="step-card">
         <div class="step-num">01</div>
-        <div class="step-icon">📸</div>
+        <div class="step-icon"></div>
         <h3>Загрузи фото</h3>
         <p>3–5 фотографий товара с телефона или из карточки на WB/Ozon</p>
       </div>
       <div class="step-card">
         <div class="step-num">02</div>
-        <div class="step-icon"></div>
+        <div class="step-icon">🤖</div>
         <h3>AI создаёт магию</h3>
         <p>Нейросеть пишет сценарий, озвучку и анимирует каждый кадр</p>
       </div>
       <div class="step-card">
         <div class="step-num">03</div>
-        <div class="step-icon">🎬</div>
+        <div class="step-icon"></div>
         <h3>Скачай видео</h3>
         <p>Вертикальный ролик 9:16 с музыкой и титрами — готов к публикации</p>
       </div>
@@ -148,7 +148,6 @@
 <script src="toast.js"></script>
 <script src="transitions.js"></script>
 <script src="micro-animations.js"></script>
-<script src="theme-switcher.js"></script>
 <script>
 (async () => {
   const user = await getCurrentUser();
@@ -167,7 +166,6 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// Создание частиц
 function createParticles() {
   const container = document.getElementById('particles');
   if (!container) return;
