@@ -1,0 +1,505 @@
+/* Визуальные эффекты: анимированный фон, частицы, переключатель темы */
+
+/* ===== Анимированный градиентный фон ===== */
+
+.animated-gradient-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(-45deg, #0A0A0F, #1a1a2e, #16213e, #0f3460);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ===== Сетка на фоне hero-секции ===== */
+
+.grid-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(108, 92, 231, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(108, 92, 231, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===== Частицы ===== */
+
+.particles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(108, 92, 231, 0.3);
+  border-radius: 50%;
+  animation: float 20s infinite linear;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(100vh) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) translateX(100px);
+    opacity: 0;
+  }
+}
+
+/* ===== Переключатель темы ===== */
+
+.theme-switcher {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+  display: flex;
+  gap: 8px;
+  background: rgba(20, 20, 28, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid #27272a;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.theme-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: all 0.2s;
+}
+
+.theme-btn:hover {
+  background: rgba(108, 92, 231, 0.1);
+  border-color: rgba(108, 92, 231, 0.3);
+}
+
+.theme-btn.active {
+  background: rgba(108, 92, 231, 0.2);
+  border-color: #6C5CE7;
+}
+
+/* Светлая тема */
+
+body.light-theme {
+  background: #f5f5f7;
+  color: #1a1a2e;
+}
+
+body.light-theme .sidebar {
+  background: #ffffff;
+  border-right-color: #e5e5e7;
+}
+
+body.light-theme .nav-menu a {
+  color: #6b7280;
+}
+
+body.light-theme .nav-menu a:hover {
+  background: #f3f4f6;
+  color: #1a1a2e;
+}
+
+body.light-theme .nav-menu a.active {
+  background: rgba(108, 92, 231, 0.1);
+  color: #6C5CE7;
+}
+
+body.light-theme .btn-logout {
+  color: #6b7280;
+  border-color: #e5e5e7;
+}
+
+body.light-theme .btn-logout:hover {
+  border-color: #6C5CE7;
+  color: #6C5CE7;
+}
+
+body.light-theme .main {
+  background: #f5f5f7;
+}
+
+body.light-theme .header {
+  border-bottom-color: #e5e5e7;
+}
+
+body.light-theme .create-card,
+body.light-theme .settings-section,
+body.light-theme .admin-section,
+body.light-theme .feature-card,
+body.light-theme .example-card,
+body.light-theme .pricing-card,
+body.light-theme .step-card,
+body.light-theme .project-card,
+body.light-theme .form {
+  background: #ffffff;
+  border-color: #e5e5e7;
+}
+
+body.light-theme .upload-zone {
+  background: rgba(108, 92, 231, 0.05);
+  border-color: #6C5CE7;
+}
+
+body.light-theme .upload-zone:hover {
+  background: rgba(108, 92, 231, 0.1);
+}
+
+body.light-theme .form-group input,
+body.light-theme .form-group textarea,
+body.light-theme .form-group select,
+body.light-theme .search-input,
+body.light-theme .filter-select {
+  background: #f9fafb;
+  border-color: #e5e5e7;
+  color: #1a1a2e;
+}
+
+body.light-theme .form-group input:focus,
+body.light-theme .form-group textarea:focus,
+body.light-theme .form-group select:focus {
+  border-color: #6C5CE7;
+}
+
+body.light-theme .btn-small {
+  border-color: #e5e5e7;
+  color: #6b7280;
+}
+
+body.light-theme .btn-small:hover {
+  border-color: #6C5CE7;
+  color: #6C5CE7;
+}
+
+body.light-theme .btn-small.primary {
+  background: #6C5CE7;
+  border-color: #6C5CE7;
+  color: #fff;
+}
+
+body.light-theme .project-preview {
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+}
+
+body.light-theme .photo-preview {
+  border-color: #e5e5e7;
+}
+
+body.light-theme .photo-preview:hover {
+  border-color: #6C5CE7;
+}
+
+body.light-theme .theme-switcher {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: #e5e5e7;
+}
+
+body.light-theme .theme-btn:hover {
+  background: rgba(108, 92, 231, 0.1);
+}
+
+body.light-theme .theme-btn.active {
+  background: rgba(108, 92, 231, 0.2);
+  border-color: #6C5CE7;
+}
+
+body.light-theme .offline-banner {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+body.light-theme .validation-errors {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+body.light-theme .draft-indicator {
+  color: #6b7280;
+}
+
+body.light-theme .photo-counter {
+  background: rgba(108, 92, 231, 0.05);
+  border-color: rgba(108, 92, 231, 0.2);
+  color: #6b7280;
+}
+
+body.light-theme .empty-state {
+  color: #6b7280;
+}
+
+body.light-theme .project-date {
+  color: #6b7280;
+}
+
+body.light-theme .upload-text {
+  color: #6b7280;
+}
+
+body.light-theme .upload-hint {
+  color: #6C5CE7;
+}
+
+body.light-theme .upload-progress {
+  background: #e5e5e7;
+}
+
+body.light-theme .upload-progress-text {
+  color: #6b7280;
+}
+
+body.light-theme .prompt-hint {
+  background: rgba(108, 92, 231, 0.05);
+  border-color: rgba(108, 92, 231, 0.2);
+  color: #6b7280;
+}
+
+body.light-theme .settings-section .subtitle {
+  color: #6b7280;
+}
+
+body.light-theme .users-table th {
+  color: #6b7280;
+  border-bottom-color: #e5e5e7;
+}
+
+body.light-theme .users-table td {
+  border-bottom-color: #e5e5e7;
+}
+
+body.light-theme .add-user-form input,
+body.light-theme .add-user-form select,
+body.light-theme .role-select {
+  background: #f9fafb;
+  border-color: #e5e5e7;
+  color: #1a1a2e;
+}
+
+body.light-theme .btn-add {
+  background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+  color: #fff;
+}
+
+body.light-theme .btn-save {
+  background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+  color: #fff;
+}
+
+body.light-theme .btn-prompt {
+  background: transparent;
+  border-color: #6C5CE7;
+  color: #6C5CE7;
+}
+
+body.light-theme .btn-prompt:hover {
+  background: #6C5CE7;
+  color: #fff;
+}
+
+body.light-theme .btn-generate {
+  background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+  color: #fff;
+}
+
+body.light-theme .balance-badge {
+  background: rgba(108, 92, 231, 0.1);
+  color: #6C5CE7;
+  border-color: rgba(108, 92, 231, 0.3);
+}
+
+body.light-theme .user-badge {
+  background: rgba(108, 92, 231, 0.1);
+  color: #6C5CE7;
+  border-color: rgba(108, 92, 231, 0.3);
+}
+
+body.light-theme .role-badge {
+  border-color: rgba(108, 92, 231, 0.3);
+}
+
+body.light-theme .role-1 {
+  background: rgba(108, 92, 231, 0.1);
+  color: #6C5CE7;
+}
+
+body.light-theme .role-2 {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+body.light-theme .role-3 {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+body.light-theme .status-done {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+body.light-theme .status-progress {
+  background: rgba(234, 179, 8, 0.1);
+  color: #f59e0b;
+  border-color: rgba(234, 179, 8, 0.3);
+}
+
+body.light-theme .status-failed {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+body.light-theme .btn-danger {
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+body.light-theme .btn-danger:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+body.light-theme .btn-clear-draft {
+  border-color: #e5e5e7;
+  color: #6b7280;
+}
+
+body.light-theme .btn-clear-draft:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+body.light-theme footer {
+  border-top-color: #e5e5e7;
+  color: #6b7280;
+}
+
+body.light-theme .page-header p {
+  color: #6b7280;
+}
+
+body.light-theme .feature-card p,
+body.light-theme .step-card p,
+body.light-theme .example-info p {
+  color: #6b7280;
+}
+
+body.light-theme .form-group label {
+  color: #6b7280;
+}
+
+body.light-theme .hero p {
+  color: #6b7280;
+}
+
+body.light-theme .nav-links a {
+  color: #6b7280;
+}
+
+body.light-theme .nav-links a:hover {
+  color: #1a1a2e;
+}
+
+body.light-theme .nav-links a:last-child {
+  border-color: #6C5CE7;
+  color: #6C5CE7 !important;
+}
+
+body.light-theme .nav-links a:last-child:hover {
+  background: #6C5CE7;
+  color: #fff !important;
+}
+
+body.light-theme .logo {
+  background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+body.light-theme .sidebar-logo {
+  background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ===== Улучшенные SVG-иконки ===== */
+
+.icon-svg {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+  stroke: #6C5CE7;
+  stroke-width: 1.5;
+  fill: none;
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover .icon-svg {
+  transform: scale(1.1) rotate(-5deg);
+  stroke-width: 2;
+}
+
+.step-icon-svg {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 16px;
+  stroke: #6C5CE7;
+  stroke-width: 1.5;
+  fill: none;
+}
+
+/* ===== Адаптивность ===== */
+
+@media (max-width: 768px) {
+  .theme-switcher {
+    bottom: 16px;
+    right: 16px;
+  }
+  
+  .theme-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+}
