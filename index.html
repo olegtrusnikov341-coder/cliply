@@ -8,7 +8,7 @@
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://olegtrusnikov341-coder.github.io/cliply/">
 <meta name="theme-color" content="#6C5CE7">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Cliply">
 <link rel="manifest" href="manifest.json">
@@ -33,6 +33,7 @@
 <link rel="stylesheet" href="mobile.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { overflow-x: hidden; max-width: 100vw; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; }
   .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
   h1, h2 { font-family: 'Manrope', sans-serif; }
@@ -103,7 +104,7 @@
       </div>
       <div class="step-card">
         <div class="step-num">02</div>
-        <div class="step-icon">🤖</div>
+        <div class="step-icon"></div>
         <h3>AI создаёт магию</h3>
         <p>Нейросеть пишет сценарий, озвучку и анимирует каждый кадр</p>
       </div>
@@ -125,13 +126,32 @@
 <script src="transitions.js"></script>
 <script src="micro-animations.js"></script>
 <script>
+const burgerBtn = document.getElementById('burgerBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+const mobileAuthBtn = document.getElementById('mobileAuthBtn');
+
+if (burgerBtn && mobileMenu) {
+  burgerBtn.addEventListener('click', () => {
+    burgerBtn.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+    document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+  });
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      burgerBtn.classList.remove('active');
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  });
+}
+
 (async () => {
   const user = await getCurrentUser();
   const btn = document.getElementById('navAuthBtn');
-  const mobileBtn = document.getElementById('mobileAuthBtn');
-  if (user) {
-    if (btn) { btn.textContent = 'Создать'; btn.href = 'dashboard.html'; }
-    if (mobileBtn) { mobileBtn.textContent = 'Создать'; mobileBtn.href = 'dashboard.html'; }
+  if (user && btn) {
+    btn.textContent = 'Создать';
+    btn.href = 'dashboard.html';
+    if (mobileAuthBtn) { mobileAuthBtn.textContent = 'Создать'; mobileAuthBtn.href = 'dashboard.html'; }
   }
 })();
 
@@ -143,25 +163,15 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// Бургер-меню
-const burgerBtn = document.getElementById('burgerBtn');
-const mobileMenu = document.getElementById('mobileMenu');
-
-if (burgerBtn && mobileMenu) {
-  burgerBtn.addEventListener('click', () => {
-    burgerBtn.classList.toggle('active');
-    mobileMenu.classList.toggle('active');
-    document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
-  });
-  
-  mobileMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      burgerBtn.classList.remove('active');
-      mobileMenu.classList.remove('active');
-      document.body.style.overflow = '';
-    });
-  });
-}
+// Отключаем double-tap zoom на iOS
+let lastTouchEnd = 0;
+document.addEventListener('touchend', (e) => {
+  const now = Date.now();
+  if (now - lastTouchEnd <= 300) {
+    e.preventDefault();
+  }
+  lastTouchEnd = now;
+}, { passive: false });
 </script>
 </body>
 </html>
