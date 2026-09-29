@@ -27,10 +27,12 @@
 <link rel="stylesheet" href="transitions.css">
 <link rel="stylesheet" href="scrollbar.css">
 <link rel="stylesheet" href="micro-animations.css">
+<link rel="stylesheet" href="visual-effects.css">
 <script src="transitions.js"></script>
 <script src="micro-animations.js"></script>
 <script src="draft.js"></script>
 <script src="network.js"></script>
+<script src="theme-switcher.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; }
@@ -70,10 +72,6 @@
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
   }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.7; transform: scale(1.1); }
-  }
   .upload-icon { font-size: 48px; margin-bottom: 12px; transition: transform 0.3s; }
   .upload-text { color: #A0A0B0; font-size: 15px; }
   .upload-text strong { color: #fff; }
@@ -103,7 +101,7 @@
   .validation-errors.active { display: block; }
   .validation-errors ul { list-style: none; margin: 0; padding: 0; }
   .validation-errors li { color: #ef4444; font-size: 13px; padding: 4px 0; }
-  .validation-errors li::before { content: "⚠ "; }
+  .validation-errors li::before { content: " "; }
   .form-group { margin-bottom: 20px; }
   .form-group label { display: block; font-size: 14px; color: #A0A0B0; margin-bottom: 8px; font-weight: 500; }
   .form-group input, .form-group textarea, .form-group select { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 8px; padding: 12px 16px; color: #fff; font-size: 15px; font-family: inherit; }
@@ -164,18 +162,7 @@
   }
   .btn-clear-draft { background: transparent; border: 1px solid #27272a; color: #A0A0B0; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 4px; }
   .btn-clear-draft:hover { border-color: #ef4444; color: #ef4444; }
-  .offline-banner {
-    background: rgba(239, 68, 68, 0.1);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    color: #ef4444;
-    padding: 12px 20px;
-    border-radius: 8px;
-    margin-bottom: 24px;
-    display: none;
-    align-items: center;
-    gap: 12px;
-    font-size: 14px;
-  }
+  .offline-banner { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; padding: 12px 20px; border-radius: 8px; margin-bottom: 24px; display: none; align-items: center; gap: 12px; font-size: 14px; }
   .offline-banner.active { display: flex; }
   @media (max-width: 768px) {
     .layout { grid-template-columns: 1fr; }
@@ -196,7 +183,7 @@
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu" id="navMenu">
       <li><a href="dashboard.html" class="active">📊 Дашборд</a></li>
-      <li><a href="pricing.html">💎 Тарифы</a></li>
+      <li><a href="pricing.html"> Тарифы</a></li>
       <li><a href="settings.html">⚙️ Настройки</a></li>
     </ul>
     <div class="btn-logout" onclick="logout()">Выйти</div>
@@ -260,7 +247,7 @@
       <div class="videos-section-header">
         <h2>Ваши видео</h2>
         <div class="videos-controls">
-          <input type="text" id="searchInput" class="search-input" placeholder=" Поиск по названию...">
+          <input type="text" id="searchInput" class="search-input" placeholder="🔍 Поиск по названию...">
           <select id="statusFilter" class="filter-select">
             <option value="all">Все статусы</option>
             <option value="done">Готово</option>
@@ -283,23 +270,18 @@ let networkManager = null;
 async function initDashboard() {
   showVideoCardSkeleton('#projectsGrid', 4);
   
-  // Инициализируем Network Manager
   networkManager = new NetworkManager({
     onOffline: () => {
       document.getElementById('offlineBanner').classList.add('active');
       const dot = document.getElementById('onlineDot');
-      if (dot) {
-        dot.className = 'offline-dot';
-      }
+      if (dot) dot.className = 'offline-dot';
       const zone = document.getElementById('uploadZone');
       if (zone) zone.classList.add('disabled');
     },
     onOnline: () => {
       document.getElementById('offlineBanner').classList.remove('active');
       const dot = document.getElementById('onlineDot');
-      if (dot) {
-        dot.className = 'online-dot';
-      }
+      if (dot) dot.className = 'online-dot';
       const zone = document.getElementById('uploadZone');
       if (zone) zone.classList.remove('disabled');
       loadVideos();
@@ -307,7 +289,6 @@ async function initDashboard() {
   });
   window.networkManager = networkManager;
   
-  // Проверяем начальный статус
   if (!networkManager.isOnline) {
     document.getElementById('offlineBanner').classList.add('active');
     const dot = document.getElementById('onlineDot');
@@ -360,11 +341,7 @@ async function initDashboard() {
 async function loadVideos() {
   try {
     const { data, error } = await networkManager.supabaseRequest(
-      () => supabaseClient
-        .from('videos')
-        .select('*')
-        .eq('user_id', currentUser.id)
-        .order('created_at', { ascending: false }),
+      () => supabaseClient.from('videos').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }),
       'Загрузка видео'
     );
     
@@ -428,9 +405,7 @@ function renderVideos() {
           <div class="project-title">${video.product_name || 'Без названия'}</div>
           <div class="project-date">${date}</div>
           <div class="project-actions">
-            ${video.status === 'done' ? `
-              <button class="btn-small primary" onclick="downloadVideo('${video.id}')">Скачать</button>
-            ` : ''}
+            ${video.status === 'done' ? `<button class="btn-small primary" onclick="downloadVideo('${video.id}')">Скачать</button>` : ''}
             <button class="btn-small" onclick="regenerateVideo('${video.id}')">Перегенерировать</button>
             <button class="btn-small danger" onclick="deleteVideo('${video.id}')">Удалить</button>
           </div>
@@ -663,7 +638,7 @@ async function generatePrompt() {
   const originalText = textarea.value.trim();
   if (!originalText) { showToast('Сначала введите описание товара', 'warning'); return; }
   btn.disabled = true;
-  btn.textContent = ' Генерация...';
+  btn.textContent = '⏳ Генерация...';
   await new Promise(resolve => setTimeout(resolve, 2000));
   const enhancedPrompt = `${originalText}
 
@@ -688,7 +663,6 @@ async function generatePrompt() {
 async function startGeneration() {
   const btn = document.getElementById('btnGenerate');
   
-  // Rate limiting — защита от двойных кликов
   const allowed = networkManager.rateLimit('generate', () => {});
   if (!allowed) {
     btn.classList.add('rate-limited');
@@ -697,7 +671,6 @@ async function startGeneration() {
     return;
   }
   
-  // Проверка онлайн-статуса
   if (!networkManager.checkOnline()) {
     showToast('Генерация недоступна без интернета', 'error');
     return;
@@ -727,22 +700,18 @@ async function startGeneration() {
     return;
   }
   
-  btn.textContent = '⏳ Генерация...';
+  btn.textContent = ' Генерация...';
   btn.disabled = true;
   
   try {
     const { data: video, error } = await networkManager.supabaseRequest(
-      () => supabaseClient
-        .from('videos')
-        .insert({
-          user_id: currentUser.id,
-          product_name: description.split(',')[0] || 'Новое видео',
-          product_description: description,
-          scenario: scenario,
-          status: 'processing'
-        })
-        .select()
-        .single(),
+      () => supabaseClient.from('videos').insert({
+        user_id: currentUser.id,
+        product_name: description.split(',')[0] || 'Новое видео',
+        product_description: description,
+        scenario: scenario,
+        status: 'processing'
+      }).select().single(),
       'Создание видео'
     );
     
@@ -757,14 +726,10 @@ async function startGeneration() {
     allVideos.unshift(video);
     renderVideos();
     
-    // Имитация генерации с retry
     setTimeout(async () => {
       try {
         const { error: updateError } = await networkManager.supabaseRequest(
-          () => supabaseClient
-            .from('videos')
-            .update({ status: 'done', video_url: 'https://example.com/video.mp4' })
-            .eq('id', video.id),
+          () => supabaseClient.from('videos').update({ status: 'done', video_url: 'https://example.com/video.mp4' }).eq('id', video.id),
           'Обновление статуса видео'
         );
         
