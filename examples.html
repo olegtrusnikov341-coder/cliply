@@ -7,7 +7,7 @@
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://olegtrusnikov341-coder.github.io/cliply/examples.html">
 <meta name="theme-color" content="#6C5CE7">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Cliply">
 <link rel="manifest" href="manifest.json">
@@ -35,6 +35,7 @@
 <script src="micro-animations.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { overflow-x: hidden; max-width: 100vw; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; }
   .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
   h1, h2 { font-family: 'Manrope', sans-serif; }
@@ -55,10 +56,6 @@
   .example-info h3 { font-size: 18px; margin-bottom: 8px; }
   .example-info p { color: #A0A0B0; font-size: 14px; }
   footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
-  @media (max-width: 768px) {
-    .examples-grid { grid-template-columns: 1fr; }
-    .page-header h1 { font-size: 32px; }
-  }
 </style>
 </head>
 <body>
@@ -93,7 +90,7 @@
       <div class="example-info"><h3>Косметика</h3><p>Увлажняющий крем для лица</p></div>
     </div>
     <div class="example-card">
-      <div class="example-preview">🎧</div>
+      <div class="example-preview"></div>
       <div class="example-info"><h3>Электроника</h3><p>Беспроводные наушники</p></div>
     </div>
     <div class="example-card">
@@ -109,7 +106,7 @@
       <div class="example-info"><h3>БАДы и витамины</h3><p>Омега-3 капсулы</p></div>
     </div>
     <div class="example-card">
-      <div class="example-preview">⚽</div>
+      <div class="example-preview"></div>
       <div class="example-info"><h3>Спорт</h3><p>Фитнес-резинки набор</p></div>
     </div>
   </div>
@@ -144,6 +141,13 @@ if (burgerBtn && mobileMenu) {
     if (mobileAuthBtn) { mobileAuthBtn.textContent = 'Создать'; mobileAuthBtn.href = 'dashboard.html'; }
   }
 })();
+
+let lastTouchEnd = 0;
+document.addEventListener('touchend', (e) => {
+  const now = Date.now();
+  if (now - lastTouchEnd <= 300) e.preventDefault();
+  lastTouchEnd = now;
+}, { passive: false });
 </script>
 </body>
 </html>
