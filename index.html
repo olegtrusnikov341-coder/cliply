@@ -3,66 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <title>Cliply — AI-генерация видео для маркетплейсов | Reels для WB и Ozon</title>
-<meta name="description" content="Превратите 3 фото товара в продающее видео за 2 минуты. AI-сервис для селлеров Wildberries и Ozon. Без видеографа и студии.">
-<meta name="keywords" content="AI видео, генерация видео, маркетплейсы, Wildberries, Ozon, селлер, видео для карточки товара, Reels, автоматизация">
-<meta name="author" content="Cliply">
+<meta name="description" content="Превратите 3 фото товара в продающее видео за 2 минуты. AI-сервис для селлеров Wildberries и Ozon.">
+<meta name="keywords" content="AI видео, генерация видео, маркетплейсы, Wildberries, Ozon">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://olegtrusnikov341-coder.github.io/cliply/">
-
 <meta name="theme-color" content="#6C5CE7">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Cliply">
-<meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
-
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Cliply">
-<meta property="og:locale" content="ru_RU">
 <meta property="og:title" content="Cliply — AI-генерация видео для маркетплейсов">
-<meta property="og:description" content="Превратите 3 фото товара в продающее видео за 2 минуты. Для селлеров WB и Ozon.">
+<meta property="og:description" content="Превратите 3 фото товара в продающее видео за 2 минуты.">
 <meta property="og:url" content="https://olegtrusnikov341-coder.github.io/cliply/">
-<meta property="og:image" content="https://olegtrusnikov341-coder.github.io/cliply/favicon.svg">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Cliply — AI-генерация видео">
-<meta name="twitter:description" content="Превратите 3 фото товара в продающее видео за 2 минуты.">
-
 <link rel="preconnect" href="https://djvdklcahpqbjotukmxt.supabase.co">
-<link rel="dns-prefetch" href="https://djvdklcahpqbjotukmxt.supabase.co">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Cliply",
-  "applicationCategory": "BusinessApplication",
-  "operatingSystem": "Web",
-  "description": "AI-сервис для генерации продающих видео для селлеров маркетплейсов",
-  "offers": {
-    "@type": "Offer",
-    "price": "2990",
-    "priceCurrency": "RUB"
-  },
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.9",
-    "ratingCount": "127"
-  }
-}
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Cliply","applicationCategory":"BusinessApplication","operatingSystem":"Web","description":"AI-сервис для генерации продающих видео","offers":{"@type":"Offer","price":"2990","priceCurrency":"RUB"}}
 </script>
-
 <link rel="stylesheet" href="transitions.css">
 <link rel="stylesheet" href="scrollbar.css">
 <link rel="stylesheet" href="micro-animations.css">
 <link rel="stylesheet" href="visual-effects.css">
+<link rel="stylesheet" href="mobile.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; }
@@ -103,7 +71,18 @@
       <a href="examples.html">Примеры</a>
       <a href="login.html" id="navAuthBtn">Войти</a>
     </div>
+    <button class="burger" id="burgerBtn" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+  
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="features.html">Возможности</a>
+    <a href="pricing.html">Тарифы</a>
+    <a href="examples.html">Примеры</a>
+    <a href="login.html" id="mobileAuthBtn" class="btn-nav-mobile">Войти</a>
+  </div>
+  
   <section class="hero">
     <div>
       <span class="badge">🚀 AI-генерация видео для маркетплейсов</span>
@@ -130,7 +109,7 @@
       </div>
       <div class="step-card">
         <div class="step-num">03</div>
-        <div class="step-icon"></div>
+        <div class="step-icon">🎬</div>
         <h3>Скачай видео</h3>
         <p>Вертикальный ролик 9:16 с музыкой и титрами — готов к публикации</p>
       </div>
@@ -149,9 +128,10 @@
 (async () => {
   const user = await getCurrentUser();
   const btn = document.getElementById('navAuthBtn');
-  if (user && btn) {
-    btn.textContent = 'Создать';
-    btn.href = 'dashboard.html';
+  const mobileBtn = document.getElementById('mobileAuthBtn');
+  if (user) {
+    if (btn) { btn.textContent = 'Создать'; btn.href = 'dashboard.html'; }
+    if (mobileBtn) { mobileBtn.textContent = 'Создать'; mobileBtn.href = 'dashboard.html'; }
   }
 })();
 
@@ -159,7 +139,27 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/cliply/service-worker.js')
       .then(reg => console.log('[SW] Зарегистрирован:', reg.scope))
-      .catch(err => console.warn('[SW] Ошибка регистрации:', err));
+      .catch(err => console.warn('[SW] Ошибка:', err));
+  });
+}
+
+// Бургер-меню
+const burgerBtn = document.getElementById('burgerBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+
+if (burgerBtn && mobileMenu) {
+  burgerBtn.addEventListener('click', () => {
+    burgerBtn.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+    document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+  });
+  
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      burgerBtn.classList.remove('active');
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    });
   });
 }
 </script>
