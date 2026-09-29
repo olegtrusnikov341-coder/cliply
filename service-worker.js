@@ -1,5 +1,5 @@
-// Service Worker для Cliply — базовый офлайн-кеш
-const CACHE_NAME = 'cliply-v1';
+// Service Worker для Cliply — версия 2
+const CACHE_NAME = 'cliply-v2';
 const STATIC_ASSETS = [
   '/cliply/',
   '/cliply/index.html',
@@ -27,11 +27,12 @@ const STATIC_ASSETS = [
 
 // Установка — кешируем статические ресурсы
 self.addEventListener('install', (event) => {
+  console.log('[SW v2] Установка...');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[SW] Кеш создан:', CACHE_NAME);
+      console.log('[SW v2] Кеширую файлы:', STATIC_ASSETS.length);
       return cache.addAll(STATIC_ASSETS).catch(err => {
-        console.warn('[SW] Не все ресурсы закешены:', err);
+        console.warn('[SW v2] Не все ресурсы закешены:', err);
       });
     })
   );
@@ -40,10 +41,14 @@ self.addEventListener('install', (event) => {
 
 // Активация — удаляем старые кеши
 self.addEventListener('activate', (event) => {
+  console.log('[SW v2] Активация...');
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
-        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+        keys.filter(key => key !== CACHE_NAME).map(key => {
+          console.log('[SW v2] Удаляю старый кеш:', key);
+          return caches.delete(key);
+        })
       );
     })
   );
@@ -52,7 +57,6 @@ self.addEventListener('activate', (event) => {
 
 // Перехват запросов — сначала кеш, потом сеть
 self.addEventListener('fetch', (event) => {
-  // Не кешируем запросы к Supabase и внешним API
   if (event.request.url.includes('supabase.co') || 
       event.request.url.includes('cdn.jsdelivr.net') ||
       event.request.method !== 'GET') {
@@ -65,7 +69,6 @@ self.addEventListener('fetch', (event) => {
         return cachedResponse;
       }
       return fetch(event.request).then((response) => {
-        // Кешируем только успешные ответы наших страниц
         if (response && response.status === 200 && response.type === 'basic') {
           const responseClone = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
@@ -74,7 +77,6 @@ self.addEventListener('fetch', (event) => {
         }
         return response;
       }).catch(() => {
-        // Если сеть недоступна — показываем офлайн-страницу
         return caches.match('/cliply/index.html');
       });
     })
