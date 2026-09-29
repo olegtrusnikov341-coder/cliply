@@ -1,5 +1,5 @@
-// Service Worker для Cliply — версия 3
-const CACHE_NAME = 'cliply-v3';
+// Service Worker для Cliply — версия 4
+const CACHE_NAME = 'cliply-v4';
 const STATIC_ASSETS = [
   '/cliply/',
   '/cliply/index.html',
@@ -28,12 +28,12 @@ const STATIC_ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
-  console.log('[SW v3] Установка...');
+  console.log('[SW v4] Установка...');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[SW v3] Кеширую файлы:', STATIC_ASSETS.length);
+      console.log('[SW v4] Кеширую файлы:', STATIC_ASSETS.length);
       return cache.addAll(STATIC_ASSETS).catch(err => {
-        console.warn('[SW v3] Не все ресурсы закешены:', err);
+        console.warn('[SW v4] Не все ресурсы закешены:', err);
       });
     })
   );
@@ -41,12 +41,12 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('[SW v3] Активация...');
+  console.log('[SW v4] Активация...');
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
         keys.filter(key => key !== CACHE_NAME).map(key => {
-          console.log('[SW v3] Удаляю старый кеш:', key);
+          console.log('[SW v4] Удаляю старый кеш:', key);
           return caches.delete(key);
         })
       );
