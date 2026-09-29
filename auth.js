@@ -11,16 +11,30 @@ const ROLES = {
 };
 
 async function getCurrentUser() {
-  const { data: { user } } = await supabaseClient.auth.getUser();
-  if (!user) return null;
-  
-  const { data: profile } = await supabaseClient
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single();
-  
-  return { ...user, profile };
+  try {
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    if (!user) return null;
+    
+    const { data: profile, error } = await supabaseClient
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single();
+    
+    if (error) {
+      if (window.networkManager) {
+        window.networkManager.log('error', 'Ошибка загрузки профиля', error);
+      }
+      return null;
+    }
+    
+    return { ...user, profile };
+  } catch (error) {
+    if (window.networkManager) {
+      window.networkManager.log('error', 'getCurrentUser failed', error);
+    }
+    return null;
+  }
 }
 
 async function requireAuth() {
@@ -37,7 +51,9 @@ function requireRole(minLevel) {
     const user = await requireAuth();
     if (!user) return null;
     if (user.profile.role_level > minLevel) {
-      alert('Недостаточно прав доступа. Требуется уровень: ' + ROLES[minLevel].name);
+      if (window.showToast) {
+        showToast('Недостаточно прав доступа. Требуется уровень: ' + ROLES[minLevel].name, 'error');
+      }
       window.location.href = 'dashboard.html';
       return null;
     }
@@ -46,8 +62,17 @@ function requireRole(minLevel) {
 }
 
 async function logout() {
-  await supabaseClient.auth.signOut();
-  window.location.href = 'index.html';
+  try {
+    await supabaseClient.auth.signOut();
+    window.location.href = 'index.html';
+  } catch (error) {
+    if (window.showToast) {
+      showToast('Ошибка выхода: ' + error.message, 'error');
+    }
+    if (window.networkManager) {
+      window.networkManager.log('error', 'Logout failed', error);
+    }
+  }
 }
 
 window.supabaseClient = supabaseClient;
