@@ -1,5 +1,5 @@
-// Service Worker для Cliply — версия 5
-const CACHE_NAME = 'cliply-v5';
+// Service Worker для Cliply — версия 7
+const CACHE_NAME = 'cliply-v7';
 const STATIC_ASSETS = [
   '/cliply/',
   '/cliply/index.html',
@@ -29,12 +29,11 @@ const STATIC_ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
-  console.log('[SW v5] Установка...');
+  console.log('[SW v7] Установка...');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[SW v5] Кеширую файлы:', STATIC_ASSETS.length);
       return cache.addAll(STATIC_ASSETS).catch(err => {
-        console.warn('[SW v5] Не все ресурсы закешены:', err);
+        console.warn('[SW v7] Не все ресурсы закешены:', err);
       });
     })
   );
@@ -42,12 +41,12 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('[SW v5] Активация...');
+  console.log('[SW v7] Активация...');
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
         keys.filter(key => key !== CACHE_NAME).map(key => {
-          console.log('[SW v5] Удаляю старый кеш:', key);
+          console.log('[SW v7] Удаляю старый кеш:', key);
           return caches.delete(key);
         })
       );
@@ -65,9 +64,7 @@ self.addEventListener('fetch', (event) => {
   
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
+      if (cachedResponse) return cachedResponse;
       return fetch(event.request).then((response) => {
         if (response && response.status === 200 && response.type === 'basic') {
           const responseClone = response.clone();
