@@ -1,6 +1,5 @@
 /* ===== Мобильная оптимизация ===== */
 
-/* Бургер-кнопка */
 .burger {
   display: none;
   flex-direction: column;
@@ -21,19 +20,10 @@
   border-radius: 2px;
 }
 
-.burger.active span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
+.burger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.burger.active span:nth-child(2) { opacity: 0; }
+.burger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-.burger.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.burger.active span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
-}
-
-/* Мобильное меню */
 .mobile-menu {
   display: none;
   position: fixed;
@@ -49,9 +39,7 @@
   gap: 8px;
 }
 
-.mobile-menu.active {
-  display: flex;
-}
+.mobile-menu.active { display: flex; }
 
 .mobile-menu a {
   display: block;
@@ -65,9 +53,7 @@
 }
 
 .mobile-menu a:hover,
-.mobile-menu a:active {
-  background: rgba(108, 92, 231, 0.15);
-}
+.mobile-menu a:active { background: rgba(108, 92, 231, 0.15); }
 
 .mobile-menu .btn-nav-mobile {
   background: linear-gradient(135deg, #6C5CE7, #A29BFE);
@@ -75,15 +61,16 @@
   font-weight: 600;
 }
 
-/* ===== Общие мобильные стили ===== */
+/* ===== ОБЩИЕ МОБИЛЬНЫЕ СТИЛИ ===== */
 
 @media (max-width: 768px) {
-  .burger {
-    display: flex;
-  }
+  .burger { display: flex !important; }
+  .nav-links { display: none !important; }
   
-  .nav-links {
-    display: none !important;
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    -webkit-text-size-adjust: 100% !important;
   }
   
   .container {
@@ -91,71 +78,14 @@
     max-width: 100% !important;
   }
   
-  nav {
-    padding: 16px 0 !important;
+  nav { padding: 16px 0 !important; }
+  
+  img, svg, video {
+    max-width: 100% !important;
+    height: auto !important;
   }
   
-  .hero h1 {
-    font-size: 28px !important;
-    line-height: 1.2;
-  }
-  
-  .hero p {
-    font-size: 15px !important;
-  }
-  
-  .page-header h1 {
-    font-size: 26px !important;
-  }
-  
-  .page-header p {
-    font-size: 15px !important;
-    padding: 0 8px;
-  }
-  
-  .steps h2 {
-    font-size: 24px !important;
-  }
-  
-  .hero {
-    padding: 32px 0 !important;
-    gap: 24px;
-    grid-template-columns: 1fr !important;
-  }
-  
-  .steps {
-    padding: 32px 0 !important;
-  }
-  
-  .page-header {
-    padding: 32px 0 24px !important;
-  }
-  
-  .btn,
-  .btn-generate,
-  .btn-save,
-  .btn-add {
-    padding: 16px 24px !important;
-    font-size: 16px !important;
-    min-height: 48px;
-  }
-  
-  @media (hover: none) {
-    .step-card:hover,
-    .feature-card:hover,
-    .example-card:hover,
-    .pricing-card:hover,
-    .project-card:hover {
-      transform: none !important;
-      box-shadow: none !important;
-    }
-    
-    .btn:hover,
-    .btn-generate:hover,
-    .btn-save:hover {
-      transform: none !important;
-    }
-  }
+  a, button { touch-action: manipulation !important; }
   
   .toast-container {
     top: auto !important;
@@ -164,435 +94,290 @@
     left: 16px !important;
   }
   
-  .toast {
-    min-width: auto !important;
-    max-width: none !important;
-  }
+  .toast { min-width: auto !important; max-width: none !important; }
   
-  /* Предотвращаем горизонтальный скролл */
-  html, body {
-    overflow-x: hidden !important;
-    max-width: 100vw !important;
-  }
-  
-  img, svg, video {
-    max-width: 100% !important;
-    height: auto !important;
+  @media (hover: none) {
+    .step-card:hover, .feature-card:hover, .example-card:hover,
+    .pricing-card:hover, .project-card:hover,
+    .btn:hover, .btn-generate:hover, .btn-save:hover {
+      transform: none !important;
+      box-shadow: none !important;
+    }
   }
 }
 
-/* ===== Главная: шаги в 1 колонку ===== */
+/* ===== ГЛАВНАЯ: текст компактный, картинка под текстом ===== */
 
 @media (max-width: 768px) {
-  .steps-grid {
+  .hero {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 24px 0 !important;
+    gap: 20px !important;
     grid-template-columns: 1fr !important;
-    gap: 16px !important;
-    padding: 0 8px;
   }
   
-  .step-card {
-    padding: 24px !important;
+  .hero > div:first-child {
+    order: 1 !important;
+    width: 100% !important;
   }
   
   .preview-box {
-    max-width: 280px !important;
+    order: 2 !important;
+    max-width: 200px !important;
+    max-height: 280px !important;
     margin: 0 auto !important;
-    font-size: 80px !important;
+    font-size: 60px !important;
+    opacity: 0.6 !important;
+  }
+  
+  .hero h1 {
+    font-size: 26px !important;
+    line-height: 1.25 !important;
+    margin-bottom: 16px !important;
+  }
+  
+  .hero p {
+    font-size: 15px !important;
+    line-height: 1.5 !important;
+    margin-bottom: 20px !important;
   }
   
   .badge {
     font-size: 12px !important;
     padding: 6px 12px !important;
+    margin-bottom: 16px !important;
   }
+  
+  .btn {
+    padding: 14px 24px !important;
+    font-size: 15px !important;
+    width: 100% !important;
+    text-align: center !important;
+    display: block !important;
+  }
+  
+  .steps { padding: 24px 0 !important; }
+  
+  .steps h2 {
+    font-size: 22px !important;
+    margin-bottom: 20px !important;
+    padding: 0 8px;
+  }
+  
+  /* Шаги: 1 колонка, обычный скролл, БЕЗ горизонтального */
+  .steps-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    padding: 0 !important;
+    overflow-x: hidden !important;
+  }
+  
+  .step-card {
+    padding: 20px !important;
+  }
+  
+  .step-icon { font-size: 32px !important; margin-bottom: 12px !important; }
+  .step-card h3 { font-size: 18px !important; margin-bottom: 6px !important; }
+  .step-card p { font-size: 14px !important; line-height: 1.4 !important; }
+  .step-num { font-size: 12px !important; margin-bottom: 8px !important; }
+  
+  footer { padding: 24px 0 !important; font-size: 13px !important; }
 }
 
-/* ===== Тарифы: горизонтальный скролл ===== */
+/* ===== ТАРИФЫ: горизонтальный скролл ===== */
 
 @media (max-width: 768px) {
+  .page-header { padding: 24px 0 16px !important; }
+  .page-header h1 { font-size: 26px !important; margin-bottom: 8px !important; }
+  .page-header p { font-size: 14px !important; padding: 0 8px; }
+  
   .pricing-grid {
     display: flex !important;
     flex-direction: row !important;
     overflow-x: auto !important;
+    overflow-y: hidden !important;
     scroll-snap-type: x mandatory !important;
     -webkit-overflow-scrolling: touch !important;
-    gap: 16px !important;
-    padding: 24px 16px 40px !important;
-    grid-template-columns: none !important;
-    scroll-padding-left: 16px;
+    gap: 12px !important;
+    padding: 16px 8px 32px !important;
+    grid-template-columns: unset !important;
+    scroll-padding-left: 8px;
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
   }
   
+  .pricing-grid::-webkit-scrollbar { display: none !important; }
+  
   .pricing-card {
-    flex: 0 0 85% !important;
-    min-width: 280px !important;
-    max-width: 320px !important;
+    flex: 0 0 82% !important;
+    min-width: 260px !important;
+    max-width: 300px !important;
     scroll-snap-align: center !important;
-    padding: 24px !important;
+    padding: 20px !important;
     margin: 0 !important;
   }
   
-  .pricing-card.popular {
-    border-width: 2px !important;
-  }
-  
-  .price {
-    font-size: 36px !important;
-  }
-  
-  .pricing-card h3 {
-    font-size: 22px !important;
-  }
-  
-  .popular-badge {
-    font-size: 11px !important;
-    padding: 5px 12px !important;
-  }
-  
-  .features li {
-    font-size: 14px !important;
-    padding: 10px 0 !important;
-  }
+  .pricing-card h3 { font-size: 20px !important; margin-bottom: 6px !important; }
+  .price { font-size: 32px !important; margin: 12px 0 !important; }
+  .price span { font-size: 14px !important; }
+  .popular-badge { font-size: 11px !important; padding: 5px 12px !important; }
+  .features { margin: 16px 0 !important; }
+  .features li { font-size: 13px !important; padding: 8px 0 !important; }
+  .btn { padding: 12px 20px !important; font-size: 14px !important; }
 }
 
-/* ===== Примеры работ: 2 колонки ===== */
-
-@media (max-width: 768px) {
-  .examples-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 12px !important;
-    padding: 24px 8px 40px !important;
-  }
-  
-  .example-card {
-    padding: 0 !important;
-  }
-  
-  .example-preview {
-    height: 140px !important;
-    font-size: 60px !important;
-  }
-  
-  .example-info {
-    padding: 12px !important;
-  }
-  
-  .example-info h3 {
-    font-size: 14px !important;
-    margin-bottom: 4px !important;
-  }
-  
-  .example-info p {
-    font-size: 11px !important;
-    line-height: 1.3;
-  }
-}
-
-/* ===== Возможности: 1 колонка ===== */
+/* ===== ВОЗМОЖНОСТИ: 2 колонки ===== */
 
 @media (max-width: 768px) {
   .features-grid {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
-    padding: 24px 8px 40px !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    padding: 16px 4px 32px !important;
   }
   
-  .feature-card {
-    padding: 20px !important;
-  }
-  
-  .feature-icon {
-    font-size: 36px !important;
-    margin-bottom: 12px !important;
-  }
-  
-  .feature-card h3 {
-    font-size: 18px !important;
-    margin-bottom: 8px !important;
-  }
-  
-  .feature-card p {
-    font-size: 14px !important;
-  }
+  .feature-card { padding: 16px !important; }
+  .feature-icon { font-size: 28px !important; margin-bottom: 8px !important; }
+  .feature-card h3 { font-size: 15px !important; margin-bottom: 6px !important; line-height: 1.3; }
+  .feature-card p { font-size: 12px !important; line-height: 1.4 !important; }
 }
 
-/* ===== Дашборд: мобильная оптимизация ===== */
+/* ===== ПРИМЕРЫ: 2 колонки ===== */
 
 @media (max-width: 768px) {
-  .main {
-    padding: 16px !important;
+  .examples-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    padding: 16px 4px 32px !important;
   }
   
+  .example-card { padding: 0 !important; }
+  .example-preview { height: 100px !important; font-size: 40px !important; }
+  .example-info { padding: 10px !important; }
+  .example-info h3 { font-size: 13px !important; margin-bottom: 3px !important; }
+  .example-info p { font-size: 11px !important; line-height: 1.3; }
+}
+
+/* ===== ДАШБОРД ===== */
+
+@media (max-width: 768px) {
+  .main { padding: 12px !important; }
   .header {
-    margin-bottom: 24px;
-    padding-bottom: 16px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+    margin-bottom: 16px !important;
+    padding-bottom: 12px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
   }
-  
-  .header h1 {
-    font-size: 20px !important;
-  }
-  
-  .balance-badge {
-    font-size: 11px !important;
-    padding: 6px 12px !important;
-  }
-  
-  .create-card {
-    padding: 20px !important;
-    margin-bottom: 24px;
-  }
-  
-  .create-card h2 {
-    font-size: 18px !important;
-    margin-bottom: 16px;
-  }
-  
+  .header h1 { font-size: 18px !important; }
+  .balance-badge { font-size: 11px !important; padding: 6px 10px !important; }
+  .create-card { padding: 16px !important; margin-bottom: 16px !important; }
+  .create-card h2 { font-size: 17px !important; margin-bottom: 12px !important; }
   .create-card-header {
     flex-direction: column !important;
     align-items: flex-start !important;
-    gap: 12px !important;
-    margin-bottom: 16px !important;
-  }
-  
-  .upload-zone {
-    padding: 24px 16px !important;
-  }
-  
-  .upload-icon {
-    font-size: 36px !important;
-  }
-  
-  .upload-text {
-    font-size: 13px !important;
-  }
-  
-  .upload-hint {
-    font-size: 11px !important;
-  }
-  
-  .prompt-row {
-    flex-direction: column !important;
-  }
-  
-  .btn-prompt {
-    width: 100% !important;
-    text-align: center;
-  }
-  
-  .photo-preview-container {
-    grid-template-columns: repeat(3, 1fr) !important;
     gap: 8px !important;
+    margin-bottom: 12px !important;
   }
-  
-  .photo-preview {
-    aspect-ratio: 1;
-  }
-  
-  .projects-grid {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
-  }
-  
+  .upload-zone { padding: 20px 12px !important; }
+  .upload-icon { font-size: 32px !important; }
+  .upload-text { font-size: 13px !important; }
+  .upload-hint { font-size: 11px !important; }
+  .prompt-row { flex-direction: column !important; }
+  .btn-prompt { width: 100% !important; text-align: center !important; }
+  .photo-preview-container { grid-template-columns: repeat(3, 1fr) !important; gap: 6px !important; }
+  .projects-grid { grid-template-columns: 1fr !important; gap: 10px !important; }
   .videos-section-header {
     flex-direction: column !important;
     align-items: stretch !important;
-    gap: 12px !important;
+    gap: 8px !important;
   }
-  
-  .videos-section h2 {
-    font-size: 18px !important;
-  }
-  
-  .search-input,
-  .filter-select {
-    width: 100% !important;
-  }
-  
-  .offline-banner {
-    font-size: 12px !important;
-    padding: 10px 14px !important;
-  }
-  
-  .sidebar {
-    display: none !important;
-  }
-  
-  .layout {
-    grid-template-columns: 1fr !important;
-  }
-  
+  .videos-section h2 { font-size: 17px !important; }
+  .search-input, .filter-select { width: 100% !important; }
+  .offline-banner { font-size: 12px !important; padding: 8px 12px !important; }
+  .sidebar { display: none !important; }
+  .layout { grid-template-columns: 1fr !important; }
   .mobile-header {
     display: flex !important;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px;
-    background: #141414;
-    border-bottom: 1px solid #27272a;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 12px 16px !important;
+    background: #141414 !important;
+    border-bottom: 1px solid #27272a !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 100 !important;
   }
-  
   .mobile-header .logo {
-    font-weight: 800;
-    font-size: 20px;
-    font-family: 'Manrope';
-    background: linear-gradient(135deg, #6C5CE7, #A29BFE);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-decoration: none;
-  }
-  
-  .form-group textarea {
-    min-height: 120px !important;
-    font-size: 16px !important;
-  }
-  
-  .form-group input,
-  .form-group select {
-    font-size: 16px !important;
-  }
-}
-
-/* ===== Админка: мобильная оптимизация ===== */
-
-@media (max-width: 768px) {
-  .admin-section {
-    padding: 20px !important;
-  }
-  
-  .admin-section h2 {
+    font-weight: 800 !important;
     font-size: 18px !important;
-    margin-bottom: 16px !important;
+    font-family: 'Manrope' !important;
+    background: linear-gradient(135deg, #6C5CE7, #A29BFE) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    text-decoration: none !important;
   }
-  
-  .add-user-form {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
-  }
-  
-  .users-table {
-    display: block;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  .users-table th,
-  .users-table td {
-    padding: 12px 8px !important;
-    font-size: 13px !important;
-    white-space: nowrap;
-  }
-  
-  .role-select {
-    font-size: 11px !important;
-    padding: 4px 8px !important;
-  }
-  
-  .btn-small {
-    padding: 6px 8px !important;
-    font-size: 11px !important;
-  }
+  .form-group textarea { min-height: 100px !important; font-size: 16px !important; }
+  .form-group input, .form-group select { font-size: 16px !important; }
+  .btn-generate { padding: 14px !important; font-size: 15px !important; }
 }
 
-/* ===== Настройки: мобильная оптимизация ===== */
+/* ===== АДМИНКА ===== */
 
 @media (max-width: 768px) {
-  .settings-section {
-    padding: 20px !important;
-  }
-  
-  .settings-section h2 {
-    font-size: 18px !important;
-  }
-  
-  .form-group input,
-  .form-group textarea {
-    padding: 14px 16px !important;
-    font-size: 16px !important;
-  }
+  .admin-section { padding: 16px !important; }
+  .admin-section h2 { font-size: 17px !important; margin-bottom: 12px !important; }
+  .add-user-form { grid-template-columns: 1fr !important; gap: 10px !important; }
+  .users-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .users-table th, .users-table td { padding: 10px 6px !important; font-size: 12px !important; white-space: nowrap; }
+  .role-select { font-size: 11px !important; padding: 4px 6px !important; }
+  .btn-small { padding: 6px 8px !important; font-size: 11px !important; }
 }
 
-/* ===== Вход: мобильная оптимизация ===== */
+/* ===== НАСТРОЙКИ ===== */
 
 @media (max-width: 768px) {
-  .login-container {
-    padding: 16px !important;
-  }
-  
-  .logo {
-    font-size: 28px !important;
-    margin-bottom: 24px !important;
-  }
-  
-  .form {
-    padding: 24px !important;
-  }
-  
-  .tab {
-    padding: 14px !important;
-    font-size: 15px !important;
-  }
+  .settings-section { padding: 16px !important; }
+  .settings-section h2 { font-size: 17px !important; }
+  .form-group input, .form-group textarea { padding: 12px 14px !important; font-size: 16px !important; }
 }
 
-/* ===== Улучшения для тач-устройств ===== */
+/* ===== ВХОД ===== */
+
+@media (max-width: 768px) {
+  .login-container { padding: 16px !important; }
+  .logo { font-size: 28px !important; margin-bottom: 20px !important; }
+  .form { padding: 20px !important; }
+  .tab { padding: 12px !important; font-size: 14px !important; }
+  .form-group input { padding: 12px 14px !important; font-size: 16px !important; }
+  .btn { padding: 14px !important; font-size: 15px !important; }
+}
+
+/* ===== ТАЧ-УСТРОЙСТВА ===== */
 
 @media (hover: none) and (pointer: coarse) {
-  .btn-small {
-    min-height: 40px;
-    padding: 10px 12px;
-  }
-  
-  .photo-remove {
-    width: 28px !important;
-    height: 28px !important;
-    opacity: 1 !important;
-  }
-  
-  a, button {
-    touch-action: manipulation;
-  }
+  .btn-small { min-height: 40px; padding: 10px 12px; }
+  .photo-remove { width: 28px !important; height: 28px !important; opacity: 1 !important; }
 }
 
-/* ===== Горизонтальная ориентация телефона ===== */
+/* ===== LANDSCAPE ===== */
 
 @media (max-width: 768px) and (orientation: landscape) {
-  .hero {
-    padding: 16px 0 !important;
-  }
-  
-  .hero h1 {
-    font-size: 24px !important;
-  }
-  
-  .preview-box {
-    max-height: 200px !important;
-  }
-  
-  .steps-grid {
-    grid-template-columns: repeat(3, 1fr) !important;
-  }
+  .hero { padding: 12px 0 !important; }
+  .hero h1 { font-size: 22px !important; }
+  .preview-box { max-height: 180px !important; }
+  .steps-grid { grid-template-columns: repeat(3, 1fr) !important; }
 }
 
-/* ===== Очень маленькие экраны ===== */
+/* ===== МАЛЕНЬКИЕ ЭКРАНЫ ===== */
 
 @media (max-width: 360px) {
-  .hero h1 {
-    font-size: 24px !important;
-  }
-  
-  .btn {
-    padding: 14px 20px !important;
-    font-size: 14px !important;
-  }
-  
-  .step-card,
-  .feature-card {
-    padding: 20px !important;
-  }
-  
-  .pricing-card {
-    min-width: 260px !important;
-  }
+  .hero h1 { font-size: 22px !important; }
+  .btn { padding: 12px 18px !important; font-size: 14px !important; }
+  .step-card, .feature-card { padding: 16px !important; }
+  .pricing-card { min-width: 240px !important; }
+  .features-grid, .examples-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
 }
