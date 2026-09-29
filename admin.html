@@ -2,24 +2,20 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Админ-панель Cliply — управление пользователями</title>
-<meta name="description" content="Админ-панель Cliply: управление пользователями, ролями и доступом.">
+<title>Админ-панель Cliply</title>
+<meta name="description" content="Админ-панель Cliply: управление пользователями.">
 <meta name="robots" content="noindex, nofollow">
-
 <meta name="theme-color" content="#6C5CE7">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Cliply">
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
-
 <link rel="preconnect" href="https://djvdklcahpqbjotukmxt.supabase.co">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="auth.js"></script>
@@ -28,9 +24,10 @@
 <link rel="stylesheet" href="transitions.css">
 <link rel="stylesheet" href="scrollbar.css">
 <link rel="stylesheet" href="micro-animations.css">
+<link rel="stylesheet" href="visual-effects.css">
+<link rel="stylesheet" href="mobile.css">
 <script src="transitions.js"></script>
 <script src="micro-animations.js"></script>
- <link rel="stylesheet" href="visual-effects.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; }
@@ -42,7 +39,7 @@
   .nav-menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; transition: 0.2s; }
   .nav-menu a:hover { background: #1f1f23; color: #fff; }
   .nav-menu a.active { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; border: 1px solid rgba(108, 92, 231, 0.3); }
-  .btn-logout { padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; border: 1px solid #27272a; text-align: center; transition: 0.2s; cursor: pointer; }
+  .btn-logout { padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; border: 1px solid #27272a; text-align: center; transition: 0.2s; cursor: pointer; margin-top: 16px; }
   .btn-logout:hover { border-color: #6C5CE7; color: #fff; }
   .main { padding: 32px 48px; }
   .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid #27272a; }
@@ -67,15 +64,39 @@
   .btn-danger { border-color: rgba(239, 68, 68, 0.3); color: #ef4444; }
   .btn-danger:hover { background: rgba(239, 68, 68, 0.1); border-color: #ef4444; }
   select.role-select { background: #0A0A0F; border: 1px solid #27272a; border-radius: 6px; padding: 6px 12px; color: #fff; font-size: 12px; cursor: pointer; }
+  .mobile-header { display: none; }
   @media (max-width: 768px) {
     .layout { grid-template-columns: 1fr; }
-    .sidebar { display: none; }
-    .main { padding: 20px; }
-    .add-user-form { grid-template-columns: 1fr; }
+    .sidebar { display: none !important; }
+    .main { padding: 16px !important; }
+    .mobile-header { display: flex !important; justify-content: space-between; align-items: center; padding: 16px; background: #141414; border-bottom: 1px solid #27272a; position: sticky; top: 0; z-index: 100; }
+    .mobile-header .logo { font-weight: 800; font-size: 20px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+    .admin-section { padding: 20px !important; }
+    .admin-section h2 { font-size: 18px !important; margin-bottom: 16px !important; }
+    .add-user-form { grid-template-columns: 1fr !important; gap: 12px !important; }
+    .users-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .users-table th, .users-table td { padding: 12px 8px !important; font-size: 13px !important; white-space: nowrap; }
+    .role-select { font-size: 11px !important; padding: 4px 8px !important; }
+    .btn-small { padding: 6px 8px !important; font-size: 11px !important; }
   }
 </style>
 </head>
 <body>
+<div class="mobile-header" id="mobileHeader">
+  <a href="index.html" class="logo">Cliply</a>
+  <button class="burger" id="burgerBtn" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="dashboard.html">📊 Дашборд</a>
+  <a href="admin.html" class="active">👑 Админ-панель</a>
+  <a href="settings.html">️ Настройки</a>
+  <a href="index.html" class="btn-nav-mobile">← На главную</a>
+  <a href="#" onclick="logout(); return false;" style="color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); margin-top: 16px;">Выйти</a>
+</div>
+
 <div class="layout">
   <aside class="sidebar">
     <a href="index.html" class="sidebar-logo">Cliply</a>
@@ -94,7 +115,7 @@
     <div class="admin-section">
       <h2>Добавить участника команды</h2>
       <div class="add-user-form">
-        <input type="text" id="newUserName" placeholder="Имя (напр. Дмитрий Культиков)">
+        <input type="text" id="newUserName" placeholder="Имя">
         <input type="email" id="newUserEmail" placeholder="Email">
         <select id="newUserRole">
           <option value="3">Moderator (ур. 3)</option>
@@ -103,7 +124,7 @@
         </select>
         <button class="btn-add" onclick="addUser()">Создать</button>
       </div>
-      <p style="color: #A0A0B0; font-size: 13px;">Система сгенерирует временный пароль. Покажите его участнику, он сможет сменить его в настройках.</p>
+      <p style="color: #A0A0B0; font-size: 13px;">Система сгенерирует временный пароль.</p>
     </div>
     <div class="admin-section">
       <h2>Пользователи системы</h2>
@@ -125,6 +146,7 @@
 </div>
 <script>
 let currentUser = null;
+
 async function init() {
   const checkOwner = requireRole(1);
   currentUser = await checkOwner();
@@ -133,7 +155,25 @@ async function init() {
   document.getElementById('userBadge').textContent = `${currentUser.profile.full_name || currentUser.email} • ${role.name}`;
   await loadUsers();
   if (window.microAnimations) window.microAnimations.initRipple();
+  
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (burgerBtn && mobileMenu) {
+    burgerBtn.addEventListener('click', () => {
+      burgerBtn.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+      document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        burgerBtn.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+    });
+  }
 }
+
 async function loadUsers() {
   const { data, error } = await supabaseClient.from('profiles').select('*').order('created_at', { ascending: false });
   if (error) { showToast('Ошибка загрузки: ' + error.message, 'error'); return; }
@@ -161,6 +201,7 @@ async function loadUsers() {
     tbody.appendChild(tr);
   });
 }
+
 async function addUser() {
   const name = document.getElementById('newUserName').value.trim();
   const email = document.getElementById('newUserEmail').value.trim();
@@ -176,6 +217,7 @@ async function addUser() {
   document.getElementById('newUserEmail').value = '';
   await loadUsers();
 }
+
 async function changeRole(userId, newRole) {
   if (!confirm('Изменить уровень доступа?')) return;
   const { error } = await supabaseClient.from('profiles').update({ role_level: parseInt(newRole) }).eq('id', userId);
@@ -183,6 +225,7 @@ async function changeRole(userId, newRole) {
   showToast('Уровень доступа изменён', 'success');
   await loadUsers();
 }
+
 async function deleteUser(userId) {
   if (!confirm('Удалить этого пользователя навсегда?')) return;
   const { error } = await supabaseClient.rpc('delete_user_by_id', { p_user_id: userId });
@@ -190,6 +233,7 @@ async function deleteUser(userId) {
   showToast('Пользователь удалён', 'success');
   await loadUsers();
 }
+
 init();
 </script>
 </body>
