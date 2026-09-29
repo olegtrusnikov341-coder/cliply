@@ -62,10 +62,11 @@
 <link rel="stylesheet" href="transitions.css">
 <link rel="stylesheet" href="scrollbar.css">
 <link rel="stylesheet" href="micro-animations.css">
+<link rel="stylesheet" href="visual-effects.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; }
-  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; position: relative; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
   h1, h2 { font-family: 'Manrope', sans-serif; }
   nav { padding: 24px 0; display: flex; justify-content: space-between; align-items: center; }
   .logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
@@ -79,7 +80,7 @@
   .hero p { font-size: 18px; color: #A0A0B0; margin-bottom: 32px; }
   .btn { display: inline-block; background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; transition: all 0.2s; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
-  .preview-box { background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 20px; aspect-ratio: 9/16; max-height: 520px; display: flex; align-items: center; justify-content: center; font-size: 100px; box-shadow: 0 30px 80px rgba(108, 92, 231, 0.3); border: 1px solid rgba(108, 92, 231, 0.2); }
+  .preview-box { background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 20px; aspect-ratio: 9/16; max-height: 520px; display: flex; align-items: center; justify-content: center; font-size: 100px; box-shadow: 0 30px 80px rgba(108, 92, 231, 0.3); border: 1px solid rgba(108, 92, 231, 0.2); position: relative; z-index: 1; }
   .steps { padding: 80px 0; }
   .steps h2 { font-size: 40px; text-align: center; margin-bottom: 48px; }
   .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
@@ -89,10 +90,11 @@
   .step-icon { font-size: 40px; margin-bottom: 16px; }
   .step-card h3 { font-size: 20px; margin-bottom: 8px; }
   .step-card p { color: #A0A0B0; font-size: 15px; }
-  footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
+  footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; position: relative; z-index: 1; }
 </style>
 </head>
 <body>
+<div class="animated-gradient-bg"></div>
 <div class="container">
   <nav>
     <a href="index.html" class="logo">Cliply</a>
@@ -104,6 +106,8 @@
     </div>
   </nav>
   <section class="hero">
+    <div class="grid-background"></div>
+    <div class="particles-container" id="particles"></div>
     <div>
       <span class="badge">🚀 AI-генерация видео для маркетплейсов</span>
       <h1>Преврати 3 фото товара в продающее видео за 2 минуты</h1>
@@ -123,7 +127,7 @@
       </div>
       <div class="step-card">
         <div class="step-num">02</div>
-        <div class="step-icon">🤖</div>
+        <div class="step-icon"></div>
         <h3>AI создаёт магию</h3>
         <p>Нейросеть пишет сценарий, озвучку и анимирует каждый кадр</p>
       </div>
@@ -144,6 +148,7 @@
 <script src="toast.js"></script>
 <script src="transitions.js"></script>
 <script src="micro-animations.js"></script>
+<script src="theme-switcher.js"></script>
 <script>
 (async () => {
   const user = await getCurrentUser();
@@ -161,6 +166,25 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.warn('[SW] Ошибка регистрации:', err));
   });
 }
+
+// Создание частиц
+function createParticles() {
+  const container = document.getElementById('particles');
+  if (!container) return;
+  
+  const particleCount = 20;
+  
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.animationDelay = Math.random() * 20 + 's';
+    particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+    container.appendChild(particle);
+  }
+}
+
+createParticles();
 </script>
 </body>
 </html>
