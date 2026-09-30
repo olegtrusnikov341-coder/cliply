@@ -1,5 +1,5 @@
-// Service Worker для Cliply — версия 7
-const CACHE_NAME = 'cliply-v7';
+// Service Worker для Cliply — версия 8
+const CACHE_NAME = 'cliply-v8';
 const STATIC_ASSETS = [
   '/cliply/',
   '/cliply/index.html',
@@ -29,11 +29,11 @@ const STATIC_ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
-  console.log('[SW v7] Установка...');
+  console.log('[SW v8] Установка...');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(STATIC_ASSETS).catch(err => {
-        console.warn('[SW v7] Не все ресурсы закешены:', err);
+        console.warn('[SW v8] Не все ресурсы закешены:', err);
       });
     })
   );
@@ -41,12 +41,12 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('[SW v7] Активация...');
+  console.log('[SW v8] Активация...');
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
         keys.filter(key => key !== CACHE_NAME).map(key => {
-          console.log('[SW v7] Удаляю старый кеш:', key);
+          console.log('[SW v8] Удаляю старый кеш:', key);
           return caches.delete(key);
         })
       );
