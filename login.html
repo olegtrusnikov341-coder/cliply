@@ -2,10 +2,9 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Вход в Cliply</title>
-<meta name="description" content="Войдите в личный кабинет Cliply.">
-<meta name="robots" content="noindex, follow">
-<link rel="canonical" href="https://olegtrusnikov341-coder.github.io/cliply/login.html">
+<title>Вход в Cliply — AI-генерация видео для селлеров</title>
+<meta name="description" content="Войдите или зарегистрируйтесь в Cliply для создания продающих видео.">
+<meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#6C5CE7">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -13,9 +12,6 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="favicon.svg">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Вход в Cliply">
-<meta property="og:url" content="https://olegtrusnikov341-coder.github.io/cliply/login.html">
 <link rel="preconnect" href="https://djvdklcahpqbjotukmxt.supabase.co">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,122 +30,339 @@
 <script src="micro-animations.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-  .login-container { width: 100%; max-width: 440px; padding: 24px; }
-  .logo { text-align: center; font-weight: 800; font-size: 32px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 32px; text-decoration: none; display: block;}
-  .tabs { display: flex; gap: 8px; margin-bottom: 24px; background: #15151F; padding: 4px; border-radius: 12px; }
-  .tab { flex: 1; padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; color: #A0A0B0; font-weight: 500; transition: 0.2s; }
-  .tab.active { background: #6C5CE7; color: #fff; }
-  .form { background: #15151F; padding: 32px; border-radius: 16px; border: 1px solid #1f1f2e; }
-  .form-group { margin-bottom: 16px; }
+  body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; display: flex; flex-direction: column; }
+  .auth-container { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
+  .auth-card { background: #141414; border: 1px solid #27272a; border-radius: 20px; padding: 48px; max-width: 440px; width: 100%; }
+  .auth-logo { text-align: center; margin-bottom: 32px; }
+  .auth-logo a { font-weight: 800; font-size: 32px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+  .auth-tabs { display: flex; gap: 8px; margin-bottom: 32px; background: #0A0A0F; border-radius: 12px; padding: 4px; }
+  .auth-tab { flex: 1; padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; font-size: 15px; font-weight: 500; color: #A0A0B0; transition: all 0.2s; border: none; background: transparent; }
+  .auth-tab.active { background: #6C5CE7; color: #fff; }
+  .auth-tab:hover:not(.active) { color: #fff; }
+  .auth-form { display: none; }
+  .auth-form.active { display: block; }
+  .form-group { margin-bottom: 20px; }
   .form-group label { display: block; font-size: 14px; color: #A0A0B0; margin-bottom: 8px; font-weight: 500; }
-  .form-group input { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 8px; padding: 12px 16px; color: #fff; font-size: 15px; font-family: inherit; }
+  .form-group input { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 10px; padding: 14px 16px; color: #fff; font-size: 15px; font-family: inherit; transition: border-color 0.2s; }
   .form-group input:focus { outline: none; border-color: #6C5CE7; }
-  .btn { width: 100%; background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 14px; border-radius: 12px; border: none; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-top: 8px; }
-  .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
+  .form-group input::placeholder { color: #666; }
+  .btn-submit { width: 100%; background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 16px; border-radius: 12px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); margin-top: 8px; }
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-submit.loading { position: relative; color: transparent; }
+  .btn-submit.loading::after { content: ''; position: absolute; top: 50%; left: 50%; width: 20px; height: 20px; margin: -10px 0 0 -10px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .auth-footer { text-align: center; margin-top: 24px; font-size: 14px; color: #A0A0B0; }
+  .auth-footer a { color: #6C5CE7; text-decoration: none; }
+  .auth-footer a:hover { text-decoration: underline; }
+  .forgot-password { text-align: right; margin-top: -12px; margin-bottom: 20px; }
+  .forgot-password a { color: #6C5CE7; font-size: 13px; text-decoration: none; }
+  .forgot-password a:hover { text-decoration: underline; }
   .back-link { text-align: center; margin-top: 24px; }
-  .back-link a { color: #A0A0B0; text-decoration: none; font-size: 14px; }
+  .back-link a { color: #A0A0B0; font-size: 14px; text-decoration: none; }
   .back-link a:hover { color: #fff; }
+  .success-message { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 10px; padding: 16px; color: #34d399; font-size: 14px; text-align: center; margin-bottom: 20px; display: none; }
+  .success-message.active { display: block; }
+  .error-message { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 10px; padding: 16px; color: #ef4444; font-size: 14px; text-align: center; margin-bottom: 20px; display: none; }
+  .error-message.active { display: block; }
+  @media (max-width: 768px) {
+    .auth-card { padding: 32px 24px; }
+    .auth-logo a { font-size: 28px; }
+  }
 </style>
 </head>
 <body>
-<div class="login-container">
-  <a href="index.html" class="logo">Cliply</a>
-  
-  <div class="tabs">
-    <div class="tab active" onclick="switchTab('login')">Вход</div>
-    <div class="tab" onclick="switchTab('register')">Регистрация</div>
-  </div>
-  
-  <div class="form">
-    <div id="loginForm">
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="loginEmail" placeholder="your@email.com">
-      </div>
-      <div class="form-group">
-        <label>Пароль</label>
-        <input type="password" id="loginPassword" placeholder="Введите пароль">
-      </div>
-      <button class="btn" onclick="handleLogin()">Войти</button>
+
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <a href="index.html">Cliply</a>
     </div>
     
-    <div id="registerForm" style="display:none;">
-      <div class="form-group">
-        <label>Имя</label>
-        <input type="text" id="regName" placeholder="Ваше имя">
-      </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="login">Вход</button>
+      <button class="auth-tab" data-tab="register">Регистрация</button>
+    </div>
+    
+    <!-- Форма входа -->
+    <form class="auth-form active" id="loginForm">
+      <div class="error-message" id="loginError"></div>
       <div class="form-group">
         <label>Email</label>
-        <input type="email" id="regEmail" placeholder="your@email.com">
+        <input type="email" id="loginEmail" placeholder="your@email.com" required>
       </div>
       <div class="form-group">
         <label>Пароль</label>
-        <input type="password" id="regPassword" placeholder="Минимум 6 символов">
+        <input type="password" id="loginPassword" placeholder="••••••••" required>
       </div>
-      <button class="btn" onclick="handleRegister()">Зарегистрироваться</button>
-    </div>
-  </div>
-  
-  <div class="back-link">
-    <a href="index.html">← Вернуться на главную</a>
+      <div class="forgot-password">
+        <a href="#" id="showForgot">Забыли пароль?</a>
+      </div>
+      <button type="submit" class="btn-submit" id="loginBtn">Войти</button>
+    </form>
+    
+    <!-- Форма регистрации -->
+    <form class="auth-form" id="registerForm">
+      <div class="error-message" id="registerError"></div>
+      <div class="form-group">
+        <label>Имя</label>
+        <input type="text" id="registerName" placeholder="Ваше имя" required>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="registerEmail" placeholder="your@email.com" required>
+      </div>
+      <div class="form-group">
+        <label>Пароль</label>
+        <input type="password" id="registerPassword" placeholder="Минимум 6 символов" required minlength="6">
+      </div>
+      <button type="submit" class="btn-submit" id="registerBtn">Зарегистрироваться</button>
+      <div class="auth-footer">
+        Регистрируясь, вы соглашаетесь с условиями использования
+      </div>
+    </form>
+    
+    <!-- Форма восстановления пароля -->
+    <form class="auth-form" id="forgotForm">
+      <div class="success-message" id="forgotSuccess">
+        ✓ Ссылка для сброса пароля отправлена на ваш email
+      </div>
+      <div class="error-message" id="forgotError"></div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="forgotEmail" placeholder="your@email.com" required>
+      </div>
+      <button type="submit" class="btn-submit" id="forgotBtn">Отправить ссылку</button>
+      <div class="back-link">
+        <a href="#" id="backToLogin">← Вернуться ко входу</a>
+      </div>
+    </form>
   </div>
 </div>
 
 <script>
-function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
-  if (tab === 'login') {
-    document.getElementById('loginForm').style.display = 'block';
-    document.getElementById('registerForm').style.display = 'none';
+// Переключение вкладок
+const tabs = document.querySelectorAll('.auth-tab');
+const forms = document.querySelectorAll('.auth-form');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.tab;
+    tabs.forEach(t => t.classList.remove('active'));
+    forms.forEach(f => f.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(target + 'Form').classList.add('active');
+    clearErrors();
+  });
+});
+
+// Показать форму восстановления пароля
+document.getElementById('showForgot').addEventListener('click', (e) => {
+  e.preventDefault();
+  tabs.forEach(t => t.classList.remove('active'));
+  forms.forEach(f => f.classList.remove('active'));
+  document.getElementById('forgotForm').classList.add('active');
+  clearErrors();
+});
+
+// Вернуться ко входу
+document.getElementById('backToLogin').addEventListener('click', (e) => {
+  e.preventDefault();
+  tabs.forEach(t => t.classList.remove('active'));
+  forms.forEach(f => f.classList.remove('active'));
+  tabs[0].classList.add('active');
+  document.getElementById('loginForm').classList.add('active');
+  clearErrors();
+});
+
+function clearErrors() {
+  document.querySelectorAll('.error-message, .success-message').forEach(el => {
+    el.classList.remove('active');
+    el.textContent = '';
+  });
+}
+
+function showError(elementId, message) {
+  const el = document.getElementById(elementId);
+  el.textContent = message;
+  el.classList.add('active');
+}
+
+function setLoading(btnId, loading) {
+  const btn = document.getElementById(btnId);
+  if (loading) {
+    btn.classList.add('loading');
+    btn.disabled = true;
   } else {
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('registerForm').style.display = 'block';
+    btn.classList.remove('loading');
+    btn.disabled = false;
   }
 }
 
-async function handleLogin() {
+// Вход
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  clearErrors();
+  
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
-  if (!email || !password) { showToast('Заполните все поля', 'error'); return; }
   
-  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-  if (error) {
-    showToast(error.message === 'Invalid login credentials' ? 'Неверный email или пароль' : error.message, 'error');
+  if (!email || !password) {
+    showError('loginError', 'Заполните все поля');
     return;
   }
-  window.location.href = 'dashboard.html';
-}
-
-async function handleRegister() {
-  const name = document.getElementById('regName').value.trim();
-  const email = document.getElementById('regEmail').value.trim();
-  const password = document.getElementById('regPassword').value;
-  if (!name || !email || !password) { showToast('Заполните все поля', 'error'); return; }
-  if (password.length < 6) { showToast('Пароль должен содержать минимум 6 символов', 'error'); return; }
   
-  const { data, error } = await supabaseClient.auth.signUp({
-    email, password, options: { data: { full_name: name } }
-  });
-  if (error) { showToast(error.message, 'error'); return; }
+  setLoading('loginBtn', true);
   
-  showToast('Регистрация успешна! Теперь вы можете войти.', 'success');
-  setTimeout(() => switchTab('login'), 1500);
-}
+  try {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+    
+    if (error) {
+      let message = 'Ошибка входа';
+      if (error.message.includes('Invalid login credentials')) {
+        message = 'Неверный email или пароль';
+      } else if (error.message.includes('Email not confirmed')) {
+        message = 'Подтвердите email перед входом';
+      } else {
+        message = error.message;
+      }
+      showError('loginError', message);
+    } else {
+      // Успешный вход — редирект на дашборд
+      window.location.href = 'dashboard.html';
+    }
+  } catch (err) {
+    showError('loginError', 'Произошла ошибка. Попробуйте ещё раз.');
+  } finally {
+    setLoading('loginBtn', false);
+  }
+});
 
+// Регистрация с авто-входом
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  clearErrors();
+  
+  const name = document.getElementById('registerName').value.trim();
+  const email = document.getElementById('registerEmail').value.trim();
+  const password = document.getElementById('registerPassword').value;
+  
+  if (!name || !email || !password) {
+    showError('registerError', 'Заполните все поля');
+    return;
+  }
+  
+  if (password.length < 6) {
+    showError('registerError', 'Пароль должен содержать минимум 6 символов');
+    return;
+  }
+  
+  setLoading('registerBtn', true);
+  
+  try {
+    // Шаг 1: Регистрация в Supabase Auth
+    const { data: authData, error: authError } = await supabaseClient.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { full_name: name }
+      }
+    });
+    
+    if (authError) {
+      let message = 'Ошибка регистрации';
+      if (authError.message.includes('already registered')) {
+        message = 'Пользователь с таким email уже существует';
+      } else if (authError.message.includes('rate limit')) {
+        message = 'Слишком много попыток. Подождите минуту';
+      } else {
+        message = authError.message;
+      }
+      showError('registerError', message);
+      setLoading('registerBtn', false);
+      return;
+    }
+    
+    if (!authData.user) {
+      showError('registerError', 'Ошибка создания аккаунта');
+      setLoading('registerBtn', false);
+      return;
+    }
+    
+    // Шаг 2: Ждём, пока триггер создаст профиль
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    // Шаг 3: Авто-вход
+    const { error: signInError } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+    
+    if (signInError) {
+      // Если авто-вход не удался — показываем успех и предлагаем войти вручную
+      showToast('Регистрация успешна! Войдите в аккаунт.', 'success');
+      tabs.forEach(t => t.classList.remove('active'));
+      forms.forEach(f => f.classList.remove('active'));
+      tabs[0].classList.add('active');
+      document.getElementById('loginForm').classList.add('active');
+      document.getElementById('loginEmail').value = email;
+      setLoading('registerBtn', false);
+      return;
+    }
+    
+    // Шаг 4: Редирект на дашборд
+    showToast('Добро пожаловать в Cliply! 🎉', 'success');
+    window.location.href = 'dashboard.html';
+    
+  } catch (err) {
+    showError('registerError', 'Произошла ошибка. Попробуйте ещё раз.');
+  } finally {
+    setLoading('registerBtn', false);
+  }
+});
+
+// Восстановление пароля
+document.getElementById('forgotForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  clearErrors();
+  
+  const email = document.getElementById('forgotEmail').value.trim();
+  
+  if (!email) {
+    showError('forgotError', 'Введите email');
+    return;
+  }
+  
+  setLoading('forgotBtn', true);
+  
+  try {
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/cliply/login.html'
+    });
+    
+    if (error) {
+      showError('forgotError', error.message);
+    } else {
+      document.getElementById('forgotSuccess').classList.add('active');
+      document.getElementById('forgotEmail').value = '';
+    }
+  } catch (err) {
+    showError('forgotError', 'Произошла ошибка. Попробуйте ещё раз.');
+  } finally {
+    setLoading('forgotBtn', false);
+  }
+});
+
+// Если пользователь уже залогинен — редирект на дашборд
 (async () => {
   const user = await getCurrentUser();
-  if (user) window.location.href = 'dashboard.html';
+  if (user) {
+    window.location.href = 'dashboard.html';
+  }
 })();
-</script>
- <script>
-let lastTouchEnd = 0;
-document.addEventListener('touchend', (e) => {
-  const now = Date.now();
-  if (now - lastTouchEnd <= 300) e.preventDefault();
-  lastTouchEnd = now;
-}, { passive: false });
 </script>
 </body>
 </html>
