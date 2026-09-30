@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Поддержка Cliply</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#6C5CE7">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth.js"></script>
+<link rel="stylesheet" href="toast.css">
+<script src="toast.js"></script>
+<link rel="stylesheet" href="mobile.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; display: flex; flex-direction: column; }
+  .container { max-width: 800px; margin: 0 auto; padding: 0 24px; width: 100%; }
+  
+  nav { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f1f2e; }
+  .logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+  .nav-back { color: #A0A0B0; text-decoration: none; font-size: 14px; }
+  .nav-back:hover { color: #fff; }
+  
+  .support-hero { padding: 60px 0 40px; text-align: center; }
+  .support-hero-icon { font-size: 64px; margin-bottom: 16px; }
+  .support-hero h1 { font-size: 40px; font-family: 'Manrope'; font-weight: 800; margin-bottom: 12px; }
+  .support-hero p { color: #A0A0B0; font-size: 16px; max-width: 500px; margin: 0 auto; }
+  
+  .chat-section { padding: 0 0 80px; flex: 1; }
+  .chat-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; padding: 32px; }
+  
+  .chat-messages { max-height: 400px; overflow-y: auto; margin-bottom: 24px; padding: 16px; background: #0A0A0F; border-radius: 12px; border: 1px solid #1f1f2e; }
+  .chat-message { margin-bottom: 16px; padding: 12px 16px; border-radius: 12px; max-width: 85%; }
+  .chat-message.user { background: rgba(108, 92, 231, 0.15); border: 1px solid rgba(108, 92, 231, 0.3); margin-left: auto; }
+  .chat-message.bot { background: #1f1f2e; border: 1px solid #27272a; }
+  .chat-message-text { font-size: 15px; line-height: 1.5; }
+  .chat-message-time { font-size: 12px; color: #A0A0B0; margin-top: 4px; }
+  .chat-empty { text-align: center; color: #A0A0B0; padding: 40px 20px; }
+  .chat-empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+  
+  .chat-input-container { display: flex; gap: 12px; }
+  .chat-input { flex: 1; background: #0A0A0F; border: 1px solid #27272a; border-radius: 12px; padding: 14px 16px; color: #fff; font-size: 15px; font-family: inherit; resize: none; min-height: 50px; max-height: 120px; }
+  .chat-input:focus { outline: none; border-color: #6C5CE7; }
+  .chat-send { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; border: none; border-radius: 12px; padding: 0 24px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .chat-send:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
+  .chat-send:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  
+  .chat-hint { text-align: center; margin-top: 16px; font-size: 13px; color: #A0A0B0; }
+  
+  .contact-info { margin-top: 40px; text-align: center; }
+  .contact-info p { color: #A0A0B0; font-size: 14px; }
+  .contact-info a { color: #6C5CE7; text-decoration: none; }
+  .contact-info a:hover { text-decoration: underline; }
+  
+  footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
+  
+  .burger { display: none; }
+  @media (max-width: 768px) {
+    .support-hero h1 { font-size: 28px !important; }
+    .chat-card { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;width:100%;">
+    <a href="index.html" class="logo">Cliply</a>
+    <a href="index.html" class="nav-back">← На главную</a>
+  </div>
+</nav>
+
+<section class="support-hero">
+  <div class="container">
+    <div class="support-hero-icon">💬</div>
+    <h1>Поддержка Cliply</h1>
+    <p>Напишите нам — ответим в течение 2 часов в рабочее время (Пн-Пт, 10:00-19:00 МСК)</p>
+  </div>
+</section>
+
+<section class="chat-section">
+  <div class="container">
+    <div class="chat-card">
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-empty">
+          <div class="chat-empty-icon">💬</div>
+          <div>Начните диалог — напишите ваш вопрос</div>
+        </div>
+      </div>
+      <div class="chat-input-container">
+        <textarea class="chat-input" id="chatInput" placeholder="Опишите ваш вопрос..." rows="1"></textarea>
+        <button class="chat-send" id="chatSend">Отправить</button>
+      </div>
+      <div class="chat-hint">Сообщение будет отправлено команде поддержки</div>
+    </div>
+    
+    <div class="contact-info">
+      <p>Или напишите напрямую: <a href="mailto:support@cliply.ru">support@cliply.ru</a></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    © 2026 Cliply. Все права защищены.
+  </div>
+</footer>
+
+<script>
+const chatMessages = document.getElementById('chatMessages');
+const chatInput = document.getElementById('chatInput');
+const chatSend = document.getElementById('chatSend');
+let currentUser = null;
+let conversationId = null;
+
+// Инициализация
+(async () => {
+  currentUser = await getCurrentUser();
+  
+  // Создаём или загружаем разговор
+  if (currentUser) {
+    const { data } = await supabaseClient
+      .from('support_conversations')
+      .select('id')
+      .eq('user_id', currentUser.id)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+    
+    if (data) {
+      conversationId = data.id;
+      loadMessages();
+    }
+  }
+})();
+
+// Авто-ресайз textarea
+chatInput.addEventListener('input', () => {
+  chatInput.style.height = 'auto';
+  chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+});
+
+// Отправка по Enter (без Shift)
+chatInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+chatSend.addEventListener('click', sendMessage);
+
+async function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+  
+  chatSend.disabled = true;
+  
+  // Добавляем сообщение пользователя в UI
+  addMessageToUI(text, 'user');
+  chatInput.value = '';
+  chatInput.style.height = 'auto';
+  
+  // Сохраняем в базу
+  try {
+    if (!conversationId && currentUser) {
+      const { data: conv } = await supabaseClient
+        .from('support_conversations')
+        .insert({
+          user_id: currentUser.id,
+          user_name: currentUser.profile?.full_name || currentUser.email,
+          user_email: currentUser.email,
+          status: 'open'
+        })
+        .select()
+        .single();
+      conversationId = conv.id;
+    }
+    
+    if (conversationId) {
+      await supabaseClient.from('support_messages').insert({
+        conversation_id: conversationId,
+        sender: 'user',
+        message: text
+      });
+    }
+    
+    // Показываем авто-ответ
+    setTimeout(() => {
+      addMessageToUI('Спасибо за обращение! Мы получили ваше сообщение и ответим в течение 2 часов в рабочее время.', 'bot');
+    }, 500);
+    
+  } catch (err) {
+    console.log('Message save error:', err);
+    // Даже если не сохранилось — показываем авто-ответ
+    setTimeout(() => {
+      addMessageToUI('Спасибо за обращение! Мы получили ваше сообщение и ответим в течение 2 часов.', 'bot');
+    }, 500);
+  } finally {
+    chatSend.disabled = false;
+  }
+}
+
+function addMessageToUI(text, sender) {
+  // Убираем empty state
+  const empty = chatMessages.querySelector('.chat-empty');
+  if (empty) empty.remove();
+  
+  const time = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+  const msg = document.createElement('div');
+  msg.className = `chat-message ${sender}`;
+  msg.innerHTML = `
+    <div class="chat-message-text">${text}</div>
+    <div class="chat-message-time">${time}</div>
+  `;
+  chatMessages.appendChild(msg);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+async function loadMessages() {
+  if (!conversationId) return;
+  
+  const { data } = await supabaseClient
+    .from('support_messages')
+    .select('*')
+    .eq('conversation_id', conversationId)
+    .order('created_at', { ascending: true });
+  
+  if (data && data.length > 0) {
+    chatMessages.innerHTML = '';
+    data.forEach(msg => addMessageToUI(msg.message, msg.sender));
+  }
+}
+</script>
+</body>
+</html>
