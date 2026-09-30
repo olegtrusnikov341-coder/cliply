@@ -6,7 +6,7 @@
 <meta name="description" content="Создавайте продающие видео для маркетплейсов с помощью AI.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#6C5CE7">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Cliply">
 <link rel="manifest" href="manifest.json">
@@ -158,7 +158,6 @@
     <div class="btn-logout" onclick="logout()">Выйти</div>
   </aside>
   
-  <!-- Мобильная шапка -->
   <div class="mobile-header" id="mobileHeader">
     <a href="index.html" class="logo">Cliply</a>
     <button class="burger" id="burgerBtn" aria-label="Меню">
@@ -166,10 +165,9 @@
     </button>
   </div>
   
-  <!-- Мобильное меню -->
   <div class="mobile-menu" id="mobileMenu">
     <a href="dashboard.html" class="active">📊 Дашборд</a>
-    <a href="pricing.html">💎 Тарифы</a>
+    <a href="pricing.html"> Тарифы</a>
     <a href="settings.html">⚙️ Настройки</a>
     <a href="index.html" class="btn-nav-mobile">← На главную</a>
     <a href="#" onclick="logout(); return false;" style="color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); margin-top: 16px;">Выйти</a>
@@ -177,7 +175,7 @@
   
   <main class="main">
     <div id="offlineBanner" class="offline-banner">
-      <span>️</span>
+      <span>⚠️</span>
       <span>Нет подключения к интернету. Некоторые функции могут быть недоступны.</span>
     </div>
     <div class="header">
@@ -304,7 +302,7 @@ async function initDashboard() {
   if (currentUser.profile.role_level <= 2) {
     const menu = document.getElementById('navMenu');
     const adminLink = document.createElement('li');
-    adminLink.innerHTML = '<a href="admin.html"> Админ-панель</a>';
+    adminLink.innerHTML = '<a href="admin.html">👑 Админ-панель</a>';
     menu.insertBefore(adminLink, menu.children[1]);
   }
   
@@ -341,6 +339,9 @@ async function initDashboard() {
       });
     });
   }
+  
+  // Проверяем, нужно ли показать форму отзыва
+  await checkReviewEligibility();
 }
 
 async function loadVideos() {
@@ -381,7 +382,7 @@ function renderVideos() {
     const statusClass = video.status === 'done' ? 'status-done' : video.status === 'processing' ? 'status-progress' : 'status-failed';
     const statusText = video.status === 'done' ? 'Готово' : video.status === 'processing' ? 'В процессе' : 'Ошибка';
     const date = new Date(video.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-    return `<div class="project-card content-fade-in"><div class="project-preview">${video.status === 'done' ? '🎬' : video.status === 'processing' ? '⏳' : ''}<span class="project-status ${statusClass}">${statusText}</span></div><div class="project-info"><div class="project-title">${video.product_name || 'Без названия'}</div><div class="project-date">${date}</div><div class="project-actions">${video.status === 'done' ? `<button class="btn-small primary" onclick="downloadVideo('${video.id}')">Скачать</button>` : ''}<button class="btn-small" onclick="regenerateVideo('${video.id}')">Перегенерировать</button><button class="btn-small danger" onclick="deleteVideo('${video.id}')">Удалить</button></div></div></div>`;
+    return `<div class="project-card content-fade-in"><div class="project-preview">${video.status === 'done' ? '🎬' : video.status === 'processing' ? '⏳' : '❌'}<span class="project-status ${statusClass}">${statusText}</span></div><div class="project-info"><div class="project-title">${video.product_name || 'Без названия'}</div><div class="project-date">${date}</div><div class="project-actions">${video.status === 'done' ? `<button class="btn-small primary" onclick="downloadVideo('${video.id}')">Скачать</button>` : ''}<button class="btn-small" onclick="regenerateVideo('${video.id}')">Перегенерировать</button><button class="btn-small danger" onclick="deleteVideo('${video.id}')">Удалить</button></div></div></div>`;
   }).join('');
 }
 
@@ -572,7 +573,7 @@ async function startGeneration() {
     return;
   }
   
-  btn.textContent = ' Генерация...';
+  btn.textContent = '⏳ Генерация...';
   btn.disabled = true;
   
   try {
@@ -594,13 +595,19 @@ async function startGeneration() {
           () => supabaseClient.from('videos').update({ status: 'done', video_url: 'https://example.com/video.mp4' }).eq('id', video.id),
           'Обновление статуса'
         );
-        if (updateError) showToast('Ошибка обновления статуса', 'error');
-        else {
+        if (updateError) {
+          showToast('Ошибка обновления статуса', 'error');
+          networkManager.log('error', 'startGeneration update error', updateError);
+        } else {
           showToast('Видео успешно сгенерировано!', 'success');
           await loadVideos();
           if (draftManager) draftManager.clear();
+          await checkReviewEligibility();
         }
-      } catch (err) { showToast('Ошибка при обновлении статуса', 'error'); }
+      } catch (err) {
+        showToast('Ошибка при обновлении статуса видео', 'error');
+        networkManager.log('error', 'startGeneration retry failed', err);
+      }
       btn.textContent = 'Сгенерировать видео →';
       btn.disabled = false;
     }, 3000);
@@ -609,6 +616,128 @@ async function startGeneration() {
     btn.textContent = 'Сгенерировать видео →';
     btn.disabled = false;
   }
+}
+
+// ===== ПРОВЕРКА ПРАВА НА ОТЗЫВ =====
+async function checkReviewEligibility() {
+  if (!currentUser) return;
+  
+  try {
+    const { count } = await supabaseClient
+      .from('videos')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', currentUser.id);
+    
+    const { data: existingReview } = await supabaseClient
+      .from('reviews')
+      .select('id')
+      .eq('user_id', currentUser.id)
+      .single();
+    
+    if (count >= 3 && !existingReview) {
+      setTimeout(() => showReviewModal(), 1000);
+    }
+  } catch (e) {
+    console.log('Review check error:', e);
+  }
+}
+
+function showReviewModal() {
+  const modal = document.createElement('div');
+  modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);backdrop-filter:blur(10px);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;';
+  
+  modal.innerHTML = `
+    <div style="background:#141414;border:1px solid #27272a;border-radius:20px;padding:40px;max-width:500px;width:100%;position:relative;">
+      <button onclick="this.closest('div').parentElement.remove()" style="position:absolute;top:16px;right:16px;background:transparent;border:none;color:#A0A0B0;font-size:24px;cursor:pointer;">×</button>
+      <div style="text-align:center;margin-bottom:24px;">
+        <div style="font-size:48px;margin-bottom:16px;">⭐</div>
+        <h3 style="font-size:24px;font-family:'Manrope';margin-bottom:8px;">Поделитесь впечатлением</h3>
+        <p style="color:#A0A0B0;font-size:14px;">Вы создали 3 видео. Расскажите другим селлерам о Cliply!</p>
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="display:block;font-size:14px;color:#A0A0B0;margin-bottom:8px;">Ваша оценка</label>
+        <div id="ratingStars" style="display:flex;gap:8px;font-size:32px;cursor:pointer;">
+          <span data-rating="1" style="color:#6C5CE7;transition:color 0.2s;">★</span>
+          <span data-rating="2" style="color:#6C5CE7;transition:color 0.2s;">★</span>
+          <span data-rating="3" style="color:#6C5CE7;transition:color 0.2s;">★</span>
+          <span data-rating="4" style="color:#6C5CE7;transition:color 0.2s;">★</span>
+          <span data-rating="5" style="color:#6C5CE7;transition:color 0.2s;">★</span>
+        </div>
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="display:block;font-size:14px;color:#A0A0B0;margin-bottom:8px;">Ваш отзыв</label>
+        <textarea id="reviewText" placeholder="Расскажите, как Cliply помог вашему бизнесу..." style="width:100%;background:#0A0A0F;border:1px solid #27272a;border-radius:8px;padding:12px 16px;color:#fff;font-size:15px;font-family:inherit;min-height:100px;resize:vertical;"></textarea>
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="display:block;font-size:14px;color:#A0A0B0;margin-bottom:8px;">Категория товара</label>
+        <select id="reviewCategory" style="width:100%;background:#0A0A0F;border:1px solid #27272a;border-radius:8px;padding:12px 16px;color:#fff;font-size:15px;">
+          <option>Одежда</option>
+          <option>Косметика</option>
+          <option>Электроника</option>
+          <option>Товары для дома</option>
+          <option>Здоровье</option>
+          <option>Спорт</option>
+          <option>Еда</option>
+          <option>Другое</option>
+        </select>
+      </div>
+      <button id="submitReviewBtn" style="width:100%;background:linear-gradient(135deg,#6C5CE7,#A29BFE);color:#fff;padding:14px;border-radius:12px;border:none;font-size:15px;font-weight:600;cursor:pointer;">Опубликовать отзыв</button>
+      <button onclick="this.closest('div').parentElement.remove()" style="width:100%;background:transparent;color:#A0A0B0;padding:12px;border:none;font-size:14px;cursor:pointer;margin-top:8px;">Напомнить позже</button>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  
+  let selectedRating = 5;
+  const stars = modal.querySelectorAll('#ratingStars span');
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      selectedRating = parseInt(star.dataset.rating);
+      stars.forEach((s, i) => {
+        s.style.color = i < selectedRating ? '#6C5CE7' : '#27272a';
+      });
+    });
+    star.addEventListener('mouseenter', () => {
+      const r = parseInt(star.dataset.rating);
+      stars.forEach((s, i) => {
+        s.style.color = i < r ? '#A29BFE' : '#27272a';
+      });
+    });
+  });
+  modal.querySelector('#ratingStars').addEventListener('mouseleave', () => {
+    stars.forEach((s, i) => {
+      s.style.color = i < selectedRating ? '#6C5CE7' : '#27272a';
+    });
+  });
+  
+  modal.querySelector('#submitReviewBtn').addEventListener('click', async () => {
+    const text = modal.querySelector('#reviewText').value.trim();
+    const category = modal.querySelector('#reviewCategory').value;
+    
+    if (!text) { showToast('Напишите отзыв', 'warning'); return; }
+    
+    const btn = modal.querySelector('#submitReviewBtn');
+    btn.textContent = 'Публикация...';
+    btn.disabled = true;
+    
+    const { error } = await supabaseClient.from('reviews').insert({
+      user_id: currentUser.id,
+      user_name: currentUser.profile.full_name || currentUser.email,
+      user_role: ROLES[currentUser.profile.role_level]?.name || 'Селлер',
+      rating: selectedRating,
+      review_text: text,
+      product_category: category
+    });
+    
+    if (error) {
+      showToast('Ошибка: ' + error.message, 'error');
+      btn.textContent = 'Опубликовать отзыв';
+      btn.disabled = false;
+    } else {
+      showToast('Спасибо за отзыв! ⭐', 'success');
+      modal.remove();
+    }
+  });
 }
 
 initDashboard();
