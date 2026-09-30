@@ -37,7 +37,6 @@
   
   .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
   
-  /* Навигация */
   nav { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: rgba(10,10,15,0.95); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid #1f1f2e; }
   .logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
   .nav-links { display: flex; align-items: center; gap: 24px; }
@@ -48,7 +47,6 @@
   .nav-btn-cta { background: linear-gradient(135deg, #6C5CE7, #A29BFE) !important; color: #fff !important; padding: 10px 24px !important; border-radius: 100px; font-weight: 600 !important; border: none; }
   .nav-btn-cta:hover { box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   
-  /* Hero */
   .hero { padding: 100px 0 80px; text-align: center; position: relative; }
   .hero-badge { display: inline-block; background: rgba(108, 92, 231, 0.15); color: #A29BFE; padding: 8px 20px; border-radius: 100px; font-size: 13px; font-weight: 600; margin-bottom: 32px; border: 1px solid rgba(108, 92, 231, 0.3); letter-spacing: 2px; }
   .hero h1 { font-size: 72px; margin-bottom: 24px; max-width: 900px; margin-left: auto; margin-right: auto; }
@@ -64,21 +62,17 @@
   .hero-stat-number { font-size: 32px; font-weight: 800; font-family: 'Manrope'; color: #6C5CE7; }
   .hero-stat-label { font-size: 14px; color: #A0A0B0; margin-top: 4px; }
   
-  /* Секции */
   .section { padding: 100px 0; }
   .section-label { font-size: 13px; font-weight: 700; color: #6C5CE7; letter-spacing: 3px; margin-bottom: 16px; text-transform: uppercase; }
   .section-title { font-size: 56px; margin-bottom: 24px; max-width: 800px; }
   .section-subtitle { font-size: 18px; color: #A0A0B0; max-width: 600px; line-height: 1.6; margin-bottom: 48px; }
   
-  /* Проблема */
   .problem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
   .problem-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; padding: 32px; }
-  .problem-number { font-size: 14px; color: #6C5CE7; font-weight: 700; margin-bottom: 16px; }
   .problem-card h3 { font-size: 24px; margin-bottom: 12px; }
   .problem-card p { color: #A0A0B0; font-size: 15px; line-height: 1.6; }
   .problem-stat { font-size: 48px; font-weight: 800; color: #6C5CE7; font-family: 'Manrope'; margin-bottom: 8px; }
   
-  /* Шаги */
   .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
   .step-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; padding: 40px 32px; transition: all 0.3s; }
   .step-card:hover { border-color: #6C5CE7; transform: translateY(-4px); }
@@ -86,7 +80,6 @@
   .step-card h3 { font-size: 24px; margin-bottom: 16px; }
   .step-card p { color: #A0A0B0; font-size: 15px; line-height: 1.6; }
   
-  /* Возможности */
   .feature-category { margin-bottom: 48px; }
   .feature-category-title { font-size: 13px; color: #6C5CE7; font-weight: 700; letter-spacing: 3px; margin-bottom: 24px; text-transform: uppercase; }
   .feature-list { display: grid; gap: 12px; }
@@ -96,7 +89,6 @@
   .feature-item-title { font-weight: 600; font-size: 16px; }
   .feature-item-desc { color: #A0A0B0; font-size: 14px; margin-top: 4px; }
   
-  /* Примеры */
   .examples-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
   .example-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; overflow: hidden; transition: all 0.3s; }
   .example-card:hover { border-color: #6C5CE7; transform: translateY(-4px); }
@@ -107,20 +99,17 @@
   .example-info p { color: #A0A0B0; font-size: 14px; }
   .example-meta { display: flex; gap: 16px; margin-top: 12px; font-size: 13px; color: #666; }
   
-  /* Категории товаров */
   .categories-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 48px; }
   .category-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 16px; padding: 24px; text-align: center; transition: all 0.2s; cursor: pointer; }
   .category-card:hover { border-color: #6C5CE7; background: rgba(108, 92, 231, 0.05); transform: translateY(-2px); }
   .category-icon { font-size: 40px; margin-bottom: 12px; }
   .category-name { font-weight: 600; font-size: 15px; }
   
-  /* Чек-лист */
   .checklist { margin-top: 48px; }
   .checklist-item { display: flex; gap: 20px; padding: 24px 0; border-bottom: 1px solid #1f1f2e; align-items: flex-start; }
   .checklist-icon { color: #6C5CE7; font-size: 24px; flex-shrink: 0; margin-top: 2px; font-weight: 700; }
   .checklist-text { font-size: 18px; line-height: 1.5; }
   
-  /* Отзывы */
   .testimonials-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 48px; }
   .testimonial-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; padding: 32px; }
   .testimonial-quote { font-size: 18px; line-height: 1.6; margin-bottom: 24px; font-style: italic; color: #d0d0d0; }
@@ -130,7 +119,6 @@
   .testimonial-role { color: #A0A0B0; font-size: 14px; }
   .testimonial-stat { background: rgba(108, 92, 231, 0.15); color: #A29BFE; padding: 4px 12px; border-radius: 100px; font-size: 13px; font-weight: 600; margin-top: 8px; display: inline-block; border: 1px solid rgba(108, 92, 231, 0.3); }
   
-  /* FAQ */
   .faq-list { margin-top: 48px; max-width: 800px; }
   .faq-item { border-bottom: 1px solid #1f1f2e; }
   .faq-question { padding: 24px 0; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: color 0.2s; }
@@ -144,7 +132,6 @@
   .faq-answer p { color: #A0A0B0; font-size: 16px; line-height: 1.6; padding-left: 40px; }
   .faq-more { text-align: center; margin-top: 48px; }
   
-  /* Тарифы */
   .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
   .pricing-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; padding: 40px 32px; transition: all 0.3s; display: flex; flex-direction: column; }
   .pricing-card:hover { transform: translateY(-4px); }
@@ -162,19 +149,15 @@
   .pricing-btn-secondary { background: transparent; color: #fff; border: 1px solid #27272a; }
   .pricing-btn-secondary:hover { border-color: #6C5CE7; background: rgba(108, 92, 231, 0.05); }
   
-  /* Финальный CTA */
   .final-cta { text-align: center; padding: 120px 0; background: linear-gradient(180deg, transparent, rgba(108, 92, 231, 0.05)); }
   .final-cta h2 { font-size: 64px; margin-bottom: 24px; }
   .final-cta p { font-size: 20px; color: #A0A0B0; margin-bottom: 40px; }
   
-  /* Футер */
   footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
   
-  /* Кнопка поддержки */
   .support-btn { position: fixed; bottom: 24px; left: 24px; width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); transition: all 0.2s; z-index: 99; }
   .support-btn:hover { transform: scale(1.1); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
   
-  /* Бургер */
   .burger { display: none; flex-direction: column; gap: 5px; background: transparent; border: none; cursor: pointer; padding: 8px; z-index: 1001; }
   .burger span { display: block; width: 24px; height: 2px; background: #fff; transition: all 0.3s; border-radius: 2px; }
   .burger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -231,7 +214,6 @@
   <a href="login.html" class="btn-nav-mobile">Попробовать бесплатно</a>
 </div>
 
-<!-- Hero -->
 <section class="hero">
   <div class="container">
     <div class="hero-badge">AI VIDEO FOR SELLERS</div>
@@ -243,7 +225,7 @@
     </div>
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="hero-stat-number" id="sellerCount">1 247</div>
+        <div class="hero-stat-number" id="sellerCount">—</div>
         <div class="hero-stat-label">селлеров используют</div>
       </div>
       <div class="hero-stat">
@@ -258,7 +240,6 @@
   </div>
 </section>
 
-<!-- Проблема -->
 <section class="section">
   <div class="container">
     <div class="section-label">01 / ПРОБЛЕМА</div>
@@ -284,7 +265,6 @@
   </div>
 </section>
 
-<!-- Три шага -->
 <section class="section" style="background: #0d0d14;">
   <div class="container">
     <div class="section-label">02 / КАК ЭТО РАБОТАЕТ</div>
@@ -310,7 +290,6 @@
   </div>
 </section>
 
-<!-- Возможности -->
 <section class="section" id="features">
   <div class="container">
     <div class="section-label">03 / ВОЗМОЖНОСТИ</div>
@@ -328,14 +307,14 @@
           </div>
         </div>
         <div class="feature-item">
-          <div class="feature-item-icon">🎯</div>
+          <div class="feature-item-icon"></div>
           <div>
             <div class="feature-item-title">3 причины купить</div>
             <div class="feature-item-desc">Продающие триггеры для быстрого решения</div>
           </div>
         </div>
         <div class="feature-item">
-          <div class="feature-item-icon"></div>
+          <div class="feature-item-icon">🎁</div>
           <div>
             <div class="feature-item-title">Распаковка</div>
             <div class="feature-item-desc">Эффект присутствия и эмоциональная вовлечённость</div>
@@ -348,7 +327,7 @@
       <div class="feature-category-title">СЦЕНАРИИ</div>
       <div class="feature-list">
         <div class="feature-item">
-          <div class="feature-item-icon"></div>
+          <div class="feature-item-icon">⚡</div>
           <div>
             <div class="feature-item-title">Проблема → Решение</div>
             <div class="feature-item-desc">Для товаров, решающих конкретную боль клиента</div>
@@ -362,7 +341,7 @@
           </div>
         </div>
         <div class="feature-item">
-          <div class="feature-item-icon">⚖️</div>
+          <div class="feature-item-icon">️</div>
           <div>
             <div class="feature-item-title">Сравнение с аналогами</div>
             <div class="feature-item-desc">Почему ваш товар лучше конкурентов</div>
@@ -373,7 +352,6 @@
   </div>
 </section>
 
-<!-- Примеры -->
 <section class="section" id="examples" style="background: #0d0d14;">
   <div class="container">
     <div class="section-label">04 / ПРИМЕРЫ</div>
@@ -393,11 +371,11 @@
         <div class="example-info">
           <h3>Электроника</h3>
           <p>Беспроводные наушники</p>
-          <div class="example-meta"><span> Современная</span><span>⚡ Обзор</span></div>
+          <div class="example-meta"><span>🎵 Современная</span><span>⚡ Обзор</span></div>
         </div>
       </div>
       <div class="example-card">
-        <div class="example-preview"><span class="example-tag">15 сек</span></div>
+        <div class="example-preview">👕<span class="example-tag">15 сек</span></div>
         <div class="example-info">
           <h3>Одежда</h3>
           <p>Мужская футболка премиум</p>
@@ -409,7 +387,7 @@
         <div class="example-info">
           <h3>Товары для дома</h3>
           <p>Органайзер для кухни</p>
-          <div class="example-meta"><span>🎵 Спокойная</span><span> Распаковка</span></div>
+          <div class="example-meta"><span>🎵 Спокойная</span><span>🎁 Распаковка</span></div>
         </div>
       </div>
       <div class="example-card">
@@ -421,7 +399,7 @@
         </div>
       </div>
       <div class="example-card">
-        <div class="example-preview"><span class="example-tag">15 сек</span></div>
+        <div class="example-preview">⚽<span class="example-tag">15 сек</span></div>
         <div class="example-info">
           <h3>Спорт</h3>
           <p>Фитнес-резинки набор</p>
@@ -432,7 +410,6 @@
   </div>
 </section>
 
-<!-- Категории товаров -->
 <section class="section">
   <div class="container">
     <div class="section-label">05 / КАТЕГОРИИ</div>
@@ -444,14 +421,13 @@
       <div class="category-card"><div class="category-icon">📱</div><div class="category-name">Электроника</div></div>
       <div class="category-card"><div class="category-icon">🏠</div><div class="category-name">Для дома</div></div>
       <div class="category-card"><div class="category-icon">💊</div><div class="category-name">Здоровье</div></div>
-      <div class="category-card"><div class="category-icon"></div><div class="category-name">Спорт</div></div>
+      <div class="category-card"><div class="category-icon">⚽</div><div class="category-name">Спорт</div></div>
       <div class="category-card"><div class="category-icon">🍫</div><div class="category-name">Еда</div></div>
       <div class="category-card"><div class="category-icon">🧸</div><div class="category-name">Детские</div></div>
     </div>
   </div>
 </section>
 
-<!-- Чек-лист -->
 <section class="section" style="background: #0d0d14;">
   <div class="container">
     <div class="section-label">06 / РЕЗУЛЬТАТ</div>
@@ -482,61 +458,19 @@
   </div>
 </section>
 
-<!-- Отзывы -->
 <section class="section">
   <div class="container">
     <div class="section-label">07 / КЕЙСЫ</div>
     <h2 class="section-title">Что говорят селлеры</h2>
-    <div class="testimonials-grid">
-      <div class="testimonial-card">
-        <div class="testimonial-quote">"Загрузила 5 фото крема, через 2 минуты получила видео. Загрузила в карточку WB — конверсия выросла с 3.2% до 4.7% за неделю."</div>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">А</div>
-          <div>
-            <div class="testimonial-name">Анна К.</div>
-            <div class="testimonial-role">Селлер косметики</div>
-            <div class="testimonial-stat">+34% конверсии</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-quote">"Раньше платил монтажёру 5000₽ за ролик. Теперь делаю 10 видео за цену одного. За месяц сэкономил 45 000₽."</div>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">Д</div>
-          <div>
-            <div class="testimonial-name">Дмитрий В.</div>
-            <div class="testimonial-role">Селлер электроники</div>
-            <div class="testimonial-stat">-90% расходов</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-quote">"Делаю видео для всех 47 товаров в ассортименте. Раньше это заняло бы полгода, сейчас — один вечер."</div>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">М</div>
-          <div>
-            <div class="testimonial-name">Мария С.</div>
-            <div class="testimonial-role">Селлер одежды</div>
-            <div class="testimonial-stat">47 видео за вечер</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card">
-        <div class="testimonial-quote">"Добавил видео в карточку — количество возвратов снизилось на 23%. Покупатели лучше понимают товар."</div>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">И</div>
-          <div>
-            <div class="testimonial-name">Игорь П.</div>
-            <div class="testimonial-role">Селлер товаров для дома</div>
-            <div class="testimonial-stat">-23% возвратов</div>
-          </div>
-        </div>
+    <div class="testimonials-grid" id="testimonialsGrid">
+      <div class="testimonial-card" style="text-align:center;padding:60px 20px;">
+        <div style="font-size:32px;margin-bottom:16px;">⏳</div>
+        <div style="color:#A0A0B0;">Загрузка отзывов...</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FAQ -->
 <section class="section" id="faq" style="background: #0d0d14;">
   <div class="container">
     <div class="section-label">08 / ВОПРОСЫ</div>
@@ -590,7 +524,6 @@
   </div>
 </section>
 
-<!-- Тарифы -->
 <section class="section" id="pricing">
   <div class="container">
     <div class="section-label">09 / ТАРИФЫ</div>
@@ -636,7 +569,6 @@
   </div>
 </section>
 
-<!-- Финальный CTA -->
 <section class="final-cta">
   <div class="container">
     <h2>Готовы увеличить продажи?</h2>
@@ -651,7 +583,6 @@
   </div>
 </footer>
 
-<!-- Кнопка поддержки -->
 <button class="support-btn" onclick="openSupport()" title="Написать в поддержку">💬</button>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -661,7 +592,6 @@
 <script src="transitions.js"></script>
 <script src="micro-animations.js"></script>
 <script>
-// Бургер-меню
 const burgerBtn = document.getElementById('burgerBtn');
 const mobileMenu = document.getElementById('mobileMenu');
 const mobileAuthBtn = document.getElementById('mobileAuthBtn');
@@ -681,7 +611,6 @@ if (burgerBtn && mobileMenu) {
   });
 }
 
-// Счётчик селлеров
 async function loadSellerCount() {
   try {
     const { count, error } = await supabaseClient
@@ -690,14 +619,103 @@ async function loadSellerCount() {
     
     if (!error && count !== null) {
       document.getElementById('sellerCount').textContent = count.toLocaleString('ru-RU');
+    } else {
+      document.getElementById('sellerCount').textContent = '1 247';
     }
   } catch (e) {
-    console.log('Не удалось загрузить счётчик');
+    document.getElementById('sellerCount').textContent = '1 247';
   }
 }
-loadSellerCount();
 
-// Проверка авторизации
+async function loadTestimonials() {
+  const grid = document.getElementById('testimonialsGrid');
+  if (!grid) return;
+  
+  try {
+    const { data, error } = await supabaseClient
+      .from('reviews')
+      .select('*')
+      .eq('approved', true)
+      .order('created_at', { ascending: false })
+      .limit(6);
+    
+    if (error || !data || data.length === 0) {
+      grid.innerHTML = `
+        <div class="testimonial-card">
+          <div class="testimonial-quote">"Загрузила 5 фото крема, через 2 минуты получила видео. Загрузила в карточку WB — конверсия выросла с 3.2% до 4.7% за неделю."</div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">А</div>
+            <div>
+              <div class="testimonial-name">Анна К.</div>
+              <div class="testimonial-role">Селлер косметики</div>
+              <div class="testimonial-stat">+34% конверсии</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-quote">"Раньше платил монтажёру 5000₽ за ролик. Теперь делаю 10 видео за цену одного. За месяц сэкономил 45 000₽."</div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">Д</div>
+            <div>
+              <div class="testimonial-name">Дмитрий В.</div>
+              <div class="testimonial-role">Селлер электроники</div>
+              <div class="testimonial-stat">-90% расходов</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-quote">"Делаю видео для всех 47 товаров в ассортименте. Раньше это заняло бы полгода, сейчас — один вечер."</div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">М</div>
+            <div>
+              <div class="testimonial-name">Мария С.</div>
+              <div class="testimonial-role">Селлер одежды</div>
+              <div class="testimonial-stat">47 видео за вечер</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-quote">"Добавил видео в карточку — количество возвратов снизилось на 23%. Покупатели лучше понимают товар."</div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">И</div>
+            <div>
+              <div class="testimonial-name">Игорь П.</div>
+              <div class="testimonial-role">Селлер товаров для дома</div>
+              <div class="testimonial-stat">-23% возвратов</div>
+            </div>
+          </div>
+        </div>
+      `;
+      return;
+    }
+    
+    const colors = ['#6C5CE7', '#A29BFE', '#3b82f6', '#10b981', '#f59e0b', '#ef4444'];
+    
+    grid.innerHTML = data.map((review, i) => {
+      const initial = review.user_name.charAt(0).toUpperCase();
+      const color = colors[i % colors.length];
+      const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+      
+      return `
+        <div class="testimonial-card">
+          <div style="color:#6C5CE7;font-size:20px;margin-bottom:12px;letter-spacing:2px;">${stars}</div>
+          <div class="testimonial-quote">"${review.review_text}"</div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background:${color};">${initial}</div>
+            <div>
+              <div class="testimonial-name">${review.user_name}</div>
+              <div class="testimonial-role">${review.user_role || 'Селлер'}${review.product_category ? ' • ' + review.product_category : ''}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+    
+  } catch (e) {
+    console.log('Reviews load error:', e);
+  }
+}
+
 (async () => {
   const user = await getCurrentUser();
   const btn = document.getElementById('navAuthBtn');
@@ -708,7 +726,9 @@ loadSellerCount();
   }
 })();
 
-// FAQ аккордеон
+loadSellerCount();
+loadTestimonials();
+
 function toggleFaq(element) {
   const item = element.parentElement;
   const wasActive = item.classList.contains('active');
@@ -716,12 +736,10 @@ function toggleFaq(element) {
   if (!wasActive) item.classList.add('active');
 }
 
-// Поддержка
 function openSupport() {
   window.location.href = 'support.html';
 }
 
-// Отключение double-tap zoom
 let lastTouchEnd = 0;
 document.addEventListener('touchend', (e) => {
   const now = Date.now();
