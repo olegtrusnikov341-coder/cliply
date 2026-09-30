@@ -58,7 +58,6 @@
   
   footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
   
-  .burger { display: none; }
   @media (max-width: 768px) {
     .support-hero h1 { font-size: 28px !important; }
     .chat-card { padding: 20px; }
@@ -114,29 +113,6 @@
 const chatMessages = document.getElementById('chatMessages');
 const chatInput = document.getElementById('chatInput');
 const chatSend = document.getElementById('chatSend');
-let currentUser = null;
-let conversationId = null;
-
-// Инициализация
-(async () => {
-  currentUser = await getCurrentUser();
-  
-  // Создаём или загружаем разговор
-  if (currentUser) {
-    const { data } = await supabaseClient
-      .from('support_conversations')
-      .select('id')
-      .eq('user_id', currentUser.id)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single();
-    
-    if (data) {
-      conversationId = data.id;
-      loadMessages();
-    }
-  }
-})();
 
 // Авто-ресайз textarea
 chatInput.addEventListener('input', () => {
@@ -160,53 +136,41 @@ async function sendMessage() {
   
   chatSend.disabled = true;
   
-  // Добавляем сообщение пользователя в UI
+  // Показываем сообщение пользователя в UI
   addMessageToUI(text, 'user');
   chatInput.value = '';
   chatInput.style.height = 'auto';
   
-  // Сохраняем в базу
+  // Отправляем в Telegram через Edge Function
   try {
-    if (!conversationId && currentUser) {
-      const { data: conv } = await supabaseClient
-        .from('support_conversations')
-        .insert({
-          user_id: currentUser.id,
-          user_name: currentUser.profile?.full_name || currentUser.email,
-          user_email: currentUser.email,
-          status: 'open'
-        })
-        .select()
-        .single();
-      conversationId = conv.id;
+    const { error } = await supabaseClient.functions.invoke('send-telegram', {
+      body: {
+        record: {
+          message: text,
+          sender: 'user',
+          user_name: 'Гость',
+          user_email: 'неизвестно',
+          created_at: new Date().toISOString()
+        }
+      }
+    });
+    
+    if (error) {
+      console.error('Send error:', error);
     }
-    
-    if (conversationId) {
-      await supabaseClient.from('support_messages').insert({
-        conversation_id: conversationId,
-        sender: 'user',
-        message: text
-      });
-    }
-    
-    // Показываем авто-ответ
-    setTimeout(() => {
-      addMessageToUI('Спасибо за обращение! Мы получили ваше сообщение и ответим в течение 2 часов в рабочее время.', 'bot');
-    }, 500);
-    
   } catch (err) {
-    console.log('Message save error:', err);
-    // Даже если не сохранилось — показываем авто-ответ
-    setTimeout(() => {
-      addMessageToUI('Спасибо за обращение! Мы получили ваше сообщение и ответим в течение 2 часов.', 'bot');
-    }, 500);
-  } finally {
-    chatSend.disabled = false;
+    console.error('Invoke error:', err);
   }
+  
+  // Авто-ответ
+  setTimeout(() => {
+    addMessageToUI('Спасибо за обращение! Мы получили ваше сообщение и ответим в течение 2 часов в рабочее время.', 'bot');
+  }, 800);
+  
+  chatSend.disabled = false;
 }
 
 function addMessageToUI(text, sender) {
-  // Убираем empty state
   const empty = chatMessages.querySelector('.chat-empty');
   if (empty) empty.remove();
   
@@ -219,21 +183,6 @@ function addMessageToUI(text, sender) {
   `;
   chatMessages.appendChild(msg);
   chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-async function loadMessages() {
-  if (!conversationId) return;
-  
-  const { data } = await supabaseClient
-    .from('support_messages')
-    .select('*')
-    .eq('conversation_id', conversationId)
-    .order('created_at', { ascending: true });
-  
-  if (data && data.length > 0) {
-    chatMessages.innerHTML = '';
-    data.forEach(msg => addMessageToUI(msg.message, msg.sender));
-  }
 }
 </script>
 </body>
