@@ -58,8 +58,10 @@
   .btn-submit { width: 100%; background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 16px; border-radius: 12px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
   .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-  .success-box { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 20px; color: #34d399; text-align: center; display: none; }
+  .success-box { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 20px; color: #34d399; text-align: center; display: none; margin-bottom: 24px; }
   .success-box.active { display: block; }
+  .error-box { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 20px; color: #ef4444; text-align: center; display: none; margin-bottom: 24px; }
+  .error-box.active { display: block; }
   
   footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
   
@@ -115,9 +117,7 @@
 
 <section class="faq-section">
   <div class="container">
-    <div class="faq-list" id="faqList">
-      <!-- FAQ генерируется через JS -->
-    </div>
+    <div class="faq-list" id="faqList"></div>
   </div>
 </section>
 
@@ -129,6 +129,7 @@
       <div class="success-box" id="askSuccess">
         ✓ Вопрос отправлен! Мы ответим вам на email в течение 24 часов.
       </div>
+      <div class="error-box" id="askError"></div>
       <form id="askForm">
         <div class="form-group">
           <label>Ваше имя</label>
@@ -158,7 +159,6 @@
 // Бургер-меню
 const burgerBtn = document.getElementById('burgerBtn');
 const mobileMenu = document.getElementById('mobileMenu');
-
 if (burgerBtn && mobileMenu) {
   burgerBtn.addEventListener('click', () => {
     burgerBtn.classList.toggle('active');
@@ -228,7 +228,7 @@ function toggleFaq(element) {
   if (!wasActive) item.classList.add('active');
 }
 
-// Отправка вопроса
+// ===== ОТПРАВКА ВОПРОСА НАПРЯМУЮ В TELEGRAM =====
 document.getElementById('askForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   
@@ -236,8 +236,12 @@ document.getElementById('askForm').addEventListener('submit', async (e) => {
   const email = document.getElementById('askEmail').value.trim();
   const question = document.getElementById('askQuestion').value.trim();
   
+  document.getElementById('askSuccess').classList.remove('active');
+  document.getElementById('askError').classList.remove('active');
+  
   if (!name || !email || !question) {
-    showToast('Заполните все поля', 'warning');
+    document.getElementById('askError').textContent = 'Заполните все поля';
+    document.getElementById('askError').classList.add('active');
     return;
   }
   
@@ -246,24 +250,29 @@ document.getElementById('askForm').addEventListener('submit', async (e) => {
   btn.disabled = true;
   
   try {
-    // Сохраняем вопрос в базу
-    const { error } = await supabaseClient.from('support_questions').insert({
-      name,
-      email,
-      question,
-      status: 'new'
+    // Вызываем Edge Function напрямую через Supabase клиент
+    const { data, error } = await supabaseClient.functions.invoke('send-telegram', {
+      body: {
+        record: {
+          name: name,
+          email: email,
+          question: question,
+          created_at: new Date().toISOString()
+        }
+      }
     });
     
     if (error) {
-      // Если таблицы нет — просто показываем успех (вопрос не сохранится, но пользователь увидит подтверждение)
-      console.log('Support question save error:', error);
+      throw new Error(error.message);
     }
     
     document.getElementById('askSuccess').classList.add('active');
     document.getElementById('askForm').reset();
     showToast('Вопрос отправлен!', 'success');
   } catch (err) {
-    showToast('Ошибка отправки', 'error');
+    console.error('Send error:', err);
+    document.getElementById('askError').textContent = 'Ошибка отправки. Попробуйте ещё раз или напишите на support@cliply.ru';
+    document.getElementById('askError').classList.add('active');
   } finally {
     btn.textContent = 'Отправить вопрос';
     btn.disabled = false;
