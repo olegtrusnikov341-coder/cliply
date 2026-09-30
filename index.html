@@ -300,7 +300,7 @@
       <div class="feature-category-title">ВИДЕО</div>
       <div class="feature-list">
         <div class="feature-item">
-          <div class="feature-item-icon">📦</div>
+          <div class="feature-item-icon"></div>
           <div>
             <div class="feature-item-title">Обзор товара</div>
             <div class="feature-item-desc">Покажите товар в действии со всех ракурсов</div>
@@ -341,7 +341,7 @@
           </div>
         </div>
         <div class="feature-item">
-          <div class="feature-item-icon">️</div>
+          <div class="feature-item-icon">⚖️</div>
           <div>
             <div class="feature-item-title">Сравнение с аналогами</div>
             <div class="feature-item-desc">Почему ваш товар лучше конкурентов</div>
@@ -371,11 +371,11 @@
         <div class="example-info">
           <h3>Электроника</h3>
           <p>Беспроводные наушники</p>
-          <div class="example-meta"><span>🎵 Современная</span><span>⚡ Обзор</span></div>
+          <div class="example-meta"><span>🎵 Современная</span><span> Обзор</span></div>
         </div>
       </div>
       <div class="example-card">
-        <div class="example-preview">👕<span class="example-tag">15 сек</span></div>
+        <div class="example-preview"><span class="example-tag">15 сек</span></div>
         <div class="example-info">
           <h3>Одежда</h3>
           <p>Мужская футболка премиум</p>
@@ -387,7 +387,7 @@
         <div class="example-info">
           <h3>Товары для дома</h3>
           <p>Органайзер для кухни</p>
-          <div class="example-meta"><span>🎵 Спокойная</span><span>🎁 Распаковка</span></div>
+          <div class="example-meta"><span>🎵 Спокойная</span><span> Распаковка</span></div>
         </div>
       </div>
       <div class="example-card">
@@ -421,7 +421,7 @@
       <div class="category-card"><div class="category-icon">📱</div><div class="category-name">Электроника</div></div>
       <div class="category-card"><div class="category-icon">🏠</div><div class="category-name">Для дома</div></div>
       <div class="category-card"><div class="category-icon">💊</div><div class="category-name">Здоровье</div></div>
-      <div class="category-card"><div class="category-icon">⚽</div><div class="category-name">Спорт</div></div>
+      <div class="category-card"><div class="category-icon"></div><div class="category-name">Спорт</div></div>
       <div class="category-card"><div class="category-icon">🍫</div><div class="category-name">Еда</div></div>
       <div class="category-card"><div class="category-icon">🧸</div><div class="category-name">Детские</div></div>
     </div>
@@ -463,8 +463,8 @@
     <div class="section-label">07 / КЕЙСЫ</div>
     <h2 class="section-title">Что говорят селлеры</h2>
     <div class="testimonials-grid" id="testimonialsGrid">
-      <div class="testimonial-card" style="text-align:center;padding:60px 20px;">
-        <div style="font-size:32px;margin-bottom:16px;">⏳</div>
+      <div class="testimonial-card" style="text-align:center;padding:60px 20px;grid-column:1/-1;">
+        <div style="font-size:48px;margin-bottom:16px;">⏳</div>
         <div style="color:#A0A0B0;">Загрузка отзывов...</div>
       </div>
     </div>
@@ -620,10 +620,10 @@ async function loadSellerCount() {
     if (!error && count !== null) {
       document.getElementById('sellerCount').textContent = count.toLocaleString('ru-RU');
     } else {
-      document.getElementById('sellerCount').textContent = '1 247';
+      document.getElementById('sellerCount').textContent = '—';
     }
   } catch (e) {
-    document.getElementById('sellerCount').textContent = '1 247';
+    document.getElementById('sellerCount').textContent = '—';
   }
 }
 
@@ -641,49 +641,10 @@ async function loadTestimonials() {
     
     if (error || !data || data.length === 0) {
       grid.innerHTML = `
-        <div class="testimonial-card">
-          <div class="testimonial-quote">"Загрузила 5 фото крема, через 2 минуты получила видео. Загрузила в карточку WB — конверсия выросла с 3.2% до 4.7% за неделю."</div>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">А</div>
-            <div>
-              <div class="testimonial-name">Анна К.</div>
-              <div class="testimonial-role">Селлер косметики</div>
-              <div class="testimonial-stat">+34% конверсии</div>
-            </div>
-          </div>
-        </div>
-        <div class="testimonial-card">
-          <div class="testimonial-quote">"Раньше платил монтажёру 5000₽ за ролик. Теперь делаю 10 видео за цену одного. За месяц сэкономил 45 000₽."</div>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">Д</div>
-            <div>
-              <div class="testimonial-name">Дмитрий В.</div>
-              <div class="testimonial-role">Селлер электроники</div>
-              <div class="testimonial-stat">-90% расходов</div>
-            </div>
-          </div>
-        </div>
-        <div class="testimonial-card">
-          <div class="testimonial-quote">"Делаю видео для всех 47 товаров в ассортименте. Раньше это заняло бы полгода, сейчас — один вечер."</div>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">М</div>
-            <div>
-              <div class="testimonial-name">Мария С.</div>
-              <div class="testimonial-role">Селлер одежды</div>
-              <div class="testimonial-stat">47 видео за вечер</div>
-            </div>
-          </div>
-        </div>
-        <div class="testimonial-card">
-          <div class="testimonial-quote">"Добавил видео в карточку — количество возвратов снизилось на 23%. Покупатели лучше понимают товар."</div>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">И</div>
-            <div>
-              <div class="testimonial-name">Игорь П.</div>
-              <div class="testimonial-role">Селлер товаров для дома</div>
-              <div class="testimonial-stat">-23% возвратов</div>
-            </div>
-          </div>
+        <div class="testimonial-card" style="text-align:center;padding:60px 20px;grid-column:1/-1;">
+          <div style="font-size:48px;margin-bottom:16px;">💬</div>
+          <div style="font-size:20px;font-weight:600;margin-bottom:8px;">Пока нет отзывов</div>
+          <div style="color:#A0A0B0;font-size:15px;">Будьте первым — оставьте отзыв после 3-й генерации видео!</div>
         </div>
       `;
       return;
@@ -713,6 +674,13 @@ async function loadTestimonials() {
     
   } catch (e) {
     console.log('Reviews load error:', e);
+    grid.innerHTML = `
+      <div class="testimonial-card" style="text-align:center;padding:60px 20px;grid-column:1/-1;">
+        <div style="font-size:48px;margin-bottom:16px;">💬</div>
+        <div style="font-size:20px;font-weight:600;margin-bottom:8px;">Пока нет отзывов</div>
+        <div style="color:#A0A0B0;font-size:15px;">Будьте первым — оставьте отзыв после 3-й генерации видео!</div>
+      </div>
+    `;
   }
 }
 
