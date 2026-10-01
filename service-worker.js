@@ -1,5 +1,5 @@
-// Service Worker для Cliply — версия 9
-const CACHE_NAME = 'cliply-v9';
+// Service Worker для Cliply — версия 10
+const CACHE_NAME = 'cliply-v10';
 const STATIC_ASSETS = [
   '/cliply/',
   '/cliply/index.html',
@@ -10,6 +10,8 @@ const STATIC_ASSETS = [
   '/cliply/examples.html',
   '/cliply/settings.html',
   '/cliply/admin.html',
+  '/cliply/faq.html',
+  '/cliply/support.html',
   '/cliply/auth.js',
   '/cliply/toast.js',
   '/cliply/toast.css',
@@ -29,11 +31,11 @@ const STATIC_ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
-  console.log('[SW v9] Установка...');
+  console.log('[SW v10] Установка...');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(STATIC_ASSETS).catch(err => {
-        console.warn('[SW v9] Не все ресурсы закешены:', err);
+        console.warn('[SW v10] Не все ресурсы закешены:', err);
       });
     })
   );
@@ -41,12 +43,12 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('[SW v9] Активация...');
+  console.log('[SW v10] Активация...');
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
         keys.filter(key => key !== CACHE_NAME).map(key => {
-          console.log('[SW v9] Удаляю старый кеш:', key);
+          console.log('[SW v10] Удаляю старый кеш:', key);
           return caches.delete(key);
         })
       );
