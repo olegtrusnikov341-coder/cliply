@@ -113,6 +113,29 @@
 const chatMessages = document.getElementById('chatMessages');
 const chatInput = document.getElementById('chatInput');
 const chatSend = document.getElementById('chatSend');
+let currentUser = null;
+let conversationId = null;
+
+// Инициализация
+(async () => {
+  currentUser = await getCurrentUser();
+  
+  // Создаём или загружаем разговор
+  if (currentUser) {
+    const { data } = await supabaseClient
+      .from('support_conversations')
+      .select('id')
+      .eq('user_id', currentUser.id)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+    
+    if (data) {
+      conversationId = data.id;
+      loadMessages();
+    }
+  }
+})();
 
 // Авто-ресайз textarea
 chatInput.addEventListener('input', () => {
@@ -136,30 +159,59 @@ async function sendMessage() {
   
   chatSend.disabled = true;
   
-  // Показываем сообщение пользователя в UI
+  // Добавляем сообщение пользователя в UI
   addMessageToUI(text, 'user');
   chatInput.value = '';
   chatInput.style.height = 'auto';
   
-  // Отправляем в Telegram через Edge Function
+  // Сохраняем в базу
   try {
-    const { error } = await supabaseClient.functions.invoke('send-telegram', {
-      body: {
-        record: {
-          message: text,
-          sender: 'user',
-          user_name: 'Гость',
-          user_email: 'неизвестно',
-          created_at: new Date().toISOString()
-        }
-      }
-    });
-    
-    if (error) {
-      console.error('Send error:', error);
+    if (!conversationId && currentUser) {
+      const { data: conv } = await supabaseClient
+        .from('support_conversations')
+        .insert({
+          user_id: currentUser.id,
+          user_name: currentUser.profile?.full_name || currentUser.email,
+          user_email: currentUser.email,
+          status: 'open'
+        })
+        .select()
+        .single();
+      conversationId = conv.id;
     }
+    
+    if (conversationId) {
+      await supabaseClient.from('support_messages').insert({
+        conversation_id: conversationId,
+        sender: 'user',
+        message: text
+      });
+      
+      // Отправляем уведомление в Telegram через Edge Function (прямой fetch)
+      try {
+        await fetch(
+          'https://djvdklcahpqbjotukmxt.supabase.co/functions/v1/send-telegram',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              record: {
+                message: text,
+                sender: 'user',
+                user_name: currentUser.profile?.full_name || currentUser.email,
+                user_email: currentUser.email,
+                created_at: new Date().toISOString()
+              }
+            })
+          }
+        );
+      } catch (e) {
+        console.log('Telegram notification error:', e);
+      }
+    }
+    
   } catch (err) {
-    console.error('Invoke error:', err);
+    console.log('Message save error:', err);
   }
   
   // Авто-ответ
@@ -171,6 +223,7 @@ async function sendMessage() {
 }
 
 function addMessageToUI(text, sender) {
+  // Убираем empty state
   const empty = chatMessages.querySelector('.chat-empty');
   if (empty) empty.remove();
   
@@ -184,6 +237,29 @@ function addMessageToUI(text, sender) {
   chatMessages.appendChild(msg);
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
+
+async function loadMessages() {
+  if (!conversationId) return;
+  
+  const { data } = await supabaseClient
+    .from('support_messages')
+    .select('*')
+    .eq('conversation_id', conversationId)
+    .order('created_at', { ascending: true });
+  
+  if (data && data.length > 0) {
+    chatMessages.innerHTML = '';
+    data.forEach(msg => {
+      const sender = msg.sender === 'admin' ? 'bot' : 'user';
+      addMessageToUI(msg.message, sender);
+    });
+  }
+}
+
+// Автообновление чата каждые 10 секунд
+setInterval(() => {
+  if (conversationId) loadMessages();
+}, 10000);
 </script>
 </body>
 </html>
