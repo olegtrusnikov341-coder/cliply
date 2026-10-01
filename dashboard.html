@@ -199,142 +199,229 @@
   .mobile-header { display: none; }
   
   /* ===== ОНБОРДИНГ ===== */
-  .onboarding-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px);
-    z-index: 9998; display: none;
-  }
+  .onboarding-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px); z-index: 9998; display: none; }
   .onboarding-overlay.active { display: block; }
-  
-  .onboarding-tooltip {
-    position: fixed; z-index: 9999;
-    background: #141414; border: 2px solid #6C5CE7;
-    border-radius: 16px; padding: 24px;
-    max-width: 420px; width: 90%;
-    box-shadow: 0 20px 60px rgba(108, 92, 231, 0.4);
-    display: none;
-  }
+  .onboarding-tooltip { position: fixed; z-index: 9999; background: #141414; border: 2px solid #6C5CE7; border-radius: 16px; padding: 24px; max-width: 420px; width: 90%; box-shadow: 0 20px 60px rgba(108, 92, 231, 0.4); display: none; }
   .onboarding-tooltip.active { display: block; animation: tooltipAppear 0.4s ease; }
-  @keyframes tooltipAppear {
-    from { opacity: 0; transform: translateY(20px) scale(0.95); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-  }
-  
-  .onboarding-tooltip-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 16px;
-  }
-  .onboarding-step-counter {
-    font-size: 12px; color: #6C5CE7; font-weight: 700;
-    letter-spacing: 1px; text-transform: uppercase;
-  }
-  .onboarding-skip {
-    background: transparent; border: none; color: #A0A0B0;
-    font-size: 13px; cursor: pointer; padding: 4px 8px;
-  }
+  @keyframes tooltipAppear { from { opacity: 0; transform: translateY(20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  .onboarding-tooltip-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .onboarding-step-counter { font-size: 12px; color: #6C5CE7; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .onboarding-skip { background: transparent; border: none; color: #A0A0B0; font-size: 13px; cursor: pointer; padding: 4px 8px; }
   .onboarding-skip:hover { color: #fff; }
-  
   .onboarding-tooltip-icon { font-size: 48px; margin-bottom: 12px; }
-  .onboarding-tooltip h3 {
-    font-size: 20px; font-weight: 700; font-family: 'Manrope';
-    margin-bottom: 12px; color: #fff;
-  }
-  .onboarding-tooltip p {
-    font-size: 14px; color: #A0A0B0; line-height: 1.6; margin-bottom: 20px;
-  }
-  
-  .onboarding-progress {
-    display: flex; gap: 6px; margin-bottom: 20px;
-  }
-  .onboarding-progress-dot {
-    flex: 1; height: 4px; border-radius: 100px;
-    background: #27272a; transition: background 0.3s;
-  }
+  .onboarding-tooltip h3 { font-size: 20px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 12px; color: #fff; }
+  .onboarding-tooltip p { font-size: 14px; color: #A0A0B0; line-height: 1.6; margin-bottom: 20px; }
+  .onboarding-progress { display: flex; gap: 6px; margin-bottom: 20px; }
+  .onboarding-progress-dot { flex: 1; height: 4px; border-radius: 100px; background: #27272a; transition: background 0.3s; }
   .onboarding-progress-dot.active { background: #6C5CE7; }
   .onboarding-progress-dot.completed { background: #10b981; }
-  
-  .onboarding-tooltip-actions {
-    display: flex; gap: 12px; justify-content: flex-end;
-  }
-  .onboarding-btn {
-    padding: 10px 20px; border-radius: 10px; border: none;
-    font-size: 14px; font-weight: 600; cursor: pointer;
-    transition: all 0.2s;
-  }
-  .onboarding-btn-prev {
-    background: transparent; color: #A0A0B0; border: 1px solid #27272a;
-  }
+  .onboarding-tooltip-actions { display: flex; gap: 12px; justify-content: flex-end; }
+  .onboarding-btn { padding: 10px 20px; border-radius: 10px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .onboarding-btn-prev { background: transparent; color: #A0A0B0; border: 1px solid #27272a; }
   .onboarding-btn-prev:hover { border-color: #6C5CE7; color: #fff; }
-  .onboarding-btn-next {
-    background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff;
-  }
+  .onboarding-btn-next { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; }
   .onboarding-btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4); }
-  
-  .highlight-element {
-    position: relative; z-index: 9997;
-    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75);
-    border-radius: 12px;
-    transition: box-shadow 0.3s ease;
-  }
-  
-  /* Приветственное модальное окно */
-  .welcome-modal {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
-    z-index: 10000; display: none;
-    align-items: center; justify-content: center; padding: 20px;
-  }
+  .highlight-element { position: relative; z-index: 9997; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75); border-radius: 12px; transition: box-shadow 0.3s ease; }
+  .welcome-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px; }
   .welcome-modal.active { display: flex; animation: modalFadeIn 0.4s ease; }
   @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
-  
-  .welcome-content {
-    background: #141414; border: 1px solid #27272a;
-    border-radius: 24px; padding: 48px; max-width: 560px; width: 100%;
-    text-align: center; position: relative;
-    animation: modalSlideIn 0.5s ease;
-  }
-  @keyframes modalSlideIn {
-    from { opacity: 0; transform: translateY(30px) scale(0.95); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-  }
-  
+  .welcome-content { background: #141414; border: 1px solid #27272a; border-radius: 24px; padding: 48px; max-width: 560px; width: 100%; text-align: center; position: relative; animation: modalSlideIn 0.5s ease; }
+  @keyframes modalSlideIn { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
   .welcome-icon { font-size: 72px; margin-bottom: 20px; }
-  .welcome-content h2 {
-    font-size: 28px; font-weight: 800; font-family: 'Manrope';
-    margin-bottom: 12px;
-    background: linear-gradient(135deg, #6C5CE7, #A29BFE);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  }
-  .welcome-content > p {
-    font-size: 16px; color: #A0A0B0; line-height: 1.6; margin-bottom: 28px;
-  }
-  
-  .welcome-features {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-    margin-bottom: 28px; text-align: left;
-  }
-  .welcome-feature {
-    display: flex; align-items: center; gap: 10px;
-    padding: 12px; background: #0A0A0F; border-radius: 10px;
-    border: 1px solid #1f1f2e;
-  }
+  .welcome-content h2 { font-size: 28px; font-weight: 800; font-family: 'Manrope'; margin-bottom: 12px; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .welcome-content > p { font-size: 16px; color: #A0A0B0; line-height: 1.6; margin-bottom: 28px; }
+  .welcome-features { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; text-align: left; }
+  .welcome-feature { display: flex; align-items: center; gap: 10px; padding: 12px; background: #0A0A0F; border-radius: 10px; border: 1px solid #1f1f2e; }
   .welcome-feature-icon { font-size: 20px; }
   .welcome-feature-text { font-size: 13px; color: #d0d0d0; }
-  
   .welcome-actions { display: flex; gap: 12px; justify-content: center; }
-  .welcome-btn {
-    padding: 14px 28px; border-radius: 12px; border: none;
-    font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s;
-  }
-  .welcome-btn-primary {
-    background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff;
-    box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4);
-  }
+  .welcome-btn { padding: 14px 28px; border-radius: 12px; border: none; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .welcome-btn-primary { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   .welcome-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
-  .welcome-btn-secondary {
-    background: transparent; color: #A0A0B0; border: 1px solid #27272a;
-  }
+  .welcome-btn-secondary { background: transparent; color: #A0A0B0; border: 1px solid #27272a; }
   .welcome-btn-secondary:hover { border-color: #6C5CE7; color: #fff; }
+  
+  /* ===== ДОСТИЖЕНИЯ ===== */
+  .achievements-section {
+    background: #141414;
+    border: 1px solid #27272a;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 40px;
+  }
+  .achievements-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .achievements-header h2 {
+    font-size: 22px;
+    font-weight: 700;
+    font-family: 'Manrope';
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .achievements-stats {
+    display: flex;
+    gap: 24px;
+  }
+  .achievements-stat {
+    text-align: center;
+  }
+  .achievements-stat-value {
+    font-size: 24px;
+    font-weight: 800;
+    font-family: 'Manrope';
+    color: #6C5CE7;
+  }
+  .achievements-stat-label {
+    font-size: 12px;
+    color: #A0A0B0;
+    margin-top: 2px;
+  }
+  .achievements-categories {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .achievement-category-btn {
+    padding: 8px 16px;
+    border-radius: 100px;
+    border: 1px solid #27272a;
+    background: transparent;
+    color: #A0A0B0;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .achievement-category-btn:hover {
+    border-color: #6C5CE7;
+    color: #fff;
+  }
+  .achievement-category-btn.active {
+    background: #6C5CE7;
+    border-color: #6C5CE7;
+    color: #fff;
+  }
+  .achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .achievement-card {
+    background: #0A0A0F;
+    border: 1px solid #1f1f2e;
+    border-radius: 14px;
+    padding: 20px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .achievement-card.unlocked {
+    border-color: rgba(108, 92, 231, 0.4);
+    background: linear-gradient(135deg, rgba(108, 92, 231, 0.08), rgba(162, 155, 254, 0.04));
+  }
+  .achievement-card.unlocked:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(108, 92, 231, 0.2);
+  }
+  .achievement-card.locked {
+    opacity: 0.5;
+    filter: grayscale(0.7);
+  }
+  .achievement-card.locked:hover {
+    opacity: 0.7;
+  }
+  .achievement-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .achievement-card.locked .achievement-icon {
+    filter: grayscale(1);
+  }
+  .achievement-name {
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Manrope';
+    margin-bottom: 6px;
+    color: #fff;
+  }
+  .achievement-description {
+    font-size: 13px;
+    color: #A0A0B0;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    min-height: 40px;
+  }
+  .achievement-progress {
+    height: 6px;
+    background: #27272a;
+    border-radius: 100px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .achievement-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #6C5CE7, #A29BFE);
+    border-radius: 100px;
+    transition: width 0.5s ease;
+  }
+  .achievement-progress-text {
+    font-size: 12px;
+    color: #666;
+    display: flex;
+    justify-content: space-between;
+  }
+  .achievement-unlocked-date {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 11px;
+    color: #6C5CE7;
+    font-weight: 600;
+    background: rgba(108, 92, 231, 0.15);
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  .achievement-lock-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 16px;
+    opacity: 0.5;
+  }
+  .achievement-toast {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    background: #141414;
+    border: 2px solid #6C5CE7;
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 20px 60px rgba(108, 92, 231, 0.4);
+    z-index: 10001;
+    animation: achievementSlideIn 0.5s ease;
+    max-width: 400px;
+  }
+  @keyframes achievementSlideIn {
+    from { opacity: 0; transform: translateX(100px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .achievement-toast-icon { font-size: 48px; flex-shrink: 0; }
+  .achievement-toast-content { flex: 1; }
+  .achievement-toast-label { font-size: 11px; color: #6C5CE7; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .achievement-toast-title { font-size: 18px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 4px; }
+  .achievement-toast-desc { font-size: 13px; color: #A0A0B0; }
   
   @media (max-width: 768px) {
     .sidebar { display: none !important; }
@@ -342,6 +429,9 @@
     .welcome-content { padding: 32px 24px !important; }
     .welcome-features { grid-template-columns: 1fr !important; }
     .onboarding-tooltip { max-width: 90% !important; padding: 20px !important; }
+    .achievements-grid { grid-template-columns: 1fr !important; }
+    .achievements-header { flex-direction: column; align-items: flex-start; }
+    .achievement-toast { right: 12px; left: 12px; max-width: none; }
   }
 </style>
 </head>
@@ -419,9 +509,9 @@
   
   <div class="mobile-menu" id="mobileMenu">
     <a href="dashboard.html" class="active">📊 Дашборд</a>
-    <a href="analytics.html"> Аналитика</a>
+    <a href="analytics.html">📈 Аналитика</a>
     <a href="pricing.html">💎 Тарифы</a>
-    <a href="settings.html">️ Настройки</a>
+    <a href="settings.html">⚙️ Настройки</a>
     <a href="support.html">💬 Техподдержка</a>
     <a href="index.html" class="btn-nav-mobile">← На главную</a>
     <a href="#" onclick="logout(); return false;" style="color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); margin-top: 16px;">Выйти</a>
@@ -429,7 +519,7 @@
   
   <main class="main">
     <div id="offlineBanner" class="offline-banner">
-      <span>️</span>
+      <span>⚠️</span>
       <span>Нет подключения к интернету. Некоторые функции могут быть недоступны.</span>
     </div>
     <div class="header">
@@ -459,7 +549,7 @@
         </div>
       </div>
     </div>
-    <div class="create-card" id="createCard">
+    <div class="create-card">
       <div class="create-card-header">
         <h2>Создать новое видео</h2>
         <div style="display: flex; gap: 12px; align-items: center;">
@@ -502,6 +592,39 @@
       </div>
       <button class="btn-generate" onclick="startGeneration()" id="btnGenerate">Сгенерировать видео →</button>
     </div>
+    
+    <!-- ===== ДОСТИЖЕНИЯ ===== -->
+    <div class="achievements-section" id="achievementsSection">
+      <div class="achievements-header">
+        <h2>🏆 Мои достижения</h2>
+        <div class="achievements-stats">
+          <div class="achievements-stat">
+            <div class="achievements-stat-value" id="unlockedCount">0</div>
+            <div class="achievements-stat-label">Получено</div>
+          </div>
+          <div class="achievements-stat">
+            <div class="achievements-stat-value" id="totalCount">0</div>
+            <div class="achievements-stat-label">Всего</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="achievements-categories" id="achievementCategories">
+        <button class="achievement-category-btn active" data-category="all">Все</button>
+        <button class="achievement-category-btn" data-category="Начало">Начало</button>
+        <button class="achievement-category-btn" data-category="Продуктивность">Продуктивность</button>
+        <button class="achievement-category-btn" data-category="Мастерство">Мастерство</button>
+        <button class="achievement-category-btn" data-category="Сообщество">Сообщество</button>
+        <button class="achievement-category-btn" data-category="Статус">Статус</button>
+      </div>
+      
+      <div class="achievements-grid" id="achievementsGrid">
+        <div style="text-align: center; padding: 40px; color: #A0A0B0; grid-column: 1 / -1;">
+          Загрузка достижений...
+        </div>
+      </div>
+    </div>
+    
     <div class="videos-section">
       <div class="videos-section-header">
         <h2>Ваши видео</h2>
@@ -528,36 +651,264 @@ let networkManager = null;
 let allNotifications = [];
 let notificationsCheckInterval = null;
 
+// ===== ДОСТИЖЕНИЯ =====
+let allAchievements = [];
+let userAchievements = [];
+let currentAchievementCategory = 'all';
+
+async function loadAchievements() {
+  if (!currentUser) return;
+  
+  try {
+    const { data: achievements, error: achError } = await supabaseClient
+      .from('achievements')
+      .select('*')
+      .order('category', { ascending: true });
+    
+    if (achError) throw achError;
+    allAchievements = achievements || [];
+    
+    const { data: userAch, error: userAchError } = await supabaseClient
+      .from('user_achievements')
+      .select('achievement_id, unlocked_at, progress')
+      .eq('user_id', currentUser.id);
+    
+    if (userAchError) throw userAchError;
+    userAchievements = userAch || [];
+    
+    renderAchievements();
+    
+  } catch (e) {
+    console.error('Load achievements error:', e);
+  }
+}
+
+function renderAchievements() {
+  const grid = document.getElementById('achievementsGrid');
+  if (!grid) return;
+  
+  let filtered = allAchievements;
+  if (currentAchievementCategory !== 'all') {
+    filtered = allAchievements.filter(a => a.category === currentAchievementCategory);
+  }
+  
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div style="text-align: center; padding: 40px; color: #A0A0B0; grid-column: 1 / -1;">Нет достижений в этой категории</div>';
+    return;
+  }
+  
+  const unlockedCount = userAchievements.length;
+  document.getElementById('unlockedCount').textContent = unlockedCount;
+  document.getElementById('totalCount').textContent = allAchievements.length;
+  
+  grid.innerHTML = filtered.map(achievement => {
+    const userAch = userAchievements.find(ua => ua.achievement_id === achievement.id);
+    const isUnlocked = !!userAch;
+    const progress = userAch ? userAch.progress : 0;
+    const progressPercent = Math.min((progress / achievement.requirement) * 100, 100);
+    
+    const unlockedDate = userAch 
+      ? new Date(userAch.unlocked_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' })
+      : null;
+    
+    const cardClass = isUnlocked ? 'achievement-card unlocked' : 'achievement-card locked';
+    
+    return `
+      <div class="${cardClass}">
+        ${isUnlocked 
+          ? `<div class="achievement-unlocked-date">${unlockedDate}</div>`
+          : `<div class="achievement-lock-icon">🔒</div>`
+        }
+        <span class="achievement-icon">${achievement.icon}</span>
+        <div class="achievement-name">${achievement.name}</div>
+        <div class="achievement-description">${achievement.description}</div>
+        ${!isUnlocked ? `
+          <div class="achievement-progress">
+            <div class="achievement-progress-bar" style="width: ${progressPercent}%"></div>
+          </div>
+          <div class="achievement-progress-text">
+            <span>${progress} / ${achievement.requirement}</span>
+            <span>${Math.round(progressPercent)}%</span>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+document.getElementById('achievementCategories').addEventListener('click', (e) => {
+  if (e.target.classList.contains('achievement-category-btn')) {
+    document.querySelectorAll('.achievement-category-btn').forEach(btn => btn.classList.remove('active'));
+    e.target.classList.add('active');
+    currentAchievementCategory = e.target.dataset.category;
+    renderAchievements();
+  }
+});
+
+async function checkAndAwardAchievements() {
+  if (!currentUser) return;
+  
+  try {
+    const { count: videoCount } = await supabaseClient
+      .from('videos')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', currentUser.id);
+    
+    const { count: reviewCount } = await supabaseClient
+      .from('reviews')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', currentUser.id);
+    
+    const { data: scenarios } = await supabaseClient
+      .from('videos')
+      .select('scenario')
+      .eq('user_id', currentUser.id);
+    
+    const uniqueScenarios = [...new Set(scenarios?.map(v => v.scenario).filter(Boolean))];
+    
+    for (const achievement of allAchievements) {
+      const alreadyUnlocked = userAchievements.some(ua => ua.achievement_id === achievement.id);
+      if (alreadyUnlocked) continue;
+      
+      let currentProgress = 0;
+      let shouldUnlock = false;
+      
+      switch (achievement.code) {
+        case 'first_video':
+        case 'five_videos':
+        case 'ten_videos':
+        case 'fifty_videos':
+          currentProgress = videoCount || 0;
+          shouldUnlock = currentProgress >= achievement.requirement;
+          break;
+        
+        case 'first_review':
+        case 'five_reviews':
+          currentProgress = reviewCount || 0;
+          shouldUnlock = currentProgress >= achievement.requirement;
+          break;
+        
+        case 'all_scenarios':
+          currentProgress = uniqueScenarios.length;
+          shouldUnlock = currentProgress >= achievement.requirement;
+          break;
+        
+        case 'support_user':
+        case 'onboarding_done':
+        case 'pro_seller':
+        case 'early_adopter':
+        case 'five_photos':
+          continue;
+      }
+      
+      if (shouldUnlock) {
+        await unlockAchievement(achievement, currentProgress);
+      } else if (currentProgress > 0) {
+        await updateAchievementProgress(achievement.id, currentProgress);
+      }
+    }
+    
+    await loadAchievements();
+    
+  } catch (e) {
+    console.error('Check achievements error:', e);
+  }
+}
+
+async function unlockAchievement(achievement, progress) {
+  if (!currentUser) return;
+  
+  try {
+    const { error } = await supabaseClient
+      .from('user_achievements')
+      .insert({
+        user_id: currentUser.id,
+        achievement_id: achievement.id,
+        progress: progress,
+        unlocked_at: new Date().toISOString()
+      });
+    
+    if (error) {
+      if (error.code === '23505') {
+        await supabaseClient
+          .from('user_achievements')
+          .update({ progress: progress, unlocked_at: new Date().toISOString() })
+          .eq('user_id', currentUser.id)
+          .eq('achievement_id', achievement.id);
+      } else {
+        throw error;
+      }
+    }
+    
+    showAchievementToast(achievement);
+    
+    await createNotification(
+      'achievement',
+      `Достижение разблокировано: ${achievement.name}`,
+      achievement.description,
+      'dashboard.html'
+    );
+    
+  } catch (e) {
+    console.error('Unlock achievement error:', e);
+  }
+}
+
+async function updateAchievementProgress(achievementId, progress) {
+  if (!currentUser) return;
+  
+  try {
+    const { error } = await supabaseClient
+      .from('user_achievements')
+      .upsert({
+        user_id: currentUser.id,
+        achievement_id: achievementId,
+        progress: progress
+      }, { onConflict: 'user_id,achievement_id' });
+    
+    if (error) console.error('Update progress error:', error);
+  } catch (e) {
+    console.error('Update progress error:', e);
+  }
+}
+
+async function unlockAchievementByCode(code, progress) {
+  const achievement = allAchievements.find(a => a.code === code);
+  if (!achievement) return;
+  
+  const alreadyUnlocked = userAchievements.some(ua => ua.achievement_id === achievement.id);
+  if (alreadyUnlocked) return;
+  
+  await unlockAchievement(achievement, progress);
+  await loadAchievements();
+}
+
+function showAchievementToast(achievement) {
+  const toast = document.createElement('div');
+  toast.className = 'achievement-toast';
+  toast.innerHTML = `
+    <div class="achievement-toast-icon">${achievement.icon}</div>
+    <div class="achievement-toast-content">
+      <div class="achievement-toast-label">Новое достижение!</div>
+      <div class="achievement-toast-title">${achievement.name}</div>
+      <div class="achievement-toast-desc">${achievement.description}</div>
+    </div>
+  `;
+  
+  document.body.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.style.animation = 'achievementSlideIn 0.5s ease reverse';
+    setTimeout(() => toast.remove(), 500);
+  }, 4000);
+}
+
 // ===== ОНБОРДИНГ =====
 const ONBOARDING_STEPS = [
-  {
-    selector: '#uploadZone',
-    icon: '',
-    title: 'Шаг 1: Загрузите фото товара',
-    text: 'Перетащите сюда 3-5 фотографий товара или нажмите, чтобы выбрать. Подойдут фото из карточки WB или Ozon — главное, чтобы товар был хорошо виден.',
-    position: 'bottom'
-  },
-  {
-    selector: '#descriptionGroup',
-    icon: '✍️',
-    title: 'Шаг 2: Опишите товар',
-    text: 'Расскажите, чем ваш товар лучше аналогов. Можно коротко — AI сам превратит это в продающий сценарий с ключевыми акцентами.',
-    position: 'bottom'
-  },
-  {
-    selector: '#scenarioGroup',
-    icon: '🎬',
-    title: 'Шаг 3: Выберите сценарий',
-    text: '6 готовых форматов под разные задачи: обзор, 3 причины купить, распаковка, проблема-решение, отзыв, сравнение с конкурентами.',
-    position: 'top'
-  },
-  {
-    selector: '#btnGenerate',
-    icon: '🚀',
-    title: 'Шаг 4: Сгенерируйте видео',
-    text: 'Нажмите кнопку — и через 2 минуты получите готовый ролик 9:16 с музыкой, озвучкой и титрами. Скачайте и загружайте в карточку!',
-    position: 'top'
-  }
+  { selector: '#uploadZone', icon: '📸', title: 'Шаг 1: Загрузите фото товара', text: 'Перетащите сюда 3-5 фотографий товара или нажмите, чтобы выбрать. Подойдут фото из карточки WB или Ozon — главное, чтобы товар был хорошо виден.', position: 'bottom' },
+  { selector: '#descriptionGroup', icon: '✍️', title: 'Шаг 2: Опишите товар', text: 'Расскажите, чем ваш товар лучше аналогов. Можно коротко — AI сам превратит это в продающий сценарий с ключевыми акцентами.', position: 'bottom' },
+  { selector: '#scenarioGroup', icon: '🎬', title: 'Шаг 3: Выберите сценарий', text: '6 готовых форматов под разные задачи: обзор, 3 причины купить, распаковка, проблема-решение, отзыв, сравнение с конкурентами.', position: 'top' },
+  { selector: '#btnGenerate', icon: '🚀', title: 'Шаг 4: Сгенерируйте видео', text: 'Нажмите кнопку — и через 2 минуты получите готовый ролик 9:16 с музыкой, озвучкой и титрами. Скачайте и загружайте в карточку!', position: 'top' }
 ];
 
 let currentOnboardingStep = 0;
@@ -565,44 +916,21 @@ let highlightedElement = null;
 
 async function checkOnboardingStatus() {
   if (!currentUser) return false;
-  
   try {
-    const { data, error } = await supabaseClient
-      .from('onboarding_status')
-      .select('*')
-      .eq('user_id', currentUser.id)
-      .single();
-    
-    if (error && error.code !== 'PGRST116') {
-      console.error('Onboarding check error:', error);
-      return false;
-    }
-    
-    // Если записи нет или completed = false — показываем онбординг
+    const { data, error } = await supabaseClient.from('onboarding_status').select('*').eq('user_id', currentUser.id).single();
+    if (error && error.code !== 'PGRST116') { console.error('Onboarding check error:', error); return false; }
     return !data || !data.completed;
-  } catch (e) {
-    console.error('Onboarding check error:', e);
-    return false;
-  }
+  } catch (e) { console.error('Onboarding check error:', e); return false; }
 }
 
 async function saveOnboardingStatus(completed, currentStep = 0) {
   if (!currentUser) return;
-  
   try {
-    const { error } = await supabaseClient
-      .from('onboarding_status')
-      .upsert({
-        user_id: currentUser.id,
-        completed: completed,
-        current_step: currentStep,
-        updated_at: new Date().toISOString()
-      }, { onConflict: 'user_id' });
-    
+    const { error } = await supabaseClient.from('onboarding_status').upsert({
+      user_id: currentUser.id, completed: completed, current_step: currentStep, updated_at: new Date().toISOString()
+    }, { onConflict: 'user_id' });
     if (error) console.error('Save onboarding error:', error);
-  } catch (e) {
-    console.error('Save onboarding error:', e);
-  }
+  } catch (e) { console.error('Save onboarding error:', e); }
 }
 
 function showWelcomeModal() {
@@ -631,36 +959,17 @@ function showOnboardingStep() {
     finishOnboarding();
     return;
   }
-  
   const step = ONBOARDING_STEPS[currentOnboardingStep];
   const element = document.querySelector(step.selector);
-  
-  if (!element) {
-    currentOnboardingStep++;
-    showOnboardingStep();
-    return;
-  }
-  
-  // Убираем предыдущую подсветку
-  if (highlightedElement) {
-    highlightedElement.classList.remove('highlight-element');
-  }
-  
-  // Подсвечиваем текущий элемент
+  if (!element) { currentOnboardingStep++; showOnboardingStep(); return; }
+  if (highlightedElement) highlightedElement.classList.remove('highlight-element');
   highlightedElement = element;
   element.classList.add('highlight-element');
-  
-  // Скроллим к элементу
   element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  
-  // Заполняем tooltip
   document.getElementById('onboardingIcon').textContent = step.icon;
   document.getElementById('onboardingTitle').textContent = step.title;
   document.getElementById('onboardingText').textContent = step.text;
-  document.getElementById('onboardingStepCounter').textContent = 
-    `Шаг ${currentOnboardingStep + 1} из ${ONBOARDING_STEPS.length}`;
-  
-  // Прогресс-бар
+  document.getElementById('onboardingStepCounter').textContent = `Шаг ${currentOnboardingStep + 1} из ${ONBOARDING_STEPS.length}`;
   const progress = document.getElementById('onboardingProgress');
   progress.innerHTML = ONBOARDING_STEPS.map((_, i) => {
     let cls = 'onboarding-progress-dot';
@@ -668,21 +977,11 @@ function showOnboardingStep() {
     else if (i === currentOnboardingStep) cls += ' active';
     return `<div class="${cls}"></div>`;
   }).join('');
-  
-  // Кнопки
-  document.getElementById('onboardingPrev').style.display = 
-    currentOnboardingStep > 0 ? 'block' : 'none';
-  document.getElementById('onboardingNext').textContent = 
-    currentOnboardingStep === ONBOARDING_STEPS.length - 1 ? 'Завершить 🎉' : 'Далее →';
-  
-  // Позиционируем tooltip
+  document.getElementById('onboardingPrev').style.display = currentOnboardingStep > 0 ? 'block' : 'none';
+  document.getElementById('onboardingNext').textContent = currentOnboardingStep === ONBOARDING_STEPS.length - 1 ? 'Завершить 🎉' : 'Далее →';
   positionTooltip(element, step.position);
-  
-  // Показываем overlay и tooltip
   document.getElementById('onboardingOverlay').classList.add('active');
   document.getElementById('onboardingTooltip').classList.add('active');
-  
-  // Сохраняем прогресс
   saveOnboardingStatus(false, currentOnboardingStep);
 }
 
@@ -691,67 +990,39 @@ function positionTooltip(element, position) {
   const rect = element.getBoundingClientRect();
   const tooltipWidth = 420;
   const tooltipHeight = tooltip.offsetHeight || 300;
-  
   let top, left;
-  
-  if (position === 'bottom') {
-    top = rect.bottom + 20;
-    left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
-  } else {
-    top = rect.top - tooltipHeight - 20;
-    left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
-  }
-  
-  // Ограничения по экрану
+  if (position === 'bottom') { top = rect.bottom + 20; left = rect.left + (rect.width / 2) - (tooltipWidth / 2); }
+  else { top = rect.top - tooltipHeight - 20; left = rect.left + (rect.width / 2) - (tooltipWidth / 2); }
   left = Math.max(20, Math.min(left, window.innerWidth - tooltipWidth - 20));
   top = Math.max(20, Math.min(top, window.innerHeight - tooltipHeight - 20));
-  
   tooltip.style.top = top + 'px';
   tooltip.style.left = left + 'px';
 }
 
 function nextOnboardingStep() {
-  if (highlightedElement) {
-    highlightedElement.classList.remove('highlight-element');
-    highlightedElement = null;
-  }
+  if (highlightedElement) { highlightedElement.classList.remove('highlight-element'); highlightedElement = null; }
   currentOnboardingStep++;
   showOnboardingStep();
 }
 
 function prevOnboardingStep() {
-  if (highlightedElement) {
-    highlightedElement.classList.remove('highlight-element');
-    highlightedElement = null;
-  }
-  if (currentOnboardingStep > 0) {
-    currentOnboardingStep--;
-    showOnboardingStep();
-  }
+  if (highlightedElement) { highlightedElement.classList.remove('highlight-element'); highlightedElement = null; }
+  if (currentOnboardingStep > 0) { currentOnboardingStep--; showOnboardingStep(); }
 }
 
-function finishOnboarding() {
-  if (highlightedElement) {
-    highlightedElement.classList.remove('highlight-element');
-    highlightedElement = null;
-  }
-  
+async function finishOnboarding() {
+  if (highlightedElement) { highlightedElement.classList.remove('highlight-element'); highlightedElement = null; }
   document.getElementById('onboardingOverlay').classList.remove('active');
   document.getElementById('onboardingTooltip').classList.remove('active');
-  
   saveOnboardingStatus(true);
   showToast('🎉 Отлично! Теперь вы готовы создать первое видео!', 'success');
+  await unlockAchievementByCode('onboarding_done', 1);
 }
 
 function skipOnboarding() {
-  if (highlightedElement) {
-    highlightedElement.classList.remove('highlight-element');
-    highlightedElement = null;
-  }
-  
+  if (highlightedElement) { highlightedElement.classList.remove('highlight-element'); highlightedElement = null; }
   document.getElementById('onboardingOverlay').classList.remove('active');
   document.getElementById('onboardingTooltip').classList.remove('active');
-  
   saveOnboardingStatus(true);
   showToast('Тур пропущен. Вы можете пройти его позже в настройках.', 'info');
 }
@@ -760,17 +1031,11 @@ function initOnboarding() {
   document.getElementById('onboardingNext').addEventListener('click', nextOnboardingStep);
   document.getElementById('onboardingPrev').addEventListener('click', prevOnboardingStep);
   document.getElementById('onboardingSkip').addEventListener('click', skipOnboarding);
-  
-  // Закрытие по клику на overlay
   document.getElementById('onboardingOverlay').addEventListener('click', skipOnboarding);
-  
-  // Закрытие по Escape
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       const tooltip = document.getElementById('onboardingTooltip');
-      if (tooltip.classList.contains('active')) {
-        skipOnboarding();
-      }
+      if (tooltip.classList.contains('active')) skipOnboarding();
     }
   });
 }
@@ -841,11 +1106,11 @@ async function initDashboard() {
   
   await loadVideos();
   await loadNotifications();
+  await loadAchievements();
   startNotificationsCheck();
   initNotificationsUI();
   initOnboarding();
   
-  // Проверяем онбординг
   const needsOnboarding = await checkOnboardingStatus();
   if (needsOnboarding) {
     setTimeout(() => showWelcomeModal(), 1500);
@@ -879,72 +1144,42 @@ async function initDashboard() {
 
 async function loadNotifications() {
   if (!currentUser) return;
-  
   try {
-    const { data, error } = await supabaseClient
-      .from('notifications')
-      .select('*')
-      .eq('user_id', currentUser.id)
-      .order('created_at', { ascending: false })
-      .limit(50);
-    
+    const { data, error } = await supabaseClient.from('notifications').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }).limit(50);
     if (error) { console.error('Notifications error:', error); return; }
-    
     allNotifications = data || [];
     renderNotifications();
     updateNotificationsBadge();
-  } catch (e) {
-    console.error('Load notifications error:', e);
-  }
+  } catch (e) { console.error('Load notifications error:', e); }
 }
 
 function updateNotificationsBadge() {
   const unreadCount = allNotifications.filter(n => !n.is_read).length;
   const badge = document.getElementById('notificationsBadge');
   if (!badge) return;
-  
-  if (unreadCount > 0) {
-    badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
-    badge.classList.remove('hidden');
-  } else {
-    badge.classList.add('hidden');
-  }
-  
-  if (unreadCount > 0) {
-    document.title = `(${unreadCount}) Личный кабинет Cliply`;
-  } else {
-    document.title = 'Личный кабинет Cliply — создание видео';
-  }
+  if (unreadCount > 0) { badge.textContent = unreadCount > 99 ? '99+' : unreadCount; badge.classList.remove('hidden'); }
+  else { badge.classList.add('hidden'); }
+  if (unreadCount > 0) { document.title = `(${unreadCount}) Личный кабинет Cliply`; }
+  else { document.title = 'Личный кабинет Cliply — создание видео'; }
 }
 
 function renderNotifications() {
   const list = document.getElementById('notificationsList');
   if (!list) return;
-  
   if (allNotifications.length === 0) {
     list.innerHTML = `<div class="notifications-empty"><div class="notifications-empty-icon">🔔</div><div>У вас пока нет уведомлений</div></div>`;
     return;
   }
-  
   list.innerHTML = allNotifications.map(notif => {
     const unreadClass = notif.is_read ? '' : 'unread';
     const time = formatNotificationTime(notif.created_at);
     const icon = getNotificationIcon(notif.type);
-    
-    return `
-      <div class="notification-item ${unreadClass}" data-id="${notif.id}" onclick="handleNotificationClick('${notif.id}', '${notif.link || ''}')">
-        <div class="notif-content">
-          <div class="notif-title">${icon} ${notif.title}</div>
-          <div class="notif-message">${notif.message}</div>
-          <div class="notif-time">${time}</div>
-        </div>
-      </div>
-    `;
+    return `<div class="notification-item ${unreadClass}" data-id="${notif.id}" onclick="handleNotificationClick('${notif.id}', '${notif.link || ''}')"><div class="notif-content"><div class="notif-title">${icon} ${notif.title}</div><div class="notif-message">${notif.message}</div><div class="notif-time">${time}</div></div></div>`;
   }).join('');
 }
 
 function getNotificationIcon(type) {
-  const icons = { 'video_done': '🎬', 'support_reply': '💬', 'review': '⭐', 'system': '📢' };
+  const icons = { 'video_done': '🎬', 'support_reply': '💬', 'review': '⭐', 'system': '📢', 'achievement': '🏆' };
   return icons[type] || '🔔';
 }
 
@@ -955,7 +1190,6 @@ function formatNotificationTime(dateStr) {
   const minutes = Math.floor(diff / 60000);
   const hours = Math.floor(diff / 3600000);
   const days = Math.floor(diff / 86400000);
-  
   if (minutes < 1) return 'только что';
   if (minutes < 60) return `${minutes} мин. назад`;
   if (hours < 24) return `${hours} ч. назад`;
@@ -977,7 +1211,6 @@ async function handleNotificationClick(notifId, link) {
 async function markAllAsRead() {
   const unreadIds = allNotifications.filter(n => !n.is_read).map(n => n.id);
   if (unreadIds.length === 0) return;
-  
   await supabaseClient.from('notifications').update({ is_read: true }).in('id', unreadIds);
   allNotifications.forEach(n => n.is_read = true);
   renderNotifications();
@@ -989,16 +1222,10 @@ function initNotificationsUI() {
   const btn = document.getElementById('notificationsBtn');
   const dropdown = document.getElementById('notificationsDropdown');
   const markAllBtn = document.getElementById('markAllRead');
-  
   if (btn && dropdown) {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      dropdown.classList.toggle('active');
-    });
+    btn.addEventListener('click', (e) => { e.stopPropagation(); dropdown.classList.toggle('active'); });
     document.addEventListener('click', (e) => {
-      if (!dropdown.contains(e.target) && !btn.contains(e.target)) {
-        dropdown.classList.remove('active');
-      }
+      if (!dropdown.contains(e.target) && !btn.contains(e.target)) dropdown.classList.remove('active');
     });
   }
   if (markAllBtn) markAllBtn.addEventListener('click', markAllAsRead);
@@ -1039,19 +1266,15 @@ function renderVideos() {
   const grid = document.getElementById('projectsGrid');
   const searchTerm = document.getElementById('searchInput').value.toLowerCase();
   const statusFilter = document.getElementById('statusFilter').value;
-  
   let filteredVideos = allVideos.filter(video => {
-    const matchesSearch = (video.product_name || '').toLowerCase().includes(searchTerm) ||
-                         (video.product_description || '').toLowerCase().includes(searchTerm);
+    const matchesSearch = (video.product_name || '').toLowerCase().includes(searchTerm) || (video.product_description || '').toLowerCase().includes(searchTerm);
     const matchesStatus = statusFilter === 'all' || video.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
-  
   if (filteredVideos.length === 0) {
     grid.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;"><div class="empty-state-icon">🎬</div><div class="empty-state-text">${allVideos.length === 0 ? 'У вас ещё нет видео' : 'Ничего не найдено'}</div><div class="empty-state-subtext">${allVideos.length === 0 ? 'Создайте первое видео выше' : 'Попробуйте изменить фильтры'}</div></div>`;
     return;
   }
-  
   grid.innerHTML = filteredVideos.map(video => {
     const statusClass = video.status === 'done' ? 'status-done' : video.status === 'processing' ? 'status-progress' : 'status-failed';
     const statusText = video.status === 'done' ? 'Готово' : video.status === 'processing' ? 'В процессе' : 'Ошибка';
@@ -1118,14 +1341,12 @@ async function handleFiles(files) {
   const maxSize = 10 * 1024 * 1024;
   const errors = [];
   const filesToAdd = [];
-  
   for (const file of files) {
     if (uploadedPhotos.length + filesToAdd.length >= 5) { errors.push(`${file.name}: максимум 5 фото`); continue; }
     if (!validTypes.includes(file.type)) { errors.push(`${file.name}: неподдерживаемый формат`); continue; }
     if (file.size > maxSize) { errors.push(`${file.name}: файл больше 10 МБ`); continue; }
     filesToAdd.push(file);
   }
-  
   const errorsContainer = document.getElementById('validationErrors');
   const errorsList = document.getElementById('validationErrorsList');
   if (errors.length > 0) {
@@ -1133,14 +1354,11 @@ async function handleFiles(files) {
     errorsContainer.classList.add('active');
     setTimeout(() => errorsContainer.classList.remove('active'), 5000);
   } else { errorsContainer.classList.remove('active'); }
-  
   if (filesToAdd.length === 0) return;
-  
   uploadZone.classList.add('uploading');
   uploadProgress.classList.add('active');
   uploadProgressText.classList.add('active');
   uploadProgressText.textContent = 'Загрузка фото...';
-  
   for (let i = 0; i < filesToAdd.length; i++) {
     const progress = ((uploadedPhotos.length + i + 1) / 5) * 100;
     uploadProgressBar.style.width = progress + '%';
@@ -1148,7 +1366,6 @@ async function handleFiles(files) {
     await new Promise(resolve => setTimeout(resolve, 400));
     uploadedPhotos.push(filesToAdd[i]);
   }
-  
   uploadZone.classList.remove('uploading');
   uploadZone.classList.add('success');
   uploadProgressText.textContent = '✓ Фото загружены';
@@ -1158,9 +1375,13 @@ async function handleFiles(files) {
     uploadProgressBar.style.width = '0%';
     uploadZone.classList.remove('success');
   }, 1500);
-  
   updatePhotoPreview();
   showToast(`Загружено фото: ${filesToAdd.length}`, 'success');
+  
+  // Проверяем достижение "Фотограф"
+  if (uploadedPhotos.length >= 5) {
+    await unlockAchievementByCode('five_photos', 5);
+  }
 }
 
 function updatePhotoPreview() {
@@ -1168,13 +1389,10 @@ function updatePhotoPreview() {
   const counter = document.getElementById('photoCounter');
   const count = document.getElementById('photoCount');
   const size = document.getElementById('photoSize');
-  
   if (uploadedPhotos.length === 0) { counter.style.display = 'none'; container.innerHTML = ''; return; }
-  
   counter.style.display = 'block';
   count.textContent = uploadedPhotos.length;
   size.textContent = formatFileSize(getTotalSize());
-  
   container.innerHTML = '';
   uploadedPhotos.forEach((photo, index) => {
     const reader = new FileReader();
@@ -1200,7 +1418,7 @@ async function generatePrompt() {
   const btn = document.getElementById('btnGeneratePrompt');
   const originalText = textarea.value.trim();
   if (!originalText) { showToast('Сначала введите описание товара', 'warning'); return; }
-  btn.disabled = true; btn.textContent = ' Генерация...';
+  btn.disabled = true; btn.textContent = '⏳ Генерация...';
   await new Promise(resolve => setTimeout(resolve, 2000));
   textarea.value = `${originalText}\n\n[AI-улучшенная версия]:\nСоздай динамичное вертикальное видео (9:16) длительностью 15 секунд для маркетплейса.\n\nКлючевые акценты:\n• Покажи товар с разных ракурсов\n• Подчеркни главные преимущества\n• Современный минималистичный стиль\n• Энергичная фоновая музыка\n• Призыв к действию "Закажи сейчас"`;
   btn.disabled = false; btn.textContent = '✨ Улучшить промпт';
@@ -1212,13 +1430,11 @@ async function startGeneration() {
   const allowed = networkManager.rateLimit('generate', () => {});
   if (!allowed) { btn.classList.add('rate-limited'); setTimeout(() => btn.classList.remove('rate-limited'), 400); showToast('Подождите перед повторным нажатием', 'warning'); return; }
   if (!networkManager.checkOnline()) { showToast('Генерация недоступна без интернета', 'error'); return; }
-  
   const description = document.getElementById('productDescription').value.trim();
   const scenario = document.getElementById('scenarioSelect').value;
   const errors = [];
   if (uploadedPhotos.length < 3) errors.push('Загрузите минимум 3 фото товара');
   if (!description) errors.push('Введите описание товара');
-  
   if (errors.length > 0) {
     const errorsContainer = document.getElementById('validationErrors');
     const errorsList = document.getElementById('validationErrorsList');
@@ -1227,9 +1443,7 @@ async function startGeneration() {
     setTimeout(() => errorsContainer.classList.remove('active'), 5000);
     return;
   }
-  
   btn.textContent = '⏳ Генерация...'; btn.disabled = true;
-  
   try {
     const { data: video, error } = await networkManager.supabaseRequest(
       () => supabaseClient.from('videos').insert({ user_id: currentUser.id, product_name: description.split(',')[0] || 'Новое видео', product_description: description, scenario: scenario, status: 'processing' }).select().single(),
@@ -1249,6 +1463,7 @@ async function startGeneration() {
           await createNotification('video_done', 'Видео готово!', `Ваше видео "${video.product_name || 'Новое видео'}" успешно создано.`, 'dashboard.html');
           await loadVideos();
           if (draftManager) draftManager.clear();
+          await checkAndAwardAchievements();
           await checkReviewEligibility();
         }
       } catch (err) { showToast('Ошибка при обновлении статуса видео', 'error'); }
@@ -1302,7 +1517,6 @@ function showReviewModal() {
     </div>
   `;
   document.body.appendChild(modal);
-  
   let selectedRating = 5;
   const stars = modal.querySelectorAll('#ratingStars span');
   stars.forEach(star => {
@@ -1318,7 +1532,6 @@ function showReviewModal() {
   modal.querySelector('#ratingStars').addEventListener('mouseleave', () => {
     stars.forEach((s, i) => { s.style.color = i < selectedRating ? '#6C5CE7' : '#27272a'; });
   });
-  
   modal.querySelector('#submitReviewBtn').addEventListener('click', async () => {
     const text = modal.querySelector('#reviewText').value.trim();
     const category = modal.querySelector('#reviewCategory').value;
@@ -1331,7 +1544,11 @@ function showReviewModal() {
       rating: selectedRating, review_text: text, product_category: category
     });
     if (error) { showToast('Ошибка: ' + error.message, 'error'); btn.textContent = 'Опубликовать отзыв'; btn.disabled = false; }
-    else { showToast('Спасибо за отзыв! ⭐', 'success'); modal.remove(); }
+    else { 
+      showToast('Спасибо за отзыв! ⭐', 'success'); 
+      modal.remove();
+      await checkAndAwardAchievements();
+    }
   });
 }
 
