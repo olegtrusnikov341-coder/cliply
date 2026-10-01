@@ -2,6 +2,8 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
 <title>Cliply — AI-генерация видео для селлеров Wildberries и Ozon</title>
 <meta name="description" content="Превратите фото товара в продающее видео за 2 минуты. AI-сервис для селлеров маркетплейсов. Рост конверсии +34%.">
 <meta name="robots" content="index, follow">
@@ -307,7 +309,7 @@
           </div>
         </div>
         <div class="feature-item">
-          <div class="feature-item-icon"></div>
+          <div class="feature-item-icon">🎯</div>
           <div>
             <div class="feature-item-title">3 причины купить</div>
             <div class="feature-item-desc">Продающие триггеры для быстрого решения</div>
@@ -327,7 +329,7 @@
       <div class="feature-category-title">СЦЕНАРИИ</div>
       <div class="feature-list">
         <div class="feature-item">
-          <div class="feature-item-icon">⚡</div>
+          <div class="feature-item-icon"></div>
           <div>
             <div class="feature-item-title">Проблема → Решение</div>
             <div class="feature-item-desc">Для товаров, решающих конкретную боль клиента</div>
@@ -363,31 +365,31 @@
         <div class="example-info">
           <h3>Косметика</h3>
           <p>Увлажняющий крем для лица</p>
-          <div class="example-meta"><span>🎵 Энергичная</span><span>✨ Премиум</span></div>
+          <div class="example-meta"><span> Энергичная</span><span>✨ Премиум</span></div>
         </div>
       </div>
       <div class="example-card">
-        <div class="example-preview">🎧<span class="example-tag">20 сек</span></div>
+        <div class="example-preview"><span class="example-tag">20 сек</span></div>
         <div class="example-info">
           <h3>Электроника</h3>
           <p>Беспроводные наушники</p>
-          <div class="example-meta"><span>🎵 Современная</span><span> Обзор</span></div>
+          <div class="example-meta"><span>🎵 Современная</span><span>⚡ Обзор</span></div>
         </div>
       </div>
       <div class="example-card">
-        <div class="example-preview"><span class="example-tag">15 сек</span></div>
+        <div class="example-preview">👕<span class="example-tag">15 сек</span></div>
         <div class="example-info">
           <h3>Одежда</h3>
           <p>Мужская футболка премиум</p>
-          <div class="example-meta"><span>🎵 Стильная</span><span>🎯 Lifestyle</span></div>
+          <div class="example-meta"><span> Стильная</span><span>🎯 Lifestyle</span></div>
         </div>
       </div>
       <div class="example-card">
-        <div class="example-preview">🏠<span class="example-tag">25 сек</span></div>
+        <div class="example-preview"><span class="example-tag">25 сек</span></div>
         <div class="example-info">
           <h3>Товары для дома</h3>
           <p>Органайзер для кухни</p>
-          <div class="example-meta"><span>🎵 Спокойная</span><span> Распаковка</span></div>
+          <div class="example-meta"><span>🎵 Спокойная</span><span>🎁 Распаковка</span></div>
         </div>
       </div>
       <div class="example-card">
@@ -421,7 +423,7 @@
       <div class="category-card"><div class="category-icon">📱</div><div class="category-name">Электроника</div></div>
       <div class="category-card"><div class="category-icon">🏠</div><div class="category-name">Для дома</div></div>
       <div class="category-card"><div class="category-icon">💊</div><div class="category-name">Здоровье</div></div>
-      <div class="category-card"><div class="category-icon"></div><div class="category-name">Спорт</div></div>
+      <div class="category-card"><div class="category-icon">⚽</div><div class="category-name">Спорт</div></div>
       <div class="category-card"><div class="category-icon">🍫</div><div class="category-name">Еда</div></div>
       <div class="category-card"><div class="category-icon">🧸</div><div class="category-name">Детские</div></div>
     </div>
@@ -464,7 +466,7 @@
     <h2 class="section-title">Что говорят селлеры</h2>
     <div class="testimonials-grid" id="testimonialsGrid">
       <div class="testimonial-card" style="text-align:center;padding:60px 20px;grid-column:1/-1;">
-        <div style="font-size:48px;margin-bottom:16px;">⏳</div>
+        <div style="font-size:48px;margin-bottom:16px;"></div>
         <div style="color:#A0A0B0;">Загрузка отзывов...</div>
       </div>
     </div>
@@ -642,7 +644,7 @@ async function loadTestimonials() {
     if (error || !data || data.length === 0) {
       grid.innerHTML = `
         <div class="testimonial-card" style="text-align:center;padding:60px 20px;grid-column:1/-1;">
-          <div style="font-size:48px;margin-bottom:16px;">💬</div>
+          <div style="font-size:48px;margin-bottom:16px;"></div>
           <div style="font-size:20px;font-weight:600;margin-bottom:8px;">Пока нет отзывов</div>
           <div style="color:#A0A0B0;font-size:15px;">Будьте первым — оставьте отзыв после 3-й генерации видео!</div>
         </div>
@@ -720,6 +722,18 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/cliply/service-worker.js')
       .then(reg => console.log('[SW] Зарегистрирован:', reg.scope))
       .catch(err => console.warn('[SW] Ошибка:', err));
+  });
+}
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      for (let registration of registrations) {
+        registration.update();
+      }
+    });
   });
 }
 </script>
