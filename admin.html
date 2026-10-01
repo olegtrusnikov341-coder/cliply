@@ -2,6 +2,8 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
 <title>Админ-панель Cliply</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#6C5CE7">
@@ -525,12 +527,12 @@ async function selectAdminConversation(convId) {
   panel.innerHTML = `
     <div class="admin-chat-header">
       <h3>${conv.user_name || 'Гость'} — ${conv.user_email || '—'}</h3>
-      <p>Обращение от ${date} • Статус: ${conv.status === 'open' ? ' Открыто' : '✅ Закрыто'}</p>
+      <p>Обращение от ${date} • Статус: ${conv.status === 'open' ? '🟡 Открыто' : '✅ Закрыто'}</p>
     </div>
     <div class="admin-chat-messages" id="adminChatMessages">
       ${messages && messages.length > 0 ? messages.map(msg => `
         <div class="admin-msg ${msg.sender}">
-          <div class="msg-sender">${msg.sender === 'admin' ? '‍💼 Вы (Поддержка)' : '👤 ' + (conv.user_name || 'Пользователь')}</div>
+          <div class="msg-sender">${msg.sender === 'admin' ? '👨‍💼 Вы (Поддержка)' : '👤 ' + (conv.user_name || 'Пользователь')}</div>
           <div class="admin-msg-text">${msg.message}</div>
           <div class="admin-msg-time">${new Date(msg.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</div>
         </div>
@@ -545,7 +547,7 @@ async function selectAdminConversation(convId) {
         ? `<button class="btn-admin-action" onclick="closeAdminConv()">✅ Закрыть обращение</button>`
         : `<button class="btn-admin-action" onclick="reopenAdminConv()">🔄 Открыть заново</button>`
       }
-      <button class="btn-admin-action danger" onclick="deleteAdminConv()"> Удалить</button>
+      <button class="btn-admin-action danger" onclick="deleteAdminConv()">🗑 Удалить</button>
     </div>
   `;
   
@@ -645,6 +647,18 @@ function startSupportRefresh() {
 }
 
 initAdmin();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      for (let registration of registrations) {
+        registration.update();
+      }
+    });
+  });
+}
 </script>
 </body>
 </html>
