@@ -66,6 +66,7 @@
   .role-owner { background: rgba(108, 92, 231, 0.2); color: #A29BFE; border: 1px solid rgba(108, 92, 231, 0.3); }
   .role-admin { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
   .role-moderator { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+  .role-user { background: rgba(161, 161, 170, 0.2); color: #A1A1AA; border: 1px solid rgba(161, 161, 170, 0.3); }
   .role-select { background: #0A0A0F; border: 1px solid #27272a; border-radius: 6px; padding: 6px 10px; color: #fff; font-size: 13px; cursor: pointer; }
   .role-select:focus { outline: none; border-color: #6C5CE7; }
   .btn-small { padding: 6px 12px; border-radius: 6px; border: 1px solid #27272a; background: transparent; color: #A0A0B0; font-size: 13px; cursor: pointer; transition: 0.2s; }
@@ -144,8 +145,8 @@
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu">
       <li><a href="dashboard.html">📊 Дашборд</a></li>
-      <li><a href="admin.html" class="active">👑 Админ-панель</a></li>
-      <li><a href="settings.html">⚙️ Настройки</a></li>
+      <li><a href="admin.html" class="active"> Админ-панель</a></li>
+      <li><a href="settings.html">️ Настройки</a></li>
     </ul>
     <button class="btn-logout" onclick="logout()">Выйти</button>
   </aside>
@@ -181,6 +182,7 @@
           <div class="form-group">
             <label>Роль</label>
             <select id="newUserRole">
+              <option value="4">User (ур. 4)</option>
               <option value="3">Moderator (ур. 3)</option>
               <option value="2">Admin (ур. 2)</option>
             </select>
@@ -219,7 +221,7 @@
         </div>
         <div class="admin-chat-panel" id="adminChatPanel">
           <div class="admin-chat-empty">
-            <div style="font-size:48px;margin-bottom:12px;opacity:0.5;"></div>
+            <div style="font-size:48px;margin-bottom:12px;opacity:0.5;">👈</div>
             <div>Выберите обращение слева, чтобы ответить</div>
           </div>
         </div>
@@ -238,7 +240,8 @@ let supportRefreshInterval = null;
 const ROLES = {
   1: { name: 'Owner', color: '#6C5CE7' },
   2: { name: 'Admin', color: '#3b82f6' },
-  3: { name: 'Moderator', color: '#10b981' }
+  3: { name: 'Moderator', color: '#10b981' },
+  4: { name: 'User', color: '#A1A1AA' }
 };
 
 async function initAdmin() {
@@ -290,9 +293,20 @@ function renderUsersTable() {
   }
   
   tbody.innerHTML = allUsers.map(user => {
-    const role = ROLES[user.role_level] || ROLES[3];
+    const role = ROLES[user.role_level] || ROLES[4];
     const isOwner = user.role_level === 1;
     const isMe = user.id === currentUser.id;
+    
+    let roleBadge = '';
+    if (isOwner) {
+      roleBadge = '<span class="role-badge role-owner">Owner</span>';
+    } else if (user.role_level === 2) {
+      roleBadge = '<span class="role-badge role-admin">Admin</span>';
+    } else if (user.role_level === 3) {
+      roleBadge = '<span class="role-badge role-moderator">Moderator</span>';
+    } else {
+      roleBadge = '<span class="role-badge role-user">User</span>';
+    }
     
     return `
       <tr>
@@ -300,10 +314,11 @@ function renderUsersTable() {
         <td>${user.email}</td>
         <td>
           ${isOwner 
-            ? `<span class="role-badge role-owner">Owner</span>` 
+            ? roleBadge
             : `<select class="role-select" onchange="changeUserRole('${user.id}', this.value)" ${isMe ? 'disabled' : ''}>
                 <option value="2" ${user.role_level === 2 ? 'selected' : ''}>Admin</option>
                 <option value="3" ${user.role_level === 3 ? 'selected' : ''}>Moderator</option>
+                <option value="4" ${user.role_level === 4 ? 'selected' : ''}>User</option>
               </select>`
           }
         </td>
@@ -333,7 +348,6 @@ async function createUser() {
   btn.disabled = true;
   
   try {
-    // Создаём пользователя через RPC функцию
     const { data, error } = await supabaseClient.rpc('create_user_with_role', {
       p_email: email,
       p_password: 'Cliply2026!',
@@ -348,7 +362,6 @@ async function createUser() {
     await loadUsers();
     showToast(`Пользователь ${name} создан! Пароль: Cliply2026!`, 'success');
   } catch (e) {
-    // Если RPC нет — создаём через прямой insert (упрощённый вариант)
     try {
       const { error: insertError } = await supabaseClient
         .from('profiles')
@@ -397,7 +410,6 @@ async function deleteUser(userId) {
     await loadUsers();
     showToast('Пользователь удалён', 'success');
   } catch (e) {
-    // Fallback: удаляем только из profiles
     try {
       const { error: deleteError } = await supabaseClient
         .from('profiles')
@@ -493,7 +505,6 @@ async function selectAdminConversation(convId) {
   const conv = allConversations.find(c => c.id === convId);
   if (!conv) return;
   
-  // Помечаем сообщения пользователя как прочитанные
   const unreadMsgs = (conv.support_messages || []).filter(m => m.sender === 'user' && m.is_read === false);
   if (unreadMsgs.length > 0) {
     await supabaseClient
@@ -514,12 +525,12 @@ async function selectAdminConversation(convId) {
   panel.innerHTML = `
     <div class="admin-chat-header">
       <h3>${conv.user_name || 'Гость'} — ${conv.user_email || '—'}</h3>
-      <p>Обращение от ${date} • Статус: ${conv.status === 'open' ? '🟡 Открыто' : '✅ Закрыто'}</p>
+      <p>Обращение от ${date} • Статус: ${conv.status === 'open' ? ' Открыто' : '✅ Закрыто'}</p>
     </div>
     <div class="admin-chat-messages" id="adminChatMessages">
       ${messages && messages.length > 0 ? messages.map(msg => `
         <div class="admin-msg ${msg.sender}">
-          <div class="msg-sender">${msg.sender === 'admin' ? '👨‍ Вы (Поддержка)' : '👤 ' + (conv.user_name || 'Пользователь')}</div>
+          <div class="msg-sender">${msg.sender === 'admin' ? '‍💼 Вы (Поддержка)' : '👤 ' + (conv.user_name || 'Пользователь')}</div>
           <div class="admin-msg-text">${msg.message}</div>
           <div class="admin-msg-time">${new Date(msg.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</div>
         </div>
@@ -534,7 +545,7 @@ async function selectAdminConversation(convId) {
         ? `<button class="btn-admin-action" onclick="closeAdminConv()">✅ Закрыть обращение</button>`
         : `<button class="btn-admin-action" onclick="reopenAdminConv()">🔄 Открыть заново</button>`
       }
-      <button class="btn-admin-action danger" onclick="deleteAdminConv()">🗑 Удалить</button>
+      <button class="btn-admin-action danger" onclick="deleteAdminConv()"> Удалить</button>
     </div>
   `;
   
