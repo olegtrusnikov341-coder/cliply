@@ -46,7 +46,9 @@
   .tab-content.active { display: block; }
   
   .admin-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 28px; margin-bottom: 24px; }
-  .admin-card h2 { font-size: 20px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 20px; }
+  .admin-card h2 { font-size: 20px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 8px; }
+  .admin-card .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .admin-card .card-header .count { color: #A0A0B0; font-size: 14px; font-weight: 400; }
   
   .add-user-form { display: grid; grid-template-columns: 1fr 1fr 180px auto; gap: 12px; align-items: end; }
   .form-group label { display: block; font-size: 13px; color: #A0A0B0; margin-bottom: 6px; }
@@ -60,6 +62,7 @@
   .users-table { width: 100%; border-collapse: collapse; }
   .users-table th { text-align: left; padding: 12px 16px; color: #A0A0B0; font-size: 13px; font-weight: 500; border-bottom: 1px solid #1f1f2e; }
   .users-table td { padding: 14px 16px; border-bottom: 1px solid #1f1f2e; font-size: 14px; }
+  .users-table tr:last-child td { border-bottom: none; }
   .role-badge { display: inline-block; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 600; }
   .role-owner { background: rgba(108, 92, 231, 0.2); color: #A29BFE; border: 1px solid rgba(108, 92, 231, 0.3); }
   .role-admin { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
@@ -189,7 +192,32 @@
       </div>
       
       <div class="admin-card">
-        <h2>Пользователи системы</h2>
+        <div class="card-header">
+          <h2>Администраторы</h2>
+          <span class="count" id="adminsCount">0</span>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="users-table">
+            <thead>
+              <tr>
+                <th>Имя</th>
+                <th>Email</th>
+                <th>Уровень доступа</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody id="adminsTableBody">
+              <tr><td colspan="4" style="text-align:center;color:#A0A0B0;padding:30px;">Загрузка...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div class="admin-card">
+        <div class="card-header">
+          <h2>Посетители системы</h2>
+          <span class="count" id="usersCount">0</span>
+        </div>
         <div style="overflow-x: auto;">
           <table class="users-table">
             <thead>
@@ -250,7 +278,6 @@
   }
 
   window.switchTab = function(tabName) {
-    console.log('[Admin] Переключаю вкладку:', tabName);
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
     const tab = document.querySelector(`.tab[data-tab="${tabName}"]`);
@@ -266,14 +293,11 @@
   };
 
   async function initAdmin() {
-    console.log('[Admin] Инициализация...');
-    
     try {
       currentUser = await requireAuth();
-      console.log('[Admin] Пользователь:', currentUser);
       
       if (!currentUser) {
-        showError('Не удалось получить данные пользователя. Войдите заново.');
+        showError('Не удалось получить данные пользователя.');
         return;
       }
       
@@ -283,7 +307,6 @@
       }
       
       const roleLevel = currentUser.profile.role_level || 4;
-      console.log('[Admin] Уровень доступа:', roleLevel);
       
       if (roleLevel > 2) {
         showToast('Доступ запрещён', 'error');
@@ -297,16 +320,13 @@
       ]);
       
       updateOpenConvBadge();
-      console.log('[Admin] Инициализация завершена');
       
     } catch (e) {
       showError('Ошибка инициализации: ' + e.message);
-      console.error('[Admin] Init error:', e);
     }
   }
 
   async function loadUsers() {
-    console.log('[Admin] Загрузка пользователей...');
     try {
       const { data, error } = await supabaseClient
         .from('profiles')
@@ -314,66 +334,113 @@
         .order('created_at', { ascending: false });
       
       if (error) {
-        console.error('[Admin] Ошибка загрузки пользователей:', error);
         showError('Не удалось загрузить пользователей: ' + error.message);
-        const tbody = document.getElementById('usersTableBody');
-        if (tbody) tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#ef4444;padding:30px;">Ошибка загрузки</td></tr>';
+        document.getElementById('adminsTableBody').innerHTML = '<tr><td colspan="4" style="text-align:center;color:#ef4444;padding:30px;">Ошибка загрузки</td></tr>';
+        document.getElementById('usersTableBody').innerHTML = '<tr><td colspan="4" style="text-align:center;color:#ef4444;padding:30px;">Ошибка загрузки</td></tr>';
         return;
       }
       
       allUsers = data || [];
-      console.log('[Admin] Пользователей загружено:', allUsers.length);
-      renderUsersTable();
+      renderUsersTables();
     } catch (e) {
-      console.error('[Admin] loadUsers error:', e);
       showError('Ошибка: ' + e.message);
     }
   }
 
-  function renderUsersTable() {
-    const tbody = document.getElementById('usersTableBody');
+  function renderUsersTables() {
+    const admins = allUsers.filter(u => u.role_level >= 1 && u.role_level <= 3);
+    const users = allUsers.filter(u => u.role_level === 4);
+    
+    admins.sort((a, b) => a.role_level - b.role_level);
+    
+    const adminsCountEl = document.getElementById('adminsCount');
+    const usersCountEl = document.getElementById('usersCount');
+    if (adminsCountEl) adminsCountEl.textContent = admins.length + ' чел.';
+    if (usersCountEl) usersCountEl.textContent = users.length + ' чел.';
+    
+    renderAdminsTable(admins);
+    renderUsersTable(users);
+  }
+
+  function renderAdminsTable(admins) {
+    const tbody = document.getElementById('adminsTableBody');
     if (!tbody) return;
     
-    if (allUsers.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#A0A0B0;padding:30px;">Нет пользователей</td></tr>';
+    if (admins.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#A0A0B0;padding:30px;">Нет администраторов</td></tr>';
       return;
     }
     
-    tbody.innerHTML = allUsers.map(user => {
+    tbody.innerHTML = admins.map(user => {
       const isOwner = user.role_level === 1;
+      const isAdmin = user.role_level === 2;
       const isMe = user.id === currentUser?.id;
       
       let roleBadge = '';
+      if (isOwner) roleBadge = '<span class="role-badge role-owner">👑 Owner</span>';
+      else if (isAdmin) roleBadge = '<span class="role-badge role-admin">Admin</span>';
+      else roleBadge = '<span class="role-badge role-moderator">Moderator</span>';
+      
+      let actionsHtml = '';
       if (isOwner) {
-        roleBadge = '<span class="role-badge role-owner">Owner</span>';
-      } else if (user.role_level === 2) {
-        roleBadge = '<span class="role-badge role-admin">Admin</span>';
-      } else if (user.role_level === 3) {
-        roleBadge = '<span class="role-badge role-moderator">Moderator</span>';
+        actionsHtml = '<span style="color:#666;font-size:13px;">Главный администратор</span>';
+      } else if (isMe) {
+        actionsHtml = '<span style="color:#666;font-size:13px;">Это вы</span>';
       } else {
-        roleBadge = '<span class="role-badge role-user">User</span>';
+        actionsHtml = `
+          <select class="role-select" onchange="changeUserRole('${user.id}', this.value)">
+            <option value="2" ${user.role_level === 2 ? 'selected' : ''}>Admin</option>
+            <option value="3" ${user.role_level === 3 ? 'selected' : ''}>Moderator</option>
+            <option value="4">Понизить до User</option>
+          </select>
+          <button class="btn-small" onclick="deleteUser('${user.id}')" style="margin-left:8px;">Удалить</button>
+        `;
       }
       
       return `
         <tr>
           <td><strong>${user.full_name || '—'}</strong></td>
           <td>${user.email || '—'}</td>
-          <td>
-            ${isOwner 
-              ? roleBadge
-              : `<select class="role-select" onchange="changeUserRole('${user.id}', this.value)" ${isMe ? 'disabled' : ''}>
-                  <option value="2" ${user.role_level === 2 ? 'selected' : ''}>Admin</option>
-                  <option value="3" ${user.role_level === 3 ? 'selected' : ''}>Moderator</option>
-                  <option value="4" ${user.role_level === 4 ? 'selected' : ''}>User</option>
-                </select>`
-            }
-          </td>
-          <td>
-            ${isOwner || isMe 
-              ? '<span style="color:#666;font-size:13px;">—</span>' 
-              : `<button class="btn-small" onclick="deleteUser('${user.id}')">Удалить</button>`
-            }
-          </td>
+          <td>${roleBadge}</td>
+          <td>${actionsHtml}</td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function renderUsersTable(users) {
+    const tbody = document.getElementById('usersTableBody');
+    if (!tbody) return;
+    
+    if (users.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#A0A0B0;padding:30px;">Нет посетителей</td></tr>';
+      return;
+    }
+    
+    tbody.innerHTML = users.map(user => {
+      const isMe = user.id === currentUser?.id;
+      const roleBadge = '<span class="role-badge role-user">User</span>';
+      
+      let actionsHtml = '';
+      if (isMe) {
+        actionsHtml = '<span style="color:#666;font-size:13px;">Это вы</span>';
+      } else {
+        actionsHtml = `
+          <select class="role-select" onchange="promoteUser('${user.id}', this.value)">
+            <option value="4" selected>User</option>
+            <option value="3">Повысить до Moderator</option>
+            <option value="2">Повысить до Admin</option>
+          </select>
+          <button class="btn-small" onclick="deleteUser('${user.id}')" style="margin-left:8px;">Удалить</button>
+        `;
+      }
+      
+      return `
+        <tr>
+          <td><strong>${user.full_name || '—'}</strong></td>
+          <td>${user.email || '—'}</td>
+          <td>${roleBadge}</td>
+          <td>${actionsHtml}</td>
         </tr>
       `;
     }).join('');
@@ -411,18 +478,14 @@
       try {
         const { error: insertError } = await supabaseClient
           .from('profiles')
-          .insert({
-            email: email,
-            full_name: name,
-            role_level: role
-          });
+          .insert({ email: email, full_name: name, role_level: role });
         
         if (insertError) throw insertError;
         
         document.getElementById('newUserName').value = '';
         document.getElementById('newUserEmail').value = '';
         await loadUsers();
-        showToast(`Пользователь ${name} добавлен! Попросите его зарегистрироваться.`, 'success');
+        showToast(`Пользователь ${name} добавлен!`, 'success');
       } catch (e2) {
         showToast('Ошибка: ' + e2.message, 'error');
       }
@@ -447,6 +510,23 @@
     }
   };
 
+  window.promoteUser = async function(userId, newRole) {
+    try {
+      const { error } = await supabaseClient
+        .from('profiles')
+        .update({ role_level: parseInt(newRole) })
+        .eq('id', userId);
+      
+      if (error) throw error;
+      
+      const newRoleName = parseInt(newRole) === 2 ? 'Admin' : 'Moderator';
+      showToast(`Пользователь повышен до ${newRoleName}`, 'success');
+      await loadUsers();
+    } catch (e) {
+      showToast('Ошибка: ' + e.message, 'error');
+    }
+  };
+
   window.deleteUser = async function(userId) {
     if (!confirm('Удалить этого пользователя?')) return;
     
@@ -457,14 +537,10 @@
       showToast('Пользователь удалён', 'success');
     } catch (e) {
       try {
-        const { error: deleteError } = await supabaseClient
-          .from('profiles')
-          .delete()
-          .eq('id', userId);
-        
+        const { error: deleteError } = await supabaseClient.from('profiles').delete().eq('id', userId);
         if (deleteError) throw deleteError;
         await loadUsers();
-        showToast('Пользователь удалён из profiles', 'success');
+        showToast('Пользователь удалён', 'success');
       } catch (e2) {
         showToast('Ошибка: ' + e2.message, 'error');
       }
@@ -472,7 +548,6 @@
   };
 
   async function loadAllConversations() {
-    console.log('[Admin] Загрузка обращений...');
     try {
       const { data, error } = await supabaseClient
         .from('support_conversations')
@@ -483,17 +558,15 @@
         .order('updated_at', { ascending: false });
       
       if (error) {
-        console.error('[Admin] Ошибка загрузки обращений:', error);
         const list = document.getElementById('adminConvList');
         if (list) list.innerHTML = '<div class="conv-list-header">Все обращения</div><div class="conv-list-empty">Ошибка загрузки</div>';
         return;
       }
       
       allConversations = data || [];
-      console.log('[Admin] Обращений загружено:', allConversations.length);
       renderAdminConvList();
     } catch (e) {
-      console.error('[Admin] loadAllConversations error:', e);
+      console.error('Load conversations error:', e);
     }
   }
 
@@ -579,7 +652,7 @@
     panel.innerHTML = `
       <div class="admin-chat-header">
         <h3>${conv.user_name || 'Гость'} — ${conv.user_email || '—'}</h3>
-        <p>Обращение от ${date} • Статус: ${conv.status === 'open' ? '🟡 Открыто' : '✅ Закрыто'}</p>
+        <p>Обращение от ${date} • Статус: ${conv.status === 'open' ? ' Открыто' : '✅ Закрыто'}</p>
       </div>
       <div class="admin-chat-messages" id="adminChatMessages">
         ${messages && messages.length > 0 ? messages.map(msg => `
@@ -597,7 +670,7 @@
       <div class="admin-chat-actions">
         ${conv.status === 'open' 
           ? `<button class="btn-admin-action" onclick="closeAdminConv()">✅ Закрыть обращение</button>`
-          : `<button class="btn-admin-action" onclick="reopenAdminConv()"> Открыть заново</button>`
+          : `<button class="btn-admin-action" onclick="reopenAdminConv()">🔄 Открыть заново</button>`
         }
         <button class="btn-admin-action danger" onclick="deleteAdminConv()">🗑 Удалить</button>
       </div>
@@ -644,6 +717,19 @@
         .from('support_conversations')
         .update({ status: 'open', updated_at: new Date().toISOString() })
         .eq('id', activeAdminConvId);
+      
+      // Создаём уведомление для пользователя
+      const conv = allConversations.find(c => c.id === activeAdminConvId);
+      if (conv && conv.user_id) {
+        await supabaseClient.from('notifications').insert({
+          user_id: conv.user_id,
+          type: 'support_reply',
+          title: 'Вам ответили в поддержке',
+          message: text.substring(0, 100) + (text.length > 100 ? '...' : ''),
+          link: 'support.html',
+          is_read: false
+        });
+      }
       
       input.value = '';
       input.style.height = 'auto';
@@ -698,7 +784,6 @@
     }, 10000);
   }
 
-  // Запускаем
   initAdmin();
 })();
 </script>
