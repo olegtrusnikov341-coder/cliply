@@ -50,11 +50,91 @@
   .main { padding: 32px 48px; }
   .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid #27272a; }
   .header h1 { font-size: 28px; font-weight: 700; font-family: 'Manrope'; }
+  .header-right { display: flex; align-items: center; gap: 16px; }
   .balance-badge { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; padding: 10px 20px; border-radius: 100px; font-size: 14px; font-weight: 500; border: 1px solid rgba(108, 92, 231, 0.3); display: flex; align-items: center; gap: 8px; }
   .balance-badge.offline { background: rgba(239, 68, 68, 0.15); color: #ef4444; border-color: rgba(239, 68, 68, 0.3); }
   .online-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; }
   .offline-dot { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; animation: pulse 1.5s ease infinite; }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  
+  /* ===== КОЛОКОЛЬЧИК УВЕДОМЛЕНИЙ ===== */
+  .notifications-wrapper { position: relative; }
+  .notifications-btn {
+    width: 42px; height: 42px; border-radius: 12px;
+    background: #141414; border: 1px solid #27272a;
+    color: #A0A0B0; font-size: 20px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; position: relative;
+  }
+  .notifications-btn:hover {
+    background: #1f1f23; border-color: #6C5CE7; color: #fff;
+  }
+  .notifications-badge {
+    position: absolute; top: -6px; right: -6px;
+    background: #ef4444; color: #fff;
+    font-size: 11px; font-weight: 700;
+    min-width: 20px; height: 20px;
+    border-radius: 100px; padding: 0 6px;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid #0A0A0F;
+    animation: badgePulse 2s ease infinite;
+  }
+  .notifications-badge.hidden { display: none; }
+  @keyframes badgePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+  
+  .notifications-dropdown {
+    position: absolute; top: calc(100% + 12px); right: 0;
+    width: 380px; max-height: 500px;
+    background: #141414; border: 1px solid #27272a;
+    border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    z-index: 1000; overflow: hidden;
+    display: none;
+  }
+  .notifications-dropdown.active { display: block; animation: dropdownAppear 0.2s ease; }
+  @keyframes dropdownAppear {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .notifications-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 20px; border-bottom: 1px solid #1f1f2e;
+  }
+  .notifications-header h3 { font-size: 16px; font-weight: 600; font-family: 'Manrope'; }
+  .mark-all-read {
+    background: transparent; border: none; color: #6C5CE7;
+    font-size: 13px; cursor: pointer; font-weight: 500;
+  }
+  .mark-all-read:hover { text-decoration: underline; }
+  .notifications-list {
+    max-height: 400px; overflow-y: auto;
+  }
+  .notification-item {
+    padding: 16px 20px; border-bottom: 1px solid #1f1f2e;
+    cursor: pointer; transition: background 0.2s;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .notification-item:hover { background: rgba(108, 92, 231, 0.05); }
+  .notification-item.unread { background: rgba(108, 92, 231, 0.08); }
+  .notification-item.unread .notif-title { color: #fff; font-weight: 600; }
+  .notification-item.unread::before {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    background: #6C5CE7; flex-shrink: 0; margin-top: 6px;
+  }
+  .notification-item:not(.unread)::before {
+    content: ''; width: 8px; height: 8px; flex-shrink: 0; margin-top: 6px;
+  }
+  .notif-content { flex: 1; min-width: 0; }
+  .notif-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; color: #A0A0B0; }
+  .notif-message { font-size: 13px; color: #666; line-height: 1.4; }
+  .notif-time { font-size: 11px; color: #666; margin-top: 6px; }
+  .notifications-empty {
+    padding: 40px 20px; text-align: center; color: #A0A0B0;
+  }
+  .notifications-empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+  
   .create-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 32px; margin-bottom: 40px; }
   .create-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
   .create-card h2 { font-size: 22px; font-weight: 700; font-family: 'Manrope'; }
@@ -186,9 +266,29 @@
     </div>
     <div class="header">
       <h1 id="welcomeText" class="skeleton skeleton-title">Загрузка...</h1>
-      <div class="balance-badge skeleton skeleton-badge" id="roleBadge">
-        <span class="online-dot" id="onlineDot"></span>
-        <span id="roleBadgeText">Загрузка...</span>
+      <div class="header-right">
+        <div class="notifications-wrapper">
+          <button class="notifications-btn" id="notificationsBtn" title="Уведомления">
+            🔔
+            <span class="notifications-badge hidden" id="notificationsBadge">0</span>
+          </button>
+          <div class="notifications-dropdown" id="notificationsDropdown">
+            <div class="notifications-header">
+              <h3>Уведомления</h3>
+              <button class="mark-all-read" id="markAllRead">Отметить все</button>
+            </div>
+            <div class="notifications-list" id="notificationsList">
+              <div class="notifications-empty">
+                <div class="notifications-empty-icon">🔔</div>
+                <div>Загрузка уведомлений...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="balance-badge skeleton skeleton-badge" id="roleBadge">
+          <span class="online-dot" id="onlineDot"></span>
+          <span id="roleBadgeText">Загрузка...</span>
+        </div>
       </div>
     </div>
     <div class="create-card">
@@ -238,7 +338,7 @@
       <div class="videos-section-header">
         <h2>Ваши видео</h2>
         <div class="videos-controls">
-          <input type="text" id="searchInput" class="search-input" placeholder="🔍 Поиск по названию...">
+          <input type="text" id="searchInput" class="search-input" placeholder=" Поиск по названию...">
           <select id="statusFilter" class="filter-select">
             <option value="all">Все статусы</option>
             <option value="done">Готово</option>
@@ -257,6 +357,8 @@ let draftManager = null;
 let currentUser = null;
 let allVideos = [];
 let networkManager = null;
+let allNotifications = [];
+let notificationsCheckInterval = null;
 
 async function initDashboard() {
   showVideoCardSkeleton('#projectsGrid', 4);
@@ -323,6 +425,9 @@ async function initDashboard() {
   draftManager.init();
   
   await loadVideos();
+  await loadNotifications();
+  startNotificationsCheck();
+  initNotificationsUI();
   
   if (window.microAnimations) {
     window.microAnimations.initRipple();
@@ -347,6 +452,204 @@ async function initDashboard() {
   
   await checkReviewEligibility();
 }
+
+// ===== УВЕДОМЛЕНИЯ =====
+
+async function loadNotifications() {
+  if (!currentUser) return;
+  
+  try {
+    const { data, error } = await supabaseClient
+      .from('notifications')
+      .select('*')
+      .eq('user_id', currentUser.id)
+      .order('created_at', { ascending: false })
+      .limit(50);
+    
+    if (error) {
+      console.error('Notifications error:', error);
+      return;
+    }
+    
+    allNotifications = data || [];
+    renderNotifications();
+    updateNotificationsBadge();
+  } catch (e) {
+    console.error('Load notifications error:', e);
+  }
+}
+
+function updateNotificationsBadge() {
+  const unreadCount = allNotifications.filter(n => !n.is_read).length;
+  const badge = document.getElementById('notificationsBadge');
+  if (!badge) return;
+  
+  if (unreadCount > 0) {
+    badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+    badge.classList.remove('hidden');
+  } else {
+    badge.classList.add('hidden');
+  }
+  
+  // Обновляем title страницы
+  if (unreadCount > 0) {
+    document.title = `(${unreadCount}) Личный кабинет Cliply`;
+  } else {
+    document.title = 'Личный кабинет Cliply — создание видео';
+  }
+}
+
+function renderNotifications() {
+  const list = document.getElementById('notificationsList');
+  if (!list) return;
+  
+  if (allNotifications.length === 0) {
+    list.innerHTML = `
+      <div class="notifications-empty">
+        <div class="notifications-empty-icon">🔔</div>
+        <div>У вас пока нет уведомлений</div>
+      </div>
+    `;
+    return;
+  }
+  
+  list.innerHTML = allNotifications.map(notif => {
+    const unreadClass = notif.is_read ? '' : 'unread';
+    const time = formatNotificationTime(notif.created_at);
+    const icon = getNotificationIcon(notif.type);
+    
+    return `
+      <div class="notification-item ${unreadClass}" data-id="${notif.id}" onclick="handleNotificationClick('${notif.id}', '${notif.link || ''}')">
+        <div class="notif-content">
+          <div class="notif-title">${icon} ${notif.title}</div>
+          <div class="notif-message">${notif.message}</div>
+          <div class="notif-time">${time}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function getNotificationIcon(type) {
+  const icons = {
+    'video_done': '🎬',
+    'support_reply': '💬',
+    'review': '⭐',
+    'system': ''
+  };
+  return icons[type] || '🔔';
+}
+
+function formatNotificationTime(dateStr) {
+  const date = new Date(dateStr);
+  const now = new Date();
+  const diff = now - date;
+  
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+  
+  if (minutes < 1) return 'только что';
+  if (minutes < 60) return `${minutes} мин. назад`;
+  if (hours < 24) return `${hours} ч. назад`;
+  if (days < 7) return `${days} дн. назад`;
+  return date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
+}
+
+async function handleNotificationClick(notifId, link) {
+  // Отмечаем как прочитанное
+  const notif = allNotifications.find(n => n.id === notifId);
+  if (notif && !notif.is_read) {
+    await supabaseClient
+      .from('notifications')
+      .update({ is_read: true })
+      .eq('id', notifId);
+    
+    notif.is_read = true;
+    renderNotifications();
+    updateNotificationsBadge();
+  }
+  
+  // Переход по ссылке
+  if (link) {
+    window.location.href = link;
+  }
+}
+
+async function markAllAsRead() {
+  const unreadIds = allNotifications.filter(n => !n.is_read).map(n => n.id);
+  if (unreadIds.length === 0) return;
+  
+  await supabaseClient
+    .from('notifications')
+    .update({ is_read: true })
+    .in('id', unreadIds);
+  
+  allNotifications.forEach(n => n.is_read = true);
+  renderNotifications();
+  updateNotificationsBadge();
+  showToast('Все уведомления отмечены как прочитанные', 'success');
+}
+
+function initNotificationsUI() {
+  const btn = document.getElementById('notificationsBtn');
+  const dropdown = document.getElementById('notificationsDropdown');
+  const markAllBtn = document.getElementById('markAllRead');
+  
+  if (btn && dropdown) {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle('active');
+    });
+    
+    document.addEventListener('click', (e) => {
+      if (!dropdown.contains(e.target) && !btn.contains(e.target)) {
+        dropdown.classList.remove('active');
+      }
+    });
+  }
+  
+  if (markAllBtn) {
+    markAllBtn.addEventListener('click', markAllAsRead);
+  }
+}
+
+function startNotificationsCheck() {
+  if (notificationsCheckInterval) clearInterval(notificationsCheckInterval);
+  notificationsCheckInterval = setInterval(loadNotifications, 30000); // каждые 30 секунд
+}
+
+async function createNotification(type, title, message, link = null) {
+  if (!currentUser) return;
+  
+  try {
+    const { error } = await supabaseClient
+      .from('notifications')
+      .insert({
+        user_id: currentUser.id,
+        type: type,
+        title: title,
+        message: message,
+        link: link,
+        is_read: false
+      });
+    
+    if (error) {
+      console.error('Create notification error:', error);
+      return;
+    }
+    
+    // Обновляем список
+    await loadNotifications();
+    
+    // Показываем toast
+    showToast(`${getNotificationIcon(type)} ${title}`, 'info');
+  } catch (e) {
+    console.error('Create notification error:', e);
+  }
+}
+
+// ===== ВИДЕО =====
 
 async function loadVideos() {
   try {
@@ -386,7 +689,7 @@ function renderVideos() {
     const statusClass = video.status === 'done' ? 'status-done' : video.status === 'processing' ? 'status-progress' : 'status-failed';
     const statusText = video.status === 'done' ? 'Готово' : video.status === 'processing' ? 'В процессе' : 'Ошибка';
     const date = new Date(video.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-    return `<div class="project-card content-fade-in"><div class="project-preview">${video.status === 'done' ? '' : video.status === 'processing' ? '' : '❌'}<span class="project-status ${statusClass}">${statusText}</span></div><div class="project-info"><div class="project-title">${video.product_name || 'Без названия'}</div><div class="project-date">${date}</div><div class="project-actions">${video.status === 'done' ? `<button class="btn-small primary" onclick="downloadVideo('${video.id}')">Скачать</button>` : ''}<button class="btn-small" onclick="regenerateVideo('${video.id}')">Перегенерировать</button><button class="btn-small danger" onclick="deleteVideo('${video.id}')">Удалить</button></div></div></div>`;
+    return `<div class="project-card content-fade-in"><div class="project-preview">${video.status === 'done' ? '🎬' : video.status === 'processing' ? '⏳' : '❌'}<span class="project-status ${statusClass}">${statusText}</span></div><div class="project-info"><div class="project-title">${video.product_name || 'Без названия'}</div><div class="project-date">${date}</div><div class="project-actions">${video.status === 'done' ? `<button class="btn-small primary" onclick="downloadVideo('${video.id}')">Скачать</button>` : ''}<button class="btn-small" onclick="regenerateVideo('${video.id}')">Перегенерировать</button><button class="btn-small danger" onclick="deleteVideo('${video.id}')">Удалить</button></div></div></div>`;
   }).join('');
 }
 
@@ -604,6 +907,13 @@ async function startGeneration() {
           networkManager.log('error', 'startGeneration update error', updateError);
         } else {
           showToast('Видео успешно сгенерировано!', 'success');
+          // Создаём уведомление
+          await createNotification(
+            'video_done',
+            'Видео готово!',
+            `Ваше видео "${video.product_name || 'Новое видео'}" успешно создано.`,
+            'dashboard.html'
+          );
           await loadVideos();
           if (draftManager) draftManager.clear();
           await checkReviewEligibility();
@@ -737,7 +1047,7 @@ function showReviewModal() {
       btn.textContent = 'Опубликовать отзыв';
       btn.disabled = false;
     } else {
-      showToast('Спасибо за отзыв! ', 'success');
+      showToast('Спасибо за отзыв! ⭐', 'success');
       modal.remove();
     }
   });
