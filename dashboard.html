@@ -57,7 +57,6 @@
   .offline-dot { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; animation: pulse 1.5s ease infinite; }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
   
-  /* ===== КОЛОКОЛЬЧИК УВЕДОМЛЕНИЙ ===== */
   .notifications-wrapper { position: relative; }
   .notifications-btn {
     width: 42px; height: 42px; border-radius: 12px;
@@ -66,9 +65,7 @@
     cursor: pointer; display: flex; align-items: center; justify-content: center;
     transition: all 0.2s; position: relative;
   }
-  .notifications-btn:hover {
-    background: #1f1f23; border-color: #6C5CE7; color: #fff;
-  }
+  .notifications-btn:hover { background: #1f1f23; border-color: #6C5CE7; color: #fff; }
   .notifications-badge {
     position: absolute; top: -6px; right: -6px;
     background: #ef4444; color: #fff;
@@ -80,59 +77,33 @@
     animation: badgePulse 2s ease infinite;
   }
   .notifications-badge.hidden { display: none; }
-  @keyframes badgePulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-  }
+  @keyframes badgePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
   
   .notifications-dropdown {
     position: absolute; top: calc(100% + 12px); right: 0;
     width: 380px; max-height: 500px;
     background: #141414; border: 1px solid #27272a;
     border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    z-index: 1000; overflow: hidden;
-    display: none;
+    z-index: 1000; overflow: hidden; display: none;
   }
   .notifications-dropdown.active { display: block; animation: dropdownAppear 0.2s ease; }
-  @keyframes dropdownAppear {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .notifications-header {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 16px 20px; border-bottom: 1px solid #1f1f2e;
-  }
+  @keyframes dropdownAppear { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+  .notifications-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #1f1f2e; }
   .notifications-header h3 { font-size: 16px; font-weight: 600; font-family: 'Manrope'; }
-  .mark-all-read {
-    background: transparent; border: none; color: #6C5CE7;
-    font-size: 13px; cursor: pointer; font-weight: 500;
-  }
+  .mark-all-read { background: transparent; border: none; color: #6C5CE7; font-size: 13px; cursor: pointer; font-weight: 500; }
   .mark-all-read:hover { text-decoration: underline; }
-  .notifications-list {
-    max-height: 400px; overflow-y: auto;
-  }
-  .notification-item {
-    padding: 16px 20px; border-bottom: 1px solid #1f1f2e;
-    cursor: pointer; transition: background 0.2s;
-    display: flex; gap: 12px; align-items: flex-start;
-  }
+  .notifications-list { max-height: 400px; overflow-y: auto; }
+  .notification-item { padding: 16px 20px; border-bottom: 1px solid #1f1f2e; cursor: pointer; transition: background 0.2s; display: flex; gap: 12px; align-items: flex-start; }
   .notification-item:hover { background: rgba(108, 92, 231, 0.05); }
   .notification-item.unread { background: rgba(108, 92, 231, 0.08); }
   .notification-item.unread .notif-title { color: #fff; font-weight: 600; }
-  .notification-item.unread::before {
-    content: ''; width: 8px; height: 8px; border-radius: 50%;
-    background: #6C5CE7; flex-shrink: 0; margin-top: 6px;
-  }
-  .notification-item:not(.unread)::before {
-    content: ''; width: 8px; height: 8px; flex-shrink: 0; margin-top: 6px;
-  }
+  .notification-item.unread::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #6C5CE7; flex-shrink: 0; margin-top: 6px; }
+  .notification-item:not(.unread)::before { content: ''; width: 8px; height: 8px; flex-shrink: 0; margin-top: 6px; }
   .notif-content { flex: 1; min-width: 0; }
   .notif-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; color: #A0A0B0; }
   .notif-message { font-size: 13px; color: #666; line-height: 1.4; }
   .notif-time { font-size: 11px; color: #666; margin-top: 6px; }
-  .notifications-empty {
-    padding: 40px 20px; text-align: center; color: #A0A0B0;
-  }
+  .notifications-empty { padding: 40px 20px; text-align: center; color: #A0A0B0; }
   .notifications-empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
   
   .create-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 32px; margin-bottom: 40px; }
@@ -226,9 +197,206 @@
   .offline-banner { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; padding: 12px 20px; border-radius: 8px; margin-bottom: 24px; display: none; align-items: center; gap: 12px; font-size: 14px; }
   .offline-banner.active { display: flex; }
   .mobile-header { display: none; }
+  
+  /* ===== ОНБОРДИНГ ===== */
+  .onboarding-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px);
+    z-index: 9998; display: none;
+  }
+  .onboarding-overlay.active { display: block; }
+  
+  .onboarding-tooltip {
+    position: fixed; z-index: 9999;
+    background: #141414; border: 2px solid #6C5CE7;
+    border-radius: 16px; padding: 24px;
+    max-width: 420px; width: 90%;
+    box-shadow: 0 20px 60px rgba(108, 92, 231, 0.4);
+    display: none;
+  }
+  .onboarding-tooltip.active { display: block; animation: tooltipAppear 0.4s ease; }
+  @keyframes tooltipAppear {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  
+  .onboarding-tooltip-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 16px;
+  }
+  .onboarding-step-counter {
+    font-size: 12px; color: #6C5CE7; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .onboarding-skip {
+    background: transparent; border: none; color: #A0A0B0;
+    font-size: 13px; cursor: pointer; padding: 4px 8px;
+  }
+  .onboarding-skip:hover { color: #fff; }
+  
+  .onboarding-tooltip-icon { font-size: 48px; margin-bottom: 12px; }
+  .onboarding-tooltip h3 {
+    font-size: 20px; font-weight: 700; font-family: 'Manrope';
+    margin-bottom: 12px; color: #fff;
+  }
+  .onboarding-tooltip p {
+    font-size: 14px; color: #A0A0B0; line-height: 1.6; margin-bottom: 20px;
+  }
+  
+  .onboarding-progress {
+    display: flex; gap: 6px; margin-bottom: 20px;
+  }
+  .onboarding-progress-dot {
+    flex: 1; height: 4px; border-radius: 100px;
+    background: #27272a; transition: background 0.3s;
+  }
+  .onboarding-progress-dot.active { background: #6C5CE7; }
+  .onboarding-progress-dot.completed { background: #10b981; }
+  
+  .onboarding-tooltip-actions {
+    display: flex; gap: 12px; justify-content: flex-end;
+  }
+  .onboarding-btn {
+    padding: 10px 20px; border-radius: 10px; border: none;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .onboarding-btn-prev {
+    background: transparent; color: #A0A0B0; border: 1px solid #27272a;
+  }
+  .onboarding-btn-prev:hover { border-color: #6C5CE7; color: #fff; }
+  .onboarding-btn-next {
+    background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff;
+  }
+  .onboarding-btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4); }
+  
+  .highlight-element {
+    position: relative; z-index: 9997;
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75);
+    border-radius: 12px;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  /* Приветственное модальное окно */
+  .welcome-modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
+    z-index: 10000; display: none;
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .welcome-modal.active { display: flex; animation: modalFadeIn 0.4s ease; }
+  @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+  
+  .welcome-content {
+    background: #141414; border: 1px solid #27272a;
+    border-radius: 24px; padding: 48px; max-width: 560px; width: 100%;
+    text-align: center; position: relative;
+    animation: modalSlideIn 0.5s ease;
+  }
+  @keyframes modalSlideIn {
+    from { opacity: 0; transform: translateY(30px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  
+  .welcome-icon { font-size: 72px; margin-bottom: 20px; }
+  .welcome-content h2 {
+    font-size: 28px; font-weight: 800; font-family: 'Manrope';
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .welcome-content > p {
+    font-size: 16px; color: #A0A0B0; line-height: 1.6; margin-bottom: 28px;
+  }
+  
+  .welcome-features {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    margin-bottom: 28px; text-align: left;
+  }
+  .welcome-feature {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px; background: #0A0A0F; border-radius: 10px;
+    border: 1px solid #1f1f2e;
+  }
+  .welcome-feature-icon { font-size: 20px; }
+  .welcome-feature-text { font-size: 13px; color: #d0d0d0; }
+  
+  .welcome-actions { display: flex; gap: 12px; justify-content: center; }
+  .welcome-btn {
+    padding: 14px 28px; border-radius: 12px; border: none;
+    font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .welcome-btn-primary {
+    background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff;
+    box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4);
+  }
+  .welcome-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
+  .welcome-btn-secondary {
+    background: transparent; color: #A0A0B0; border: 1px solid #27272a;
+  }
+  .welcome-btn-secondary:hover { border-color: #6C5CE7; color: #fff; }
+  
+  @media (max-width: 768px) {
+    .sidebar { display: none !important; }
+    .main { padding: 20px 16px !important; }
+    .welcome-content { padding: 32px 24px !important; }
+    .welcome-features { grid-template-columns: 1fr !important; }
+    .onboarding-tooltip { max-width: 90% !important; padding: 20px !important; }
+  }
 </style>
 </head>
 <body>
+
+<!-- Онбординг overlay -->
+<div class="onboarding-overlay" id="onboardingOverlay"></div>
+
+<!-- Онбординг tooltip -->
+<div class="onboarding-tooltip" id="onboardingTooltip">
+  <div class="onboarding-tooltip-header">
+    <span class="onboarding-step-counter" id="onboardingStepCounter">Шаг 1 из 4</span>
+    <button class="onboarding-skip" id="onboardingSkip">Пропустить →</button>
+  </div>
+  <div class="onboarding-tooltip-icon" id="onboardingIcon"></div>
+  <h3 id="onboardingTitle"></h3>
+  <p id="onboardingText"></p>
+  <div class="onboarding-progress" id="onboardingProgress"></div>
+  <div class="onboarding-tooltip-actions">
+    <button class="onboarding-btn onboarding-btn-prev" id="onboardingPrev" style="display: none;">← Назад</button>
+    <button class="onboarding-btn onboarding-btn-next" id="onboardingNext">Далее →</button>
+  </div>
+</div>
+
+<!-- Приветственное модальное окно -->
+<div class="welcome-modal" id="welcomeModal">
+  <div class="welcome-content">
+    <div class="welcome-icon">👋</div>
+    <h2>Добро пожаловать в Cliply!</h2>
+    <p>Давайте познакомимся с сервисом за 30 секунд — и вы сможете создать своё первое продающее видео.</p>
+    <div class="welcome-features">
+      <div class="welcome-feature">
+        <div class="welcome-feature-icon">📸</div>
+        <div class="welcome-feature-text">Загрузите 3-5 фото товара</div>
+      </div>
+      <div class="welcome-feature">
+        <div class="welcome-feature-icon">✨</div>
+        <div class="welcome-feature-text">AI создаст продающий сценарий</div>
+      </div>
+      <div class="welcome-feature">
+        <div class="welcome-feature-icon">🎬</div>
+        <div class="welcome-feature-text">Получите видео за 2 минуты</div>
+      </div>
+      <div class="welcome-feature">
+        <div class="welcome-feature-icon">📈</div>
+        <div class="welcome-feature-text">+34% к конверсии карточки</div>
+      </div>
+    </div>
+    <div class="welcome-actions">
+      <button class="welcome-btn welcome-btn-secondary" id="welcomeSkip">Пропустить тур</button>
+      <button class="welcome-btn welcome-btn-primary" id="welcomeStart">Начать тур →</button>
+    </div>
+  </div>
+</div>
+
 <div class="layout">
   <aside class="sidebar">
     <a href="index.html" class="sidebar-logo">Cliply</a>
@@ -236,7 +404,7 @@
       <li><a href="dashboard.html" class="active">📊 Дашборд</a></li>
       <li><a href="analytics.html">📈 Аналитика</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
-      <li><a href="settings.html">️ Настройки</a></li>
+      <li><a href="settings.html">⚙️ Настройки</a></li>
       <li><a href="support.html">💬 Техподдержка</a></li>
     </ul>
     <button class="btn-logout" onclick="logout()">Выйти</button>
@@ -250,10 +418,10 @@
   </div>
   
   <div class="mobile-menu" id="mobileMenu">
-    <a href="dashboard.html" class="active"> Дашборд</a>
-    <a href="analytics.html">📈 Аналитика</a>
+    <a href="dashboard.html" class="active">📊 Дашборд</a>
+    <a href="analytics.html"> Аналитика</a>
     <a href="pricing.html">💎 Тарифы</a>
-    <a href="settings.html">⚙️ Настройки</a>
+    <a href="settings.html">️ Настройки</a>
     <a href="support.html">💬 Техподдержка</a>
     <a href="index.html" class="btn-nav-mobile">← На главную</a>
     <a href="#" onclick="logout(); return false;" style="color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); margin-top: 16px;">Выйти</a>
@@ -261,7 +429,7 @@
   
   <main class="main">
     <div id="offlineBanner" class="offline-banner">
-      <span>⚠️</span>
+      <span>️</span>
       <span>Нет подключения к интернету. Некоторые функции могут быть недоступны.</span>
     </div>
     <div class="header">
@@ -291,12 +459,12 @@
         </div>
       </div>
     </div>
-    <div class="create-card">
+    <div class="create-card" id="createCard">
       <div class="create-card-header">
         <h2>Создать новое видео</h2>
         <div style="display: flex; gap: 12px; align-items: center;">
           <span id="draftIndicator" class="draft-indicator"></span>
-          <button id="clearDraftBtn" class="btn-clear-draft" style="display: none;"> Очистить черновик</button>
+          <button id="clearDraftBtn" class="btn-clear-draft" style="display: none;">🗑 Очистить черновик</button>
         </div>
       </div>
       <div class="upload-zone" id="uploadZone">
@@ -314,14 +482,14 @@
       <div id="validationErrors" class="validation-errors">
         <ul id="validationErrorsList"></ul>
       </div>
-      <div class="form-group">
+      <div class="form-group" id="descriptionGroup">
         <label>Описание товара и ключевые преимущества</label>
         <div class="prompt-row">
           <textarea id="productDescription" placeholder="Например: Бутылка для воды 1л, экологичный пластик, не протекает, удобная крышка..."></textarea>
           <button class="btn-prompt" onclick="generatePrompt()" id="btnGeneratePrompt">✨ Улучшить промпт</button>
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group" id="scenarioGroup">
         <label>Выберите сценарий</label>
         <select id="scenarioSelect">
           <option>Обзор товара</option>
@@ -338,7 +506,7 @@
       <div class="videos-section-header">
         <h2>Ваши видео</h2>
         <div class="videos-controls">
-          <input type="text" id="searchInput" class="search-input" placeholder=" Поиск по названию...">
+          <input type="text" id="searchInput" class="search-input" placeholder="🔍 Поиск по названию...">
           <select id="statusFilter" class="filter-select">
             <option value="all">Все статусы</option>
             <option value="done">Готово</option>
@@ -359,6 +527,253 @@ let allVideos = [];
 let networkManager = null;
 let allNotifications = [];
 let notificationsCheckInterval = null;
+
+// ===== ОНБОРДИНГ =====
+const ONBOARDING_STEPS = [
+  {
+    selector: '#uploadZone',
+    icon: '',
+    title: 'Шаг 1: Загрузите фото товара',
+    text: 'Перетащите сюда 3-5 фотографий товара или нажмите, чтобы выбрать. Подойдут фото из карточки WB или Ozon — главное, чтобы товар был хорошо виден.',
+    position: 'bottom'
+  },
+  {
+    selector: '#descriptionGroup',
+    icon: '✍️',
+    title: 'Шаг 2: Опишите товар',
+    text: 'Расскажите, чем ваш товар лучше аналогов. Можно коротко — AI сам превратит это в продающий сценарий с ключевыми акцентами.',
+    position: 'bottom'
+  },
+  {
+    selector: '#scenarioGroup',
+    icon: '🎬',
+    title: 'Шаг 3: Выберите сценарий',
+    text: '6 готовых форматов под разные задачи: обзор, 3 причины купить, распаковка, проблема-решение, отзыв, сравнение с конкурентами.',
+    position: 'top'
+  },
+  {
+    selector: '#btnGenerate',
+    icon: '🚀',
+    title: 'Шаг 4: Сгенерируйте видео',
+    text: 'Нажмите кнопку — и через 2 минуты получите готовый ролик 9:16 с музыкой, озвучкой и титрами. Скачайте и загружайте в карточку!',
+    position: 'top'
+  }
+];
+
+let currentOnboardingStep = 0;
+let highlightedElement = null;
+
+async function checkOnboardingStatus() {
+  if (!currentUser) return false;
+  
+  try {
+    const { data, error } = await supabaseClient
+      .from('onboarding_status')
+      .select('*')
+      .eq('user_id', currentUser.id)
+      .single();
+    
+    if (error && error.code !== 'PGRST116') {
+      console.error('Onboarding check error:', error);
+      return false;
+    }
+    
+    // Если записи нет или completed = false — показываем онбординг
+    return !data || !data.completed;
+  } catch (e) {
+    console.error('Onboarding check error:', e);
+    return false;
+  }
+}
+
+async function saveOnboardingStatus(completed, currentStep = 0) {
+  if (!currentUser) return;
+  
+  try {
+    const { error } = await supabaseClient
+      .from('onboarding_status')
+      .upsert({
+        user_id: currentUser.id,
+        completed: completed,
+        current_step: currentStep,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'user_id' });
+    
+    if (error) console.error('Save onboarding error:', error);
+  } catch (e) {
+    console.error('Save onboarding error:', e);
+  }
+}
+
+function showWelcomeModal() {
+  const modal = document.getElementById('welcomeModal');
+  if (modal) modal.classList.add('active');
+  
+  document.getElementById('welcomeStart').addEventListener('click', () => {
+    modal.classList.remove('active');
+    startOnboarding();
+  });
+  
+  document.getElementById('welcomeSkip').addEventListener('click', () => {
+    modal.classList.remove('active');
+    saveOnboardingStatus(true);
+    showToast('Вы можете пройти тур позже в настройках', 'info');
+  });
+}
+
+function startOnboarding() {
+  currentOnboardingStep = 0;
+  showOnboardingStep();
+}
+
+function showOnboardingStep() {
+  if (currentOnboardingStep >= ONBOARDING_STEPS.length) {
+    finishOnboarding();
+    return;
+  }
+  
+  const step = ONBOARDING_STEPS[currentOnboardingStep];
+  const element = document.querySelector(step.selector);
+  
+  if (!element) {
+    currentOnboardingStep++;
+    showOnboardingStep();
+    return;
+  }
+  
+  // Убираем предыдущую подсветку
+  if (highlightedElement) {
+    highlightedElement.classList.remove('highlight-element');
+  }
+  
+  // Подсвечиваем текущий элемент
+  highlightedElement = element;
+  element.classList.add('highlight-element');
+  
+  // Скроллим к элементу
+  element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  
+  // Заполняем tooltip
+  document.getElementById('onboardingIcon').textContent = step.icon;
+  document.getElementById('onboardingTitle').textContent = step.title;
+  document.getElementById('onboardingText').textContent = step.text;
+  document.getElementById('onboardingStepCounter').textContent = 
+    `Шаг ${currentOnboardingStep + 1} из ${ONBOARDING_STEPS.length}`;
+  
+  // Прогресс-бар
+  const progress = document.getElementById('onboardingProgress');
+  progress.innerHTML = ONBOARDING_STEPS.map((_, i) => {
+    let cls = 'onboarding-progress-dot';
+    if (i < currentOnboardingStep) cls += ' completed';
+    else if (i === currentOnboardingStep) cls += ' active';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+  
+  // Кнопки
+  document.getElementById('onboardingPrev').style.display = 
+    currentOnboardingStep > 0 ? 'block' : 'none';
+  document.getElementById('onboardingNext').textContent = 
+    currentOnboardingStep === ONBOARDING_STEPS.length - 1 ? 'Завершить 🎉' : 'Далее →';
+  
+  // Позиционируем tooltip
+  positionTooltip(element, step.position);
+  
+  // Показываем overlay и tooltip
+  document.getElementById('onboardingOverlay').classList.add('active');
+  document.getElementById('onboardingTooltip').classList.add('active');
+  
+  // Сохраняем прогресс
+  saveOnboardingStatus(false, currentOnboardingStep);
+}
+
+function positionTooltip(element, position) {
+  const tooltip = document.getElementById('onboardingTooltip');
+  const rect = element.getBoundingClientRect();
+  const tooltipWidth = 420;
+  const tooltipHeight = tooltip.offsetHeight || 300;
+  
+  let top, left;
+  
+  if (position === 'bottom') {
+    top = rect.bottom + 20;
+    left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+  } else {
+    top = rect.top - tooltipHeight - 20;
+    left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+  }
+  
+  // Ограничения по экрану
+  left = Math.max(20, Math.min(left, window.innerWidth - tooltipWidth - 20));
+  top = Math.max(20, Math.min(top, window.innerHeight - tooltipHeight - 20));
+  
+  tooltip.style.top = top + 'px';
+  tooltip.style.left = left + 'px';
+}
+
+function nextOnboardingStep() {
+  if (highlightedElement) {
+    highlightedElement.classList.remove('highlight-element');
+    highlightedElement = null;
+  }
+  currentOnboardingStep++;
+  showOnboardingStep();
+}
+
+function prevOnboardingStep() {
+  if (highlightedElement) {
+    highlightedElement.classList.remove('highlight-element');
+    highlightedElement = null;
+  }
+  if (currentOnboardingStep > 0) {
+    currentOnboardingStep--;
+    showOnboardingStep();
+  }
+}
+
+function finishOnboarding() {
+  if (highlightedElement) {
+    highlightedElement.classList.remove('highlight-element');
+    highlightedElement = null;
+  }
+  
+  document.getElementById('onboardingOverlay').classList.remove('active');
+  document.getElementById('onboardingTooltip').classList.remove('active');
+  
+  saveOnboardingStatus(true);
+  showToast('🎉 Отлично! Теперь вы готовы создать первое видео!', 'success');
+}
+
+function skipOnboarding() {
+  if (highlightedElement) {
+    highlightedElement.classList.remove('highlight-element');
+    highlightedElement = null;
+  }
+  
+  document.getElementById('onboardingOverlay').classList.remove('active');
+  document.getElementById('onboardingTooltip').classList.remove('active');
+  
+  saveOnboardingStatus(true);
+  showToast('Тур пропущен. Вы можете пройти его позже в настройках.', 'info');
+}
+
+function initOnboarding() {
+  document.getElementById('onboardingNext').addEventListener('click', nextOnboardingStep);
+  document.getElementById('onboardingPrev').addEventListener('click', prevOnboardingStep);
+  document.getElementById('onboardingSkip').addEventListener('click', skipOnboarding);
+  
+  // Закрытие по клику на overlay
+  document.getElementById('onboardingOverlay').addEventListener('click', skipOnboarding);
+  
+  // Закрытие по Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const tooltip = document.getElementById('onboardingTooltip');
+      if (tooltip.classList.contains('active')) {
+        skipOnboarding();
+      }
+    }
+  });
+}
 
 async function initDashboard() {
   showVideoCardSkeleton('#projectsGrid', 4);
@@ -428,6 +843,13 @@ async function initDashboard() {
   await loadNotifications();
   startNotificationsCheck();
   initNotificationsUI();
+  initOnboarding();
+  
+  // Проверяем онбординг
+  const needsOnboarding = await checkOnboardingStatus();
+  if (needsOnboarding) {
+    setTimeout(() => showWelcomeModal(), 1500);
+  }
   
   if (window.microAnimations) {
     window.microAnimations.initRipple();
@@ -466,10 +888,7 @@ async function loadNotifications() {
       .order('created_at', { ascending: false })
       .limit(50);
     
-    if (error) {
-      console.error('Notifications error:', error);
-      return;
-    }
+    if (error) { console.error('Notifications error:', error); return; }
     
     allNotifications = data || [];
     renderNotifications();
@@ -491,7 +910,6 @@ function updateNotificationsBadge() {
     badge.classList.add('hidden');
   }
   
-  // Обновляем title страницы
   if (unreadCount > 0) {
     document.title = `(${unreadCount}) Личный кабинет Cliply`;
   } else {
@@ -504,12 +922,7 @@ function renderNotifications() {
   if (!list) return;
   
   if (allNotifications.length === 0) {
-    list.innerHTML = `
-      <div class="notifications-empty">
-        <div class="notifications-empty-icon">🔔</div>
-        <div>У вас пока нет уведомлений</div>
-      </div>
-    `;
+    list.innerHTML = `<div class="notifications-empty"><div class="notifications-empty-icon">🔔</div><div>У вас пока нет уведомлений</div></div>`;
     return;
   }
   
@@ -531,12 +944,7 @@ function renderNotifications() {
 }
 
 function getNotificationIcon(type) {
-  const icons = {
-    'video_done': '🎬',
-    'support_reply': '💬',
-    'review': '⭐',
-    'system': ''
-  };
+  const icons = { 'video_done': '🎬', 'support_reply': '💬', 'review': '⭐', 'system': '📢' };
   return icons[type] || '🔔';
 }
 
@@ -544,7 +952,6 @@ function formatNotificationTime(dateStr) {
   const date = new Date(dateStr);
   const now = new Date();
   const diff = now - date;
-  
   const minutes = Math.floor(diff / 60000);
   const hours = Math.floor(diff / 3600000);
   const days = Math.floor(diff / 86400000);
@@ -557,34 +964,21 @@ function formatNotificationTime(dateStr) {
 }
 
 async function handleNotificationClick(notifId, link) {
-  // Отмечаем как прочитанное
   const notif = allNotifications.find(n => n.id === notifId);
   if (notif && !notif.is_read) {
-    await supabaseClient
-      .from('notifications')
-      .update({ is_read: true })
-      .eq('id', notifId);
-    
+    await supabaseClient.from('notifications').update({ is_read: true }).eq('id', notifId);
     notif.is_read = true;
     renderNotifications();
     updateNotificationsBadge();
   }
-  
-  // Переход по ссылке
-  if (link) {
-    window.location.href = link;
-  }
+  if (link) window.location.href = link;
 }
 
 async function markAllAsRead() {
   const unreadIds = allNotifications.filter(n => !n.is_read).map(n => n.id);
   if (unreadIds.length === 0) return;
   
-  await supabaseClient
-    .from('notifications')
-    .update({ is_read: true })
-    .in('id', unreadIds);
-  
+  await supabaseClient.from('notifications').update({ is_read: true }).in('id', unreadIds);
   allNotifications.forEach(n => n.is_read = true);
   renderNotifications();
   updateNotificationsBadge();
@@ -601,52 +995,30 @@ function initNotificationsUI() {
       e.stopPropagation();
       dropdown.classList.toggle('active');
     });
-    
     document.addEventListener('click', (e) => {
       if (!dropdown.contains(e.target) && !btn.contains(e.target)) {
         dropdown.classList.remove('active');
       }
     });
   }
-  
-  if (markAllBtn) {
-    markAllBtn.addEventListener('click', markAllAsRead);
-  }
+  if (markAllBtn) markAllBtn.addEventListener('click', markAllAsRead);
 }
 
 function startNotificationsCheck() {
   if (notificationsCheckInterval) clearInterval(notificationsCheckInterval);
-  notificationsCheckInterval = setInterval(loadNotifications, 30000); // каждые 30 секунд
+  notificationsCheckInterval = setInterval(loadNotifications, 30000);
 }
 
 async function createNotification(type, title, message, link = null) {
   if (!currentUser) return;
-  
   try {
-    const { error } = await supabaseClient
-      .from('notifications')
-      .insert({
-        user_id: currentUser.id,
-        type: type,
-        title: title,
-        message: message,
-        link: link,
-        is_read: false
-      });
-    
-    if (error) {
-      console.error('Create notification error:', error);
-      return;
-    }
-    
-    // Обновляем список
+    const { error } = await supabaseClient.from('notifications').insert({
+      user_id: currentUser.id, type: type, title: title, message: message, link: link, is_read: false
+    });
+    if (error) { console.error('Create notification error:', error); return; }
     await loadNotifications();
-    
-    // Показываем toast
     showToast(`${getNotificationIcon(type)} ${title}`, 'info');
-  } catch (e) {
-    console.error('Create notification error:', e);
-  }
+  } catch (e) { console.error('Create notification error:', e); }
 }
 
 // ===== ВИДЕО =====
@@ -657,15 +1029,10 @@ async function loadVideos() {
       () => supabaseClient.from('videos').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }),
       'Загрузка видео'
     );
-    if (error) {
-      showToast('Ошибка загрузки видео: ' + error.message, 'error');
-      return;
-    }
+    if (error) { showToast('Ошибка загрузки видео: ' + error.message, 'error'); return; }
     allVideos = data || [];
     renderVideos();
-  } catch (error) {
-    showToast('Не удалось загрузить видео', 'error');
-  }
+  } catch (error) { showToast('Не удалось загрузить видео', 'error'); }
 }
 
 function renderVideos() {
@@ -697,12 +1064,8 @@ async function downloadVideo(videoId) {
   const video = allVideos.find(v => v.id === videoId);
   if (!video || !video.video_url) { showToast('Видео недоступно', 'error'); return; }
   const link = document.createElement('a');
-  link.href = video.video_url;
-  link.download = `${video.product_name || 'video'}.mp4`;
-  link.target = '_blank';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  link.href = video.video_url; link.download = `${video.product_name || 'video'}.mp4`; link.target = '_blank';
+  document.body.appendChild(link); link.click(); document.body.removeChild(link);
   showToast('Скачивание началось', 'success');
 }
 
@@ -719,9 +1082,7 @@ async function deleteVideo(videoId) {
     allVideos = allVideos.filter(v => v.id !== videoId);
     renderVideos();
     showToast('Видео удалено', 'success');
-  } catch (error) {
-    showToast('Не удалось удалить видео', 'error');
-  }
+  } catch (error) { showToast('Не удалось удалить видео', 'error'); }
 }
 
 document.getElementById('searchInput').addEventListener('input', renderVideos);
@@ -771,9 +1132,7 @@ async function handleFiles(files) {
     errorsList.innerHTML = errors.map(e => `<li>${e}</li>`).join('');
     errorsContainer.classList.add('active');
     setTimeout(() => errorsContainer.classList.remove('active'), 5000);
-  } else {
-    errorsContainer.classList.remove('active');
-  }
+  } else { errorsContainer.classList.remove('active'); }
   
   if (filesToAdd.length === 0) return;
   
@@ -810,11 +1169,7 @@ function updatePhotoPreview() {
   const count = document.getElementById('photoCount');
   const size = document.getElementById('photoSize');
   
-  if (uploadedPhotos.length === 0) {
-    counter.style.display = 'none';
-    container.innerHTML = '';
-    return;
-  }
+  if (uploadedPhotos.length === 0) { counter.style.display = 'none'; container.innerHTML = ''; return; }
   
   counter.style.display = 'block';
   count.textContent = uploadedPhotos.length;
@@ -845,24 +1200,17 @@ async function generatePrompt() {
   const btn = document.getElementById('btnGeneratePrompt');
   const originalText = textarea.value.trim();
   if (!originalText) { showToast('Сначала введите описание товара', 'warning'); return; }
-  btn.disabled = true;
-  btn.textContent = '⏳ Генерация...';
+  btn.disabled = true; btn.textContent = ' Генерация...';
   await new Promise(resolve => setTimeout(resolve, 2000));
   textarea.value = `${originalText}\n\n[AI-улучшенная версия]:\nСоздай динамичное вертикальное видео (9:16) длительностью 15 секунд для маркетплейса.\n\nКлючевые акценты:\n• Покажи товар с разных ракурсов\n• Подчеркни главные преимущества\n• Современный минималистичный стиль\n• Энергичная фоновая музыка\n• Призыв к действию "Закажи сейчас"`;
-  btn.disabled = false;
-  btn.textContent = '✨ Улучшить промпт';
+  btn.disabled = false; btn.textContent = '✨ Улучшить промпт';
   if (draftManager) draftManager.save();
 }
 
 async function startGeneration() {
   const btn = document.getElementById('btnGenerate');
   const allowed = networkManager.rateLimit('generate', () => {});
-  if (!allowed) {
-    btn.classList.add('rate-limited');
-    setTimeout(() => btn.classList.remove('rate-limited'), 400);
-    showToast('Подождите перед повторным нажатием', 'warning');
-    return;
-  }
+  if (!allowed) { btn.classList.add('rate-limited'); setTimeout(() => btn.classList.remove('rate-limited'), 400); showToast('Подождите перед повторным нажатием', 'warning'); return; }
   if (!networkManager.checkOnline()) { showToast('Генерация недоступна без интернета', 'error'); return; }
   
   const description = document.getElementById('productDescription').value.trim();
@@ -880,85 +1228,47 @@ async function startGeneration() {
     return;
   }
   
-  btn.textContent = '⏳ Генерация...';
-  btn.disabled = true;
+  btn.textContent = '⏳ Генерация...'; btn.disabled = true;
   
   try {
     const { data: video, error } = await networkManager.supabaseRequest(
       () => supabaseClient.from('videos').insert({ user_id: currentUser.id, product_name: description.split(',')[0] || 'Новое видео', product_description: description, scenario: scenario, status: 'processing' }).select().single(),
       'Создание видео'
     );
-    if (error) {
-      showToast('Ошибка создания видео: ' + error.message, 'error');
-      btn.textContent = 'Сгенерировать видео →';
-      btn.disabled = false;
-      return;
-    }
-    allVideos.unshift(video);
-    renderVideos();
+    if (error) { showToast('Ошибка создания видео: ' + error.message, 'error'); btn.textContent = 'Сгенерировать видео →'; btn.disabled = false; return; }
+    allVideos.unshift(video); renderVideos();
     setTimeout(async () => {
       try {
         const { error: updateError } = await networkManager.supabaseRequest(
           () => supabaseClient.from('videos').update({ status: 'done', video_url: 'https://example.com/video.mp4' }).eq('id', video.id),
           'Обновление статуса'
         );
-        if (updateError) {
-          showToast('Ошибка обновления статуса', 'error');
-          networkManager.log('error', 'startGeneration update error', updateError);
-        } else {
+        if (updateError) { showToast('Ошибка обновления статуса', 'error'); }
+        else {
           showToast('Видео успешно сгенерировано!', 'success');
-          // Создаём уведомление
-          await createNotification(
-            'video_done',
-            'Видео готово!',
-            `Ваше видео "${video.product_name || 'Новое видео'}" успешно создано.`,
-            'dashboard.html'
-          );
+          await createNotification('video_done', 'Видео готово!', `Ваше видео "${video.product_name || 'Новое видео'}" успешно создано.`, 'dashboard.html');
           await loadVideos();
           if (draftManager) draftManager.clear();
           await checkReviewEligibility();
         }
-      } catch (err) {
-        showToast('Ошибка при обновлении статуса видео', 'error');
-        networkManager.log('error', 'startGeneration retry failed', err);
-      }
-      btn.textContent = 'Сгенерировать видео →';
-      btn.disabled = false;
+      } catch (err) { showToast('Ошибка при обновлении статуса видео', 'error'); }
+      btn.textContent = 'Сгенерировать видео →'; btn.disabled = false;
     }, 3000);
-  } catch (error) {
-    showToast('Не удалось создать видео', 'error');
-    btn.textContent = 'Сгенерировать видео →';
-    btn.disabled = false;
-  }
+  } catch (error) { showToast('Не удалось создать видео', 'error'); btn.textContent = 'Сгенерировать видео →'; btn.disabled = false; }
 }
 
 async function checkReviewEligibility() {
   if (!currentUser) return;
-  
   try {
-    const { count } = await supabaseClient
-      .from('videos')
-      .select('*', { count: 'exact', head: true })
-      .eq('user_id', currentUser.id);
-    
-    const { data: existingReview } = await supabaseClient
-      .from('reviews')
-      .select('id')
-      .eq('user_id', currentUser.id)
-      .single();
-    
-    if (count >= 3 && !existingReview) {
-      setTimeout(() => showReviewModal(), 1000);
-    }
-  } catch (e) {
-    console.log('Review check error:', e);
-  }
+    const { count } = await supabaseClient.from('videos').select('*', { count: 'exact', head: true }).eq('user_id', currentUser.id);
+    const { data: existingReview } = await supabaseClient.from('reviews').select('id').eq('user_id', currentUser.id).single();
+    if (count >= 3 && !existingReview) setTimeout(() => showReviewModal(), 1000);
+  } catch (e) { console.log('Review check error:', e); }
 }
 
 function showReviewModal() {
   const modal = document.createElement('div');
   modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);backdrop-filter:blur(10px);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;';
-  
   modal.innerHTML = `
     <div style="background:#141414;border:1px solid #27272a;border-radius:20px;padding:40px;max-width:500px;width:100%;position:relative;">
       <button onclick="this.closest('div').parentElement.remove()" style="position:absolute;top:16px;right:16px;background:transparent;border:none;color:#A0A0B0;font-size:24px;cursor:pointer;">×</button>
@@ -984,21 +1294,13 @@ function showReviewModal() {
       <div style="margin-bottom:20px;">
         <label style="display:block;font-size:14px;color:#A0A0B0;margin-bottom:8px;">Категория товара</label>
         <select id="reviewCategory" style="width:100%;background:#0A0A0F;border:1px solid #27272a;border-radius:8px;padding:12px 16px;color:#fff;font-size:15px;">
-          <option>Одежда</option>
-          <option>Косметика</option>
-          <option>Электроника</option>
-          <option>Товары для дома</option>
-          <option>Здоровье</option>
-          <option>Спорт</option>
-          <option>Еда</option>
-          <option>Другое</option>
+          <option>Одежда</option><option>Косметика</option><option>Электроника</option><option>Товары для дома</option><option>Здоровье</option><option>Спорт</option><option>Еда</option><option>Другое</option>
         </select>
       </div>
       <button id="submitReviewBtn" style="width:100%;background:linear-gradient(135deg,#6C5CE7,#A29BFE);color:#fff;padding:14px;border-radius:12px;border:none;font-size:15px;font-weight:600;cursor:pointer;">Опубликовать отзыв</button>
       <button onclick="this.closest('div').parentElement.remove()" style="width:100%;background:transparent;color:#A0A0B0;padding:12px;border:none;font-size:14px;cursor:pointer;margin-top:8px;">Напомнить позже</button>
     </div>
   `;
-  
   document.body.appendChild(modal);
   
   let selectedRating = 5;
@@ -1006,50 +1308,30 @@ function showReviewModal() {
   stars.forEach(star => {
     star.addEventListener('click', () => {
       selectedRating = parseInt(star.dataset.rating);
-      stars.forEach((s, i) => {
-        s.style.color = i < selectedRating ? '#6C5CE7' : '#27272a';
-      });
+      stars.forEach((s, i) => { s.style.color = i < selectedRating ? '#6C5CE7' : '#27272a'; });
     });
     star.addEventListener('mouseenter', () => {
       const r = parseInt(star.dataset.rating);
-      stars.forEach((s, i) => {
-        s.style.color = i < r ? '#A29BFE' : '#27272a';
-      });
+      stars.forEach((s, i) => { s.style.color = i < r ? '#A29BFE' : '#27272a'; });
     });
   });
   modal.querySelector('#ratingStars').addEventListener('mouseleave', () => {
-    stars.forEach((s, i) => {
-      s.style.color = i < selectedRating ? '#6C5CE7' : '#27272a';
-    });
+    stars.forEach((s, i) => { s.style.color = i < selectedRating ? '#6C5CE7' : '#27272a'; });
   });
   
   modal.querySelector('#submitReviewBtn').addEventListener('click', async () => {
     const text = modal.querySelector('#reviewText').value.trim();
     const category = modal.querySelector('#reviewCategory').value;
-    
     if (!text) { showToast('Напишите отзыв', 'warning'); return; }
-    
     const btn = modal.querySelector('#submitReviewBtn');
-    btn.textContent = 'Публикация...';
-    btn.disabled = true;
-    
+    btn.textContent = 'Публикация...'; btn.disabled = true;
     const { error } = await supabaseClient.from('reviews').insert({
-      user_id: currentUser.id,
-      user_name: currentUser.profile.full_name || currentUser.email,
+      user_id: currentUser.id, user_name: currentUser.profile.full_name || currentUser.email,
       user_role: ROLES[currentUser.profile.role_level]?.name || 'Селлер',
-      rating: selectedRating,
-      review_text: text,
-      product_category: category
+      rating: selectedRating, review_text: text, product_category: category
     });
-    
-    if (error) {
-      showToast('Ошибка: ' + error.message, 'error');
-      btn.textContent = 'Опубликовать отзыв';
-      btn.disabled = false;
-    } else {
-      showToast('Спасибо за отзыв! ⭐', 'success');
-      modal.remove();
-    }
+    if (error) { showToast('Ошибка: ' + error.message, 'error'); btn.textContent = 'Опубликовать отзыв'; btn.disabled = false; }
+    else { showToast('Спасибо за отзыв! ⭐', 'success'); modal.remove(); }
   });
 }
 
@@ -1060,9 +1342,7 @@ initDashboard();
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.getRegistrations().then(registrations => {
-      for (let registration of registrations) {
-        registration.update();
-      }
+      for (let registration of registrations) { registration.update(); }
     });
   });
 }
