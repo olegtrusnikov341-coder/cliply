@@ -1,5 +1,6 @@
-// Service Worker для Cliply — версия 11
-const CACHE_NAME = 'cliply-v11';
+// Service Worker для Cliply — версия 12
+// Стратегия: Network First (сначала сеть, потом кеш)
+const CACHE_NAME = 'cliply-v12';
 const STATIC_ASSETS = [
   '/cliply/',
   '/cliply/index.html',
@@ -31,11 +32,11 @@ const STATIC_ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
-  console.log('[SW v11] Установка...');
+  console.log('[SW v12] Установка...');
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(STATIC_ASSETS).catch(err => {
-        console.warn('[SW v11] Не все ресурсы закешены:', err);
+        console.warn('[SW v12] Не все ресурсы закешены:', err);
       });
     })
   );
@@ -43,12 +44,12 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('[SW v11] Активация...');
+  console.log('[SW v12] Активация...');
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
         keys.filter(key => key !== CACHE_NAME).map(key => {
-          console.log('[SW v11] Удаляю старый кеш:', key);
+          console.log('[SW v12] Удаляю старый кеш:', key);
           return caches.delete(key);
         })
       );
@@ -58,16 +59,20 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  // Не кешируем запросы к Supabase и CDN
   if (event.request.url.includes('supabase.co') || 
       event.request.url.includes('cdn.jsdelivr.net') ||
+      event.request.url.includes('fonts.googleapis') ||
+      event.request.url.includes('fonts.gstatic') ||
       event.request.method !== 'GET') {
     return;
   }
   
+  // Стратегия Network First: сначала пробуем сеть, потом кеш
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) return cachedResponse;
-      return fetch(event.request).then((response) => {
+    fetch(event.request)
+      .then((response) => {
+        // Если сеть ответила успешно — обновляем кеш
         if (response && response.status === 200 && response.type === 'basic') {
           const responseClone = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
@@ -75,9 +80,12 @@ self.addEventListener('fetch', (event) => {
           });
         }
         return response;
-      }).catch(() => {
-        return caches.match('/cliply/index.html');
-      });
-    })
+      })
+      .catch(() => {
+        // Если сети нет — берём из кеша
+        return caches.match(event.request).then((cachedResponse) => {
+          return cachedResponse || caches.match('/cliply/index.html');
+        });
+      })
   );
 });
