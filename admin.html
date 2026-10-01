@@ -34,77 +34,81 @@
   .page-header h1 { font-size: 28px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 8px; }
   .page-header p { color: #A0A0B0; font-size: 15px; }
   
+  /* Вкладки */
   .tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 1px solid #1f1f2e; padding-bottom: 0; }
-  .tab { padding: 12px 20px; background: transparent; border: none; color: #A0A0B0; font-size: 15px; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; margin-bottom: -1px; }
+  .tab { padding: 12px 20px; background: transparent; border: none; color: #A0A0B0; font-size: 15px; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; margin-bottom: -1px; display: flex; align-items: center; gap: 8px; }
   .tab:hover { color: #fff; }
   .tab.active { color: #6C5CE7; border-bottom-color: #6C5CE7; }
-  .tab-badge { background: #6C5CE7; color: #fff; font-size: 11px; padding: 2px 7px; border-radius: 10px; margin-left: 6px; font-weight: 600; }
+  .tab-badge { background: #ef4444; color: #fff; font-size: 11px; padding: 2px 7px; border-radius: 10px; font-weight: 600; }
   
   .tab-content { display: none; }
   .tab-content.active { display: block; }
   
+  /* Карточки */
   .admin-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 28px; margin-bottom: 24px; }
   .admin-card h2 { font-size: 20px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 20px; }
   
-  .add-user-form { display: grid; grid-template-columns: 1fr 1fr 180px auto; gap: 12px; align-items: end; }
-  .form-group label { display: block; font-size: 13px; color: #A0A0B0; margin-bottom: 6px; }
-  .form-group input, .form-group select { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 8px; padding: 10px 14px; color: #fff; font-size: 14px; font-family: inherit; }
-  .form-group input:focus, .form-group select:focus { outline: none; border-color: #6C5CE7; }
-  .btn-create { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 10px 20px; border-radius: 8px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; white-space: nowrap; }
-  .btn-create:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4); }
-  .form-hint { grid-column: 1 / -1; font-size: 13px; color: #666; margin-top: 4px; }
-  
+  /* Таблица пользователей */
   .users-table { width: 100%; border-collapse: collapse; }
   .users-table th { text-align: left; padding: 12px 16px; color: #A0A0B0; font-size: 13px; font-weight: 500; border-bottom: 1px solid #1f1f2e; }
   .users-table td { padding: 14px 16px; border-bottom: 1px solid #1f1f2e; font-size: 14px; }
-  .role-badge { display: inline-block; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 600; }
-  .role-owner { background: rgba(108, 92, 231, 0.2); color: #A29BFE; border: 1px solid rgba(108, 92, 231, 0.3); }
-  .role-admin { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
-  .role-moderator { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-  .role-select { background: #0A0A0F; border: 1px solid #27272a; border-radius: 6px; padding: 6px 10px; color: #fff; font-size: 13px; cursor: pointer; }
-  .role-select:focus { outline: none; border-color: #6C5CE7; }
   .btn-small { padding: 6px 12px; border-radius: 6px; border: 1px solid #27272a; background: transparent; color: #A0A0B0; font-size: 13px; cursor: pointer; transition: 0.2s; }
   .btn-small:hover { border-color: #ef4444; color: #ef4444; }
-  .btn-small.primary { background: #6C5CE7; border-color: #6C5CE7; color: #fff; }
   
-  .support-layout { display: grid; grid-template-columns: 320px 1fr; gap: 20px; }
-  .conv-list-panel { background: #0A0A0F; border: 1px solid #1f1f2e; border-radius: 12px; padding: 12px; max-height: 600px; overflow-y: auto; }
-  .conv-list-item { padding: 12px; border-radius: 10px; cursor: pointer; margin-bottom: 6px; transition: all 0.2s; border: 1px solid transparent; }
-  .conv-list-item:hover { background: rgba(108, 92, 231, 0.1); }
+  /* Поддержка: Макет */
+  .support-layout { display: grid; grid-template-columns: 340px 1fr; gap: 20px; }
+  
+  /* Список обращений */
+  .conv-list-panel { background: #141414; border: 1px solid #1f1f2e; border-radius: 16px; padding: 12px; max-height: 650px; overflow-y: auto; }
+  .conv-list-header { padding: 8px 12px 16px; border-bottom: 1px solid #1f1f2e; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #A0A0B0; }
+  
+  .conv-list-item { padding: 14px; border-radius: 10px; cursor: pointer; margin-bottom: 6px; transition: all 0.2s; border: 1px solid transparent; }
+  .conv-list-item:hover { background: rgba(108, 92, 231, 0.08); }
   .conv-list-item.active { background: rgba(108, 92, 231, 0.15); border-color: #6C5CE7; }
-  .conv-list-item.unread { border-left: 3px solid #6C5CE7; }
-  .conv-list-name { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
-  .conv-list-email { font-size: 12px; color: #A0A0B0; margin-bottom: 4px; }
-  .conv-list-preview { font-size: 12px; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .conv-list-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
+  
+  /* СТАТУСЫ ТЕКСТА: Непрочитанное vs Прочитанное */
+  .conv-list-item.unread .conv-list-name { color: #ffffff; font-weight: 700; }
+  .conv-list-item.unread .conv-list-email { color: #A0A0B0; font-weight: 500; }
+  .conv-list-item.unread .conv-list-preview { color: #e2e8f0; font-weight: 500; }
+  
+  .conv-list-item.read .conv-list-name { color: #666666; font-weight: 400; }
+  .conv-list-item.read .conv-list-email { color: #555555; font-weight: 400; }
+  .conv-list-item.read .conv-list-preview { color: #555555; font-weight: 400; }
+  
+  .conv-list-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
   .conv-list-date { font-size: 11px; color: #666; }
   .conv-list-status { font-size: 10px; padding: 2px 6px; border-radius: 4px; }
   .conv-list-status.open { background: rgba(234, 179, 8, 0.2); color: #facc15; }
   .conv-list-status.closed { background: rgba(16, 185, 129, 0.2); color: #34d399; }
-  .conv-list-empty { text-align: center; color: #A0A0B0; padding: 30px 10px; font-size: 14px; }
+  .conv-list-empty { text-align: center; color: #A0A0B0; padding: 40px 10px; font-size: 14px; }
   
-  .admin-chat-panel { background: #0A0A0F; border: 1px solid #1f1f2e; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; min-height: 500px; }
-  .admin-chat-header { padding-bottom: 14px; border-bottom: 1px solid #1f1f2e; margin-bottom: 14px; }
-  .admin-chat-header h3 { font-size: 17px; margin-bottom: 4px; }
+  /* Чат админа */
+  .admin-chat-panel { background: #141414; border: 1px solid #1f1f2e; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; min-height: 650px; }
+  .admin-chat-header { padding-bottom: 16px; border-bottom: 1px solid #1f1f2e; margin-bottom: 16px; }
+  .admin-chat-header h3 { font-size: 18px; margin-bottom: 4px; }
   .admin-chat-header p { font-size: 13px; color: #A0A0B0; }
-  .admin-chat-messages { flex: 1; min-height: 300px; max-height: 400px; overflow-y: auto; margin-bottom: 14px; padding: 14px; background: #141414; border-radius: 10px; border: 1px solid #1f1f2e; }
-  .admin-msg { margin-bottom: 14px; padding: 10px 14px; border-radius: 10px; max-width: 80%; }
+  
+  .admin-chat-messages { flex: 1; min-height: 350px; max-height: 450px; overflow-y: auto; margin-bottom: 16px; padding: 16px; background: #0A0A0F; border-radius: 12px; border: 1px solid #1f1f2e; }
+  .admin-msg { margin-bottom: 16px; padding: 12px 16px; border-radius: 12px; max-width: 80%; animation: msgAppear 0.3s ease; }
+  @keyframes msgAppear { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   .admin-msg.user { background: rgba(108, 92, 231, 0.15); border: 1px solid rgba(108, 92, 231, 0.3); margin-left: auto; }
   .admin-msg.admin { background: #1f1f2e; border: 1px solid #27272a; }
-  .admin-msg .msg-sender { font-size: 11px; font-weight: 600; margin-bottom: 3px; }
-  .admin-msg.user .msg-sender { color: #A29BFE; }
+  .admin-msg .msg-sender { font-size: 11px; font-weight: 600; margin-bottom: 4px; }
+  .admin-msg.user .msg-sender { color: #A29BFE; text-align: right; }
   .admin-msg.admin .msg-sender { color: #6C5CE7; }
-  .admin-msg-text { font-size: 14px; line-height: 1.5; }
-  .admin-msg-time { font-size: 11px; color: #666; margin-top: 3px; }
-  .admin-chat-empty { text-align: center; color: #A0A0B0; padding: 60px 20px; }
-  .admin-chat-input-area { display: flex; gap: 10px; }
-  .admin-chat-input { flex: 1; background: #141414; border: 1px solid #27272a; border-radius: 10px; padding: 12px 14px; color: #fff; font-size: 14px; font-family: inherit; resize: none; min-height: 46px; max-height: 100px; }
+  .admin-msg-text { font-size: 15px; line-height: 1.5; }
+  .admin-msg-time { font-size: 11px; color: #666; margin-top: 4px; }
+  .admin-chat-empty { text-align: center; color: #A0A0B0; padding: 80px 20px; }
+  
+  .admin-chat-input-area { display: flex; gap: 12px; }
+  .admin-chat-input { flex: 1; background: #0A0A0F; border: 1px solid #27272a; border-radius: 12px; padding: 14px 16px; color: #fff; font-size: 15px; font-family: inherit; resize: none; min-height: 50px; max-height: 120px; }
   .admin-chat-input:focus { outline: none; border-color: #6C5CE7; }
-  .admin-chat-send { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; border: none; border-radius: 10px; padding: 0 20px; font-size: 14px; font-weight: 600; cursor: pointer; }
-  .admin-chat-send:hover { transform: translateY(-1px); }
-  .admin-chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
-  .admin-chat-actions { display: flex; gap: 8px; margin-top: 10px; }
-  .btn-admin-action { padding: 8px 14px; border-radius: 8px; border: 1px solid #27272a; background: transparent; color: #A0A0B0; font-size: 13px; cursor: pointer; }
+  .admin-chat-send { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; border: none; border-radius: 12px; padding: 0 24px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .admin-chat-send:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
+  .admin-chat-send:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  
+  .admin-chat-actions { display: flex; gap: 8px; margin-top: 12px; }
+  .btn-admin-action { padding: 8px 14px; border-radius: 8px; border: 1px solid #27272a; background: transparent; color: #A0A0B0; font-size: 13px; cursor: pointer; transition: 0.2s; }
   .btn-admin-action:hover { border-color: #6C5CE7; color: #fff; }
   .btn-admin-action.danger:hover { border-color: #ef4444; color: #ef4444; }
   
@@ -112,9 +116,8 @@
     .sidebar { display: none !important; }
     .layout { grid-template-columns: 1fr !important; }
     .main { padding: 20px 16px !important; }
-    .add-user-form { grid-template-columns: 1fr !important; }
     .support-layout { grid-template-columns: 1fr !important; }
-    .tabs { overflow-x: auto; }
+    .conv-list-panel { max-height: 250px; }
   }
 </style>
 </head>
@@ -122,10 +125,9 @@
 <div class="layout">
   <aside class="sidebar">
     <a href="index.html" class="sidebar-logo">Cliply</a>
-    <ul class="nav-menu" id="navMenu">
+    <ul class="nav-menu">
       <li><a href="dashboard.html">📊 Дашборд</a></li>
       <li><a href="admin.html" class="active">👑 Админ-панель</a></li>
-      <li><a href="support.html">💬 Техподдержка</a></li>
       <li><a href="settings.html">⚙️ Настройки</a></li>
     </ul>
     <button class="btn-logout" onclick="logout()">Выйти</button>
@@ -137,6 +139,7 @@
       <p>Управление пользователями и поддержка</p>
     </div>
     
+    <!-- Вкладки -->
     <div class="tabs">
       <button class="tab active" data-tab="users" onclick="switchTab('users')">👥 Пользователи</button>
       <button class="tab" data-tab="support" onclick="switchTab('support')">
@@ -145,30 +148,8 @@
       </button>
     </div>
     
+    <!-- Вкладка: Пользователи -->
     <div class="tab-content active" id="tab-users">
-      <div class="admin-card">
-        <h2>Добавить участника команды</h2>
-        <div class="add-user-form">
-          <div class="form-group">
-            <label>Имя</label>
-            <input type="text" id="newUserName" placeholder="Имя пользователя">
-          </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="newUserEmail" placeholder="email@example.com">
-          </div>
-          <div class="form-group">
-            <label>Роль</label>
-            <select id="newUserRole">
-              <option value="3">Moderator (ур. 3)</option>
-              <option value="2">Admin (ур. 2)</option>
-            </select>
-          </div>
-          <button class="btn-create" onclick="createUser()">Создать</button>
-          <div class="form-hint">Система сгенерирует временный пароль и отправит на email.</div>
-        </div>
-      </div>
-      
       <div class="admin-card">
         <h2>Пользователи системы</h2>
         <div style="overflow-x: auto;">
@@ -177,7 +158,7 @@
               <tr>
                 <th>Имя</th>
                 <th>Email</th>
-                <th>Уровень доступа</th>
+                <th>Роль</th>
                 <th>Действия</th>
               </tr>
             </thead>
@@ -189,15 +170,17 @@
       </div>
     </div>
     
+    <!-- Вкладка: Поддержка -->
     <div class="tab-content" id="tab-support">
       <div class="support-layout">
         <div class="conv-list-panel" id="adminConvList">
+          <div class="conv-list-header">Все обращения</div>
           <div class="conv-list-empty">Загрузка обращений...</div>
         </div>
         <div class="admin-chat-panel" id="adminChatPanel">
           <div class="admin-chat-empty">
-            <div style="font-size:48px;margin-bottom:12px;opacity:0.5;"></div>
-            <div>Выберите обращение слева</div>
+            <div style="font-size:48px;margin-bottom:12px;opacity:0.5;">👈</div>
+            <div>Выберите обращение слева, чтобы ответить</div>
           </div>
         </div>
       </div>
@@ -211,12 +194,6 @@ let allUsers = [];
 let allConversations = [];
 let activeAdminConvId = null;
 let supportRefreshInterval = null;
-
-const ROLES = {
-  1: { name: 'Owner', color: '#6C5CE7' },
-  2: { name: 'Admin', color: '#3b82f6' },
-  3: { name: 'Moderator', color: '#10b981' }
-};
 
 async function initAdmin() {
   currentUser = await requireAuth();
@@ -248,11 +225,7 @@ function switchTab(tabName) {
 
 async function loadUsers() {
   try {
-    const { data, error } = await supabaseClient
-      .from('profiles')
-      .select('*')
-      .order('created_at', { ascending: false });
-    
+    const { data, error } = await supabaseClient.from('profiles').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     allUsers = data || [];
     renderUsersTable();
@@ -267,98 +240,17 @@ function renderUsersTable() {
     tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#A0A0B0;padding:30px;">Нет пользователей</td></tr>';
     return;
   }
-  
   tbody.innerHTML = allUsers.map(user => {
-    const role = ROLES[user.role_level] || ROLES[3];
-    const isOwner = user.role_level === 1;
-    const isMe = user.id === currentUser.id;
-    
+    const roleName = user.role_level === 1 ? 'Owner' : user.role_level === 2 ? 'Admin' : 'Moderator';
     return `
       <tr>
         <td><strong>${user.full_name || '—'}</strong></td>
         <td>${user.email}</td>
-        <td>
-          ${isOwner 
-            ? `<span class="role-badge role-owner">Owner</span>` 
-            : `<select class="role-select" onchange="changeUserRole('${user.id}', this.value)" ${isMe ? 'disabled' : ''}>
-                <option value="2" ${user.role_level === 2 ? 'selected' : ''}>Admin</option>
-                <option value="3" ${user.role_level === 3 ? 'selected' : ''}>Moderator</option>
-              </select>`
-          }
-        </td>
-        <td>
-          ${isOwner || isMe 
-            ? '<span style="color:#666;font-size:13px;">—</span>' 
-            : `<button class="btn-small" onclick="deleteUser('${user.id}')">Удалить</button>`
-          }
-        </td>
+        <td>${roleName}</td>
+        <td><span style="color:#666;font-size:13px;">—</span></td>
       </tr>
     `;
   }).join('');
-}
-
-async function createUser() {
-  const name = document.getElementById('newUserName').value.trim();
-  const email = document.getElementById('newUserEmail').value.trim();
-  const role = parseInt(document.getElementById('newUserRole').value);
-  
-  if (!name || !email) {
-    showToast('Заполните имя и email', 'warning');
-    return;
-  }
-  
-  const btn = document.querySelector('.btn-create');
-  btn.textContent = 'Создание...';
-  btn.disabled = true;
-  
-  try {
-    const { data, error } = await supabaseClient.rpc('create_user_with_role', {
-      p_email: email,
-      p_password: 'Cliply2026!',
-      p_full_name: name,
-      p_role_level: role
-    });
-    
-    if (error) throw error;
-    
-    document.getElementById('newUserName').value = '';
-    document.getElementById('newUserEmail').value = '';
-    await loadUsers();
-    showToast(`Пользователь ${name} создан! Пароль: Cliply2026!`, 'success');
-  } catch (e) {
-    showToast('Ошибка: ' + e.message, 'error');
-  } finally {
-    btn.textContent = 'Создать';
-    btn.disabled = false;
-  }
-}
-
-async function changeUserRole(userId, newRole) {
-  try {
-    const { error } = await supabaseClient
-      .from('profiles')
-      .update({ role_level: parseInt(newRole) })
-      .eq('id', userId);
-    
-    if (error) throw error;
-    showToast('Роль изменена', 'success');
-    await loadUsers();
-  } catch (e) {
-    showToast('Ошибка: ' + e.message, 'error');
-  }
-}
-
-async function deleteUser(userId) {
-  if (!confirm('Удалить этого пользователя?')) return;
-  
-  try {
-    const { error } = await supabaseClient.rpc('delete_user_by_id', { p_user_id: userId });
-    if (error) throw error;
-    await loadUsers();
-    showToast('Пользователь удалён', 'success');
-  } catch (e) {
-    showToast('Ошибка: ' + e.message, 'error');
-  }
 }
 
 async function loadAllConversations() {
@@ -367,7 +259,7 @@ async function loadAllConversations() {
       .from('support_conversations')
       .select(`
         id, user_id, user_name, user_email, status, created_at, updated_at,
-        support_messages(message, sender, created_at)
+        support_messages(message, sender, created_at, is_read)
       `)
       .order('updated_at', { ascending: false });
     
@@ -393,28 +285,34 @@ function updateOpenConvBadge() {
 
 function renderAdminConvList() {
   const list = document.getElementById('adminConvList');
+  const header = list.querySelector('.conv-list-header');
   
   if (allConversations.length === 0) {
-    list.innerHTML = '<div class="conv-list-empty">Нет обращений</div>';
+    list.innerHTML = '<div class="conv-list-header">Все обращения</div><div class="conv-list-empty">Нет обращений</div>';
     return;
   }
   
-  list.innerHTML = allConversations.map(conv => {
-    const lastMsg = conv.support_messages && conv.support_messages.length > 0
-      ? conv.support_messages[conv.support_messages.length - 1].message
-      : 'Нет сообщений';
-    const date = new Date(conv.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
+  let html = '<div class="conv-list-header">Все обращения</div>';
+  html += allConversations.map(conv => {
+    const msgs = conv.support_messages || [];
+    const lastMsg = msgs.length > 0 ? msgs[msgs.length - 1].message : 'Нет сообщений';
+    
+    // Логика прочитано/непрочитано:
+    // Если есть сообщения от пользователя, которые is_read === false, значит непрочитано.
+    const hasUnread = msgs.some(m => m.sender === 'user' && m.is_read === false);
+    const readClass = hasUnread ? 'unread' : 'read';
+    const isActive = conv.id === activeAdminConvId ? 'active' : '';
+    
+    const date = new Date(conv.updated_at || conv.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
     const time = new Date(conv.updated_at || conv.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
     const statusClass = conv.status === 'open' ? 'open' : 'closed';
     const statusText = conv.status === 'open' ? 'Открыто' : 'Закрыто';
-    const isActive = conv.id === activeAdminConvId ? 'active' : '';
-    const hasNew = conv.status === 'open' ? 'unread' : '';
     
     return `
-      <div class="conv-list-item ${isActive} ${hasNew}" data-id="${conv.id}" onclick="selectAdminConversation('${conv.id}')">
+      <div class="conv-list-item ${isActive} ${readClass}" data-id="${conv.id}" onclick="selectAdminConversation('${conv.id}')">
         <div class="conv-list-name">${conv.user_name || 'Гость'}</div>
         <div class="conv-list-email">${conv.user_email || '—'}</div>
-        <div class="conv-list-preview">${lastMsg.substring(0, 40)}${lastMsg.length > 40 ? '...' : ''}</div>
+        <div class="conv-list-preview">${lastMsg.substring(0, 45)}${lastMsg.length > 45 ? '...' : ''}</div>
         <div class="conv-list-meta">
           <span class="conv-list-date">${date} ${time}</span>
           <span class="conv-list-status ${statusClass}">${statusText}</span>
@@ -422,6 +320,8 @@ function renderAdminConvList() {
       </div>
     `;
   }).join('');
+  
+  list.innerHTML = html;
 }
 
 async function selectAdminConversation(convId) {
@@ -434,15 +334,23 @@ async function selectAdminConversation(convId) {
   const conv = allConversations.find(c => c.id === convId);
   if (!conv) return;
   
+  // Помечаем сообщения пользователя как прочитанные
+  const unreadMsgs = (conv.support_messages || []).filter(m => m.sender === 'user' && m.is_read === false);
+  if (unreadMsgs.length > 0) {
+    await supabaseClient
+      .from('support_messages')
+      .update({ is_read: true })
+      .in('id', unreadMsgs.map(m => m.id));
+  }
+  
+  // Загружаем свежие сообщения
   const { data: messages } = await supabaseClient
     .from('support_messages')
     .select('*')
     .eq('conversation_id', convId)
     .order('created_at', { ascending: true });
   
-  const date = new Date(conv.created_at).toLocaleString('ru-RU', { 
-    day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' 
-  });
+  const date = new Date(conv.created_at).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
   
   const panel = document.getElementById('adminChatPanel');
   panel.innerHTML = `
@@ -488,6 +396,9 @@ async function selectAdminConversation(convId) {
     const msgs = document.getElementById('adminChatMessages');
     if (msgs) msgs.scrollTop = msgs.scrollHeight;
   }, 100);
+  
+  // Обновляем список, чтобы сбросить статус "непрочитано"
+  await loadAllConversations();
 }
 
 async function sendAdminReply() {
@@ -503,7 +414,8 @@ async function sendAdminReply() {
     await supabaseClient.from('support_messages').insert({
       conversation_id: activeAdminConvId,
       sender: 'admin',
-      message: text
+      message: text,
+      is_read: true
     });
     
     await supabaseClient
@@ -514,9 +426,6 @@ async function sendAdminReply() {
     input.value = '';
     input.style.height = 'auto';
     await selectAdminConversation(activeAdminConvId);
-    await loadAllConversations();
-    updateOpenConvBadge();
-    
     showToast('Ответ отправлен', 'success');
   } catch (e) {
     showToast('Ошибка: ' + e.message, 'error');
@@ -528,10 +437,7 @@ async function sendAdminReply() {
 
 async function closeAdminConv() {
   if (!activeAdminConvId) return;
-  await supabaseClient
-    .from('support_conversations')
-    .update({ status: 'closed', updated_at: new Date().toISOString() })
-    .eq('id', activeAdminConvId);
+  await supabaseClient.from('support_conversations').update({ status: 'closed', updated_at: new Date().toISOString() }).eq('id', activeAdminConvId);
   await loadAllConversations();
   updateOpenConvBadge();
   selectAdminConversation(activeAdminConvId);
@@ -540,10 +446,7 @@ async function closeAdminConv() {
 
 async function reopenAdminConv() {
   if (!activeAdminConvId) return;
-  await supabaseClient
-    .from('support_conversations')
-    .update({ status: 'open', updated_at: new Date().toISOString() })
-    .eq('id', activeAdminConvId);
+  await supabaseClient.from('support_conversations').update({ status: 'open', updated_at: new Date().toISOString() }).eq('id', activeAdminConvId);
   await loadAllConversations();
   updateOpenConvBadge();
   selectAdminConversation(activeAdminConvId);
@@ -553,12 +456,7 @@ async function reopenAdminConv() {
 async function deleteAdminConv() {
   if (!activeAdminConvId) return;
   if (!confirm('Удалить это обращение и все сообщения?')) return;
-  
-  await supabaseClient
-    .from('support_conversations')
-    .delete()
-    .eq('id', activeAdminConvId);
-  
+  await supabaseClient.from('support_conversations').delete().eq('id', activeAdminConvId);
   activeAdminConvId = null;
   await loadAllConversations();
   updateOpenConvBadge();
