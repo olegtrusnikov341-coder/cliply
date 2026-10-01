@@ -2,6 +2,8 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
 <title>FAQ — Cliply</title>
 <meta name="description" content="Ответы на частые вопросы о Cliply.">
 <meta name="robots" content="index, follow">
@@ -341,6 +343,18 @@ document.getElementById('askForm').addEventListener('submit', async (e) => {
     }
   }
 })();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      for (let registration of registrations) {
+        registration.update();
+      }
+    });
+  });
+}
 </script>
 </body>
 </html>
