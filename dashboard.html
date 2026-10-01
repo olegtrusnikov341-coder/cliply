@@ -20,6 +20,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="auth.js"></script>
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
@@ -55,6 +56,62 @@
   .online-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; }
   .offline-dot { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; animation: pulse 1.5s ease infinite; }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  
+  /* ===== АНАЛИТИКА ===== */
+  .analytics-section { margin-bottom: 40px; }
+  .analytics-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+  .analytics-header h2 { font-size: 22px; font-weight: 700; font-family: 'Manrope'; }
+  .period-selector { display: flex; gap: 8px; background: #141414; border: 1px solid #27272a; border-radius: 10px; padding: 4px; }
+  .period-btn { padding: 8px 16px; border-radius: 8px; border: none; background: transparent; color: #A0A0B0; font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.2s; }
+  .period-btn.active { background: #6C5CE7; color: #fff; }
+  .period-btn:hover:not(.active) { color: #fff; }
+  
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+  .kpi-card { background: #141414; border: 1px solid #27272a; border-radius: 14px; padding: 20px; transition: all 0.3s; }
+  .kpi-card:hover { border-color: #6C5CE7; transform: translateY(-2px); }
+  .kpi-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .kpi-label { font-size: 13px; color: #A0A0B0; font-weight: 500; }
+  .kpi-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .kpi-icon.purple { background: rgba(108, 92, 231, 0.15); }
+  .kpi-icon.green { background: rgba(16, 185, 129, 0.15); }
+  .kpi-icon.orange { background: rgba(245, 158, 11, 0.15); }
+  .kpi-icon.blue { background: rgba(59, 130, 246, 0.15); }
+  .kpi-value { font-size: 32px; font-weight: 800; font-family: 'Manrope'; margin-bottom: 6px; }
+  .kpi-change { font-size: 12px; display: flex; align-items: center; gap: 4px; }
+  .kpi-change.up { color: #10b981; }
+  .kpi-change.down { color: #ef4444; }
+  .kpi-change.neutral { color: #A0A0B0; }
+  
+  .charts-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 24px; }
+  .chart-card { background: #141414; border: 1px solid #27272a; border-radius: 14px; padding: 24px; }
+  .chart-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .chart-card .chart-subtitle { font-size: 13px; color: #A0A0B0; margin-bottom: 20px; }
+  .chart-container { position: relative; height: 260px; }
+  .chart-container.small { height: 220px; }
+  
+  .usage-card { background: #141414; border: 1px solid #27272a; border-radius: 14px; padding: 24px; margin-bottom: 24px; }
+  .usage-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .usage-header h3 { font-size: 16px; font-weight: 600; }
+  .usage-plan { font-size: 13px; color: #A0A0B0; }
+  .usage-plan strong { color: #6C5CE7; }
+  .usage-progress { height: 10px; background: #27272a; border-radius: 100px; overflow: hidden; margin-bottom: 12px; }
+  .usage-progress-bar { height: 100%; background: linear-gradient(90deg, #6C5CE7, #A29BFE); border-radius: 100px; transition: width 0.6s ease; }
+  .usage-progress-bar.warning { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+  .usage-progress-bar.danger { background: linear-gradient(90deg, #ef4444, #f87171); }
+  .usage-footer { display: flex; justify-content: space-between; font-size: 13px; color: #A0A0B0; }
+  .usage-footer strong { color: #fff; }
+  
+  .top-scenarios { background: #141414; border: 1px solid #27272a; border-radius: 14px; padding: 24px; margin-bottom: 40px; }
+  .top-scenarios h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+  .scenario-list { display: grid; gap: 10px; }
+  .scenario-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #0A0A0F; border-radius: 10px; border: 1px solid #1f1f2e; }
+  .scenario-rank { width: 28px; height: 28px; border-radius: 50%; background: rgba(108, 92, 231, 0.15); color: #6C5CE7; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+  .scenario-info { flex: 1; }
+  .scenario-name { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
+  .scenario-bar-bg { height: 4px; background: #27272a; border-radius: 100px; overflow: hidden; }
+  .scenario-bar { height: 100%; background: linear-gradient(90deg, #6C5CE7, #A29BFE); border-radius: 100px; }
+  .scenario-count { font-size: 13px; color: #A0A0B0; font-weight: 600; flex-shrink: 0; }
+  
   .create-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 32px; margin-bottom: 40px; }
   .create-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
   .create-card h2 { font-size: 22px; font-weight: 700; font-family: 'Manrope'; }
@@ -89,7 +146,6 @@
   .validation-errors.active { display: block; }
   .validation-errors ul { list-style: none; margin: 0; padding: 0; }
   .validation-errors li { color: #ef4444; font-size: 13px; padding: 4px 0; }
-  .validation-errors li::before { content: " "; }
   .form-group { margin-bottom: 20px; }
   .form-group label { display: block; font-size: 14px; color: #A0A0B0; margin-bottom: 8px; font-weight: 500; }
   .form-group input, .form-group textarea, .form-group select { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 8px; padding: 12px 16px; color: #fff; font-size: 15px; font-family: inherit; }
@@ -146,6 +202,15 @@
   .offline-banner { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; padding: 12px 20px; border-radius: 8px; margin-bottom: 24px; display: none; align-items: center; gap: 12px; font-size: 14px; }
   .offline-banner.active { display: flex; }
   .mobile-header { display: none; }
+  
+  @media (max-width: 768px) {
+    .sidebar { display: none !important; }
+    .main { padding: 20px 16px !important; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .charts-grid { grid-template-columns: 1fr !important; }
+    .header h1 { font-size: 22px !important; }
+    .mobile-header { display: flex !important; }
+  }
 </style>
 </head>
 <body>
@@ -153,9 +218,9 @@
   <aside class="sidebar">
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu" id="navMenu">
-      <li><a href="dashboard.html" class="active"> Дашборд</a></li>
+      <li><a href="dashboard.html" class="active">📊 Дашборд</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
-      <li><a href="settings.html">⚙️ Настройки</a></li>
+      <li><a href="settings.html">️ Настройки</a></li>
       <li><a href="support.html">💬 Техподдержка</a></li>
     </ul>
     <button class="btn-logout" onclick="logout()">Выйти</button>
@@ -169,7 +234,7 @@
   </div>
   
   <div class="mobile-menu" id="mobileMenu">
-    <a href="dashboard.html" class="active">📊 Дашборд</a>
+    <a href="dashboard.html" class="active"> Дашборд</a>
     <a href="pricing.html">💎 Тарифы</a>
     <a href="settings.html">⚙️ Настройки</a>
     <a href="support.html">💬 Техподдержка</a>
@@ -189,16 +254,113 @@
         <span id="roleBadgeText">Загрузка...</span>
       </div>
     </div>
+    
+    <!-- ===== АНАЛИТИКА ===== -->
+    <section class="analytics-section">
+      <div class="analytics-header">
+        <h2>📊 Ваша статистика</h2>
+        <div class="period-selector">
+          <button class="period-btn active" data-period="7" onclick="changePeriod(7, this)">7 дней</button>
+          <button class="period-btn" data-period="30" onclick="changePeriod(30, this)">30 дней</button>
+          <button class="period-btn" data-period="90" onclick="changePeriod(90, this)">90 дней</button>
+        </div>
+      </div>
+      
+      <!-- KPI карточки -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Всего видео</span>
+            <div class="kpi-icon purple">🎬</div>
+          </div>
+          <div class="kpi-value" id="kpiTotal">0</div>
+          <div class="kpi-change neutral" id="kpiTotalChange">—</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">За период</span>
+            <div class="kpi-icon green">📈</div>
+          </div>
+          <div class="kpi-value" id="kpiPeriod">0</div>
+          <div class="kpi-change neutral" id="kpiPeriodChange">—</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Готово</span>
+            <div class="kpi-icon blue">✅</div>
+          </div>
+          <div class="kpi-value" id="kpiDone">0</div>
+          <div class="kpi-change neutral" id="kpiDoneRate">—</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">В процессе</span>
+            <div class="kpi-icon orange">⏳</div>
+          </div>
+          <div class="kpi-value" id="kpiProgress">0</div>
+          <div class="kpi-change neutral" id="kpiProgressRate">—</div>
+        </div>
+      </div>
+      
+      <!-- Графики -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>Активность по дням</h3>
+          <div class="chart-subtitle">Количество созданных видео</div>
+          <div class="chart-container">
+            <canvas id="activityChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h3>Статусы видео</h3>
+          <div class="chart-subtitle">Распределение по статусам</div>
+          <div class="chart-container small">
+            <canvas id="statusChart"></canvas>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Использование тарифа -->
+      <div class="usage-card">
+        <div class="usage-header">
+          <div>
+            <h3>Использование тарифа</h3>
+            <div class="usage-plan">Текущий план: <strong id="usagePlanName">Starter</strong></div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 24px; font-weight: 700; font-family: 'Manrope';" id="usageCount">0 / 30</div>
+            <div style="font-size: 12px; color: #A0A0B0;">видео в этом месяце</div>
+          </div>
+        </div>
+        <div class="usage-progress">
+          <div class="usage-progress-bar" id="usageBar" style="width: 0%;"></div>
+        </div>
+        <div class="usage-footer">
+          <span>Осталось: <strong id="usageRemaining">30</strong> видео</span>
+          <span>Обновление: <strong id="usageReset">через 30 дней</strong></span>
+        </div>
+      </div>
+      
+      <!-- Топ сценариев -->
+      <div class="top-scenarios">
+        <h3>🏆 Ваши любимые сценарии</h3>
+        <div class="scenario-list" id="scenarioList">
+          <div style="text-align: center; padding: 20px; color: #A0A0B0;">Загрузка...</div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- ===== СОЗДАНИЕ ВИДЕО ===== -->
     <div class="create-card">
       <div class="create-card-header">
         <h2>Создать новое видео</h2>
         <div style="display: flex; gap: 12px; align-items: center;">
           <span id="draftIndicator" class="draft-indicator"></span>
-          <button id="clearDraftBtn" class="btn-clear-draft" style="display: none;"> Очистить черновик</button>
+          <button id="clearDraftBtn" class="btn-clear-draft" style="display: none;">🗑 Очистить черновик</button>
         </div>
       </div>
       <div class="upload-zone" id="uploadZone">
-        <div class="upload-icon">📸</div>
+        <div class="upload-icon"></div>
         <div class="upload-text"><strong>Перетащите фото товара сюда</strong><br>или нажмите, чтобы выбрать</div>
         <div class="upload-hint">3-5 фото • JPG, PNG, WebP • до 10 МБ каждое</div>
         <div class="upload-progress" id="uploadProgress">
@@ -232,6 +394,8 @@
       </div>
       <button class="btn-generate" onclick="startGeneration()" id="btnGenerate">Сгенерировать видео →</button>
     </div>
+    
+    <!-- ===== ВАШИ ВИДЕО ===== -->
     <div class="videos-section">
       <div class="videos-section-header">
         <h2>Ваши видео</h2>
@@ -255,6 +419,15 @@ let draftManager = null;
 let currentUser = null;
 let allVideos = [];
 let networkManager = null;
+let currentPeriod = 7;
+let activityChart = null;
+let statusChart = null;
+
+const PLANS = {
+  1: { name: 'Starter', limit: 30 },
+  2: { name: 'Pro', limit: 100 },
+  3: { name: 'Agency', limit: 99999 }
+};
 
 async function initDashboard() {
   showVideoCardSkeleton('#projectsGrid', 4);
@@ -321,6 +494,7 @@ async function initDashboard() {
   draftManager.init();
   
   await loadVideos();
+  await loadAnalytics();
   
   if (window.microAnimations) {
     window.microAnimations.initRipple();
@@ -345,6 +519,306 @@ async function initDashboard() {
   
   await checkReviewEligibility();
 }
+
+// ===== АНАЛИТИКА =====
+
+async function loadAnalytics() {
+  if (!currentUser) return;
+  
+  try {
+    const { data: videos, error } = await supabaseClient
+      .from('videos')
+      .select('*')
+      .eq('user_id', currentUser.id)
+      .order('created_at', { ascending: true });
+    
+    if (error) {
+      console.error('Analytics error:', error);
+      return;
+    }
+    
+    const allVideosForAnalytics = videos || [];
+    updateKPIs(allVideosForAnalytics);
+    updateUsageCard(allVideosForAnalytics);
+    updateTopScenarios(allVideosForAnalytics);
+    renderCharts(allVideosForAnalytics);
+    
+  } catch (e) {
+    console.error('Load analytics error:', e);
+  }
+}
+
+function updateKPIs(videos) {
+  const now = new Date();
+  const periodStart = new Date(now.getTime() - currentPeriod * 24 * 60 * 60 * 1000);
+  const previousPeriodStart = new Date(now.getTime() - currentPeriod * 2 * 24 * 60 * 60 * 1000);
+  
+  const total = videos.length;
+  const inPeriod = videos.filter(v => new Date(v.created_at) >= periodStart).length;
+  const inPreviousPeriod = videos.filter(v => {
+    const d = new Date(v.created_at);
+    return d >= previousPeriodStart && d < periodStart;
+  }).length;
+  
+  const done = videos.filter(v => v.status === 'done').length;
+  const processing = videos.filter(v => v.status === 'processing').length;
+  const failed = videos.filter(v => v.status === 'failed').length;
+  
+  // Анимация чисел
+  animateValue('kpiTotal', total);
+  animateValue('kpiPeriod', inPeriod);
+  animateValue('kpiDone', done);
+  animateValue('kpiProgress', processing);
+  
+  // Изменения
+  const periodChange = inPreviousPeriod > 0 
+    ? Math.round(((inPeriod - inPreviousPeriod) / inPreviousPeriod) * 100)
+    : (inPeriod > 0 ? 100 : 0);
+  
+  updateChange('kpiPeriodChange', periodChange, 'за период');
+  updateChange('kpiTotalChange', total > 0 ? 100 : 0, 'всего');
+  
+  const doneRate = total > 0 ? Math.round((done / total) * 100) : 0;
+  const progressRate = total > 0 ? Math.round((processing / total) * 100) : 0;
+  
+  document.getElementById('kpiDoneRate').textContent = `${doneRate}% от всех`;
+  document.getElementById('kpiDoneRate').className = 'kpi-change ' + (doneRate >= 70 ? 'up' : doneRate >= 40 ? 'neutral' : 'down');
+  
+  document.getElementById('kpiProgressRate').textContent = `${progressRate}% от всех`;
+  document.getElementById('kpiProgressRate').className = 'kpi-change neutral';
+}
+
+function animateValue(elementId, target) {
+  const el = document.getElementById(elementId);
+  const start = parseInt(el.textContent) || 0;
+  const duration = 800;
+  const startTime = performance.now();
+  
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(start + (target - start) * eased);
+    el.textContent = current;
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  
+  requestAnimationFrame(update);
+}
+
+function updateChange(elementId, percent, label) {
+  const el = document.getElementById(elementId);
+  if (percent > 0) {
+    el.textContent = `↑ +${percent}% ${label}`;
+    el.className = 'kpi-change up';
+  } else if (percent < 0) {
+    el.textContent = `↓ ${percent}% ${label}`;
+    el.className = 'kpi-change down';
+  } else {
+    el.textContent = `— без изменений`;
+    el.className = 'kpi-change neutral';
+  }
+}
+
+function updateUsageCard(videos) {
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const thisMonthVideos = videos.filter(v => new Date(v.created_at) >= monthStart).length;
+  
+  const userPlan = currentUser.profile?.plan_level || 1;
+  const plan = PLANS[userPlan] || PLANS[1];
+  const limit = plan.limit;
+  const percent = Math.min((thisMonthVideos / limit) * 100, 100);
+  const remaining = Math.max(limit - thisMonthVideos, 0);
+  
+  document.getElementById('usagePlanName').textContent = plan.name;
+  document.getElementById('usageCount').textContent = `${thisMonthVideos} / ${limit === 99999 ? '∞' : limit}`;
+  document.getElementById('usageRemaining').textContent = limit === 99999 ? '∞' : remaining;
+  
+  const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+  const daysLeft = daysInMonth - now.getDate();
+  document.getElementById('usageReset').textContent = `через ${daysLeft} дн.`;
+  
+  const bar = document.getElementById('usageBar');
+  bar.style.width = percent + '%';
+  bar.className = 'usage-progress-bar';
+  if (percent >= 90) bar.classList.add('danger');
+  else if (percent >= 70) bar.classList.add('warning');
+}
+
+function updateTopScenarios(videos) {
+  const scenarioCount = {};
+  videos.forEach(v => {
+    const s = v.scenario || 'Неизвестно';
+    scenarioCount[s] = (scenarioCount[s] || 0) + 1;
+  });
+  
+  const sorted = Object.entries(scenarioCount)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
+  
+  const maxCount = sorted.length > 0 ? sorted[0][1] : 1;
+  const list = document.getElementById('scenarioList');
+  
+  if (sorted.length === 0) {
+    list.innerHTML = '<div style="text-align: center; padding: 20px; color: #A0A0B0;">Создайте первое видео, чтобы увидеть статистику</div>';
+    return;
+  }
+  
+  list.innerHTML = sorted.map(([name, count], i) => `
+    <div class="scenario-item">
+      <div class="scenario-rank">${i + 1}</div>
+      <div class="scenario-info">
+        <div class="scenario-name">${name}</div>
+        <div class="scenario-bar-bg">
+          <div class="scenario-bar" style="width: ${(count / maxCount) * 100}%"></div>
+        </div>
+      </div>
+      <div class="scenario-count">${count} ${getVideoWord(count)}</div>
+    </div>
+  `).join('');
+}
+
+function getVideoWord(n) {
+  const lastTwo = n % 100;
+  const lastOne = n % 10;
+  if (lastTwo >= 11 && lastTwo <= 19) return 'видео';
+  if (lastOne === 1) return 'видео';
+  if (lastOne >= 2 && lastOne <= 4) return 'видео';
+  return 'видео';
+}
+
+function renderCharts(videos) {
+  const now = new Date();
+  const labels = [];
+  const data = [];
+  
+  for (let i = currentPeriod - 1; i >= 0; i--) {
+    const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+    const dayStr = date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
+    labels.push(dayStr);
+    
+    const dayStart = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const dayEnd = new Date(dayStart.getTime() + 24 * 60 * 60 * 1000);
+    const count = videos.filter(v => {
+      const d = new Date(v.created_at);
+      return d >= dayStart && d < dayEnd;
+    }).length;
+    data.push(count);
+  }
+  
+  // График активности
+  if (activityChart) activityChart.destroy();
+  const activityCtx = document.getElementById('activityChart').getContext('2d');
+  activityChart = new Chart(activityCtx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Видео',
+        data: data,
+        backgroundColor: 'rgba(108, 92, 231, 0.6)',
+        borderColor: '#6C5CE7',
+        borderWidth: 2,
+        borderRadius: 6,
+        hoverBackgroundColor: '#A29BFE'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#141414',
+          titleColor: '#fff',
+          bodyColor: '#A0A0B0',
+          borderColor: '#27272a',
+          borderWidth: 1,
+          padding: 12,
+          cornerRadius: 8,
+          callbacks: {
+            label: (ctx) => `${ctx.parsed.y} видео`
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(39, 39, 42, 0.5)', drawBorder: false },
+          ticks: { color: '#A0A0B0', font: { size: 11 } }
+        },
+        y: {
+          beginAtZero: true,
+          grid: { color: 'rgba(39, 39, 42, 0.5)', drawBorder: false },
+          ticks: { color: '#A0A0B0', font: { size: 11 }, stepSize: 1 }
+        }
+      }
+    }
+  });
+  
+  // Круговая диаграмма статусов
+  const done = videos.filter(v => v.status === 'done').length;
+  const processing = videos.filter(v => v.status === 'processing').length;
+  const failed = videos.filter(v => v.status === 'failed').length;
+  
+  if (statusChart) statusChart.destroy();
+  const statusCtx = document.getElementById('statusChart').getContext('2d');
+  statusChart = new Chart(statusCtx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Готово', 'В процессе', 'Ошибка'],
+      datasets: [{
+        data: [done, processing, failed],
+        backgroundColor: [
+          'rgba(16, 185, 129, 0.8)',
+          'rgba(234, 179, 8, 0.8)',
+          'rgba(239, 68, 68, 0.8)'
+        ],
+        borderColor: '#141414',
+        borderWidth: 3,
+        hoverOffset: 8
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '65%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            color: '#A0A0B0',
+            padding: 16,
+            font: { size: 12 },
+            usePointStyle: true,
+            pointStyle: 'circle'
+          }
+        },
+        tooltip: {
+          backgroundColor: '#141414',
+          titleColor: '#fff',
+          bodyColor: '#A0A0B0',
+          borderColor: '#27272a',
+          borderWidth: 1,
+          padding: 12,
+          cornerRadius: 8,
+          callbacks: {
+            label: (ctx) => `${ctx.label}: ${ctx.parsed} (${videos.length > 0 ? Math.round((ctx.parsed / videos.length) * 100) : 0}%)`
+          }
+        }
+      }
+    }
+  });
+}
+
+window.changePeriod = function(period, btn) {
+  currentPeriod = period;
+  document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadAnalytics();
+};
+
+// ===== ВИДЕО =====
 
 async function loadVideos() {
   try {
@@ -413,6 +887,7 @@ async function deleteVideo(videoId) {
     if (error) { showToast('Ошибка удаления: ' + error.message, 'error'); return; }
     allVideos = allVideos.filter(v => v.id !== videoId);
     renderVideos();
+    await loadAnalytics();
     showToast('Видео удалено', 'success');
   } catch (error) {
     showToast('Не удалось удалить видео', 'error');
@@ -591,6 +1066,7 @@ async function startGeneration() {
     }
     allVideos.unshift(video);
     renderVideos();
+    await loadAnalytics();
     setTimeout(async () => {
       try {
         const { error: updateError } = await networkManager.supabaseRequest(
@@ -599,16 +1075,15 @@ async function startGeneration() {
         );
         if (updateError) {
           showToast('Ошибка обновления статуса', 'error');
-          networkManager.log('error', 'startGeneration update error', updateError);
         } else {
           showToast('Видео успешно сгенерировано!', 'success');
           await loadVideos();
+          await loadAnalytics();
           if (draftManager) draftManager.clear();
           await checkReviewEligibility();
         }
       } catch (err) {
         showToast('Ошибка при обновлении статуса видео', 'error');
-        networkManager.log('error', 'startGeneration retry failed', err);
       }
       btn.textContent = 'Сгенерировать видео →';
       btn.disabled = false;
@@ -622,19 +1097,9 @@ async function startGeneration() {
 
 async function checkReviewEligibility() {
   if (!currentUser) return;
-  
   try {
-    const { count } = await supabaseClient
-      .from('videos')
-      .select('*', { count: 'exact', head: true })
-      .eq('user_id', currentUser.id);
-    
-    const { data: existingReview } = await supabaseClient
-      .from('reviews')
-      .select('id')
-      .eq('user_id', currentUser.id)
-      .single();
-    
+    const { count } = await supabaseClient.from('videos').select('*', { count: 'exact', head: true }).eq('user_id', currentUser.id);
+    const { data: existingReview } = await supabaseClient.from('reviews').select('id').eq('user_id', currentUser.id).single();
     if (count >= 3 && !existingReview) {
       setTimeout(() => showReviewModal(), 1000);
     }
