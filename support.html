@@ -18,22 +18,41 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; display: flex; flex-direction: column; }
-  .container { max-width: 800px; margin: 0 auto; padding: 0 24px; width: 100%; }
+  .container { max-width: 900px; margin: 0 auto; padding: 0 24px; width: 100%; }
   
   nav { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f1f2e; }
   .logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
   .nav-back { color: #A0A0B0; text-decoration: none; font-size: 14px; }
   .nav-back:hover { color: #fff; }
   
-  .support-hero { padding: 60px 0 40px; text-align: center; }
+  .support-hero { padding: 60px 0 30px; text-align: center; }
   .support-hero-icon { font-size: 64px; margin-bottom: 16px; }
   .support-hero h1 { font-size: 40px; font-family: 'Manrope'; font-weight: 800; margin-bottom: 12px; }
   .support-hero p { color: #A0A0B0; font-size: 16px; max-width: 500px; margin: 0 auto; }
   
-  .chat-section { padding: 0 0 80px; flex: 1; }
-  .chat-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; padding: 32px; }
+  .support-layout { display: grid; grid-template-columns: 280px 1fr; gap: 24px; padding: 20px 0 80px; min-height: 500px; }
   
-  .chat-messages { max-height: 400px; overflow-y: auto; margin-bottom: 24px; padding: 16px; background: #0A0A0F; border-radius: 12px; border: 1px solid #1f1f2e; }
+  /* Список разговоров */
+  .conversations-list { background: #141414; border: 1px solid #1f1f2e; border-radius: 16px; padding: 16px; overflow-y: auto; max-height: 600px; }
+  .conversations-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #1f1f2e; }
+  .conversations-header h3 { font-size: 16px; font-weight: 600; }
+  .btn-new-chat { background: #6C5CE7; color: #fff; border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; font-weight: 600; }
+  .btn-new-chat:hover { background: #5a4bd1; }
+  .conv-item { padding: 12px; border-radius: 10px; cursor: pointer; margin-bottom: 8px; transition: all 0.2s; border: 1px solid transparent; }
+  .conv-item:hover { background: rgba(108, 92, 231, 0.1); }
+  .conv-item.active { background: rgba(108, 92, 231, 0.15); border-color: #6C5CE7; }
+  .conv-item-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .conv-item-preview { font-size: 12px; color: #A0A0B0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .conv-item-date { font-size: 11px; color: #666; margin-top: 4px; }
+  .conv-empty { text-align: center; color: #A0A0B0; padding: 30px 10px; font-size: 14px; }
+  
+  /* Чат */
+  .chat-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; }
+  .chat-header { padding-bottom: 16px; border-bottom: 1px solid #1f1f2e; margin-bottom: 16px; }
+  .chat-header h3 { font-size: 18px; margin-bottom: 4px; }
+  .chat-header p { font-size: 13px; color: #A0A0B0; }
+  
+  .chat-messages { flex: 1; min-height: 300px; max-height: 450px; overflow-y: auto; margin-bottom: 16px; padding: 16px; background: #0A0A0F; border-radius: 12px; border: 1px solid #1f1f2e; }
   .chat-message { margin-bottom: 16px; padding: 12px 16px; border-radius: 12px; max-width: 85%; }
   .chat-message.user { background: rgba(108, 92, 231, 0.15); border: 1px solid rgba(108, 92, 231, 0.3); margin-left: auto; }
   .chat-message.bot { background: #1f1f2e; border: 1px solid #27272a; }
@@ -49,7 +68,14 @@
   .chat-send:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   .chat-send:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   
-  .chat-hint { text-align: center; margin-top: 16px; font-size: 13px; color: #A0A0B0; }
+  .chat-hint { text-align: center; margin-top: 12px; font-size: 13px; color: #A0A0B0; }
+  .chat-hint strong { color: #6C5CE7; }
+  
+  .login-prompt { text-align: center; padding: 60px 20px; }
+  .login-prompt-icon { font-size: 64px; margin-bottom: 16px; opacity: 0.5; }
+  .login-prompt h3 { font-size: 20px; margin-bottom: 12px; }
+  .login-prompt p { color: #A0A0B0; margin-bottom: 24px; }
+  .login-prompt a { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 12px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; display: inline-block; }
   
   .contact-info { margin-top: 40px; text-align: center; }
   .contact-info p { color: #A0A0B0; font-size: 14px; }
@@ -59,8 +85,10 @@
   footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
   
   @media (max-width: 768px) {
+    .support-layout { grid-template-columns: 1fr; }
+    .conversations-list { max-height: 200px; }
     .support-hero h1 { font-size: 28px !important; }
-    .chat-card { padding: 20px; }
+    .chat-card { padding: 16px; }
   }
 </style>
 </head>
@@ -81,25 +109,18 @@
   </div>
 </section>
 
-<section class="chat-section">
-  <div class="container">
-    <div class="chat-card">
-      <div class="chat-messages" id="chatMessages">
-        <div class="chat-empty">
-          <div class="chat-empty-icon">💬</div>
-          <div>Начните диалог — напишите ваш вопрос</div>
-        </div>
-      </div>
-      <div class="chat-input-container">
-        <textarea class="chat-input" id="chatInput" placeholder="Опишите ваш вопрос..." rows="1"></textarea>
-        <button class="chat-send" id="chatSend">Отправить</button>
-      </div>
-      <div class="chat-hint">Сообщение будет отправлено команде поддержки</div>
+<section class="container">
+  <div id="supportContent">
+    <div class="login-prompt">
+      <div class="login-prompt-icon">🔒</div>
+      <h3>Войдите в аккаунт</h3>
+      <p>Чтобы получить доступ к поддержке и истории обращений, войдите в свой аккаунт</p>
+      <a href="login.html">Войти</a>
     </div>
-    
-    <div class="contact-info">
-      <p>Или напишите напрямую: <a href="mailto:support@cliply.ru">support@cliply.ru</a></p>
-    </div>
+  </div>
+  
+  <div class="contact-info">
+    <p>Или напишите напрямую: <a href="mailto:support@cliply.ru">support@cliply.ru</a></p>
   </div>
 </section>
 
@@ -110,156 +131,336 @@
 </footer>
 
 <script>
+let currentUser = null;
+let conversations = [];
+let activeConversationId = null;
+let autoRefreshInterval = null;
+
 const chatMessages = document.getElementById('chatMessages');
 const chatInput = document.getElementById('chatInput');
 const chatSend = document.getElementById('chatSend');
-let currentUser = null;
-let conversationId = null;
 
 // Инициализация
 (async () => {
   currentUser = await getCurrentUser();
   
-  // Создаём или загружаем разговор
-  if (currentUser) {
-    const { data } = await supabaseClient
-      .from('support_conversations')
-      .select('id')
-      .eq('user_id', currentUser.id)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .single();
-    
-    if (data) {
-      conversationId = data.id;
-      loadMessages();
-    }
+  if (!currentUser) {
+    // Пользователь не залогинен — показываем приглашение войти
+    return;
   }
+  
+  // Очищаем старые разговоры (старше 7 дней)
+  await cleanupOldConversations();
+  
+  // Загружаем разговоры пользователя
+  await loadConversations();
+  
+  renderSupportLayout();
 })();
 
-// Авто-ресайз textarea
-chatInput.addEventListener('input', () => {
-  chatInput.style.height = 'auto';
-  chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
-});
-
-// Отправка по Enter (без Shift)
-chatInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
-});
-
-chatSend.addEventListener('click', sendMessage);
-
-async function sendMessage() {
-  const text = chatInput.value.trim();
-  if (!text) return;
-  
-  chatSend.disabled = true;
-  
-  // Добавляем сообщение пользователя в UI
-  addMessageToUI(text, 'user');
-  chatInput.value = '';
-  chatInput.style.height = 'auto';
-  
-  // Сохраняем в базу
+// Очистка старых разговоров (старше 7 дней)
+async function cleanupOldConversations() {
   try {
-    if (!conversationId && currentUser) {
-      const { data: conv } = await supabaseClient
-        .from('support_conversations')
-        .insert({
-          user_id: currentUser.id,
-          user_name: currentUser.profile?.full_name || currentUser.email,
-          user_email: currentUser.email,
-          status: 'open'
-        })
-        .select()
-        .single();
-      conversationId = conv.id;
-    }
-    
-    if (conversationId) {
-      await supabaseClient.from('support_messages').insert({
-        conversation_id: conversationId,
-        sender: 'user',
-        message: text
-      });
-      
-      // Отправляем уведомление в Telegram через Edge Function (прямой fetch)
-      try {
-        await fetch(
-          'https://djvdklcahpqbjotukmxt.supabase.co/functions/v1/send-telegram',
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              record: {
-                message: text,
-                sender: 'user',
-                user_name: currentUser.profile?.full_name || currentUser.email,
-                user_email: currentUser.email,
-                created_at: new Date().toISOString()
-              }
-            })
-          }
-        );
-      } catch (e) {
-        console.log('Telegram notification error:', e);
-      }
-    }
-    
-  } catch (err) {
-    console.log('Message save error:', err);
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    await supabaseClient
+      .from('support_conversations')
+      .delete()
+      .eq('user_id', currentUser.id)
+      .lt('created_at', sevenDaysAgo);
+  } catch (e) {
+    console.log('Cleanup error:', e);
   }
-  
-  // Авто-ответ
-  setTimeout(() => {
-    addMessageToUI('Спасибо за обращение! Мы получили ваше сообщение и ответим в течение 2 часов в рабочее время.', 'bot');
-  }, 800);
-  
-  chatSend.disabled = false;
 }
 
-function addMessageToUI(text, sender) {
-  // Убираем empty state
-  const empty = chatMessages.querySelector('.chat-empty');
+// Загрузка разговоров
+async function loadConversations() {
+  try {
+    const { data, error } = await supabaseClient
+      .from('support_conversations')
+      .select('id, user_name, user_email, status, created_at, support_messages(message, sender, created_at)')
+      .eq('user_id', currentUser.id)
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    conversations = data || [];
+  } catch (e) {
+    console.error('Load conversations error:', e);
+    conversations = [];
+  }
+}
+
+// Рендер основного layout
+function renderSupportLayout() {
+  const content = document.getElementById('supportContent');
+  
+  if (conversations.length === 0) {
+    // Нет разговоров — показываем форму создания
+    content.innerHTML = `
+      <div style="text-align:center;padding:60px 20px;">
+        <div style="font-size:64px;margin-bottom:16px;opacity:0.5;"></div>
+        <h3 style="font-size:20px;margin-bottom:12px;">У вас ещё нет обращений</h3>
+        <p style="color:#A0A0B0;margin-bottom:24px;">Напишите нам — мы ответим в течение 2 часов</p>
+        <button onclick="createNewConversation()" style="background:linear-gradient(135deg,#6C5CE7,#A29BFE);color:#fff;padding:14px 32px;border-radius:12px;border:none;font-size:16px;font-weight:600;cursor:pointer;">Начать разговор</button>
+      </div>
+    `;
+    return;
+  }
+  
+  // Есть разговоры — показываем layout со списком и чатом
+  content.innerHTML = `
+    <div class="support-layout">
+      <div class="conversations-list">
+        <div class="conversations-header">
+          <h3>Мои обращения</h3>
+          <button class="btn-new-chat" onclick="createNewConversation()">+ Новый</button>
+        </div>
+        <div id="conversationsListItems">
+          ${conversations.map(conv => {
+            const lastMsg = conv.support_messages && conv.support_messages.length > 0 
+              ? conv.support_messages[conv.support_messages.length - 1].message 
+              : 'Нет сообщений';
+            const date = new Date(conv.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
+            const isActive = conv.id === activeConversationId ? 'active' : '';
+            return `
+              <div class="conv-item ${isActive}" onclick="selectConversation('${conv.id}')">
+                <div class="conv-item-title">${conv.user_name || 'Обращение'}</div>
+                <div class="conv-item-preview">${lastMsg.substring(0, 40)}${lastMsg.length > 40 ? '...' : ''}</div>
+                <div class="conv-item-date">${date}</div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+      <div class="chat-card" id="chatCard">
+        <div class="chat-empty">
+          <div class="chat-empty-icon">👈</div>
+          <div>Выберите разговор слева</div>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  // Автовыбор первого разговора
+  if (conversations.length > 0) {
+    selectConversation(conversations[0].id);
+  }
+}
+
+// Выбор разговора
+async function selectConversation(convId) {
+  activeConversationId = convId;
+  
+  // Обновляем активный элемент в списке
+  document.querySelectorAll('.conv-item').forEach(el => el.classList.remove('active'));
+  const activeEl = document.querySelector(`.conv-item[onclick="selectConversation('${convId}')"]`);
+  if (activeEl) activeEl.classList.add('active');
+  
+  // Загружаем сообщения
+  const conv = conversations.find(c => c.id === convId);
+  if (!conv) return;
+  
+  const { data: messages } = await supabaseClient
+    .from('support_messages')
+    .select('*')
+    .eq('conversation_id', convId)
+    .order('created_at', { ascending: true });
+  
+  const chatCard = document.getElementById('chatCard');
+  const date = new Date(conv.created_at).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  
+  chatCard.innerHTML = `
+    <div class="chat-header">
+      <h3>Обращение от ${date}</h3>
+      <p>Статус: ${conv.status === 'open' ? '🟡 Открыто' : '✅ Закрыто'}</p>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      ${messages && messages.length > 0 ? messages.map(msg => `
+        <div class="chat-message ${msg.sender === 'admin' ? 'bot' : 'user'}">
+          <div class="chat-message-text">${msg.message}</div>
+          <div class="chat-message-time">${new Date(msg.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</div>
+        </div>
+      `).join('') : '<div class="chat-empty"><div class="chat-empty-icon">💬</div><div>Начните диалог</div></div>'}
+    </div>
+    <div class="chat-input-container">
+      <textarea class="chat-input" id="chatInput" placeholder="Напишите сообщение..." rows="1"></textarea>
+      <button class="chat-send" id="chatSend" onclick="sendMessage()">Отправить</button>
+    </div>
+    <div class="chat-hint">Сообщения хранятся <strong>7 дней</strong>. Ответ поддержки появится здесь автоматически.</div>
+  `;
+  
+  // Настраиваем textarea
+  const input = document.getElementById('chatInput');
+  input.addEventListener('input', () => {
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+  });
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+  
+  // Запускаем автообновление
+  startAutoRefresh();
+  
+  // Скролл вниз
+  const msgs = document.getElementById('chatMessages');
+  if (msgs) msgs.scrollTop = msgs.scrollHeight;
+}
+
+// Создание нового разговора
+async function createNewConversation() {
+  const message = prompt('Напишите ваше обращение:');
+  if (!message || !message.trim()) return;
+  
+  try {
+    const { data: conv, error } = await supabaseClient
+      .from('support_conversations')
+      .insert({
+        user_id: currentUser.id,
+        user_name: currentUser.profile?.full_name || currentUser.email,
+        user_email: currentUser.email,
+        status: 'open'
+      })
+      .select()
+      .single();
+    
+    if (error) throw error;
+    
+    await supabaseClient.from('support_messages').insert({
+      conversation_id: conv.id,
+      sender: 'user',
+      message: message.trim()
+    });
+    
+    // Уведомление в Telegram
+    try {
+      await fetch(
+        'https://djvdklcahpqbjotukmxt.supabase.co/functions/v1/send-telegram',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            record: {
+              message: message.trim(),
+              sender: 'user',
+              user_name: currentUser.profile?.full_name || currentUser.email,
+              user_email: currentUser.email,
+              conversation_id: conv.id,
+              created_at: new Date().toISOString()
+            }
+          })
+        }
+      );
+    } catch (e) {
+      console.log('Telegram error:', e);
+    }
+    
+    await loadConversations();
+    renderSupportLayout();
+    showToast('Обращение создано!', 'success');
+    
+  } catch (e) {
+    showToast('Ошибка создания обращения', 'error');
+    console.error(e);
+  }
+}
+
+// Отправка сообщения
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text || !activeConversationId) return;
+  
+  const sendBtn = document.getElementById('chatSend');
+  sendBtn.disabled = true;
+  
+  // Добавляем в UI сразу
+  const msgsContainer = document.getElementById('chatMessages');
+  const empty = msgsContainer.querySelector('.chat-empty');
   if (empty) empty.remove();
   
   const time = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-  const msg = document.createElement('div');
-  msg.className = `chat-message ${sender}`;
-  msg.innerHTML = `
-    <div class="chat-message-text">${text}</div>
-    <div class="chat-message-time">${time}</div>
-  `;
-  chatMessages.appendChild(msg);
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-async function loadMessages() {
-  if (!conversationId) return;
+  const msgEl = document.createElement('div');
+  msgEl.className = 'chat-message user';
+  msgEl.innerHTML = `<div class="chat-message-text">${text}</div><div class="chat-message-time">${time}</div>`;
+  msgsContainer.appendChild(msgEl);
+  msgsContainer.scrollTop = msgsContainer.scrollHeight;
   
-  const { data } = await supabaseClient
-    .from('support_messages')
-    .select('*')
-    .eq('conversation_id', conversationId)
-    .order('created_at', { ascending: true });
+  input.value = '';
+  input.style.height = 'auto';
   
-  if (data && data.length > 0) {
-    chatMessages.innerHTML = '';
-    data.forEach(msg => {
-      const sender = msg.sender === 'admin' ? 'bot' : 'user';
-      addMessageToUI(msg.message, sender);
+  // Сохраняем в базу
+  try {
+    await supabaseClient.from('support_messages').insert({
+      conversation_id: activeConversationId,
+      sender: 'user',
+      message: text
     });
+    
+    // Уведомление в Telegram
+    try {
+      await fetch(
+        'https://djvdklcahpqbjotukmxt.supabase.co/functions/v1/send-telegram',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            record: {
+              message: text,
+              sender: 'user',
+              user_name: currentUser.profile?.full_name || currentUser.email,
+              user_email: currentUser.email,
+              conversation_id: activeConversationId,
+              created_at: new Date().toISOString()
+            }
+          })
+        }
+      );
+    } catch (e) {
+      console.log('Telegram error:', e);
+    }
+    
+  } catch (e) {
+    console.error('Save error:', e);
+    showToast('Ошибка отправки', 'error');
   }
+  
+  sendBtn.disabled = false;
 }
 
-// Автообновление чата каждые 10 секунд
-setInterval(() => {
-  if (conversationId) loadMessages();
-}, 10000);
+// Автообновление чата
+function startAutoRefresh() {
+  if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+  autoRefreshInterval = setInterval(async () => {
+    if (!activeConversationId) return;
+    
+    const { data: messages } = await supabaseClient
+      .from('support_messages')
+      .select('*')
+      .eq('conversation_id', activeConversationId)
+      .order('created_at', { ascending: true });
+    
+    if (!messages || messages.length === 0) return;
+    
+    const msgsContainer = document.getElementById('chatMessages');
+    if (!msgsContainer) return;
+    
+    const currentCount = msgsContainer.querySelectorAll('.chat-message').length;
+    if (messages.length > currentCount) {
+      // Появились новые сообщения (ответ поддержки)
+      msgsContainer.innerHTML = messages.map(msg => `
+        <div class="chat-message ${msg.sender === 'admin' ? 'bot' : 'user'}">
+          <div class="chat-message-text">${msg.message}</div>
+          <div class="chat-message-time">${new Date(msg.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</div>
+        </div>
+      `).join('');
+      msgsContainer.scrollTop = msgsContainer.scrollHeight;
+      showToast('Новый ответ от поддержки!', 'success');
+    }
+  }, 10000);
+}
 </script>
 </body>
 </html>
