@@ -228,7 +228,7 @@ function toggleFaq(element) {
   if (!wasActive) item.classList.add('active');
 }
 
-// ===== ОТПРАВКА ВОПРОСА НАПРЯМУЮ В TELEGRAM =====
+// ===== ОТПРАВКА ВОПРОСА С СОХРАНЕНИЕМ В БАЗУ =====
 document.getElementById('askForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   
@@ -250,25 +250,74 @@ document.getElementById('askForm').addEventListener('submit', async (e) => {
   btn.disabled = true;
   
   try {
-    // Вызываем Edge Function напрямую через Supabase клиент
-    const { data, error } = await supabaseClient.functions.invoke('send-telegram', {
-      body: {
-        record: {
-          name: name,
-          email: email,
-          question: question,
-          created_at: new Date().toISOString()
-        }
-      }
-    });
+    // Шаг 1: Сохраняем вопрос в таблицу support_questions
+    const { data: questionData, error: questionError } = await supabaseClient
+      .from('support_questions')
+      .insert({
+        name: name,
+        email: email,
+        question: question,
+        status: 'new'
+      })
+      .select()
+      .single();
     
-    if (error) {
-      throw new Error(error.message);
+    if (questionError) {
+      throw new Error('Ошибка сохранения вопроса: ' + questionError.message);
     }
     
+    // Шаг 2: Создаём conversation для возможности ответа
+    const { data: convData, error: convError } = await supabaseClient
+      .from('support_conversations')
+      .insert({
+        user_name: name,
+        user_email: email,
+        status: 'open'
+      })
+      .select()
+      .single();
+    
+    if (convError) {
+      console.error('Conversation error:', convError);
+    }
+    
+    // Шаг 3: Сохраняем первое сообщение в conversation
+    if (convData) {
+      await supabaseClient.from('support_messages').insert({
+        conversation_id: convData.id,
+        sender: 'user',
+        message: question
+      });
+    }
+    
+    // Шаг 4: Отправляем уведомление в Telegram через Edge Function
+    const conversationId = convData ? convData.id : questionData.id;
+    try {
+      await fetch(
+        'https://djvdklcahpqbjotukmxt.supabase.co/functions/v1/send-telegram',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            record: {
+              name: name,
+              email: email,
+              question: question,
+              conversation_id: conversationId,
+              created_at: new Date().toISOString()
+            }
+          })
+        }
+      );
+    } catch (e) {
+      console.log('Telegram notification error:', e);
+    }
+    
+    // Успех
     document.getElementById('askSuccess').classList.add('active');
     document.getElementById('askForm').reset();
     showToast('Вопрос отправлен!', 'success');
+    
   } catch (err) {
     console.error('Send error:', err);
     document.getElementById('askError').textContent = 'Ошибка отправки. Попробуйте ещё раз или напишите на support@cliply.ru';
