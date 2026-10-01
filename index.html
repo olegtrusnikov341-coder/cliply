@@ -155,7 +155,7 @@
   .final-cta h2 { font-size: 64px; margin-bottom: 24px; }
   .final-cta p { font-size: 20px; color: #A0A0B0; margin-bottom: 40px; }
   
-  footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
+  footer { padding: 60px 0 40px; border-top: 1px solid #1f1f2e; }
   
   .support-btn { position: fixed; bottom: 24px; left: 24px; width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); transition: all 0.2s; z-index: 99; }
   .support-btn:hover { transform: scale(1.1); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
@@ -177,16 +177,13 @@
     .hero { padding: 60px 0 40px; }
     .hero h1 { font-size: 36px !important; }
     .hero p { font-size: 16px; }
-    .hero-stats { gap: 24px; }
-    .hero-stat-number { font-size: 24px; }
     .section { padding: 60px 0; }
     .section-title { font-size: 32px !important; }
-    .problem-grid, .steps-grid, .examples-grid, .testimonials-grid, .pricing-grid { grid-template-columns: 1fr !important; }
-    .feature-list { grid-template-columns: 1fr !important; }
+    .problem-grid, .steps-grid, .examples-grid, .pricing-grid { grid-template-columns: 1fr !important; }
     .categories-grid { grid-template-columns: repeat(2, 1fr) !important; }
-    .final-cta h2 { font-size: 32px !important; }
-    .final-cta { padding: 60px 0; }
-    .support-btn { bottom: 16px; left: 16px; width: 48px; height: 48px; }
+    .testimonials-grid { grid-template-columns: 1fr !important; }
+    .hero-stats { gap: 24px; }
+    .final-cta h2 { font-size: 36px !important; }
   }
 </style>
 </head>
@@ -195,10 +192,10 @@
 <nav>
   <a href="index.html" class="logo">Cliply</a>
   <div class="nav-links">
-    <a href="#features">Возможности</a>
-    <a href="#examples">Примеры</a>
-    <a href="#pricing">Тарифы</a>
-    <a href="#faq">FAQ</a>
+    <a href="features.html">Возможности</a>
+    <a href="examples.html">Примеры</a>
+    <a href="index.html#pricing">Тарифы</a>
+    <a href="faq.html">FAQ</a>
     <a href="login.html" class="nav-btn-login" id="navAuthBtn">Войти</a>
     <a href="login.html" class="nav-btn-cta">Попробовать</a>
   </div>
@@ -208,10 +205,10 @@
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#features">Возможности</a>
-  <a href="#examples">Примеры</a>
-  <a href="#pricing">Тарифы</a>
-  <a href="#faq">FAQ</a>
+  <a href="features.html">Возможности</a>
+  <a href="examples.html">Примеры</a>
+  <a href="index.html#pricing">Тарифы</a>
+  <a href="faq.html">FAQ</a>
   <a href="login.html" id="mobileAuthBtn">Войти</a>
   <a href="login.html" class="btn-nav-mobile">Попробовать бесплатно</a>
 </div>
@@ -223,7 +220,7 @@
     <p>Загрузите 3-5 фото — получите готовый ролик для Wildberries, Ozon и соцсетей. Без видеографа, монтажёра и студии.</p>
     <div class="hero-buttons">
       <a href="login.html" class="btn-primary">Создать первое видео →</a>
-      <a href="#examples" class="btn-secondary">Смотреть примеры</a>
+      <a href="examples.html" class="btn-secondary">Смотреть примеры</a>
     </div>
     <div class="hero-stats">
       <div class="hero-stat">
@@ -242,21 +239,21 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" style="background: #0d0d14;">
   <div class="container">
     <div class="section-label">01 / ПРОБЛЕМА</div>
-    <h2 class="section-title">Карточка без видео теряет 40% покупателей</h2>
-    <p class="section-subtitle">Покупатель на WB тратит 3 секунды на карточку. Без видео он не понимает товар и уходит к конкуренту.</p>
+    <h2 class="section-title">Почему селлеры теряют продажи</h2>
+    <p class="section-subtitle">Без видео карточка товара теряет до 40% потенциальных покупателей.</p>
     <div class="problem-grid">
       <div class="problem-card">
-        <div class="problem-stat">-40%</div>
-        <h3>Потеря конверсии</h3>
-        <p>Карточки без видео конвертируют в 2.5 раза хуже, чем с видео</p>
+        <div class="problem-stat">40%</div>
+        <h3>Покупателей уходят</h3>
+        <p>Если в карточке нет видео, почти половина посетителей закрывает страницу</p>
       </div>
       <div class="problem-card">
-        <div class="problem-stat">5 000₽</div>
-        <h3>Стоимость монтажа</h3>
-        <p>Средняя цена одного ролика у видеографа. Для 10 товаров — 50 000₽</p>
+        <div class="problem-stat">15 000 ₽</div>
+        <h3>Стоимость съёмки</h3>
+        <p>Профессиональное видео для одного товара стоит от 15 тысяч рублей</p>
       </div>
       <div class="problem-card">
         <div class="problem-stat">3 дня</div>
@@ -267,7 +264,7 @@
   </div>
 </section>
 
-<section class="section" style="background: #0d0d14;">
+<section class="section">
   <div class="container">
     <div class="section-label">02 / КАК ЭТО РАБОТАЕТ</div>
     <h2 class="section-title">Три шага до готового видео</h2>
@@ -292,7 +289,7 @@
   </div>
 </section>
 
-<section class="section" id="features">
+<section class="section" id="features" style="background: #0d0d14;">
   <div class="container">
     <div class="section-label">03 / ВОЗМОЖНОСТИ</div>
     <h2 class="section-title">Выберите тип видео под вашу задачу</h2>
@@ -302,7 +299,7 @@
       <div class="feature-category-title">ВИДЕО</div>
       <div class="feature-list">
         <div class="feature-item">
-          <div class="feature-item-icon"></div>
+          <div class="feature-item-icon">📦</div>
           <div>
             <div class="feature-item-title">Обзор товара</div>
             <div class="feature-item-desc">Покажите товар в действии со всех ракурсов</div>
@@ -316,7 +313,7 @@
           </div>
         </div>
         <div class="feature-item">
-          <div class="feature-item-icon">🎁</div>
+          <div class="feature-item-icon"></div>
           <div>
             <div class="feature-item-title">Распаковка</div>
             <div class="feature-item-desc">Эффект присутствия и эмоциональная вовлечённость</div>
@@ -329,7 +326,7 @@
       <div class="feature-category-title">СЦЕНАРИИ</div>
       <div class="feature-list">
         <div class="feature-item">
-          <div class="feature-item-icon"></div>
+          <div class="feature-item-icon">⚡</div>
           <div>
             <div class="feature-item-title">Проблема → Решение</div>
             <div class="feature-item-desc">Для товаров, решающих конкретную боль клиента</div>
@@ -354,7 +351,7 @@
   </div>
 </section>
 
-<section class="section" id="examples" style="background: #0d0d14;">
+<section class="section" id="examples">
   <div class="container">
     <div class="section-label">04 / ПРИМЕРЫ</div>
     <h2 class="section-title">Посмотрите, что получается</h2>
@@ -369,7 +366,7 @@
         </div>
       </div>
       <div class="example-card">
-        <div class="example-preview"><span class="example-tag">20 сек</span></div>
+        <div class="example-preview">🎧<span class="example-tag">20 сек</span></div>
         <div class="example-info">
           <h3>Электроника</h3>
           <p>Беспроводные наушники</p>
@@ -381,38 +378,17 @@
         <div class="example-info">
           <h3>Одежда</h3>
           <p>Мужская футболка премиум</p>
-          <div class="example-meta"><span> Стильная</span><span>🎯 Lifestyle</span></div>
+          <div class="example-meta"><span>🎵 Стильная</span><span> Lifestyle</span></div>
         </div>
       </div>
-      <div class="example-card">
-        <div class="example-preview"><span class="example-tag">25 сек</span></div>
-        <div class="example-info">
-          <h3>Товары для дома</h3>
-          <p>Органайзер для кухни</p>
-          <div class="example-meta"><span>🎵 Спокойная</span><span>🎁 Распаковка</span></div>
-        </div>
-      </div>
-      <div class="example-card">
-        <div class="example-preview">💊<span class="example-tag">20 сек</span></div>
-        <div class="example-info">
-          <h3>БАДы и витамины</h3>
-          <p>Омега-3 капсулы</p>
-          <div class="example-meta"><span>🎵 Доверительная</span><span>⭐ Отзыв</span></div>
-        </div>
-      </div>
-      <div class="example-card">
-        <div class="example-preview">⚽<span class="example-tag">15 сек</span></div>
-        <div class="example-info">
-          <h3>Спорт</h3>
-          <p>Фитнес-резинки набор</p>
-          <div class="example-meta"><span>🎵 Энергичная</span><span>🔥 Продающее</span></div>
-        </div>
-      </div>
+    </div>
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="examples.html" class="btn-secondary">Смотреть все примеры →</a>
     </div>
   </div>
 </section>
 
-<section class="section">
+<section class="section" style="background: #0d0d14;">
   <div class="container">
     <div class="section-label">05 / КАТЕГОРИИ</div>
     <h2 class="section-title">Работает с любыми товарами</h2>
@@ -430,7 +406,7 @@
   </div>
 </section>
 
-<section class="section" style="background: #0d0d14;">
+<section class="section">
   <div class="container">
     <div class="section-label">06 / РЕЗУЛЬТАТ</div>
     <h2 class="section-title">Видео, которое продаёт, а не просто красивое</h2>
@@ -460,20 +436,20 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" style="background: #0d0d14;">
   <div class="container">
     <div class="section-label">07 / КЕЙСЫ</div>
     <h2 class="section-title">Что говорят селлеры</h2>
     <div class="testimonials-grid" id="testimonialsGrid">
       <div class="testimonial-card" style="text-align:center;padding:60px 20px;grid-column:1/-1;">
-        <div style="font-size:48px;margin-bottom:16px;"></div>
+        <div style="font-size:48px;margin-bottom:16px;">💬</div>
         <div style="color:#A0A0B0;">Загрузка отзывов...</div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section" id="faq" style="background: #0d0d14;">
+<section class="section" id="faq">
   <div class="container">
     <div class="section-label">08 / ВОПРОСЫ</div>
     <h2 class="section-title">Ответы перед первым видео</h2>
@@ -526,7 +502,7 @@
   </div>
 </section>
 
-<section class="section" id="pricing">
+<section class="section" id="pricing" style="background: #0d0d14;">
   <div class="container">
     <div class="section-label">09 / ТАРИФЫ</div>
     <h2 class="section-title">Начните бесплатно. Масштабируйтесь, когда увидите результат.</h2>
@@ -581,7 +557,28 @@
 
 <footer>
   <div class="container">
-    © 2026 Cliply. Все права защищены.
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; margin-bottom: 32px;">
+      <a href="index.html" class="logo" style="font-size: 24px;">Cliply</a>
+      <div style="display: flex; gap: 16px;">
+        <a href="https://t.me/cliply_support" target="_blank" style="color: #A0A0B0; text-decoration: none; font-size: 20px; transition: color 0.2s;" title="Telegram">📱</a>
+        <a href="https://vk.com/cliply" target="_blank" style="color: #A0A0B0; text-decoration: none; font-size: 20px; transition: color 0.2s;" title="ВКонтакте">💬</a>
+        <a href="mailto:support@cliply.ru" style="color: #A0A0B0; text-decoration: none; font-size: 20px; transition: color 0.2s;" title="Email">✉️</a>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 24px; border-top: 1px solid #1f1f2e; padding-top: 24px;">
+      <a href="features.html" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">Возможности</a>
+      <a href="examples.html" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">Примеры</a>
+      <a href="index.html#pricing" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">Тарифы</a>
+      <a href="faq.html" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">FAQ</a>
+      <a href="contacts.html" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">Контакты</a>
+    </div>
+    <div style="display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 24px;">
+      <a href="privacy.html" style="color: #666; text-decoration: none; font-size: 13px;">Политика конфиденциальности</a>
+      <a href="terms.html" style="color: #666; text-decoration: none; font-size: 13px;">Пользовательское соглашение</a>
+    </div>
+    <div style="text-align: center; color: #666; font-size: 13px;">
+      © 2026 Cliply. Все права защищены.
+    </div>
   </div>
 </footer>
 
