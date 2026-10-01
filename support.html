@@ -32,7 +32,6 @@
   .support-hero h1 { font-size: 40px; font-family: 'Manrope'; font-weight: 800; margin-bottom: 12px; }
   .support-hero p { color: #A0A0B0; font-size: 16px; max-width: 500px; margin: 0 auto; }
   
-  /* Экран входа */
   .login-screen { text-align: center; padding: 80px 20px; }
   .login-screen-icon { font-size: 80px; margin-bottom: 24px; opacity: 0.6; }
   .login-screen h2 { font-size: 28px; font-family: 'Manrope'; margin-bottom: 16px; }
@@ -40,10 +39,8 @@
   .login-screen a { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; display: inline-block; }
   .login-screen a:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   
-  /* Layout поддержки */
   .support-layout { display: grid; grid-template-columns: 300px 1fr; gap: 20px; padding: 20px 0 80px; min-height: 550px; }
   
-  /* Список разговоров */
   .conversations-panel { background: #141414; border: 1px solid #1f1f2e; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; }
   .conv-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #1f1f2e; }
   .conv-header h3 { font-size: 16px; font-weight: 600; }
@@ -61,7 +58,6 @@
   .conv-status.closed { background: rgba(16, 185, 129, 0.2); color: #34d399; }
   .conv-empty { text-align: center; color: #A0A0B0; padding: 30px 10px; font-size: 14px; }
   
-  /* Чат */
   .chat-panel { background: #141414; border: 1px solid #1f1f2e; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; }
   .chat-header { padding-bottom: 16px; border-bottom: 1px solid #1f1f2e; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
   .chat-header-info h3 { font-size: 18px; margin-bottom: 4px; }
@@ -100,7 +96,6 @@
   
   footer { padding: 30px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; margin-top: auto; }
   
-  /* Модальное окно нового чата */
   .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
   .modal-overlay.active { display: flex; }
   .modal { background: #141414; border: 1px solid #1f1f2e; border-radius: 16px; padding: 32px; max-width: 500px; width: 100%; }
@@ -145,7 +140,7 @@
 <section class="container">
   <div id="supportContent">
     <div class="login-screen">
-      <div class="login-screen-icon">🔒</div>
+      <div class="login-screen-icon"></div>
       <h2>Войдите в аккаунт</h2>
       <p>Чтобы получить доступ к поддержке и истории обращений, войдите в свой аккаунт. Сообщения сохраняются 7 дней.</p>
       <a href="login.html">Войти в аккаунт</a>
@@ -157,7 +152,6 @@
   </div>
 </section>
 
-<!-- Модальное окно нового чата -->
 <div class="modal-overlay" id="newChatModal">
   <div class="modal">
     <h3>Новое обращение</h3>
@@ -182,21 +176,17 @@ let conversations = [];
 let activeConversationId = null;
 let autoRefreshInterval = null;
 
-// Инициализация
 (async () => {
   currentUser = await getCurrentUser();
   
   if (!currentUser) {
-    // Показываем экран входа (уже в HTML по умолчанию)
     return;
   }
   
-  // Загружаем разговоры
   await loadConversations();
   renderSupportLayout();
 })();
 
-// Загрузка разговоров пользователя
 async function loadConversations() {
   try {
     const { data, error } = await supabaseClient
@@ -216,14 +206,13 @@ async function loadConversations() {
   }
 }
 
-// Рендер layout поддержки
 function renderSupportLayout() {
   const content = document.getElementById('supportContent');
   
   if (conversations.length === 0) {
     content.innerHTML = `
       <div style="text-align:center;padding:60px 20px;">
-        <div style="font-size:64px;margin-bottom:16px;opacity:0.5;">💬</div>
+        <div style="font-size:64px;margin-bottom:16px;opacity:0.5;"></div>
         <h3 style="font-size:20px;margin-bottom:12px;font-family:'Manrope';">У вас ещё нет обращений</h3>
         <p style="color:#A0A0B0;margin-bottom:24px;">Напишите нам — мы ответим в течение 2 часов</p>
         <button onclick="openNewChatModal()" style="background:linear-gradient(135deg,#6C5CE7,#A29BFE);color:#fff;padding:14px 32px;border-radius:12px;border:none;font-size:16px;font-weight:600;cursor:pointer;">Начать разговор</button>
@@ -263,29 +252,25 @@ function renderSupportLayout() {
       </div>
       <div class="chat-panel" id="chatPanel">
         <div class="chat-empty-state">
-          <div class="chat-empty-state-icon">👈</div>
+          <div class="chat-empty-state-icon"></div>
           <div>Выберите разговор слева</div>
         </div>
       </div>
     </div>
   `;
   
-  // Автовыбор первого (самого нового) разговора
   if (conversations.length > 0) {
     selectConversation(conversations[0].id);
   }
 }
 
-// Выбор разговора
 async function selectConversation(convId) {
   activeConversationId = convId;
   
-  // Обновляем активный элемент
   document.querySelectorAll('.conv-item').forEach(el => el.classList.remove('active'));
   const activeEl = document.querySelector(`.conv-item[data-id="${convId}"]`);
   if (activeEl) activeEl.classList.add('active');
   
-  // Загружаем сообщения
   const { data: messages } = await supabaseClient
     .from('support_messages')
     .select('*')
@@ -326,7 +311,6 @@ async function selectConversation(convId) {
     <div class="chat-hint">Сообщения хранятся <strong>7 дней</strong>. Ответ поддержки появится здесь автоматически.</div>
   `;
   
-  // Настраиваем textarea
   const input = document.getElementById('chatInput');
   input.addEventListener('input', () => {
     input.style.height = 'auto';
@@ -339,17 +323,14 @@ async function selectConversation(convId) {
     }
   });
   
-  // Запускаем автообновление
   startAutoRefresh();
   
-  // Скролл вниз
   setTimeout(() => {
     const msgs = document.getElementById('chatMessages');
     if (msgs) msgs.scrollTop = msgs.scrollHeight;
   }, 100);
 }
 
-// Открыть модалку нового чата
 function openNewChatModal() {
   document.getElementById('newChatModal').classList.add('active');
   document.getElementById('newChatMessage').value = '';
@@ -360,7 +341,6 @@ function closeNewChatModal() {
   document.getElementById('newChatModal').classList.remove('active');
 }
 
-// Отправка нового обращения
 async function submitNewChat() {
   const message = document.getElementById('newChatMessage').value.trim();
   if (!message) {
@@ -373,7 +353,6 @@ async function submitNewChat() {
   btn.disabled = true;
   
   try {
-    // Создаём conversation
     const { data: conv, error: convError } = await supabaseClient
       .from('support_conversations')
       .insert({
@@ -387,14 +366,12 @@ async function submitNewChat() {
     
     if (convError) throw convError;
     
-    // Сохраняем первое сообщение
     await supabaseClient.from('support_messages').insert({
       conversation_id: conv.id,
       sender: 'user',
       message: message
     });
     
-    // Уведомление в Telegram
     try {
       await fetch(
         'https://djvdklcahpqbjotukmxt.supabase.co/functions/v1/send-telegram',
@@ -431,7 +408,6 @@ async function submitNewChat() {
   }
 }
 
-// Отправка сообщения в существующий разговор
 async function sendMessage() {
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
@@ -440,7 +416,6 @@ async function sendMessage() {
   const sendBtn = document.getElementById('chatSend');
   sendBtn.disabled = true;
   
-  // Добавляем в UI сразу
   const msgsContainer = document.getElementById('chatMessages');
   const empty = msgsContainer.querySelector('.chat-empty-state');
   if (empty) empty.remove();
@@ -455,7 +430,6 @@ async function sendMessage() {
   input.value = '';
   input.style.height = 'auto';
   
-  // Сохраняем в базу
   try {
     await supabaseClient.from('support_messages').insert({
       conversation_id: activeConversationId,
@@ -463,13 +437,11 @@ async function sendMessage() {
       message: text
     });
     
-    // Обновляем статус conversation на open
     await supabaseClient
       .from('support_conversations')
       .update({ status: 'open', updated_at: new Date().toISOString() })
       .eq('id', activeConversationId);
     
-    // Уведомление в Telegram
     try {
       await fetch(
         'https://djvdklcahpqbjotukmxt.supabase.co/functions/v1/send-telegram',
@@ -500,7 +472,6 @@ async function sendMessage() {
   sendBtn.disabled = false;
 }
 
-// Закрыть разговор
 async function closeConversation() {
   if (!activeConversationId) return;
   if (!confirm('Закрыть это обращение?')) return;
@@ -515,7 +486,6 @@ async function closeConversation() {
   showToast('Обращение закрыто', 'success');
 }
 
-// Автообновление чата (проверка новых ответов от поддержки)
 function startAutoRefresh() {
   if (autoRefreshInterval) clearInterval(autoRefreshInterval);
   autoRefreshInterval = setInterval(async () => {
@@ -534,7 +504,6 @@ function startAutoRefresh() {
     
     const currentCount = msgsContainer.querySelectorAll('.chat-message').length;
     if (messages.length > currentCount) {
-      // Появились новые сообщения (ответ поддержки)
       msgsContainer.innerHTML = messages.map(msg => `
         <div class="chat-message ${msg.sender === 'admin' ? 'bot' : 'user'}">
           ${msg.sender === 'admin' ? '<div class="msg-sender">👨‍💼 Поддержка Cliply</div>' : ''}
@@ -548,7 +517,6 @@ function startAutoRefresh() {
   }, 8000);
 }
 
-// Очистка интервала при уходе со страницы
 window.addEventListener('beforeunload', () => {
   if (autoRefreshInterval) clearInterval(autoRefreshInterval);
 });
