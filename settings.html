@@ -2,18 +2,11 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Настройки профиля Cliply</title>
-<meta name="description" content="Настройки профиля, смена пароля и универсальный промпт.">
+<title>Настройки — Cliply</title>
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#6C5CE7">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Cliply">
-<link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="apple-touch-icon" href="favicon.svg">
-<link rel="preconnect" href="https://djvdklcahpqbjotukmxt.supabase.co">
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -21,13 +14,7 @@
 <script src="auth.js"></script>
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
-<link rel="stylesheet" href="transitions.css">
-<link rel="stylesheet" href="scrollbar.css">
-<link rel="stylesheet" href="micro-animations.css">
-<link rel="stylesheet" href="visual-effects.css">
 <link rel="stylesheet" href="mobile.css">
-<script src="transitions.js"></script>
-<script src="micro-animations.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; }
@@ -39,184 +26,187 @@
   .nav-menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; transition: 0.2s; }
   .nav-menu a:hover { background: #1f1f23; color: #fff; }
   .nav-menu a.active { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; border: 1px solid rgba(108, 92, 231, 0.3); }
-  .btn-logout { padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; border: 1px solid #27272a; text-align: center; transition: 0.2s; cursor: pointer; margin-top: 16px; }
+  .btn-logout { padding: 12px 16px; color: #A0A0B0; border-radius: 8px; font-size: 15px; border: 1px solid #27272a; text-align: center; transition: 0.2s; cursor: pointer; margin-top: 16px; background: transparent; }
   .btn-logout:hover { border-color: #6C5CE7; color: #fff; }
+  
   .main { padding: 32px 48px; }
-  .header { margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid #27272a; }
-  .header h1 { font-size: 28px; font-weight: 700; font-family: 'Manrope'; }
-  .settings-section { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 32px; margin-bottom: 24px; }
-  .settings-section h2 { font-size: 20px; margin-bottom: 8px; font-family: 'Manrope'; }
-  .settings-section .subtitle { color: #A0A0B0; font-size: 14px; margin-bottom: 24px; }
-  .form-group { margin-bottom: 20px; }
-  .form-group label { display: block; font-size: 14px; color: #A0A0B0; margin-bottom: 8px; font-weight: 500; }
-  .form-group input, .form-group textarea { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 8px; padding: 12px 16px; color: #fff; font-size: 15px; font-family: inherit; }
-  .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #6C5CE7; }
-  .form-group textarea { resize: vertical; min-height: 120px; line-height: 1.5; }
-  .form-group input:disabled { opacity: 0.6; cursor: not-allowed; }
-  .btn-save { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 14px 32px; border-radius: 12px; border: none; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-  .btn-save:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
-  .prompt-hint { background: rgba(108, 92, 231, 0.1); border: 1px solid rgba(108, 92, 231, 0.3); border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; font-size: 13px; color: #A0A0B0; line-height: 1.6; }
-  .prompt-hint strong { color: #A29BFE; }
-  .mobile-header { display: none; }
+  .header { margin-bottom: 32px; }
+  .header h1 { font-size: 28px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 8px; }
+  .header p { color: #A0A0B0; font-size: 15px; }
+  
+  .settings-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 28px; margin-bottom: 24px; }
+  .settings-card h2 { font-size: 20px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 20px; }
+  .settings-card p { color: #A0A0B0; font-size: 14px; margin-bottom: 16px; }
+  
+  .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #1f1f2e; }
+  .setting-row:last-child { border-bottom: none; }
+  .setting-label { font-size: 15px; font-weight: 500; }
+  .setting-desc { font-size: 13px; color: #A0A0B0; margin-top: 4px; }
+  .setting-value { color: #6C5CE7; font-weight: 600; font-size: 14px; }
+  
+  .btn { padding: 10px 20px; border-radius: 8px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+  .btn-primary { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4); }
+  .btn-danger { background: transparent; color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+  .btn-danger:hover { background: rgba(239, 68, 68, 0.1); border-color: #ef4444; }
+  .btn-secondary { background: transparent; color: #A0A0B0; border: 1px solid #27272a; }
+  .btn-secondary:hover { border-color: #6C5CE7; color: #fff; }
+  
+  .profile-info { display: flex; align-items: center; gap: 16px; padding: 20px; background: #0A0A0F; border-radius: 12px; border: 1px solid #1f1f2e; margin-bottom: 20px; }
+  .profile-avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #6C5CE7, #A29BFE); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 22px; color: #fff; }
+  .profile-details h3 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .profile-details p { color: #A0A0B0; font-size: 14px; }
+  
+  .danger-zone { border-color: rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.03); }
+  .danger-zone h2 { color: #ef4444; }
+  
   @media (max-width: 768px) {
-    .layout { grid-template-columns: 1fr; }
     .sidebar { display: none !important; }
-    .main { padding: 16px !important; }
-    .mobile-header { display: flex !important; justify-content: space-between; align-items: center; padding: 16px; background: #141414; border-bottom: 1px solid #27272a; position: sticky; top: 0; z-index: 100; }
-    .mobile-header .logo { font-weight: 800; font-size: 20px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
-    .settings-section { padding: 20px !important; }
-    .settings-section h2 { font-size: 18px !important; }
-    .form-group input, .form-group textarea { padding: 14px 16px !important; font-size: 16px !important; }
+    .layout { grid-template-columns: 1fr !important; }
+    .main { padding: 20px 16px !important; }
   }
 </style>
 </head>
 <body>
-<div class="mobile-header" id="mobileHeader">
-  <a href="index.html" class="logo">Cliply</a>
-  <button class="burger" id="burgerBtn" aria-label="Меню">
-    <span></span><span></span><span></span>
-  </button>
-</div>
-
-<div class="mobile-menu" id="mobileMenu">
-  <a href="dashboard.html">📊 Дашборд</a>
-  <a href="pricing.html">💎 Тарифы</a>
-  <a href="settings.html" class="active">⚙️ Настройки</a>
-  <a href="index.html" class="btn-nav-mobile">← На главную</a>
-  <a href="#" onclick="logout(); return false;" style="color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); margin-top: 16px;">Выйти</a>
-</div>
-
 <div class="layout">
   <aside class="sidebar">
     <a href="index.html" class="sidebar-logo">Cliply</a>
-    <ul class="nav-menu">
+    <ul class="nav-menu" id="navMenu">
       <li><a href="dashboard.html">📊 Дашборд</a></li>
-      <li><a href="pricing.html">💎 Тарифы</a></li>
+      <li><a href="admin.html">👑 Админ-панель</a></li>
+      <li><a href="support.html">💬 Техподдержка</a></li>
       <li><a href="settings.html" class="active">⚙️ Настройки</a></li>
     </ul>
-    <div class="btn-logout" onclick="logout()">Выйти</div>
+    <button class="btn-logout" onclick="logout()">Выйти</button>
   </aside>
+  
   <main class="main">
-    <div class="header"><h1>Настройки профиля</h1></div>
-    <div class="settings-section">
-      <h2>Личная информация</h2>
-      <p class="subtitle">Ваши основные данные</p>
-      <div class="form-group">
-        <label>Имя</label>
-        <input type="text" id="userName" placeholder="Ваше имя">
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="userEmail" disabled>
-      </div>
-      <button class="btn-save" onclick="saveProfile()">Сохранить изменения</button>
+    <div class="header">
+      <h1>Настройки</h1>
+      <p>Управление профилем и аккаунтом</p>
     </div>
-    <div class="settings-section">
-      <h2>Смена пароля</h2>
-      <p class="subtitle">Обновите пароль для входа в аккаунт</p>
-      <div class="form-group">
-        <label>Текущий пароль</label>
-        <input type="password" id="currentPassword" placeholder="Введите текущий пароль">
-      </div>
-      <div class="form-group">
-        <label>Новый пароль</label>
-        <input type="password" id="newPassword" placeholder="Минимум 6 символов">
-      </div>
-      <div class="form-group">
-        <label>Подтвердите новый пароль</label>
-        <input type="password" id="confirmPassword" placeholder="Повторите новый пароль">
-      </div>
-      <button class="btn-save" onclick="changePassword()">Изменить пароль</button>
-    </div>
-    <div class="settings-section">
-      <h2>Универсальный промпт</h2>
-      <p class="subtitle">Дополнительная информация для генерации видео</p>
-      <div class="prompt-hint">
-        <strong>💡 Как использовать:</strong> Опишите стиль бренда, целевую аудиторию, тон общения.
-      </div>
-      <div class="form-group">
-        <label>Ваш универсальный промпт</label>
-        <textarea id="customPrompt" placeholder="Например: Стиль бренда — минималистичный и премиальный..."></textarea>
-      </div>
-      <button class="btn-save" onclick="savePrompt()">Сохранить промпт</button>
+    
+    <div id="settingsContent">
+      <div style="text-align:center;padding:40px;color:#A0A0B0;">Загрузка...</div>
     </div>
   </main>
 </div>
+
 <script>
 let currentUser = null;
 
-async function init() {
+async function initSettings() {
   currentUser = await requireAuth();
   if (!currentUser) return;
-  document.getElementById('userName').value = currentUser.profile.full_name || '';
-  document.getElementById('userEmail').value = currentUser.email;
-  const { data } = await supabaseClient.from('profiles').select('custom_prompt').eq('id', currentUser.id).single();
-  if (data && data.custom_prompt) {
-    document.getElementById('customPrompt').value = data.custom_prompt;
-  }
-  if (window.microAnimations) window.microAnimations.initRipple();
   
-  const burgerBtn = document.getElementById('burgerBtn');
-  const mobileMenu = document.getElementById('mobileMenu');
-  if (burgerBtn && mobileMenu) {
-    burgerBtn.addEventListener('click', () => {
-      burgerBtn.classList.toggle('active');
-      mobileMenu.classList.toggle('active');
-      document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
-    });
-    mobileMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        burgerBtn.classList.remove('active');
-        mobileMenu.classList.remove('active');
-        document.body.style.overflow = '';
-      });
-    });
-  }
+  renderSettings();
 }
 
-async function saveProfile() {
-  const newName = document.getElementById('userName').value.trim();
-  if (!newName) { showToast('Имя не может быть пустым', 'warning'); return; }
-  const { error } = await supabaseClient.from('profiles').update({ full_name: newName }).eq('id', currentUser.id);
-  if (error) { showToast('Ошибка сохранения: ' + error.message, 'error'); }
-  else { showToast('Профиль успешно обновлен!', 'success'); }
+function renderSettings() {
+  const content = document.getElementById('settingsContent');
+  const initial = (currentUser.profile?.full_name || currentUser.email).charAt(0).toUpperCase();
+  const role = ROLES[currentUser.profile?.role_level] || { name: 'Селлер', color: '#6C5CE7' };
+  
+  content.innerHTML = `
+    <div class="settings-card">
+      <h2>Профиль</h2>
+      <div class="profile-info">
+        <div class="profile-avatar">${initial}</div>
+        <div class="profile-details">
+          <h3>${currentUser.profile?.full_name || 'Пользователь'}</h3>
+          <p>${currentUser.email}</p>
+          <p style="margin-top:4px;"><span class="setting-value" style="color:${role.color};">${role.name}</span></p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="settings-card">
+      <h2>Аккаунт</h2>
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">Email</div>
+          <div class="setting-desc">Адрес для входа в аккаунт</div>
+        </div>
+        <div class="setting-value">${currentUser.email}</div>
+      </div>
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">ID пользователя</div>
+          <div class="setting-desc">Уникальный идентификатор</div>
+        </div>
+        <div class="setting-value" style="font-size:12px;">${currentUser.id.substring(0, 8)}...</div>
+      </div>
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">Дата регистрации</div>
+          <div class="setting-desc">Когда был создан аккаунт</div>
+        </div>
+        <div class="setting-value">${new Date(currentUser.profile?.created_at || Date.now()).toLocaleDateString('ru-RU')}</div>
+      </div>
+    </div>
+    
+    <div class="settings-card">
+      <h2>Действия</h2>
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">Сменить пароль</div>
+          <div class="setting-desc">Обновить пароль от аккаунта</div>
+        </div>
+        <button class="btn btn-secondary" onclick="changePassword()">Сменить</button>
+      </div>
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">Выйти из аккаунта</div>
+          <div class="setting-desc">Завершить текущую сессию</div>
+        </div>
+        <button class="btn btn-secondary" onclick="logout()">Выйти</button>
+      </div>
+    </div>
+    
+    <div class="settings-card danger-zone">
+      <h2>⚠️ Опасная зона</h2>
+      <p>Эти действия необратимы. Будьте осторожны.</p>
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">Удалить аккаунт</div>
+          <div class="setting-desc">Все ваши данные будут удалены без возможности восстановления</div>
+        </div>
+        <button class="btn btn-danger" onclick="deleteAccount()">Удалить аккаунт</button>
+      </div>
+    </div>
+  `;
 }
 
 async function changePassword() {
-  const current = document.getElementById('currentPassword').value;
-  const newPass = document.getElementById('newPassword').value;
-  const confirm = document.getElementById('confirmPassword').value;
-  if (!current || !newPass || !confirm) { showToast('Заполните все поля', 'warning'); return; }
-  if (newPass.length < 6) { showToast('Пароль должен содержать минимум 6 символов', 'warning'); return; }
-  if (newPass !== confirm) { showToast('Новые пароли не совпадают', 'error'); return; }
-  const { error: signInError } = await supabaseClient.auth.signInWithPassword({ email: currentUser.email, password: current });
-  if (signInError) { showToast('Неверный текущий пароль', 'error'); return; }
-  const { error } = await supabaseClient.auth.updateUser({ password: newPass });
-  if (error) { showToast('Ошибка смены пароля: ' + error.message, 'error'); }
-  else {
-    showToast('Пароль успешно изменён!', 'success');
-    document.getElementById('currentPassword').value = '';
-    document.getElementById('newPassword').value = '';
-    document.getElementById('confirmPassword').value = '';
+  const newPass = prompt('Введите новый пароль (минимум 6 символов):');
+  if (!newPass || newPass.length < 6) {
+    showToast('Пароль должен содержать минимум 6 символов', 'warning');
+    return;
+  }
+  
+  try {
+    const { error } = await supabaseClient.auth.updateUser({ password: newPass });
+    if (error) throw error;
+    showToast('Пароль успешно изменён', 'success');
+  } catch (e) {
+    showToast('Ошибка: ' + e.message, 'error');
   }
 }
 
-async function savePrompt() {
-  const prompt = document.getElementById('customPrompt').value;
-  const { error } = await supabaseClient.from('profiles').update({ custom_prompt: prompt }).eq('id', currentUser.id);
-  if (error) { showToast('Ошибка сохранения: ' + error.message, 'error'); }
-  else { showToast('Универсальный промпт сохранён!', 'success'); }
+async function deleteAccount() {
+  if (!confirm('Вы уверены? Это действие необратимо!')) return;
+  if (!confirm('Точно удалить аккаунт? Все данные будут потеряны!')) return;
+  
+  showToast('Функция удаления аккаунта в разработке', 'info');
 }
 
-init();
-</script>
- <script>
-let lastTouchEnd = 0;
-document.addEventListener('touchend', (e) => {
-  const now = Date.now();
-  if (now - lastTouchEnd <= 300) e.preventDefault();
-  lastTouchEnd = now;
-}, { passive: false });
+const ROLES = {
+  1: { name: 'Owner', color: '#6C5CE7' },
+  2: { name: 'Admin', color: '#3b82f6' },
+  3: { name: 'Moderator', color: '#10b981' }
+};
+
+initSettings();
 </script>
 </body>
 </html>
