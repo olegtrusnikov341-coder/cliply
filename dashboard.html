@@ -153,7 +153,8 @@
     <ul class="nav-menu" id="navMenu">
       <li><a href="dashboard.html" class="active">📊 Дашборд</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
-      <li><a href="settings.html">⚙️ Настройки</a></li>
+      <li><a href="settings.html">️ Настройки</a></li>
+      <li><a href="support.html">💬 Техподдержка</a></li>
     </ul>
     <div class="btn-logout" onclick="logout()">Выйти</div>
   </aside>
@@ -166,16 +167,17 @@
   </div>
   
   <div class="mobile-menu" id="mobileMenu">
-    <a href="dashboard.html" class="active">📊 Дашборд</a>
-    <a href="pricing.html"> Тарифы</a>
-    <a href="settings.html">⚙️ Настройки</a>
+    <a href="dashboard.html" class="active"> Дашборд</a>
+    <a href="pricing.html">💎 Тарифы</a>
+    <a href="settings.html">️ Настройки</a>
+    <a href="support.html">💬 Техподдержка</a>
     <a href="index.html" class="btn-nav-mobile">← На главную</a>
     <a href="#" onclick="logout(); return false;" style="color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); margin-top: 16px;">Выйти</a>
   </div>
   
   <main class="main">
     <div id="offlineBanner" class="offline-banner">
-      <span>⚠️</span>
+      <span>️</span>
       <span>Нет подключения к интернету. Некоторые функции могут быть недоступны.</span>
     </div>
     <div class="header">
@@ -194,7 +196,7 @@
         </div>
       </div>
       <div class="upload-zone" id="uploadZone">
-        <div class="upload-icon">📸</div>
+        <div class="upload-icon"></div>
         <div class="upload-text"><strong>Перетащите фото товара сюда</strong><br>или нажмите, чтобы выбрать</div>
         <div class="upload-hint">3-5 фото • JPG, PNG, WebP • до 10 МБ каждое</div>
         <div class="upload-progress" id="uploadProgress">
@@ -382,7 +384,7 @@ function renderVideos() {
     const statusClass = video.status === 'done' ? 'status-done' : video.status === 'processing' ? 'status-progress' : 'status-failed';
     const statusText = video.status === 'done' ? 'Готово' : video.status === 'processing' ? 'В процессе' : 'Ошибка';
     const date = new Date(video.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-    return `<div class="project-card content-fade-in"><div class="project-preview">${video.status === 'done' ? '🎬' : video.status === 'processing' ? '⏳' : '❌'}<span class="project-status ${statusClass}">${statusText}</span></div><div class="project-info"><div class="project-title">${video.product_name || 'Без названия'}</div><div class="project-date">${date}</div><div class="project-actions">${video.status === 'done' ? `<button class="btn-small primary" onclick="downloadVideo('${video.id}')">Скачать</button>` : ''}<button class="btn-small" onclick="regenerateVideo('${video.id}')">Перегенерировать</button><button class="btn-small danger" onclick="deleteVideo('${video.id}')">Удалить</button></div></div></div>`;
+    return `<div class="project-card content-fade-in"><div class="project-preview">${video.status === 'done' ? '🎬' : video.status === 'processing' ? '⏳' : ''}<span class="project-status ${statusClass}">${statusText}</span></div><div class="project-info"><div class="project-title">${video.product_name || 'Без названия'}</div><div class="project-date">${date}</div><div class="project-actions">${video.status === 'done' ? `<button class="btn-small primary" onclick="downloadVideo('${video.id}')">Скачать</button>` : ''}<button class="btn-small" onclick="regenerateVideo('${video.id}')">Перегенерировать</button><button class="btn-small danger" onclick="deleteVideo('${video.id}')">Удалить</button></div></div></div>`;
   }).join('');
 }
 
