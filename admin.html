@@ -36,7 +36,6 @@
   .page-header h1 { font-size: 28px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 8px; }
   .page-header p { color: #A0A0B0; font-size: 15px; }
   
-  /* Вкладки */
   .tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 1px solid #1f1f2e; padding-bottom: 0; }
   .tab { padding: 12px 20px; background: transparent; border: none; color: #A0A0B0; font-size: 15px; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; margin-bottom: -1px; display: flex; align-items: center; gap: 8px; }
   .tab:hover { color: #fff; }
@@ -46,11 +45,9 @@
   .tab-content { display: none; }
   .tab-content.active { display: block; }
   
-  /* Карточки */
   .admin-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 28px; margin-bottom: 24px; }
   .admin-card h2 { font-size: 20px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 20px; }
   
-  /* Форма добавления */
   .add-user-form { display: grid; grid-template-columns: 1fr 1fr 180px auto; gap: 12px; align-items: end; }
   .form-group label { display: block; font-size: 13px; color: #A0A0B0; margin-bottom: 6px; }
   .form-group input, .form-group select { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 8px; padding: 10px 14px; color: #fff; font-size: 14px; font-family: inherit; }
@@ -60,7 +57,6 @@
   .btn-create:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   .form-hint { grid-column: 1 / -1; font-size: 13px; color: #666; margin-top: 4px; }
   
-  /* Таблица пользователей */
   .users-table { width: 100%; border-collapse: collapse; }
   .users-table th { text-align: left; padding: 12px 16px; color: #A0A0B0; font-size: 13px; font-weight: 500; border-bottom: 1px solid #1f1f2e; }
   .users-table td { padding: 14px 16px; border-bottom: 1px solid #1f1f2e; font-size: 14px; }
@@ -74,10 +70,8 @@
   .btn-small { padding: 6px 12px; border-radius: 6px; border: 1px solid #27272a; background: transparent; color: #A0A0B0; font-size: 13px; cursor: pointer; transition: 0.2s; }
   .btn-small:hover { border-color: #ef4444; color: #ef4444; }
   
-  /* Поддержка: Макет */
   .support-layout { display: grid; grid-template-columns: 340px 1fr; gap: 20px; }
   
-  /* Список обращений */
   .conv-list-panel { background: #141414; border: 1px solid #1f1f2e; border-radius: 16px; padding: 12px; max-height: 650px; overflow-y: auto; }
   .conv-list-header { padding: 8px 12px 16px; border-bottom: 1px solid #1f1f2e; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #A0A0B0; }
   
@@ -85,7 +79,6 @@
   .conv-list-item:hover { background: rgba(108, 92, 231, 0.08); }
   .conv-list-item.active { background: rgba(108, 92, 231, 0.15); border-color: #6C5CE7; }
   
-  /* СТАТУСЫ ТЕКСТА: Непрочитанное vs Прочитанное */
   .conv-list-item.unread .conv-list-name { color: #ffffff; font-weight: 700; }
   .conv-list-item.unread .conv-list-email { color: #A0A0B0; font-weight: 500; }
   .conv-list-item.unread .conv-list-preview { color: #e2e8f0; font-weight: 500; }
@@ -101,7 +94,6 @@
   .conv-list-status.closed { background: rgba(16, 185, 129, 0.2); color: #34d399; }
   .conv-list-empty { text-align: center; color: #A0A0B0; padding: 40px 10px; font-size: 14px; }
   
-  /* Чат админа */
   .admin-chat-panel { background: #141414; border: 1px solid #1f1f2e; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; min-height: 650px; }
   .admin-chat-header { padding-bottom: 16px; border-bottom: 1px solid #1f1f2e; margin-bottom: 16px; }
   .admin-chat-header h3 { font-size: 18px; margin-bottom: 4px; }
@@ -131,6 +123,8 @@
   .btn-admin-action:hover { border-color: #6C5CE7; color: #fff; }
   .btn-admin-action.danger:hover { border-color: #ef4444; color: #ef4444; }
   
+  .error-box { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 20px; color: #ef4444; text-align: center; margin-bottom: 24px; }
+  
   @media (max-width: 768px) {
     .sidebar { display: none !important; }
     .layout { grid-template-columns: 1fr !important; }
@@ -147,8 +141,8 @@
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu">
       <li><a href="dashboard.html">📊 Дашборд</a></li>
-      <li><a href="admin.html" class="active"> Админ-панель</a></li>
-      <li><a href="settings.html">️ Настройки</a></li>
+      <li><a href="admin.html" class="active">👑 Админ-панель</a></li>
+      <li><a href="settings.html">⚙️ Настройки</a></li>
     </ul>
     <button class="btn-logout" onclick="logout()">Выйти</button>
   </aside>
@@ -159,7 +153,8 @@
       <p>Управление пользователями и поддержка</p>
     </div>
     
-    <!-- Вкладки -->
+    <div id="errorBox" class="error-box" style="display: none;"></div>
+    
     <div class="tabs">
       <button class="tab active" data-tab="users" onclick="switchTab('users')">👥 Пользователи</button>
       <button class="tab" data-tab="support" onclick="switchTab('support')">
@@ -168,7 +163,6 @@
       </button>
     </div>
     
-    <!-- Вкладка: Пользователи -->
     <div class="tab-content active" id="tab-users">
       <div class="admin-card">
         <h2>Добавить участника команды</h2>
@@ -214,7 +208,6 @@
       </div>
     </div>
     
-    <!-- Вкладка: Поддержка -->
     <div class="tab-content" id="tab-support">
       <div class="support-layout">
         <div class="conv-list-panel" id="adminConvList">
@@ -223,7 +216,7 @@
         </div>
         <div class="admin-chat-panel" id="adminChatPanel">
           <div class="admin-chat-empty">
-            <div style="font-size:48px;margin-bottom:12px;opacity:0.5;">👈</div>
+            <div style="font-size:48px;margin-bottom:12px;opacity:0.5;"></div>
             <div>Выберите обращение слева, чтобы ответить</div>
           </div>
         </div>
@@ -246,26 +239,15 @@ const ROLES = {
   4: { name: 'User', color: '#A1A1AA' }
 };
 
-async function initAdmin() {
-  currentUser = await requireAuth();
-  if (!currentUser) return;
-  
-  if (currentUser.profile.role_level > 2) {
-    showToast('Доступ запрещён', 'error');
-    window.location.href = 'dashboard.html';
-    return;
-  }
-  
-  await loadUsers();
-  await loadAllConversations();
-  updateOpenConvBadge();
-}
-
+// Переключение вкладок — вынесено в начало, чтобы работало всегда
 function switchTab(tabName) {
+  console.log('[Admin] Переключаю вкладку:', tabName);
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
-  document.getElementById(`tab-${tabName}`).classList.add('active');
+  const tab = document.querySelector(`.tab[data-tab="${tabName}"]`);
+  const content = document.getElementById(`tab-${tabName}`);
+  if (tab) tab.classList.add('active');
+  if (content) content.classList.add('active');
   
   if (tabName === 'support') {
     startSupportRefresh();
@@ -274,30 +256,93 @@ function switchTab(tabName) {
   }
 }
 
-// ===== ПОЛЬЗОВАТЕЛИ =====
+function showError(message) {
+  const box = document.getElementById('errorBox');
+  if (box) {
+    box.textContent = '⚠️ ' + message;
+    box.style.display = 'block';
+  }
+  console.error('[Admin Error]', message);
+}
+
+async function initAdmin() {
+  console.log('[Admin] Инициализация...');
+  
+  try {
+    currentUser = await requireAuth();
+    console.log('[Admin] Пользователь:', currentUser);
+    
+    if (!currentUser) {
+      showError('Не удалось получить данные пользователя. Войдите заново.');
+      return;
+    }
+    
+    if (!currentUser.profile) {
+      showError('Профиль пользователя не найден. Обратитесь в поддержку.');
+      return;
+    }
+    
+    const roleLevel = currentUser.profile.role_level || 4;
+    console.log('[Admin] Уровень доступа:', roleLevel);
+    
+    if (roleLevel > 2) {
+      showToast('Доступ запрещён', 'error');
+      window.location.href = 'dashboard.html';
+      return;
+    }
+    
+    // Загружаем данные параллельно, чтобы ошибки в одном не блокировали другой
+    await Promise.allSettled([
+      loadUsers(),
+      loadAllConversations()
+    ]);
+    
+    updateOpenConvBadge();
+    console.log('[Admin] Инициализация завершена');
+    
+  } catch (e) {
+    showError('Ошибка инициализации: ' + e.message);
+    console.error('[Admin] Init error:', e);
+  }
+}
 
 async function loadUsers() {
+  console.log('[Admin] Загрузка пользователей...');
   try {
-    const { data, error } = await supabaseClient.from('profiles').select('*').order('created_at', { ascending: false });
-    if (error) throw error;
+    const { data, error } = await supabaseClient
+      .from('profiles')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) {
+      console.error('[Admin] Ошибка загрузки пользователей:', error);
+      showError('Не удалось загрузить пользователей: ' + error.message);
+      document.getElementById('usersTableBody').innerHTML = 
+        '<tr><td colspan="4" style="text-align:center;color:#ef4444;padding:30px;">Ошибка загрузки</td></tr>';
+      return;
+    }
+    
     allUsers = data || [];
+    console.log('[Admin] Пользователей загружено:', allUsers.length);
     renderUsersTable();
   } catch (e) {
-    showToast('Ошибка загрузки пользователей', 'error');
+    console.error('[Admin] loadUsers error:', e);
+    showError('Ошибка: ' + e.message);
   }
 }
 
 function renderUsersTable() {
   const tbody = document.getElementById('usersTableBody');
+  if (!tbody) return;
+  
   if (allUsers.length === 0) {
     tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#A0A0B0;padding:30px;">Нет пользователей</td></tr>';
     return;
   }
   
   tbody.innerHTML = allUsers.map(user => {
-    const role = ROLES[user.role_level] || ROLES[4];
     const isOwner = user.role_level === 1;
-    const isMe = user.id === currentUser.id;
+    const isMe = user.id === currentUser?.id;
     
     let roleBadge = '';
     if (isOwner) {
@@ -313,7 +358,7 @@ function renderUsersTable() {
     return `
       <tr>
         <td><strong>${user.full_name || '—'}</strong></td>
-        <td>${user.email}</td>
+        <td>${user.email || '—'}</td>
         <td>
           ${isOwner 
             ? roleBadge
@@ -427,9 +472,8 @@ async function deleteUser(userId) {
   }
 }
 
-// ===== ПОДДЕРЖКА =====
-
 async function loadAllConversations() {
+  console.log('[Admin] Загрузка обращений...');
   try {
     const { data, error } = await supabaseClient
       .from('support_conversations')
@@ -439,28 +483,37 @@ async function loadAllConversations() {
       `)
       .order('updated_at', { ascending: false });
     
-    if (error) throw error;
+    if (error) {
+      console.error('[Admin] Ошибка загрузки обращений:', error);
+      document.getElementById('adminConvList').innerHTML = 
+        '<div class="conv-list-header">Все обращения</div><div class="conv-list-empty">Ошибка загрузки</div>';
+      return;
+    }
+    
     allConversations = data || [];
+    console.log('[Admin] Обращений загружено:', allConversations.length);
     renderAdminConvList();
   } catch (e) {
-    console.error('Load conversations error:', e);
-    allConversations = [];
+    console.error('[Admin] loadAllConversations error:', e);
   }
 }
 
 function updateOpenConvBadge() {
   const openCount = allConversations.filter(c => c.status === 'open').length;
   const badge = document.getElementById('openConvCount');
-  if (openCount > 0) {
-    badge.textContent = openCount;
-    badge.style.display = 'inline';
-  } else {
-    badge.style.display = 'none';
+  if (badge) {
+    if (openCount > 0) {
+      badge.textContent = openCount;
+      badge.style.display = 'inline';
+    } else {
+      badge.style.display = 'none';
+    }
   }
 }
 
 function renderAdminConvList() {
   const list = document.getElementById('adminConvList');
+  if (!list) return;
   
   if (allConversations.length === 0) {
     list.innerHTML = '<div class="conv-list-header">Все обращения</div><div class="conv-list-empty">Нет обращений</div>';
@@ -527,12 +580,12 @@ async function selectAdminConversation(convId) {
   panel.innerHTML = `
     <div class="admin-chat-header">
       <h3>${conv.user_name || 'Гость'} — ${conv.user_email || '—'}</h3>
-      <p>Обращение от ${date} • Статус: ${conv.status === 'open' ? '🟡 Открыто' : '✅ Закрыто'}</p>
+      <p>Обращение от ${date} • Статус: ${conv.status === 'open' ? ' Открыто' : '✅ Закрыто'}</p>
     </div>
     <div class="admin-chat-messages" id="adminChatMessages">
       ${messages && messages.length > 0 ? messages.map(msg => `
         <div class="admin-msg ${msg.sender}">
-          <div class="msg-sender">${msg.sender === 'admin' ? '👨‍💼 Вы (Поддержка)' : '👤 ' + (conv.user_name || 'Пользователь')}</div>
+          <div class="msg-sender">${msg.sender === 'admin' ? '‍💼 Вы (Поддержка)' : '👤 ' + (conv.user_name || 'Пользователь')}</div>
           <div class="admin-msg-text">${msg.message}</div>
           <div class="admin-msg-time">${new Date(msg.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</div>
         </div>
@@ -547,7 +600,7 @@ async function selectAdminConversation(convId) {
         ? `<button class="btn-admin-action" onclick="closeAdminConv()">✅ Закрыть обращение</button>`
         : `<button class="btn-admin-action" onclick="reopenAdminConv()">🔄 Открыть заново</button>`
       }
-      <button class="btn-admin-action danger" onclick="deleteAdminConv()">🗑 Удалить</button>
+      <button class="btn-admin-action danger" onclick="deleteAdminConv()"> Удалить</button>
     </div>
   `;
   
@@ -646,6 +699,7 @@ function startSupportRefresh() {
   }, 10000);
 }
 
+// Запускаем инициализацию
 initAdmin();
 </script>
 
