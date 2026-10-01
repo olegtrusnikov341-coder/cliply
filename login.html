@@ -2,6 +2,8 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
 <title>Вход в Cliply — AI-генерация видео для селлеров</title>
 <meta name="description" content="Войдите или зарегистрируйтесь в Cliply для создания продающих видео.">
 <meta name="robots" content="noindex, nofollow">
@@ -231,7 +233,6 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
       }
       showError('loginError', message);
     } else {
-      // Успешный вход — редирект на дашборд
       window.location.href = 'dashboard.html';
     }
   } catch (err) {
@@ -263,7 +264,6 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
   setLoading('registerBtn', true);
   
   try {
-    // Шаг 1: Регистрация в Supabase Auth
     const { data: authData, error: authError } = await supabaseClient.auth.signUp({
       email,
       password,
@@ -292,17 +292,14 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
       return;
     }
     
-    // Шаг 2: Ждём, пока триггер создаст профиль
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    // Шаг 3: Авто-вход
     const { error: signInError } = await supabaseClient.auth.signInWithPassword({
       email,
       password
     });
     
     if (signInError) {
-      // Если авто-вход не удался — показываем успех и предлагаем войти вручную
       showToast('Регистрация успешна! Войдите в аккаунт.', 'success');
       tabs.forEach(t => t.classList.remove('active'));
       forms.forEach(f => f.classList.remove('active'));
@@ -313,7 +310,6 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
       return;
     }
     
-    // Шаг 4: Редирект на дашборд
     showToast('Добро пожаловать в Cliply! 🎉', 'success');
     window.location.href = 'dashboard.html';
     
@@ -363,6 +359,18 @@ document.getElementById('forgotForm').addEventListener('submit', async (e) => {
     window.location.href = 'dashboard.html';
   }
 })();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      for (let registration of registrations) {
+        registration.update();
+      }
+    });
+  });
+}
 </script>
 </body>
 </html>
