@@ -171,6 +171,164 @@
   .mobile-menu a:hover { background: rgba(108, 92, 231, 0.15); }
   .btn-nav-mobile { background: linear-gradient(135deg, #6C5CE7, #A29BFE) !important; font-weight: 700 !important; }
   
+  /* ===== КАЛЬКУЛЯТОР ROI ===== */
+  .roi-calculator {
+    background: #141414;
+    border: 1px solid #1f1f2e;
+    border-radius: 24px;
+    padding: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 48px;
+  }
+  
+  .roi-slider-group {
+    margin-bottom: 32px;
+  }
+  
+  .roi-slider-group:last-child {
+    margin-bottom: 0;
+  }
+  
+  .roi-slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .roi-slider-header label {
+    font-size: 15px;
+    color: #A0A0B0;
+    font-weight: 500;
+  }
+  
+  .roi-value {
+    font-size: 24px;
+    font-weight: 800;
+    font-family: 'Manrope';
+    color: #6C5CE7;
+    min-width: 100px;
+    text-align: right;
+  }
+  
+  .roi-slider {
+    width: 100%;
+    height: 6px;
+    background: #27272a;
+    border-radius: 100px;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+  }
+  
+  .roi-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.5);
+    transition: transform 0.2s;
+  }
+  
+  .roi-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+  }
+  
+  .roi-slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.5);
+  }
+  
+  .roi-slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #666;
+    margin-top: 6px;
+  }
+  
+  .roi-result {
+    background: linear-gradient(135deg, rgba(108, 92, 231, 0.15), rgba(162, 155, 254, 0.08));
+    border: 1px solid rgba(108, 92, 231, 0.3);
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .roi-result-label {
+    font-size: 14px;
+    color: #A0A0B0;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .roi-result-value {
+    font-size: 56px;
+    font-weight: 800;
+    font-family: 'Manrope';
+    background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+    line-height: 1;
+  }
+  
+  .roi-result-sub {
+    font-size: 13px;
+    color: #A0A0B0;
+    margin-bottom: 24px;
+  }
+  
+  .roi-comparison {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(108, 92, 231, 0.2);
+  }
+  
+  .roi-comparison-item {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .roi-comparison-label {
+    font-size: 12px;
+    color: #A0A0B0;
+    margin-bottom: 6px;
+  }
+  
+  .roi-comparison-value {
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'Manrope';
+    color: #fff;
+  }
+  
+  .roi-comparison-value.highlight {
+    color: #6C5CE7;
+  }
+  
+  .roi-comparison-arrow {
+    font-size: 24px;
+    color: #6C5CE7;
+    font-weight: 700;
+  }
+  
   @media (max-width: 768px) {
     .nav-links { display: none !important; }
     .burger { display: flex !important; }
@@ -184,6 +342,14 @@
     .testimonials-grid { grid-template-columns: 1fr !important; }
     .hero-stats { gap: 24px; }
     .final-cta h2 { font-size: 36px !important; }
+    .roi-calculator {
+      grid-template-columns: 1fr !important;
+      padding: 24px !important;
+      gap: 24px;
+    }
+    .roi-result-value {
+      font-size: 40px !important;
+    }
   }
 </style>
 </head>
@@ -196,6 +362,7 @@
     <a href="examples.html">Примеры</a>
     <a href="index.html#pricing">Тарифы</a>
     <a href="faq.html">FAQ</a>
+    <a href="contacts.html">Контакты</a>
     <a href="login.html" class="nav-btn-login" id="navAuthBtn">Войти</a>
     <a href="login.html" class="nav-btn-cta">Попробовать</a>
   </div>
@@ -209,6 +376,7 @@
   <a href="examples.html">Примеры</a>
   <a href="index.html#pricing">Тарифы</a>
   <a href="faq.html">FAQ</a>
+  <a href="contacts.html">Контакты</a>
   <a href="login.html" id="mobileAuthBtn">Войти</a>
   <a href="login.html" class="btn-nav-mobile">Попробовать бесплатно</a>
 </div>
@@ -242,23 +410,89 @@
 <section class="section" style="background: #0d0d14;">
   <div class="container">
     <div class="section-label">01 / ПРОБЛЕМА</div>
-    <h2 class="section-title">Почему селлеры теряют продажи</h2>
-    <p class="section-subtitle">Без видео карточка товара теряет до 40% потенциальных покупателей.</p>
+    <h2 class="section-title">Карточка без видео теряет 40% покупателей</h2>
+    <p class="section-subtitle">Покупатель на WB тратит 3 секунды на карточку. Без видео он не понимает товар и уходит к конкуренту.</p>
     <div class="problem-grid">
       <div class="problem-card">
-        <div class="problem-stat">40%</div>
-        <h3>Покупателей уходят</h3>
-        <p>Если в карточке нет видео, почти половина посетителей закрывает страницу</p>
+        <div class="problem-stat">-40%</div>
+        <h3>Потеря конверсии</h3>
+        <p>Карточки без видео конвертируют в 2.5 раза хуже, чем с видео</p>
       </div>
       <div class="problem-card">
-        <div class="problem-stat">15 000 ₽</div>
-        <h3>Стоимость съёмки</h3>
-        <p>Профессиональное видео для одного товара стоит от 15 тысяч рублей</p>
+        <div class="problem-stat">5 000₽</div>
+        <h3>Стоимость монтажа</h3>
+        <p>Средняя цена одного ролика у видеографа. Для 10 товаров — 50 000₽</p>
       </div>
       <div class="problem-card">
         <div class="problem-stat">3 дня</div>
         <h3>Время на производство</h3>
         <p>От съёмки до готового видео проходит в среднем 3-5 дней</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== КАЛЬКУЛЯТОР ПРИБЫЛИ ===== -->
+<section class="section" style="background: linear-gradient(135deg, rgba(108, 92, 231, 0.08), rgba(162, 155, 254, 0.04));">
+  <div class="container">
+    <div class="section-label">КАЛЬКУЛЯТОР</div>
+    <h2 class="section-title">Сколько вы заработаете с Cliply?</h2>
+    <p class="section-subtitle">Двигайте ползунки — увидите реальный прирост дохода</p>
+    
+    <div class="roi-calculator">
+      <div class="roi-inputs">
+        <div class="roi-slider-group">
+          <div class="roi-slider-header">
+            <label>Количество товаров в магазине</label>
+            <div class="roi-value" id="roiProducts">50</div>
+          </div>
+          <input type="range" id="sliderProducts" min="5" max="500" value="50" step="5" class="roi-slider">
+          <div class="roi-slider-labels">
+            <span>5</span>
+            <span>500</span>
+          </div>
+        </div>
+        
+        <div class="roi-slider-group">
+          <div class="roi-slider-header">
+            <label>Средняя цена товара, ₽</label>
+            <div class="roi-value" id="roiPrice">1 500</div>
+          </div>
+          <input type="range" id="sliderPrice" min="300" max="10000" value="1500" step="100" class="roi-slider">
+          <div class="roi-slider-labels">
+            <span>300 ₽</span>
+            <span>10 000 ₽</span>
+          </div>
+        </div>
+        
+        <div class="roi-slider-group">
+          <div class="roi-slider-header">
+            <label>Посетителей в день на товар</label>
+            <div class="roi-value" id="roiVisitors">100</div>
+          </div>
+          <input type="range" id="sliderVisitors" min="10" max="1000" value="100" step="10" class="roi-slider">
+          <div class="roi-slider-labels">
+            <span>10</span>
+            <span>1 000</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="roi-result">
+        <div class="roi-result-label">Дополнительный доход в месяц</div>
+        <div class="roi-result-value" id="roiResult">0 ₽</div>
+        <div class="roi-result-sub">при росте конверсии +34%</div>
+        <div class="roi-comparison">
+          <div class="roi-comparison-item">
+            <div class="roi-comparison-label">Без видео</div>
+            <div class="roi-comparison-value" id="roiWithout">0 ₽</div>
+          </div>
+          <div class="roi-comparison-arrow">→</div>
+          <div class="roi-comparison-item">
+            <div class="roi-comparison-label">С Cliply</div>
+            <div class="roi-comparison-value highlight" id="roiWith">0 ₽</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -299,7 +533,7 @@
       <div class="feature-category-title">ВИДЕО</div>
       <div class="feature-list">
         <div class="feature-item">
-          <div class="feature-item-icon">📦</div>
+          <div class="feature-item-icon"></div>
           <div>
             <div class="feature-item-title">Обзор товара</div>
             <div class="feature-item-desc">Покажите товар в действии со всех ракурсов</div>
@@ -326,7 +560,7 @@
       <div class="feature-category-title">СЦЕНАРИИ</div>
       <div class="feature-list">
         <div class="feature-item">
-          <div class="feature-item-icon">⚡</div>
+          <div class="feature-item-icon"></div>
           <div>
             <div class="feature-item-title">Проблема → Решение</div>
             <div class="feature-item-desc">Для товаров, решающих конкретную боль клиента</div>
@@ -366,7 +600,7 @@
         </div>
       </div>
       <div class="example-card">
-        <div class="example-preview">🎧<span class="example-tag">20 сек</span></div>
+        <div class="example-preview"><span class="example-tag">20 сек</span></div>
         <div class="example-info">
           <h3>Электроника</h3>
           <p>Беспроводные наушники</p>
@@ -378,12 +612,33 @@
         <div class="example-info">
           <h3>Одежда</h3>
           <p>Мужская футболка премиум</p>
-          <div class="example-meta"><span>🎵 Стильная</span><span> Lifestyle</span></div>
+          <div class="example-meta"><span> Стильная</span><span> Lifestyle</span></div>
         </div>
       </div>
-    </div>
-    <div style="text-align: center; margin-top: 40px;">
-      <a href="examples.html" class="btn-secondary">Смотреть все примеры →</a>
+      <div class="example-card">
+        <div class="example-preview"><span class="example-tag">25 сек</span></div>
+        <div class="example-info">
+          <h3>Товары для дома</h3>
+          <p>Органайзер для кухни</p>
+          <div class="example-meta"><span>🎵 Спокойная</span><span>🎁 Распаковка</span></div>
+        </div>
+      </div>
+      <div class="example-card">
+        <div class="example-preview">💊<span class="example-tag">20 сек</span></div>
+        <div class="example-info">
+          <h3>БАДы и витамины</h3>
+          <p>Омега-3 капсулы</p>
+          <div class="example-meta"><span>🎵 Доверительная</span><span>⭐ Отзыв</span></div>
+        </div>
+      </div>
+      <div class="example-card">
+        <div class="example-preview">⚽<span class="example-tag">15 сек</span></div>
+        <div class="example-info">
+          <h3>Спорт</h3>
+          <p>Фитнес-резинки набор</p>
+          <div class="example-meta"><span>🎵 Энергичная</span><span>🔥 Продающее</span></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -442,7 +697,7 @@
     <h2 class="section-title">Что говорят селлеры</h2>
     <div class="testimonials-grid" id="testimonialsGrid">
       <div class="testimonial-card" style="text-align:center;padding:60px 20px;grid-column:1/-1;">
-        <div style="font-size:48px;margin-bottom:16px;">💬</div>
+        <div style="font-size:48px;margin-bottom:16px;"></div>
         <div style="color:#A0A0B0;">Загрузка отзывов...</div>
       </div>
     </div>
@@ -582,7 +837,7 @@
   </div>
 </footer>
 
-<button class="support-btn" onclick="openSupport()" title="Написать в поддержку">💬</button>
+<button class="support-btn" onclick="openSupport()" title="Написать в поддержку"></button>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="auth.js"></script>
@@ -591,6 +846,76 @@
 <script src="transitions.js"></script>
 <script src="micro-animations.js"></script>
 <script>
+// ===== КАЛЬКУЛЯТОР ROI =====
+(function() {
+  const sliderProducts = document.getElementById('sliderProducts');
+  const sliderPrice = document.getElementById('sliderPrice');
+  const sliderVisitors = document.getElementById('sliderVisitors');
+  
+  if (!sliderProducts) return;
+  
+  const displayProducts = document.getElementById('roiProducts');
+  const displayPrice = document.getElementById('roiPrice');
+  const displayVisitors = document.getElementById('roiVisitors');
+  const displayResult = document.getElementById('roiResult');
+  const displayWithout = document.getElementById('roiWithout');
+  const displayWith = document.getElementById('roiWith');
+  
+  function formatNumber(n) {
+    return Math.round(n).toLocaleString('ru-RU');
+  }
+  
+  function calculateROI() {
+    const products = parseInt(sliderProducts.value);
+    const price = parseInt(sliderPrice.value);
+    const visitorsPerDay = parseInt(sliderVisitors.value);
+    
+    displayProducts.textContent = formatNumber(products);
+    displayPrice.textContent = formatNumber(price) + ' ₽';
+    displayVisitors.textContent = formatNumber(visitorsPerDay);
+    
+    const baseConversion = 0.02;
+    const videoConversion = baseConversion * 1.34;
+    const days = 30;
+    
+    const revenueWithout = products * visitorsPerDay * days * baseConversion * price;
+    const revenueWith = products * visitorsPerDay * days * videoConversion * price;
+    const profit = revenueWith - revenueWithout;
+    
+    animateROIValue(displayResult, profit, ' ₽');
+    animateROIValue(displayWithout, revenueWithout, ' ₽');
+    animateROIValue(displayWith, revenueWith, ' ₽');
+  }
+  
+  let animationFrame = null;
+  function animateROIValue(element, target, suffix) {
+    if (animationFrame) cancelAnimationFrame(animationFrame);
+    const start = parseFloat(element.dataset.current || '0');
+    const duration = 400;
+    const startTime = performance.now();
+    
+    function update(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = start + (target - start) * eased;
+      element.textContent = formatNumber(current) + suffix;
+      element.dataset.current = current;
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(update);
+      }
+    }
+    
+    animationFrame = requestAnimationFrame(update);
+  }
+  
+  sliderProducts.addEventListener('input', calculateROI);
+  sliderPrice.addEventListener('input', calculateROI);
+  sliderVisitors.addEventListener('input', calculateROI);
+  
+  calculateROI();
+})();
+
 const burgerBtn = document.getElementById('burgerBtn');
 const mobileMenu = document.getElementById('mobileMenu');
 const mobileAuthBtn = document.getElementById('mobileAuthBtn');
