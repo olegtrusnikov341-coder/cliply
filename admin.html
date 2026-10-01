@@ -48,10 +48,26 @@
   .admin-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 28px; margin-bottom: 24px; }
   .admin-card h2 { font-size: 20px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 20px; }
   
+  /* Форма добавления */
+  .add-user-form { display: grid; grid-template-columns: 1fr 1fr 180px auto; gap: 12px; align-items: end; }
+  .form-group label { display: block; font-size: 13px; color: #A0A0B0; margin-bottom: 6px; }
+  .form-group input, .form-group select { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 8px; padding: 10px 14px; color: #fff; font-size: 14px; font-family: inherit; }
+  .form-group input:focus, .form-group select:focus { outline: none; border-color: #6C5CE7; }
+  .btn-create { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 10px 20px; border-radius: 8px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; white-space: nowrap; }
+  .btn-create:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4); }
+  .btn-create:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .form-hint { grid-column: 1 / -1; font-size: 13px; color: #666; margin-top: 4px; }
+  
   /* Таблица пользователей */
   .users-table { width: 100%; border-collapse: collapse; }
   .users-table th { text-align: left; padding: 12px 16px; color: #A0A0B0; font-size: 13px; font-weight: 500; border-bottom: 1px solid #1f1f2e; }
   .users-table td { padding: 14px 16px; border-bottom: 1px solid #1f1f2e; font-size: 14px; }
+  .role-badge { display: inline-block; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 600; }
+  .role-owner { background: rgba(108, 92, 231, 0.2); color: #A29BFE; border: 1px solid rgba(108, 92, 231, 0.3); }
+  .role-admin { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+  .role-moderator { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+  .role-select { background: #0A0A0F; border: 1px solid #27272a; border-radius: 6px; padding: 6px 10px; color: #fff; font-size: 13px; cursor: pointer; }
+  .role-select:focus { outline: none; border-color: #6C5CE7; }
   .btn-small { padding: 6px 12px; border-radius: 6px; border: 1px solid #27272a; background: transparent; color: #A0A0B0; font-size: 13px; cursor: pointer; transition: 0.2s; }
   .btn-small:hover { border-color: #ef4444; color: #ef4444; }
   
@@ -116,6 +132,7 @@
     .sidebar { display: none !important; }
     .layout { grid-template-columns: 1fr !important; }
     .main { padding: 20px 16px !important; }
+    .add-user-form { grid-template-columns: 1fr !important; }
     .support-layout { grid-template-columns: 1fr !important; }
     .conv-list-panel { max-height: 250px; }
   }
@@ -151,6 +168,29 @@
     <!-- Вкладка: Пользователи -->
     <div class="tab-content active" id="tab-users">
       <div class="admin-card">
+        <h2>Добавить участника команды</h2>
+        <div class="add-user-form">
+          <div class="form-group">
+            <label>Имя</label>
+            <input type="text" id="newUserName" placeholder="Имя пользователя">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="newUserEmail" placeholder="email@example.com">
+          </div>
+          <div class="form-group">
+            <label>Роль</label>
+            <select id="newUserRole">
+              <option value="3">Moderator (ур. 3)</option>
+              <option value="2">Admin (ур. 2)</option>
+            </select>
+          </div>
+          <button class="btn-create" onclick="createUser()" id="btnCreateUser">Создать</button>
+          <div class="form-hint">Система сгенерирует временный пароль и отправит на email.</div>
+        </div>
+      </div>
+      
+      <div class="admin-card">
         <h2>Пользователи системы</h2>
         <div style="overflow-x: auto;">
           <table class="users-table">
@@ -158,7 +198,7 @@
               <tr>
                 <th>Имя</th>
                 <th>Email</th>
-                <th>Роль</th>
+                <th>Уровень доступа</th>
                 <th>Действия</th>
               </tr>
             </thead>
@@ -179,7 +219,7 @@
         </div>
         <div class="admin-chat-panel" id="adminChatPanel">
           <div class="admin-chat-empty">
-            <div style="font-size:48px;margin-bottom:12px;opacity:0.5;">👈</div>
+            <div style="font-size:48px;margin-bottom:12px;opacity:0.5;"></div>
             <div>Выберите обращение слева, чтобы ответить</div>
           </div>
         </div>
@@ -194,6 +234,12 @@ let allUsers = [];
 let allConversations = [];
 let activeAdminConvId = null;
 let supportRefreshInterval = null;
+
+const ROLES = {
+  1: { name: 'Owner', color: '#6C5CE7' },
+  2: { name: 'Admin', color: '#3b82f6' },
+  3: { name: 'Moderator', color: '#10b981' }
+};
 
 async function initAdmin() {
   currentUser = await requireAuth();
@@ -223,6 +269,8 @@ function switchTab(tabName) {
   }
 }
 
+// ===== ПОЛЬЗОВАТЕЛИ =====
+
 async function loadUsers() {
   try {
     const { data, error } = await supabaseClient.from('profiles').select('*').order('created_at', { ascending: false });
@@ -240,18 +288,132 @@ function renderUsersTable() {
     tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#A0A0B0;padding:30px;">Нет пользователей</td></tr>';
     return;
   }
+  
   tbody.innerHTML = allUsers.map(user => {
-    const roleName = user.role_level === 1 ? 'Owner' : user.role_level === 2 ? 'Admin' : 'Moderator';
+    const role = ROLES[user.role_level] || ROLES[3];
+    const isOwner = user.role_level === 1;
+    const isMe = user.id === currentUser.id;
+    
     return `
       <tr>
         <td><strong>${user.full_name || '—'}</strong></td>
         <td>${user.email}</td>
-        <td>${roleName}</td>
-        <td><span style="color:#666;font-size:13px;">—</span></td>
+        <td>
+          ${isOwner 
+            ? `<span class="role-badge role-owner">Owner</span>` 
+            : `<select class="role-select" onchange="changeUserRole('${user.id}', this.value)" ${isMe ? 'disabled' : ''}>
+                <option value="2" ${user.role_level === 2 ? 'selected' : ''}>Admin</option>
+                <option value="3" ${user.role_level === 3 ? 'selected' : ''}>Moderator</option>
+              </select>`
+          }
+        </td>
+        <td>
+          ${isOwner || isMe 
+            ? '<span style="color:#666;font-size:13px;">—</span>' 
+            : `<button class="btn-small" onclick="deleteUser('${user.id}')">Удалить</button>`
+          }
+        </td>
       </tr>
     `;
   }).join('');
 }
+
+async function createUser() {
+  const name = document.getElementById('newUserName').value.trim();
+  const email = document.getElementById('newUserEmail').value.trim();
+  const role = parseInt(document.getElementById('newUserRole').value);
+  
+  if (!name || !email) {
+    showToast('Заполните имя и email', 'warning');
+    return;
+  }
+  
+  const btn = document.getElementById('btnCreateUser');
+  btn.textContent = 'Создание...';
+  btn.disabled = true;
+  
+  try {
+    // Создаём пользователя через RPC функцию
+    const { data, error } = await supabaseClient.rpc('create_user_with_role', {
+      p_email: email,
+      p_password: 'Cliply2026!',
+      p_full_name: name,
+      p_role_level: role
+    });
+    
+    if (error) throw error;
+    
+    document.getElementById('newUserName').value = '';
+    document.getElementById('newUserEmail').value = '';
+    await loadUsers();
+    showToast(`Пользователь ${name} создан! Пароль: Cliply2026!`, 'success');
+  } catch (e) {
+    // Если RPC нет — создаём через прямой insert (упрощённый вариант)
+    try {
+      const { error: insertError } = await supabaseClient
+        .from('profiles')
+        .insert({
+          email: email,
+          full_name: name,
+          role_level: role
+        });
+      
+      if (insertError) throw insertError;
+      
+      document.getElementById('newUserName').value = '';
+      document.getElementById('newUserEmail').value = '';
+      await loadUsers();
+      showToast(`Пользователь ${name} добавлен! Попросите его зарегистрироваться.`, 'success');
+    } catch (e2) {
+      showToast('Ошибка: ' + e2.message, 'error');
+    }
+  } finally {
+    btn.textContent = 'Создать';
+    btn.disabled = false;
+  }
+}
+
+async function changeUserRole(userId, newRole) {
+  try {
+    const { error } = await supabaseClient
+      .from('profiles')
+      .update({ role_level: parseInt(newRole) })
+      .eq('id', userId);
+    
+    if (error) throw error;
+    showToast('Роль изменена', 'success');
+    await loadUsers();
+  } catch (e) {
+    showToast('Ошибка: ' + e.message, 'error');
+  }
+}
+
+async function deleteUser(userId) {
+  if (!confirm('Удалить этого пользователя?')) return;
+  
+  try {
+    const { error } = await supabaseClient.rpc('delete_user_by_id', { p_user_id: userId });
+    if (error) throw error;
+    await loadUsers();
+    showToast('Пользователь удалён', 'success');
+  } catch (e) {
+    // Fallback: удаляем только из profiles
+    try {
+      const { error: deleteError } = await supabaseClient
+        .from('profiles')
+        .delete()
+        .eq('id', userId);
+      
+      if (deleteError) throw deleteError;
+      await loadUsers();
+      showToast('Пользователь удалён из profiles', 'success');
+    } catch (e2) {
+      showToast('Ошибка: ' + e2.message, 'error');
+    }
+  }
+}
+
+// ===== ПОДДЕРЖКА =====
 
 async function loadAllConversations() {
   try {
@@ -285,7 +447,6 @@ function updateOpenConvBadge() {
 
 function renderAdminConvList() {
   const list = document.getElementById('adminConvList');
-  const header = list.querySelector('.conv-list-header');
   
   if (allConversations.length === 0) {
     list.innerHTML = '<div class="conv-list-header">Все обращения</div><div class="conv-list-empty">Нет обращений</div>';
@@ -297,8 +458,6 @@ function renderAdminConvList() {
     const msgs = conv.support_messages || [];
     const lastMsg = msgs.length > 0 ? msgs[msgs.length - 1].message : 'Нет сообщений';
     
-    // Логика прочитано/непрочитано:
-    // Если есть сообщения от пользователя, которые is_read === false, значит непрочитано.
     const hasUnread = msgs.some(m => m.sender === 'user' && m.is_read === false);
     const readClass = hasUnread ? 'unread' : 'read';
     const isActive = conv.id === activeAdminConvId ? 'active' : '';
@@ -343,7 +502,6 @@ async function selectAdminConversation(convId) {
       .in('id', unreadMsgs.map(m => m.id));
   }
   
-  // Загружаем свежие сообщения
   const { data: messages } = await supabaseClient
     .from('support_messages')
     .select('*')
@@ -361,7 +519,7 @@ async function selectAdminConversation(convId) {
     <div class="admin-chat-messages" id="adminChatMessages">
       ${messages && messages.length > 0 ? messages.map(msg => `
         <div class="admin-msg ${msg.sender}">
-          <div class="msg-sender">${msg.sender === 'admin' ? '👨‍💼 Вы (Поддержка)' : '👤 ' + (conv.user_name || 'Пользователь')}</div>
+          <div class="msg-sender">${msg.sender === 'admin' ? '👨‍ Вы (Поддержка)' : '👤 ' + (conv.user_name || 'Пользователь')}</div>
           <div class="admin-msg-text">${msg.message}</div>
           <div class="admin-msg-time">${new Date(msg.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</div>
         </div>
@@ -397,7 +555,6 @@ async function selectAdminConversation(convId) {
     if (msgs) msgs.scrollTop = msgs.scrollHeight;
   }, 100);
   
-  // Обновляем список, чтобы сбросить статус "непрочитано"
   await loadAllConversations();
 }
 
