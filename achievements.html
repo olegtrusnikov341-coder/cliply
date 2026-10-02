@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
 <link rel="stylesheet" href="mobile.css">
+<link rel="stylesheet" href="scroll-animations.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; }
@@ -313,24 +314,24 @@
   <aside class="sidebar">
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu" id="navMenu">
-      <li><a href="dashboard.html"> Дашборд</a></li>
+      <li><a href="dashboard.html">📊 Дашборд</a></li>
       <li><a href="analytics.html"> Аналитика</a></li>
       <li><a href="achievements.html" class="active">🏆 Достижения</a></li>
-      <li><a href="pricing.html"> Тарифы</a></li>
-      <li><a href="settings.html">⚙️ Настройки</a></li>
+      <li><a href="pricing.html">💎 Тарифы</a></li>
+      <li><a href="settings.html">️ Настройки</a></li>
       <li><a href="support.html">💬 Техподдержка</a></li>
     </ul>
     <button class="btn-logout" onclick="logout()">Выйти</button>
   </aside>
   
   <main class="main">
-    <div class="page-header">
-      <h1> Достижения</h1>
+    <div class="page-header animate-fade-in">
+      <h1>🏆 Достижения</h1>
       <p>Выполняйте задания и получайте награды за активность</p>
     </div>
     
     <!-- Профиль -->
-    <div class="profile-card" id="profileCard">
+    <div class="profile-card animate-slide-up" id="profileCard">
       <div class="profile-avatar" id="profileAvatar">?</div>
       <div class="profile-info">
         <div class="profile-name" id="profileName">Загрузка...</div>
@@ -350,7 +351,7 @@
     </div>
     
     <!-- Общий прогресс -->
-    <div class="progress-card">
+    <div class="progress-card animate-scale-in">
       <div class="progress-header">
         <h3>Общий прогресс</h3>
         <div class="progress-percent" id="progressPercent">0%</div>
@@ -365,7 +366,7 @@
     </div>
     
     <!-- Фильтры -->
-    <div class="categories-filter" id="categoriesFilter">
+    <div class="categories-filter animate-slide-up" id="categoriesFilter">
       <button class="category-btn active" data-category="all">Все <span class="count" id="countAll">0</span></button>
       <button class="category-btn" data-category="Начало">Начало <span class="count" id="countStart">0</span></button>
       <button class="category-btn" data-category="Продуктивность">Продуктивность <span class="count" id="countProd">0</span></button>
@@ -477,11 +478,11 @@ function renderAchievements() {
   }
   
   if (filtered.length === 0) {
-    grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🏆</div><div>Нет достижений в этой категории</div></div>';
+    grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon"></div><div>Нет достижений в этой категории</div></div>';
     return;
   }
   
-  grid.innerHTML = filtered.map(achievement => {
+  grid.innerHTML = filtered.map((achievement, index) => {
     const userAch = userAchievements.find(ua => ua.achievement_id === achievement.id);
     const isUnlocked = !!userAch;
     const progress = userAch ? userAch.progress : 0;
@@ -492,9 +493,10 @@ function renderAchievements() {
       : null;
     
     const cardClass = isUnlocked ? 'achievement-card unlocked' : 'achievement-card locked';
+    const delayClass = `delay-${(index % 6) + 1}`;
     
     return `
-      <div class="${cardClass}">
+      <div class="${cardClass} animate-slide-up ${delayClass}">
         <div class="achievement-header">
           <span class="achievement-icon">${achievement.icon}</span>
           ${isUnlocked 
@@ -534,6 +536,8 @@ function initFilters() {
 
 initPage();
 </script>
+
+<script src="scroll-animations.js"></script>
 
 <script>
 if ('serviceWorker' in navigator) {
