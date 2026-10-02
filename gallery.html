@@ -13,7 +13,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- CSP Headers (задача 29) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://djvdklcahpqbjotukmxt.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://djvdklcahpqbjotukmxt.supabase.co wss://djvdklcahpqbjotukmxt.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="security.js"></script>
 <script src="auth.js"></script>
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
@@ -250,6 +256,7 @@
   }
   .modal-btn-primary { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; }
   .modal-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
+  .modal-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   .modal-btn-secondary { background: transparent; color: #A0A0B0; border: 1px solid #27272a; }
   .modal-btn-secondary:hover { border-color: #6C5CE7; color: #fff; }
   
@@ -349,7 +356,7 @@
 <div class="modal-overlay" id="videoModal">
   <div class="modal-content">
     <button class="modal-close" onclick="closeModal()">×</button>
-    <div class="modal-video" id="modalVideo">🎬</div>
+    <div class="modal-video" id="modalVideo"></div>
     <div class="modal-info">
       <h2 class="modal-title" id="modalTitle">Название видео</h2>
       <p class="modal-description" id="modalDescription">Описание товара</p>
@@ -379,6 +386,7 @@ let currentUser = null;
 let galleryVideos = [];
 let currentFilter = 'all';
 let currentVideoId = null;
+let lastLikeTime = 0;
 
 const burgerBtn = document.getElementById('burgerBtn');
 const mobileMenu = document.getElementById('mobileMenu');
@@ -396,6 +404,11 @@ if (burgerBtn && mobileMenu) {
       document.body.style.overflow = '';
     });
   });
+}
+
+// ===== ВАЛИДАЦИЯ UUID (защита от инъекций в ID) =====
+function isValidUUID(id) {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
 }
 
 (async () => {
@@ -465,25 +478,34 @@ function renderGallery() {
   }
   
   grid.innerHTML = filtered.map((video, index) => {
-    const initial = video.user_name.charAt(0).toUpperCase();
+    // Санитизация всех пользовательских данных (задача 14)
+    const safeName = SecurityUtils ? SecurityUtils.sanitizeHTML(video.user_name) : video.user_name;
+    const safeProductName = SecurityUtils ? SecurityUtils.sanitizeHTML(video.product_name) : video.product_name;
+    const safeDescription = SecurityUtils ? SecurityUtils.sanitizeHTML(video.product_description || 'Без описания') : (video.product_description || 'Без описания');
+    const safeRole = SecurityUtils ? SecurityUtils.sanitizeHTML(video.user_role || 'Селлер') : (video.user_role || 'Селлер');
+    
+    const initial = safeName.charAt(0).toUpperCase();
     const duration = '0:15';
     const category = getCategoryFromDescription(video.product_description);
     const delayClass = `delay-${(index % 6) + 1}`;
     
+    // Экранирование ID для onclick (защита от инъекций)
+    const safeVideoId = video.id.replace(/'/g, "\\'");
+    
     return `
-      <div class="gallery-card animate-scale-in ${delayClass}" onclick="openVideo('${video.id}')">
+      <div class="gallery-card animate-scale-in ${delayClass}" onclick="openVideo('${safeVideoId}')">
         <div class="gallery-thumbnail">
           <div class="gallery-play">▶</div>
           <div class="gallery-duration">${duration}</div>
           ${category ? `<div class="gallery-badge">${getCategoryName(category)}</div>` : ''}
         </div>
         <div class="gallery-info">
-          <div class="gallery-title">${video.product_name}</div>
-          <div class="gallery-description">${video.product_description || 'Без описания'}</div>
+          <div class="gallery-title">${safeProductName}</div>
+          <div class="gallery-description">${safeDescription}</div>
           <div class="gallery-meta">
             <div class="gallery-author">
               <div class="gallery-avatar">${initial}</div>
-              <div class="gallery-author-name">${video.user_name}</div>
+              <div class="gallery-author-name">${safeName}</div>
             </div>
             <div class="gallery-stats">
               <div class="gallery-stat">❤️ ${video.likes_count || 0}</div>
@@ -532,22 +554,35 @@ function initFilters() {
 }
 
 function openVideo(videoId) {
+  // Валидация UUID (защита от инъекций)
+  if (!isValidUUID(videoId)) {
+    console.error('Invalid video ID:', videoId);
+    showToast('Некорректный идентификатор видео', 'error');
+    return;
+  }
+  
   const video = galleryVideos.find(v => v.id === videoId);
   if (!video) return;
   
   currentVideoId = videoId;
   
-  document.getElementById('modalTitle').textContent = video.product_name;
-  document.getElementById('modalDescription').textContent = video.product_description || 'Без описания';
-  document.getElementById('modalAuthorName').textContent = video.user_name;
-  document.getElementById('modalAuthorRole').textContent = video.user_role || 'Селлер';
-  document.getElementById('modalAvatar').textContent = video.user_name.charAt(0).toUpperCase();
+  // Санитизация данных перед выводом (задача 14)
+  document.getElementById('modalTitle').textContent = SecurityUtils ? SecurityUtils.sanitizeHTML(video.product_name) : video.product_name;
+  document.getElementById('modalDescription').textContent = SecurityUtils ? SecurityUtils.sanitizeHTML(video.product_description || 'Без описания') : (video.product_description || 'Без описания');
+  document.getElementById('modalAuthorName').textContent = SecurityUtils ? SecurityUtils.sanitizeHTML(video.user_name) : video.user_name;
+  document.getElementById('modalAuthorRole').textContent = SecurityUtils ? SecurityUtils.sanitizeHTML(video.user_role || 'Селлер') : (video.user_role || 'Селлер');
+  document.getElementById('modalAvatar').textContent = (SecurityUtils ? SecurityUtils.sanitizeHTML(video.user_name) : video.user_name).charAt(0).toUpperCase();
   document.getElementById('modalLikeCount').textContent = video.likes_count || 0;
+  
+  // Сброс состояния кнопки лайка
+  const likeBtn = document.getElementById('modalLikeBtn');
+  likeBtn.disabled = false;
   
   document.getElementById('videoModal').classList.add('active');
   document.body.style.overflow = 'hidden';
   
-  incrementViews(videoId);
+  // Debounce просмотров (защита от накрутки — задача 30)
+  incrementViewsDebounced(videoId);
 }
 
 function closeModal() {
@@ -556,13 +591,40 @@ function closeModal() {
   currentVideoId = null;
 }
 
+// ===== ЛАЙК С RATE LIMITING (задача 30) =====
 async function likeVideo() {
   if (!currentVideoId) return;
+  
+  // Валидация UUID
+  if (!isValidUUID(currentVideoId)) {
+    showToast('Некорректный идентификатор', 'error');
+    return;
+  }
   
   if (!currentUser) {
     showToast('Войдите, чтобы поставить лайк', 'warning');
     return;
   }
+  
+  // Rate limiting: 1 лайк в 3 секунды (защита от накрутки)
+  const now = Date.now();
+  if (now - lastLikeTime < 3000) {
+    const waitSec = Math.ceil((3000 - (now - lastLikeTime)) / 1000);
+    showToast(`Подождите ${waitSec} сек. перед следующим лайком`, 'warning');
+    return;
+  }
+  
+  // Дополнительная проверка через SecurityUtils
+  if (typeof SecurityUtils !== 'undefined') {
+    const limit = SecurityUtils.checkRateLimit('gallery_like', 20, 60000); // 20 лайков в минуту
+    if (!limit.allowed) {
+      showToast(`Слишком много лайков. Подождите ${limit.waitSeconds} сек.`, 'warning');
+      return;
+    }
+  }
+  
+  const likeBtn = document.getElementById('modalLikeBtn');
+  likeBtn.disabled = true;
   
   try {
     const video = galleryVideos.find(v => v.id === currentVideoId);
@@ -579,17 +641,36 @@ async function likeVideo() {
     
     video.likes_count = newLikes;
     document.getElementById('modalLikeCount').textContent = newLikes;
+    lastLikeTime = Date.now();
+    
     renderGallery();
     updateStats();
     
     showToast('❤️ Лайк поставлен!', 'success');
   } catch (e) {
     console.error('Like error:', e);
-    showToast('Ошибка', 'error');
+    showToast('Ошибка при лайке', 'error');
+  } finally {
+    likeBtn.disabled = false;
   }
 }
 
+// ===== ПРОСМОТРЫ С DEBOUNCE (защита от накрутки) =====
+let viewsDebounceTimers = {};
+
+function incrementViewsDebounced(videoId) {
+  if (viewsDebounceTimers[videoId]) return; // Уже запланировано
+  
+  viewsDebounceTimers[videoId] = setTimeout(() => {
+    incrementViews(videoId);
+    delete viewsDebounceTimers[videoId];
+  }, 5000); // Засчитываем просмотр только через 5 секунд
+}
+
 async function incrementViews(videoId) {
+  // Валидация UUID
+  if (!isValidUUID(videoId)) return;
+  
   try {
     const video = galleryVideos.find(v => v.id === videoId);
     if (!video) return;
@@ -607,18 +688,24 @@ async function incrementViews(videoId) {
   }
 }
 
+// ===== ПОДЕЛИТЬСЯ С ЗАЩИТОЙ (задача 15 - SSRF) =====
 function shareVideo() {
   const video = galleryVideos.find(v => v.id === currentVideoId);
   if (!video) return;
   
-  const url = window.location.href;
-  const text = `Посмотри это видео на Cliply: ${video.product_name}`;
+  // Используем только свой домен (защита от SSRF)
+  const url = window.location.origin + window.location.pathname;
+  const safeProductName = SecurityUtils ? SecurityUtils.sanitizeHTML(video.product_name) : video.product_name;
+  const text = `Посмотри это видео на Cliply: ${safeProductName}`;
   
   if (navigator.share) {
-    navigator.share({ title: video.product_name, text: text, url: url });
+    navigator.share({ title: safeProductName, text: text, url: url }).catch(() => {});
   } else {
-    navigator.clipboard.writeText(url);
-    showToast('Ссылка скопирована!', 'success');
+    navigator.clipboard.writeText(url).then(() => {
+      showToast('🔗 Ссылка скопирована!', 'success');
+    }).catch(() => {
+      showToast('Не удалось скопировать ссылку', 'error');
+    });
   }
 }
 
