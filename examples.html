@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
-<title>Примеры видео Cliply — реальные кейсы селлеров</title>
-<meta name="description" content="Посмотрите примеры видео, созданных селлерами на Cliply. Реальные результаты для Wildberries и Ozon.">
+<title>Примеры работ Cliply — реальные видео селлеров</title>
+<meta name="description" content="Посмотрите примеры видео, созданных с помощью Cliply. Реальные кейсы селлеров маркетплейсов.">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#6C5CE7">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -13,7 +13,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- CSP Headers (задача 29) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://djvdklcahpqbjotukmxt.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://djvdklcahpqbjotukmxt.supabase.co wss://djvdklcahpqbjotukmxt.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="security.js"></script>
 <script src="auth.js"></script>
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
@@ -23,57 +29,49 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; line-height: 1.6; }
   h1, h2, h3, h4 { font-family: 'Manrope', sans-serif; font-weight: 800; line-height: 1.1; }
-  
   .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
   
   nav { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: rgba(10,10,15,0.95); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid #1f1f2e; }
   .logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
   .nav-links { display: flex; align-items: center; gap: 24px; }
   .nav-links a { color: #A0A0B0; text-decoration: none; font-size: 14px; transition: color 0.2s; }
-  .nav-links a:hover { color: #fff; }
+  .nav-links a:hover, .nav-links a.active { color: #fff; }
   .nav-btn-login { color: #fff !important; border: 1px solid #27272a; padding: 8px 20px; border-radius: 100px; }
   .nav-btn-login:hover { border-color: #6C5CE7; }
   .nav-btn-cta { background: linear-gradient(135deg, #6C5CE7, #A29BFE) !important; color: #fff !important; padding: 10px 24px !important; border-radius: 100px; font-weight: 600 !important; border: none; }
-  .nav-btn-cta:hover { box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   
   .hero { padding: 100px 0 60px; text-align: center; }
-  .hero-label { font-size: 13px; font-weight: 700; color: #6C5CE7; letter-spacing: 3px; margin-bottom: 16px; text-transform: uppercase; }
+  .hero-badge { display: inline-block; background: rgba(108, 92, 231, 0.15); color: #A29BFE; padding: 8px 20px; border-radius: 100px; font-size: 13px; font-weight: 600; margin-bottom: 32px; border: 1px solid rgba(108, 92, 231, 0.3); letter-spacing: 2px; }
   .hero h1 { font-size: 64px; margin-bottom: 24px; max-width: 900px; margin-left: auto; margin-right: auto; }
   .hero h1 span { background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .hero p { font-size: 20px; color: #A0A0B0; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+  .hero p { font-size: 20px; color: #A0A0B0; max-width: 700px; margin: 0 auto; line-height: 1.6; }
   
   .section { padding: 80px 0; }
   .section-label { font-size: 13px; font-weight: 700; color: #6C5CE7; letter-spacing: 3px; margin-bottom: 16px; text-transform: uppercase; }
   .section-title { font-size: 48px; margin-bottom: 24px; max-width: 800px; }
   .section-subtitle { font-size: 18px; color: #A0A0B0; max-width: 600px; line-height: 1.6; margin-bottom: 48px; }
   
-  .filter-tabs { display: flex; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; justify-content: center; }
-  .filter-tab { padding: 10px 20px; background: transparent; border: 1px solid #27272a; border-radius: 100px; color: #A0A0B0; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-  .filter-tab:hover { border-color: #6C5CE7; color: #fff; }
-  .filter-tab.active { background: #6C5CE7; border-color: #6C5CE7; color: #fff; }
-  
   .examples-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
   .example-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; overflow: hidden; transition: all 0.3s; }
-  .example-card:hover { border-color: #6C5CE7; transform: translateY(-4px); box-shadow: 0 10px 40px rgba(108, 92, 231, 0.15); }
-  .example-preview { height: 280px; background: linear-gradient(135deg, #1a1a2e, #16213e); display: flex; align-items: center; justify-content: center; font-size: 80px; position: relative; }
-  .example-tag { position: absolute; top: 16px; left: 16px; background: rgba(108, 92, 231, 0.2); color: #A29BFE; padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 600; border: 1px solid rgba(108, 92, 231, 0.3); }
-  .example-type { position: absolute; top: 16px; right: 16px; background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 600; border: 1px solid rgba(16, 185, 129, 0.3); }
+  .example-card:hover { border-color: #6C5CE7; transform: translateY(-4px); box-shadow: 0 20px 40px rgba(108, 92, 231, 0.15); }
+  .example-preview { height: 200px; background: linear-gradient(135deg, #1a1a2e, #16213e); display: flex; align-items: center; justify-content: center; font-size: 64px; position: relative; }
+  .example-play { position: absolute; width: 60px; height: 60px; background: rgba(108, 92, 231, 0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+  .example-badge { position: absolute; top: 12px; left: 12px; background: #6C5CE7; color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; }
   .example-info { padding: 24px; }
-  .example-info h3 { font-size: 20px; margin-bottom: 8px; }
-  .example-info p { color: #A0A0B0; font-size: 14px; margin-bottom: 12px; }
-  .example-meta { display: flex; gap: 16px; font-size: 13px; color: #666; }
-  .example-stats { display: flex; gap: 20px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #1f1f2e; }
-  .example-stat { text-align: center; }
-  .example-stat-value { font-size: 20px; font-weight: 700; color: #6C5CE7; font-family: 'Manrope'; }
-  .example-stat-label { font-size: 11px; color: #A0A0B0; margin-top: 2px; }
+  .example-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .example-desc { color: #A0A0B0; font-size: 14px; line-height: 1.5; margin-bottom: 16px; }
+  .example-meta { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #666; }
+  .example-stats { display: flex; gap: 12px; }
   
-  .categories-section { background: #0d0d14; }
-  .categories-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 48px; }
-  .category-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 16px; padding: 32px 24px; text-align: center; transition: all 0.2s; cursor: pointer; }
-  .category-card:hover { border-color: #6C5CE7; background: rgba(108, 92, 231, 0.05); transform: translateY(-2px); }
-  .category-icon { font-size: 48px; margin-bottom: 12px; }
-  .category-name { font-weight: 600; font-size: 16px; margin-bottom: 4px; }
-  .category-count { font-size: 13px; color: #A0A0B0; }
+  .case-study { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; padding: 40px; margin-bottom: 24px; }
+  .case-study-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 20px; }
+  .case-study-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+  .case-study-company { color: #6C5CE7; font-size: 14px; font-weight: 600; }
+  .case-study-results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 24px; }
+  .case-result { text-align: center; padding: 20px; background: rgba(108, 92, 231, 0.05); border-radius: 12px; border: 1px solid rgba(108, 92, 231, 0.2); }
+  .case-result-value { font-size: 32px; font-weight: 800; font-family: 'Manrope'; color: #6C5CE7; margin-bottom: 4px; }
+  .case-result-label { font-size: 13px; color: #A0A0B0; }
+  .case-study-text { color: #A0A0B0; font-size: 15px; line-height: 1.7; }
   
   .cta-section { text-align: center; padding: 100px 0; background: linear-gradient(180deg, transparent, rgba(108, 92, 231, 0.05)); }
   .cta-section h2 { font-size: 48px; margin-bottom: 24px; }
@@ -83,7 +81,7 @@
   
   footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
   
-  .burger { display: none; flex-direction: column; gap: 5px; background: transparent; border: none; cursor: pointer; padding: 8px; z-index: 1001; }
+  .burger { display: none; flex-direction: column; gap: 5px; background: transparent; border: none; cursor: pointer; padding: 8px; }
   .burger span { display: block; width: 24px; height: 2px; background: #fff; transition: all 0.3s; border-radius: 2px; }
   .burger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .burger.active span:nth-child(2) { opacity: 0; }
@@ -92,18 +90,17 @@
   .mobile-menu.active { display: flex; }
   .mobile-menu a { display: block; padding: 16px; color: #fff; text-decoration: none; font-size: 18px; border-radius: 8px; text-align: center; }
   .mobile-menu a:hover { background: rgba(108, 92, 231, 0.15); }
-  .btn-nav-mobile { background: linear-gradient(135deg, #6C5CE7, #A29BFE) !important; font-weight: 700 !important; }
   
   @media (max-width: 768px) {
     .nav-links { display: none !important; }
     .burger { display: flex !important; }
-    .hero { padding: 60px 0 40px; }
     .hero h1 { font-size: 36px !important; }
     .hero p { font-size: 16px; }
     .section { padding: 60px 0; }
     .section-title { font-size: 32px !important; }
     .examples-grid { grid-template-columns: 1fr !important; }
-    .categories-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .case-study-results { grid-template-columns: 1fr !important; }
+    .cta-section h2 { font-size: 32px !important; }
   }
 </style>
 </head>
@@ -112,9 +109,8 @@
 <nav>
   <a href="index.html" class="logo">Cliply</a>
   <div class="nav-links">
-    <a href="index.html">Главная</a>
     <a href="features.html">Возможности</a>
-    <a href="examples.html" style="color: #fff;">Примеры</a>
+    <a href="examples.html" class="active">Примеры</a>
     <a href="gallery.html">Галерея</a>
     <a href="about.html">О нас</a>
     <a href="index.html#pricing">Тарифы</a>
@@ -129,7 +125,6 @@
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="index.html">Главная</a>
   <a href="features.html">Возможности</a>
   <a href="examples.html" style="color: #6C5CE7;">Примеры</a>
   <a href="gallery.html">Галерея</a>
@@ -138,249 +133,192 @@
   <a href="faq.html">FAQ</a>
   <a href="contacts.html">Контакты</a>
   <a href="login.html" id="mobileAuthBtn">Войти</a>
-  <a href="login.html" class="btn-nav-mobile">Попробовать бесплатно</a>
+  <a href="login.html" class="btn-nav-mobile" style="background: linear-gradient(135deg, #6C5CE7, #A29BFE) !important; font-weight: 700 !important;">Попробовать бесплатно</a>
 </div>
 
 <section class="hero animate-fade-in">
   <div class="container">
-    <div class="hero-label">04 / ПРИМЕРЫ</div>
-    <h1>Реальные видео, <span>реальные результаты</span></h1>
-    <p>Посмотрите, что создают селлеры на Cliply. Каждое видео — за 2 минуты, без видеографа и монтажёра.</p>
+    <div class="hero-badge">ПРИМЕРЫ РАБОТ</div>
+    <h1>Реальные видео <span>реальных селлеров</span></h1>
+    <p>Посмотрите, как Cliply помогает предпринимателям увеличивать продажи на маркетплейсах.</p>
+  </div>
+</section>
+
+<section class="section" style="background: #0d0d14;">
+  <div class="container">
+    <div class="section-label animate-fade-in">КЕЙСЫ</div>
+    <h2 class="section-title animate-slide-up">Истории успеха</h2>
+    <p class="section-subtitle animate-slide-up delay-1">Реальные результаты наших пользователей.</p>
+    
+    <div class="case-study animate-scale-in">
+      <div class="case-study-header">
+        <div>
+          <div class="case-study-title">Косметика "BeautyLab"</div>
+          <div class="case-study-company">Категория: Косметика и уход</div>
+        </div>
+        <div style="background: rgba(108, 92, 231, 0.15); padding: 8px 16px; border-radius: 100px; font-size: 13px; color: #6C5CE7; font-weight: 600;">Wildberries</div>
+      </div>
+      <div class="case-study-results">
+        <div class="case-result">
+          <div class="case-result-value">+47%</div>
+          <div class="case-result-label">Рост конверсии</div>
+        </div>
+        <div class="case-result">
+          <div class="case-result-value">×3.2</div>
+          <div class="case-result-label">Увеличение продаж</div>
+        </div>
+        <div class="case-result">
+          <div class="case-result-value">2 дня</div>
+          <div class="case-result-label">Время создания</div>
+        </div>
+      </div>
+      <div class="case-study-text">
+        "Раньше мы заказывали видео у продакшн-студии за 50 000 ₽ и ждали 2 недели. С Cliply мы создали 15 видео за месяц, потратив всего 3 часа своего времени. Конверсия карточек выросла на 47%, а продажи утроились."
+      </div>
+    </div>
+    
+    <div class="case-study animate-scale-in delay-1">
+      <div class="case-study-header">
+        <div>
+          <div class="case-study-title">Электроника "TechPro"</div>
+          <div class="case-study-company">Категория: Электроника и гаджеты</div>
+        </div>
+        <div style="background: rgba(108, 92, 231, 0.15); padding: 8px 16px; border-radius: 100px; font-size: 13px; color: #6C5CE7; font-weight: 600;">Ozon</div>
+      </div>
+      <div class="case-study-results">
+        <div class="case-result">
+          <div class="case-result-value">+62%</div>
+          <div class="case-result-label">Рост конверсии</div>
+        </div>
+        <div class="case-result">
+          <div class="case-result-value">×4.5</div>
+          <div class="case-result-label">Увеличение продаж</div>
+        </div>
+        <div class="case-result">
+          <div class="case-result-value">5 часов</div>
+          <div class="case-result-label">Время создания 20 видео</div>
+        </div>
+      </div>
+      <div class="case-study-text">
+        "Мы тестируем разные форматы видео для каждого товара. Cliply позволяет быстро генерировать варианты и смотреть, какой работает лучше. За месяц создали 20 видео, охватили весь ассортимент."
+      </div>
+    </div>
   </div>
 </section>
 
 <section class="section">
   <div class="container">
-    <div class="filter-tabs animate-slide-up" id="filterTabs">
-      <button class="filter-tab active" data-filter="all">Все</button>
-      <button class="filter-tab" data-filter="cosmetics">Косметика</button>
-      <button class="filter-tab" data-filter="electronics">Электроника</button>
-      <button class="filter-tab" data-filter="clothing">Одежда</button>
-      <button class="filter-tab" data-filter="home">Для дома</button>
-      <button class="filter-tab" data-filter="health">Здоровье</button>
-      <button class="filter-tab" data-filter="sport">Спорт</button>
-    </div>
+    <div class="section-label animate-fade-in">ПРИМЕРЫ ВИДЕО</div>
+    <h2 class="section-title animate-slide-up">Что можно создать</h2>
+    <p class="section-subtitle animate-slide-up delay-1">Разные форматы под разные задачи.</p>
     
-    <div class="examples-grid" id="examplesGrid">
-      <div class="example-card animate-scale-in delay-1" data-category="cosmetics">
-        <div class="example-preview"><span class="example-tag">15 сек</span><span class="example-type">Обзор</span></div>
+    <div class="examples-grid">
+      <div class="example-card animate-slide-up delay-1">
+        <div class="example-preview">
+          <div class="example-play">▶</div>
+          <div class="example-badge">Обзор</div>
+        </div>
         <div class="example-info">
-          <h3>Увлажняющий крем</h3>
-          <p>Премиальная косметика для лица. Показ текстуры и нанесения.</p>
-          <div class="example-meta"><span>🎵 Энергичная</span><span>✨ Премиум стиль</span></div>
-          <div class="example-stats">
-            <div class="example-stat">
-              <div class="example-stat-value">+47%</div>
-              <div class="example-stat-label">Конверсия</div>
-            </div>
-            <div class="example-stat">
-              <div class="example-stat-value">2.3x</div>
-              <div class="example-stat-label">Продажи</div>
+          <div class="example-title">Крем для лица увлажняющий</div>
+          <div class="example-desc">Показ текстуры, нанесения и результата. Акцент на натуральном составе.</div>
+          <div class="example-meta">
+            <span>15 сек</span>
+            <div class="example-stats">
+              <span>❤️ 234</span>
+              <span>👁 1.2K</span>
             </div>
           </div>
         </div>
       </div>
       
-      <div class="example-card animate-scale-in delay-2" data-category="electronics">
-        <div class="example-preview">🎧<span class="example-tag">20 сек</span><span class="example-type">Обзор</span></div>
+      <div class="example-card animate-slide-up delay-2">
+        <div class="example-preview">
+          <div class="example-play">▶</div>
+          <div class="example-badge">3 причины</div>
+        </div>
         <div class="example-info">
-          <h3>Беспроводные наушники</h3>
-          <p>Технические характеристики и преимущества в динамичном ролике.</p>
-          <div class="example-meta"><span>🎵 Современная</span><span> Техно стиль</span></div>
-          <div class="example-stats">
-            <div class="example-stat">
-              <div class="example-stat-value">+52%</div>
-              <div class="example-stat-label">Конверсия</div>
-            </div>
-            <div class="example-stat">
-              <div class="example-stat-value">3.1x</div>
-              <div class="example-stat-label">Продажи</div>
+          <div class="example-title">Беспроводные наушники Pro</div>
+          <div class="example-desc">Три ключевых преимущества: звук, батарея, комфорт. Динамичный монтаж.</div>
+          <div class="example-meta">
+            <span>20 сек</span>
+            <div class="example-stats">
+              <span>❤️ 456</span>
+              <span>👁 2.8K</span>
             </div>
           </div>
         </div>
       </div>
       
-      <div class="example-card animate-scale-in delay-3" data-category="clothing">
-        <div class="example-preview">👕<span class="example-tag">15 сек</span><span class="example-type">Lifestyle</span></div>
+      <div class="example-card animate-slide-up delay-3">
+        <div class="example-preview">
+          <div class="example-play">▶</div>
+          <div class="example-badge">Распаковка</div>
+        </div>
         <div class="example-info">
-          <h3>Мужская футболка</h3>
-          <p>Показ посадки и качества ткани в lifestyle-формате.</p>
-          <div class="example-meta"><span>🎵 Стильная</span><span>🎯 Lifestyle</span></div>
-          <div class="example-stats">
-            <div class="example-stat">
-              <div class="example-stat-value">+38%</div>
-              <div class="example-stat-label">Конверсия</div>
-            </div>
-            <div class="example-stat">
-              <div class="example-stat-value">2.1x</div>
-              <div class="example-stat-label">Продажи</div>
+          <div class="example-title">Смарт-часы FitWatch</div>
+          <div class="example-desc">Эффект присутствия. ASMR-звуки, детальный показ комплектации.</div>
+          <div class="example-meta">
+            <span>25 сек</span>
+            <div class="example-stats">
+              <span>❤️ 678</span>
+              <span>👁 3.5K</span>
             </div>
           </div>
         </div>
       </div>
       
-      <div class="example-card animate-scale-in delay-4" data-category="home">
-        <div class="example-preview">🏠<span class="example-tag">25 сек</span><span class="example-type">Распаковка</span></div>
+      <div class="example-card animate-slide-up delay-4">
+        <div class="example-preview">
+          <div class="example-play">▶</div>
+          <div class="example-badge">Проблема→Решение</div>
+        </div>
         <div class="example-info">
-          <h3>Органайзер для кухни</h3>
-          <p>Распаковка и демонстрация функциональности в интерьере.</p>
-          <div class="example-meta"><span>🎵 Спокойная</span><span>🎁 Распаковка</span></div>
-          <div class="example-stats">
-            <div class="example-stat">
-              <div class="example-stat-value">+41%</div>
-              <div class="example-stat-label">Конверсия</div>
-            </div>
-            <div class="example-stat">
-              <div class="example-stat-value">2.5x</div>
-              <div class="example-stat-label">Продажи</div>
+          <div class="example-title">Ортопедическая подушка</div>
+          <div class="example-desc">Показ проблемы (боль в шее) и решения (подушка). Эмоциональный сторителлинг.</div>
+          <div class="example-meta">
+            <span>30 сек</span>
+            <div class="example-stats">
+              <span>❤️ 890</span>
+              <span>👁 4.2K</span>
             </div>
           </div>
         </div>
       </div>
       
-      <div class="example-card animate-scale-in delay-5" data-category="health">
-        <div class="example-preview">💊<span class="example-tag">20 сек</span><span class="example-type">Отзыв</span></div>
+      <div class="example-card animate-slide-up delay-5">
+        <div class="example-preview">
+          <div class="example-play">▶</div>
+          <div class="example-badge">Отзыв</div>
+        </div>
         <div class="example-info">
-          <h3>Омега-3 капсулы</h3>
-          <p>Доверительный формат с акцентом на пользу для здоровья.</p>
-          <div class="example-meta"><span>🎵 Доверительная</span><span>⭐ Отзыв</span></div>
-          <div class="example-stats">
-            <div class="example-stat">
-              <div class="example-stat-value">+35%</div>
-              <div class="example-stat-label">Конверсия</div>
-            </div>
-            <div class="example-stat">
-              <div class="example-stat-value">1.9x</div>
-              <div class="example-stat-label">Продажи</div>
+          <div class="example-title">Протеин спортивный</div>
+          <div class="example-desc">Формат "друг рекомендует". Реальный покупатель рассказывает о результатах.</div>
+          <div class="example-meta">
+            <span>18 сек</span>
+            <div class="example-stats">
+              <span>❤️ 345</span>
+              <span>👁 1.8K</span>
             </div>
           </div>
         </div>
       </div>
       
-      <div class="example-card animate-scale-in delay-6" data-category="sport">
-        <div class="example-preview">⚽<span class="example-tag">15 сек</span><span class="example-type">Продающее</span></div>
+      <div class="example-card animate-slide-up delay-6">
+        <div class="example-preview">
+          <div class="example-play">▶</div>
+          <div class="example-badge">Сравнение</div>
+        </div>
         <div class="example-info">
-          <h3>Фитнес-резинки</h3>
-          <p>Энергичный ролик с демонстрацией упражнений.</p>
-          <div class="example-meta"><span> Энергичная</span><span> Продающее</span></div>
-          <div class="example-stats">
-            <div class="example-stat">
-              <div class="example-stat-value">+44%</div>
-              <div class="example-stat-label">Конверсия</div>
-            </div>
-            <div class="example-stat">
-              <div class="example-stat-value">2.4x</div>
-              <div class="example-stat-label">Продажи</div>
+          <div class="example-title">Фитнес-браслет vs Часы</div>
+          <div class="example-desc">Наглядное сравнение функций, цены и удобства. Инфографика и титры.</div>
+          <div class="example-meta">
+            <span>35 сек</span>
+            <div class="example-stats">
+              <span>❤️ 567</span>
+              <span>👁 2.9K</span>
             </div>
           </div>
         </div>
-      </div>
-      
-      <div class="example-card animate-scale-in delay-1" data-category="cosmetics">
-        <div class="example-preview">💅<span class="example-tag">18 сек</span><span class="example-type">3 причины</span></div>
-        <div class="example-info">
-          <h3>Лак для ногтей</h3>
-          <p>Три ключевых преимущества в формате "3 причины купить".</p>
-          <div class="example-meta"><span>🎵 Яркая</span><span>🎯 Продающее</span></div>
-          <div class="example-stats">
-            <div class="example-stat">
-              <div class="example-stat-value">+39%</div>
-              <div class="example-stat-label">Конверсия</div>
-            </div>
-            <div class="example-stat">
-              <div class="example-stat-value">2.2x</div>
-              <div class="example-stat-label">Продажи</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="example-card animate-scale-in delay-2" data-category="electronics">
-        <div class="example-preview">📱<span class="example-tag">22 сек</span><span class="example-type">Сравнение</span></div>
-        <div class="example-info">
-          <h3>Смарт-часы</h3>
-          <p>Сравнение с аналогами и демонстрация уникальных функций.</p>
-          <div class="example-meta"><span>🎵 Технологичная</span><span>⚖️ Сравнение</span></div>
-          <div class="example-stats">
-            <div class="example-stat">
-              <div class="example-stat-value">+56%</div>
-              <div class="example-stat-label">Конверсия</div>
-            </div>
-            <div class="example-stat">
-              <div class="example-stat-value">3.4x</div>
-              <div class="example-stat-label">Продажи</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="example-card animate-scale-in delay-3" data-category="home">
-        <div class="example-preview">🛋️<span class="example-tag">20 сек</span><span class="example-type">Проблема→Решение</span></div>
-        <div class="example-info">
-          <h3>Ортопедическая подушка</h3>
-          <p>Формат "проблема-решение" с акцентом на комфорт сна.</p>
-          <div class="example-meta"><span> Спокойная</span><span>⚡ Решение</span></div>
-          <div class="example-stats">
-            <div class="example-stat">
-              <div class="example-stat-value">+48%</div>
-              <div class="example-stat-label">Конверсия</div>
-            </div>
-            <div class="example-stat">
-              <div class="example-stat-value">2.8x</div>
-              <div class="example-stat-label">Продажи</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section categories-section">
-  <div class="container">
-    <div class="section-label animate-fade-in">КАТЕГОРИИ</div>
-    <h2 class="section-title animate-slide-up">Работает с любыми товарами</h2>
-    <p class="section-subtitle animate-slide-up delay-1">Выберите свою категорию — мы подберём идеальный стиль и сценарий.</p>
-    <div class="categories-grid">
-      <div class="category-card animate-scale-in delay-1">
-        <div class="category-icon"></div>
-        <div class="category-name">Одежда</div>
-        <div class="category-count">1,247 видео</div>
-      </div>
-      <div class="category-card animate-scale-in delay-2">
-        <div class="category-icon">💄</div>
-        <div class="category-name">Косметика</div>
-        <div class="category-count">892 видео</div>
-      </div>
-      <div class="category-card animate-scale-in delay-3">
-        <div class="category-icon">📱</div>
-        <div class="category-name">Электроника</div>
-        <div class="category-count">1,534 видео</div>
-      </div>
-      <div class="category-card animate-scale-in delay-4">
-        <div class="category-icon">🏠</div>
-        <div class="category-name">Для дома</div>
-        <div class="category-count">723 видео</div>
-      </div>
-      <div class="category-card animate-scale-in delay-5">
-        <div class="category-icon">💊</div>
-        <div class="category-name">Здоровье</div>
-        <div class="category-count">456 видео</div>
-      </div>
-      <div class="category-card animate-scale-in delay-6">
-        <div class="category-icon">⚽</div>
-        <div class="category-name">Спорт</div>
-        <div class="category-count">389 видео</div>
-      </div>
-      <div class="category-card animate-scale-in delay-1">
-        <div class="category-icon">🍫</div>
-        <div class="category-name">Еда</div>
-        <div class="category-count">267 видео</div>
-      </div>
-      <div class="category-card animate-scale-in delay-2">
-        <div class="category-icon">🧸</div>
-        <div class="category-name">Детские</div>
-        <div class="category-count">512 видео</div>
       </div>
     </div>
   </div>
@@ -388,9 +326,9 @@
 
 <section class="cta-section animate-fade-in">
   <div class="container">
-    <h2>Создайте своё видео</h2>
-    <p>3 видео бесплатно. Без карты. Без обязательств. Убедитесь сами, что Cliply работает.</p>
-    <a href="login.html" class="btn-primary">Создать первое видео →</a>
+    <h2>Создайте своё первое видео</h2>
+    <p>3 видео бесплатно. Без карты. Без обязательств.</p>
+    <a href="login.html" class="btn-primary">Начать бесплатно →</a>
   </div>
 </section>
 
@@ -403,7 +341,6 @@
 <script>
 const burgerBtn = document.getElementById('burgerBtn');
 const mobileMenu = document.getElementById('mobileMenu');
-const mobileAuthBtn = document.getElementById('mobileAuthBtn');
 
 if (burgerBtn && mobileMenu) {
   burgerBtn.addEventListener('click', () => {
@@ -420,37 +357,13 @@ if (burgerBtn && mobileMenu) {
   });
 }
 
-// Фильтрация примеров
-const filterTabs = document.querySelectorAll('.filter-tab');
-const exampleCards = document.querySelectorAll('.example-card');
-
-filterTabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    filterTabs.forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    
-    const filter = tab.dataset.filter;
-    
-    exampleCards.forEach(card => {
-      if (filter === 'all' || card.dataset.category === filter) {
-        card.style.display = 'block';
-        // Перезапускаем анимацию при фильтрации
-        card.classList.remove('visible');
-        setTimeout(() => card.classList.add('visible'), 50);
-      } else {
-        card.style.display = 'none';
-        card.classList.remove('visible');
-      }
-    });
-  });
-});
-
 (async () => {
   const user = await getCurrentUser();
   const btn = document.getElementById('navAuthBtn');
   if (user && btn) {
     btn.textContent = 'Дашборд';
     btn.href = 'dashboard.html';
+    const mobileAuthBtn = document.getElementById('mobileAuthBtn');
     if (mobileAuthBtn) { mobileAuthBtn.textContent = 'Дашборд'; mobileAuthBtn.href = 'dashboard.html'; }
   }
 })();
@@ -462,9 +375,7 @@ filterTabs.forEach(tab => {
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.getRegistrations().then(registrations => {
-      for (let registration of registrations) {
-        registration.update();
-      }
+      for (let registration of registrations) { registration.update(); }
     });
   });
 }
