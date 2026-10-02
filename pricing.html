@@ -5,7 +5,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <title>Тарифы Cliply — выберите подходящий план</title>
-<meta name="description" content="Тарифы Cliply: Starter, Pro, Agency. Начните бесплатно с 3 видео.">
+<meta name="description" content="Тарифы Cliply: Starter, Pro и Agency. Начните бесплатно с 3 видео. Масштабируйтесь, когда увидите результат.">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#6C5CE7">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
 <link rel="stylesheet" href="mobile.css">
+<link rel="stylesheet" href="scroll-animations.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; line-height: 1.6; }
@@ -36,24 +37,42 @@
   .nav-btn-cta:hover { box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   
   .hero { padding: 100px 0 60px; text-align: center; }
-  .hero-label { font-size: 13px; font-weight: 700; color: #6C5CE7; letter-spacing: 3px; margin-bottom: 16px; text-transform: uppercase; }
+  .hero-badge { display: inline-block; background: rgba(108, 92, 231, 0.15); color: #A29BFE; padding: 8px 20px; border-radius: 100px; font-size: 13px; font-weight: 600; margin-bottom: 32px; border: 1px solid rgba(108, 92, 231, 0.3); letter-spacing: 2px; }
   .hero h1 { font-size: 64px; margin-bottom: 24px; max-width: 900px; margin-left: auto; margin-right: auto; }
   .hero h1 span { background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   .hero p { font-size: 20px; color: #A0A0B0; max-width: 600px; margin: 0 auto; line-height: 1.6; }
   
+  .pricing-toggle { display: flex; justify-content: center; align-items: center; gap: 16px; margin: 40px 0; }
+  .pricing-toggle-label { font-size: 14px; color: #A0A0B0; }
+  .pricing-toggle-label.active { color: #fff; font-weight: 600; }
+  .toggle-switch { position: relative; width: 56px; height: 28px; cursor: pointer; }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #27272a; border-radius: 100px; transition: 0.3s; }
+  .toggle-slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: 0.3s; }
+  .toggle-switch input:checked + .toggle-slider { background: #6C5CE7; }
+  .toggle-switch input:checked + .toggle-slider:before { transform: translateX(28px); }
+  .save-badge { background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 4px 10px; border-radius: 100px; font-size: 12px; font-weight: 600; border: 1px solid rgba(16, 185, 129, 0.3); }
+  
   .section { padding: 80px 0; }
+  .section-label { font-size: 13px; font-weight: 700; color: #6C5CE7; letter-spacing: 3px; margin-bottom: 16px; text-transform: uppercase; text-align: center; }
   
   .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
-  .pricing-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; padding: 40px 32px; transition: all 0.3s; display: flex; flex-direction: column; }
+  .pricing-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; padding: 40px 32px; transition: all 0.3s; display: flex; flex-direction: column; position: relative; }
   .pricing-card:hover { transform: translateY(-4px); }
-  .pricing-card.popular { border-color: #6C5CE7; background: rgba(108, 92, 231, 0.05); position: relative; box-shadow: 0 0 40px rgba(108, 92, 231, 0.15); }
-  .pricing-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #6C5CE7; color: #fff; padding: 6px 16px; border-radius: 100px; font-size: 12px; font-weight: 700; }
+  .pricing-card.popular { border-color: #6C5CE7; background: rgba(108, 92, 231, 0.05); box-shadow: 0 0 40px rgba(108, 92, 231, 0.15); }
+  .pricing-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 6px 16px; border-radius: 100px; font-size: 12px; font-weight: 700; }
   .pricing-name { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
-  .pricing-price { font-size: 48px; font-weight: 800; font-family: 'Manrope'; margin: 16px 0; }
-  .pricing-price span { font-size: 16px; color: #A0A0B0; font-weight: 400; }
+  .pricing-desc { font-size: 14px; color: #A0A0B0; margin-bottom: 24px; min-height: 40px; }
+  .pricing-price { font-size: 48px; font-weight: 800; font-family: 'Manrope'; margin: 16px 0; display: flex; align-items: baseline; gap: 4px; }
+  .pricing-price .currency { font-size: 24px; }
+  .pricing-price .period { font-size: 16px; color: #A0A0B0; font-weight: 400; }
+  .pricing-old-price { font-size: 14px; color: #666; text-decoration: line-through; margin-top: -8px; margin-bottom: 16px; }
   .pricing-features { list-style: none; margin: 24px 0; flex-grow: 1; }
-  .pricing-features li { padding: 12px 0; border-bottom: 1px solid #1f1f2e; color: #A0A0B0; font-size: 15px; }
-  .pricing-features li:before { content: "✓ "; color: #6C5CE7; font-weight: 700; }
+  .pricing-features li { padding: 10px 0; color: #A0A0B0; font-size: 14px; display: flex; align-items: flex-start; gap: 10px; border-bottom: 1px solid #1f1f2e; }
+  .pricing-features li:last-child { border-bottom: none; }
+  .pricing-features li:before { content: "✓"; color: #6C5CE7; font-weight: 700; flex-shrink: 0; }
+  .pricing-features li.disabled { opacity: 0.4; }
+  .pricing-features li.disabled:before { content: "×"; color: #666; }
   .pricing-btn { width: 100%; padding: 14px; border-radius: 12px; border: none; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none; text-align: center; display: block; margin-top: auto; }
   .pricing-btn-primary { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   .pricing-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
@@ -62,24 +81,27 @@
   
   .comparison-section { background: #0d0d14; }
   .comparison-table { width: 100%; border-collapse: collapse; margin-top: 48px; background: #141414; border-radius: 16px; overflow: hidden; border: 1px solid #1f1f2e; }
-  .comparison-table th, .comparison-table td { padding: 16px 24px; text-align: left; border-bottom: 1px solid #1f1f2e; }
-  .comparison-table th { background: #1a1a24; color: #A0A0B0; font-weight: 600; font-size: 14px; }
-  .comparison-table td { color: #fff; font-size: 15px; }
+  .comparison-table th, .comparison-table td { padding: 16px 20px; text-align: left; border-bottom: 1px solid #1f1f2e; }
+  .comparison-table th { background: #1a1a24; font-size: 14px; font-weight: 600; color: #A0A0B0; }
+  .comparison-table th:first-child { width: 40%; }
+  .comparison-table td { font-size: 14px; color: #fff; }
+  .comparison-table td:first-child { color: #A0A0B0; }
   .comparison-table tr:last-child td { border-bottom: none; }
   .check-yes { color: #10b981; font-weight: 700; }
   .check-no { color: #666; }
+  .check-limit { color: #A29BFE; font-weight: 600; }
   
   .faq-section { padding: 80px 0; }
   .faq-list { max-width: 800px; margin: 48px auto 0; }
   .faq-item { border-bottom: 1px solid #1f1f2e; }
   .faq-question { padding: 24px 0; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: color 0.2s; }
   .faq-question:hover { color: #A29BFE; }
-  .faq-question-text { flex: 1; font-size: 17px; font-weight: 600; }
-  .faq-toggle { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #27272a; display: flex; align-items: center; justify-content: center; transition: all 0.3s; flex-shrink: 0; color: #A0A0B0; }
+  .faq-question-text { flex: 1; font-size: 16px; font-weight: 600; }
+  .faq-toggle { width: 28px; height: 28px; border-radius: 50%; border: 1px solid #27272a; display: flex; align-items: center; justify-content: center; transition: all 0.3s; flex-shrink: 0; color: #A0A0B0; font-size: 18px; }
   .faq-item.active .faq-toggle { background: #6C5CE7; border-color: #6C5CE7; color: #fff; transform: rotate(45deg); }
   .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; }
   .faq-item.active .faq-answer { max-height: 300px; padding-bottom: 24px; }
-  .faq-answer p { color: #A0A0B0; font-size: 15px; line-height: 1.6; padding-left: 0; }
+  .faq-answer p { color: #A0A0B0; font-size: 15px; line-height: 1.6; }
   
   .cta-section { text-align: center; padding: 100px 0; background: linear-gradient(180deg, transparent, rgba(108, 92, 231, 0.05)); }
   .cta-section h2 { font-size: 48px; margin-bottom: 24px; }
@@ -108,8 +130,9 @@
     .hero p { font-size: 16px; }
     .section { padding: 60px 0; }
     .pricing-grid { grid-template-columns: 1fr !important; }
-    .comparison-table { font-size: 13px; }
-    .comparison-table th, .comparison-table td { padding: 12px 16px; }
+    .comparison-table { font-size: 12px; }
+    .comparison-table th, .comparison-table td { padding: 12px 10px; }
+    .cta-section h2 { font-size: 32px !important; }
   }
 </style>
 </head>
@@ -118,10 +141,13 @@
 <nav>
   <a href="index.html" class="logo">Cliply</a>
   <div class="nav-links">
-    <a href="index.html">Главная</a>
     <a href="features.html">Возможности</a>
+    <a href="examples.html">Примеры</a>
+    <a href="gallery.html">Галерея</a>
+    <a href="about.html">О нас</a>
     <a href="pricing.html" style="color: #fff;">Тарифы</a>
     <a href="faq.html">FAQ</a>
+    <a href="contacts.html">Контакты</a>
     <a href="login.html" class="nav-btn-login" id="navAuthBtn">Войти</a>
     <a href="login.html" class="nav-btn-cta">Попробовать</a>
   </div>
@@ -131,66 +157,103 @@
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="index.html">Главная</a>
   <a href="features.html">Возможности</a>
+  <a href="examples.html">Примеры</a>
+  <a href="gallery.html">Галерея</a>
+  <a href="about.html">О нас</a>
   <a href="pricing.html" style="color: #6C5CE7;">Тарифы</a>
   <a href="faq.html">FAQ</a>
+  <a href="contacts.html">Контакты</a>
   <a href="login.html" id="mobileAuthBtn">Войти</a>
   <a href="login.html" class="btn-nav-mobile">Попробовать бесплатно</a>
 </div>
 
-<section class="hero">
+<section class="hero animate-fade-in">
   <div class="container">
-    <div class="hero-label">09 / ТАРИФЫ</div>
-    <h1>Начните бесплатно. <span>Масштабируйтесь</span>, когда увидите результат.</h1>
-    <p>3 видео бесплатно. Без карты. Без обязательств. Платите только за то, что используете.</p>
+    <div class="hero-badge">ТАРИФЫ</div>
+    <h1>Простые и честные <span>цены</span></h1>
+    <p>Начните бесплатно с 3 видео. Масштабируйтесь, когда увидите результат. Без скрытых платежей.</p>
+    
+    <div class="pricing-toggle animate-slide-up">
+      <span class="pricing-toggle-label active" id="monthlyLabel">Ежемесячно</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="billingToggle">
+        <span class="toggle-slider"></span>
+      </label>
+      <span class="pricing-toggle-label" id="yearlyLabel">Ежегодно</span>
+      <span class="save-badge">-20%</span>
+    </div>
   </div>
 </section>
 
 <section class="section">
   <div class="container">
     <div class="pricing-grid">
-      <div class="pricing-card">
+      <div class="pricing-card animate-scale-in delay-1">
         <div class="pricing-name">Starter</div>
-        <div class="pricing-price">2 990 ₽<span>/мес</span></div>
+        <div class="pricing-desc">Для начинающих селлеров, которые хотят попробовать AI-видео</div>
+        <div class="pricing-price">
+          <span class="currency">₽</span>
+          <span class="price-value" data-monthly="2990" data-yearly="2390">2 990</span>
+          <span class="period">/мес</span>
+        </div>
+        <div class="pricing-old-price yearly-price" style="display: none;">35 880 ₽/год</div>
         <ul class="pricing-features">
           <li>30 видео в месяц</li>
           <li>5 шаблонов сценариев</li>
           <li>HD качество (720p)</li>
           <li>Базовая поддержка</li>
-          <li>Экспорт в MP4</li>
-          <li>Формат 9:16</li>
+          <li>Экспорт в 9:16 и 1:1</li>
+          <li class="disabled">AI-улучшение промпта</li>
+          <li class="disabled">Приоритетная генерация</li>
+          <li class="disabled">API доступ</li>
         </ul>
-        <a href="login.html" class="pricing-btn pricing-btn-secondary">Начать</a>
+        <a href="login.html" class="pricing-btn pricing-btn-secondary">Начать бесплатно</a>
       </div>
-      <div class="pricing-card popular">
+      
+      <div class="pricing-card popular animate-scale-in delay-2">
         <div class="pricing-badge">Популярный</div>
         <div class="pricing-name">Pro</div>
-        <div class="pricing-price">7 990 ₽<span>/мес</span></div>
+        <div class="pricing-desc">Для активных селлеров с большим ассортиментом</div>
+        <div class="pricing-price">
+          <span class="currency">₽</span>
+          <span class="price-value" data-monthly="7990" data-yearly="6390">7 990</span>
+          <span class="period">/мес</span>
+        </div>
+        <div class="pricing-old-price yearly-price" style="display: none;">95 880 ₽/год</div>
         <ul class="pricing-features">
           <li>100 видео в месяц</li>
-          <li>Все шаблоны + AI-функции</li>
+          <li>Все 6 шаблонов сценариев</li>
           <li>Full HD качество (1080p)</li>
           <li>Приоритетная поддержка</li>
-          <li>API доступ</li>
-          <li>AI-озвучка</li>
-          <li>Все форматы (9:16, 1:1, 16:9)</li>
+          <li>Все форматы экспорта</li>
+          <li>AI-улучшение промпта</li>
+          <li>Приоритетная генерация</li>
+          <li class="disabled">API доступ</li>
         </ul>
-        <a href="login.html" class="pricing-btn pricing-btn-primary">Начать</a>
+        <a href="login.html" class="pricing-btn pricing-btn-primary">Выбрать Pro</a>
       </div>
-      <div class="pricing-card">
+      
+      <div class="pricing-card animate-scale-in delay-3">
         <div class="pricing-name">Agency</div>
-        <div class="pricing-price">19 990 ₽<span>/мес</span></div>
+        <div class="pricing-desc">Для агентств и крупных селлеров с большим объёмом</div>
+        <div class="pricing-price">
+          <span class="currency">₽</span>
+          <span class="price-value" data-monthly="19990" data-yearly="15990">19 990</span>
+          <span class="period">/мес</span>
+        </div>
+        <div class="pricing-old-price yearly-price" style="display: none;">239 880 ₽/год</div>
         <ul class="pricing-features">
           <li>Безлимит видео</li>
           <li>Все функции Pro</li>
-          <li>Мультипользователь (до 5)</li>
+          <li>4K качество</li>
           <li>Персональный менеджер</li>
+          <li>Мультипользователь (до 5)</li>
+          <li>API доступ</li>
           <li>White-label решение</li>
-          <li>Пакетная генерация (до 50)</li>
-          <li>До 10 магазинов</li>
+          <li>Кастомные сценарии</li>
         </ul>
-        <a href="login.html" class="pricing-btn pricing-btn-secondary">Связаться</a>
+        <a href="contacts.html" class="pricing-btn pricing-btn-secondary">Связаться с нами</a>
       </div>
     </div>
   </div>
@@ -198,9 +261,11 @@
 
 <section class="section comparison-section">
   <div class="container">
-    <h2 style="font-size: 40px; text-align: center; margin-bottom: 16px;">Сравнение тарифов</h2>
-    <p style="text-align: center; color: #A0A0B0; font-size: 18px; max-width: 600px; margin: 0 auto;">Выберите тариф, который подходит вашему бизнесу</p>
-    <table class="comparison-table">
+    <div class="section-label animate-fade-in">СРАВНЕНИЕ</div>
+    <h2 class="section-title animate-slide-up" style="text-align: center; margin: 0 auto 24px;">Что включено в каждый тариф</h2>
+    <p class="section-subtitle animate-slide-up delay-1" style="text-align: center; margin: 0 auto;">Детальное сравнение возможностей всех тарифных планов</p>
+    
+    <table class="comparison-table animate-scale-in">
       <thead>
         <tr>
           <th>Функция</th>
@@ -211,64 +276,64 @@
       </thead>
       <tbody>
         <tr>
-          <td>Количество видео</td>
-          <td>30/мес</td>
-          <td>100/мес</td>
-          <td>Безлимит</td>
+          <td>Видео в месяц</td>
+          <td class="check-limit">30</td>
+          <td class="check-limit">100</td>
+          <td class="check-yes">Безлимит</td>
         </tr>
         <tr>
           <td>Качество видео</td>
           <td>HD (720p)</td>
-          <td>Full HD (1080p)</td>
-          <td>Full HD (1080p)</td>
+          <td class="check-yes">Full HD (1080p)</td>
+          <td class="check-yes">4K</td>
         </tr>
         <tr>
           <td>Шаблоны сценариев</td>
-          <td>5</td>
-          <td>Все</td>
-          <td>Все</td>
+          <td class="check-limit">5</td>
+          <td class="check-yes">6 (все)</td>
+          <td class="check-yes">6 + кастомные</td>
         </tr>
         <tr>
-          <td>AI-озвучка</td>
+          <td>AI-улучшение промпта</td>
           <td class="check-no">—</td>
           <td class="check-yes">✓</td>
           <td class="check-yes">✓</td>
         </tr>
         <tr>
-          <td>API доступ</td>
+          <td>Приоритетная генерация</td>
           <td class="check-no">—</td>
           <td class="check-yes">✓</td>
           <td class="check-yes">✓</td>
         </tr>
         <tr>
           <td>Форматы экспорта</td>
-          <td>9:16</td>
+          <td>9:16, 1:1</td>
           <td>9:16, 1:1, 16:9</td>
-          <td>9:16, 1:1, 16:9</td>
+          <td>Все форматы</td>
         </tr>
         <tr>
-          <td>Пакетная генерация</td>
+          <td>API доступ</td>
           <td class="check-no">—</td>
           <td class="check-no">—</td>
-          <td class="check-yes">✓ (до 50)</td>
+          <td class="check-yes">✓</td>
         </tr>
         <tr>
           <td>Мультипользователь</td>
-          <td class="check-no">—</td>
-          <td class="check-no">—</td>
-          <td class="check-yes">✓ (до 5)</td>
+          <td class="check-no">1 аккаунт</td>
+          <td class="check-no">1 аккаунт</td>
+          <td class="check-yes">До 5</td>
+        </tr>
+        <tr>
+          <td>Поддержка</td>
+          <td>Email</td>
+          <td>Приоритетная</td>
+          <td>Персональный менеджер</td>
         </tr>
         <tr>
           <td>White-label</td>
           <td class="check-no">—</td>
           <td class="check-no">—</td>
           <td class="check-yes">✓</td>
-        </tr>
-        <tr>
-          <td>Поддержка</td>
-          <td>Базовая</td>
-          <td>Приоритетная</td>
-          <td>Персональный менеджер</td>
         </tr>
       </tbody>
     </table>
@@ -277,52 +342,61 @@
 
 <section class="faq-section">
   <div class="container">
-    <h2 style="font-size: 40px; text-align: center; margin-bottom: 16px;">Частые вопросы о тарифах</h2>
-    <p style="text-align: center; color: #A0A0B0; font-size: 18px; max-width: 600px; margin: 0 auto;">Всё, что нужно знать перед выбором</p>
+    <div class="section-label animate-fade-in">FAQ</div>
+    <h2 class="section-title animate-slide-up" style="text-align: center; margin: 0 auto 24px;">Частые вопросы о тарифах</h2>
+    <p class="section-subtitle animate-slide-up delay-1" style="text-align: center; margin: 0 auto;">Всё, что нужно знать перед выбором плана</p>
+    
     <div class="faq-list">
-      <div class="faq-item">
+      <div class="faq-item animate-slide-up">
         <div class="faq-question" onclick="toggleFaq(this)">
           <span class="faq-question-text">Можно ли попробовать бесплатно?</span>
           <div class="faq-toggle">+</div>
         </div>
-        <div class="faq-answer"><p>Да! После регистрации вы получаете 3 бесплатных видео. Карта не требуется. Если понравится — выберите тариф.</p></div>
+        <div class="faq-answer"><p>Да! Все новые пользователи получают 3 бесплатных видео без необходимости привязывать карту. Этого достаточно, чтобы оценить качество и понять, подходит ли вам сервис.</p></div>
       </div>
-      <div class="faq-item">
+      <div class="faq-item animate-slide-up delay-1">
         <div class="faq-question" onclick="toggleFaq(this)">
-          <span class="faq-question-text">Как отменить подписку?</span>
+          <span class="faq-question-text">Что будет, если я превышу лимит видео?</span>
           <div class="faq-toggle">+</div>
         </div>
-        <div class="faq-answer"><p>В личном кабинете в разделе 'Настройки' нажмите 'Отменить подписку'. Доступ сохранится до конца оплаченного периода.</p></div>
+        <div class="faq-answer"><p>Вы сможете продолжать пользоваться сервисом, но генерация новых видео будет приостановлена до следующего месяца. Либо вы можете перейти на более высокий тариф в любой момент.</p></div>
       </div>
-      <div class="faq-item">
+      <div class="faq-item animate-slide-up delay-2">
         <div class="faq-question" onclick="toggleFaq(this)">
-          <span class="faq-question-text">Возврат денег?</span>
+          <span class="faq-question-text">Можно ли отменить подписку?</span>
           <div class="faq-toggle">+</div>
         </div>
-        <div class="faq-answer"><p>Если в течение первых 7 дней вы не получили результат — напишите в поддержку, и мы вернём деньги без вопросов.</p></div>
+        <div class="faq-answer"><p>Да, вы можете отменить подписку в любой момент в разделе "Настройки". Доступ к платным функциям сохранится до конца оплаченного периода. Возврат средств возможен в течение первых 7 дней.</p></div>
       </div>
-      <div class="faq-item">
+      <div class="faq-item animate-slide-up delay-3">
         <div class="faq-question" onclick="toggleFaq(this)">
-          <span class="faq-question-text">Можно ли сменить тариф?</span>
+          <span class="faq-question-text">Как работает ежегодная оплата?</span>
           <div class="faq-toggle">+</div>
         </div>
-        <div class="faq-answer"><p>Да, в любой момент. При повышении тарифа разница будет пересчитана. При понижении — новый тариф начнёт действовать со следующего периода.</p></div>
+        <div class="faq-answer"><p>При оплате за год вы получаете скидку 20%. Оплата списывается один раз в год, и вы экономите по сравнению с ежемесячной оплатой. Например, Pro тариф: 7 990 ₽/мес × 12 = 95 880 ₽, но с годовой оплатой — всего 76 680 ₽.</p></div>
       </div>
-      <div class="faq-item">
+      <div class="faq-item animate-slide-up delay-4">
         <div class="faq-question" onclick="toggleFaq(this)">
-          <span class="faq-question-text">Есть ли скидки для крупных селлеров?</span>
+          <span class="faq-question-text">Какие способы оплаты принимаются?</span>
           <div class="faq-toggle">+</div>
         </div>
-        <div class="faq-answer"><p>Да. Если вам нужно более 500 видео в месяц — напишите на sales@cliply.ru, обсудим индивидуальные условия.</p></div>
+        <div class="faq-answer"><p>Мы принимаем банковские карты (Visa, Mastercard, МИР), СБП (Систему быстрых платежей), а также оплату по счёту для юридических лиц на тарифе Agency.</p></div>
+      </div>
+      <div class="faq-item animate-slide-up delay-5">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">Можно ли сменить тариф в любой момент?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-answer"><p>Да, вы можете повысить или понизить тариф в любой момент. При повышении разница будет пересчитана пропорционально оставшимся дням. При понижении новый тариф начнёт действовать со следующего платёжного периода.</p></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="cta-section">
+<section class="cta-section animate-fade-in">
   <div class="container">
-    <h2>Готовы увеличить продажи?</h2>
-    <p>3 видео бесплатно. Без карты. Без обязательств.</p>
+    <h2>Готовы начать?</h2>
+    <p>3 видео бесплатно. Без карты. Без обязательств. Убедитесь сами, что Cliply работает.</p>
     <a href="login.html" class="btn-primary">Создать первое видео →</a>
   </div>
 </section>
@@ -353,6 +427,30 @@ if (burgerBtn && mobileMenu) {
   });
 }
 
+// Переключение месяц/год
+const billingToggle = document.getElementById('billingToggle');
+const monthlyLabel = document.getElementById('monthlyLabel');
+const yearlyLabel = document.getElementById('yearlyLabel');
+const priceValues = document.querySelectorAll('.price-value');
+const yearlyPrices = document.querySelectorAll('.yearly-price');
+
+billingToggle.addEventListener('change', function() {
+  const isYearly = this.checked;
+  
+  monthlyLabel.classList.toggle('active', !isYearly);
+  yearlyLabel.classList.toggle('active', isYearly);
+  
+  priceValues.forEach(el => {
+    const price = isYearly ? el.dataset.yearly : el.dataset.monthly;
+    el.textContent = parseInt(price).toLocaleString('ru-RU');
+  });
+  
+  yearlyPrices.forEach(el => {
+    el.style.display = isYearly ? 'block' : 'none';
+  });
+});
+
+// FAQ
 function toggleFaq(element) {
   const item = element.parentElement;
   const wasActive = item.classList.contains('active');
@@ -360,6 +458,7 @@ function toggleFaq(element) {
   if (!wasActive) item.classList.add('active');
 }
 
+// Авторизация
 (async () => {
   const user = await getCurrentUser();
   const btn = document.getElementById('navAuthBtn');
@@ -370,6 +469,8 @@ function toggleFaq(element) {
   }
 })();
 </script>
+
+<script src="scroll-animations.js"></script>
 
 <script>
 if ('serviceWorker' in navigator) {
