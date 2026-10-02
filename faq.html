@@ -4,66 +4,76 @@
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
-<title>FAQ — Cliply</title>
-<meta name="description" content="Ответы на частые вопросы о Cliply.">
+<title>FAQ Cliply — ответы на частые вопросы</title>
+<meta name="description" content="Ответы на все вопросы о Cliply: как работает сервис, какие фото нужны, сколько длится видео, права на результат и многое другое.">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#6C5CE7">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="auth.js"></script>
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
 <link rel="stylesheet" href="mobile.css">
+<link rel="stylesheet" href="scroll-animations.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; line-height: 1.6; }
-  h1, h2, h3 { font-family: 'Manrope', sans-serif; font-weight: 800; }
-  .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+  h1, h2, h3, h4 { font-family: 'Manrope', sans-serif; font-weight: 800; line-height: 1.1; }
+  
+  .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
   
   nav { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: rgba(10,10,15,0.95); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid #1f1f2e; }
   .logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
-  .nav-links { display: flex; gap: 24px; }
+  .nav-links { display: flex; align-items: center; gap: 24px; }
   .nav-links a { color: #A0A0B0; text-decoration: none; font-size: 14px; transition: color 0.2s; }
   .nav-links a:hover { color: #fff; }
+  .nav-btn-login { color: #fff !important; border: 1px solid #27272a; padding: 8px 20px; border-radius: 100px; }
+  .nav-btn-login:hover { border-color: #6C5CE7; }
+  .nav-btn-cta { background: linear-gradient(135deg, #6C5CE7, #A29BFE) !important; color: #fff !important; padding: 10px 24px !important; border-radius: 100px; font-weight: 600 !important; border: none; }
+  .nav-btn-cta:hover { box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   
-  .hero { padding: 80px 0 40px; text-align: center; }
-  .hero-label { font-size: 13px; font-weight: 700; color: #6C5CE7; letter-spacing: 3px; margin-bottom: 16px; text-transform: uppercase; }
-  .hero h1 { font-size: 56px; margin-bottom: 16px; }
-  .hero p { font-size: 18px; color: #A0A0B0; max-width: 600px; margin: 0 auto; }
+  .hero { padding: 100px 0 60px; text-align: center; }
+  .hero-badge { display: inline-block; background: rgba(108, 92, 231, 0.15); color: #A29BFE; padding: 8px 20px; border-radius: 100px; font-size: 13px; font-weight: 600; margin-bottom: 32px; border: 1px solid rgba(108, 92, 231, 0.3); letter-spacing: 2px; }
+  .hero h1 { font-size: 64px; margin-bottom: 24px; max-width: 900px; margin-left: auto; margin-right: auto; }
+  .hero h1 span { background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero p { font-size: 20px; color: #A0A0B0; max-width: 600px; margin: 0 auto; line-height: 1.6; }
   
-  .faq-section { padding: 40px 0 80px; }
-  .faq-list { margin-top: 32px; }
+  .search-box { max-width: 600px; margin: 40px auto 0; position: relative; }
+  .search-input { width: 100%; background: #141414; border: 1px solid #27272a; border-radius: 12px; padding: 16px 20px 16px 50px; color: #fff; font-size: 16px; font-family: inherit; transition: all 0.2s; }
+  .search-input:focus { outline: none; border-color: #6C5CE7; box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1); }
+  .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); font-size: 20px; opacity: 0.5; }
+  
+  .faq-categories { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 40px 0; }
+  .faq-category-btn { padding: 10px 20px; border-radius: 100px; border: 1px solid #27272a; background: transparent; color: #A0A0B0; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+  .faq-category-btn:hover { border-color: #6C5CE7; color: #fff; }
+  .faq-category-btn.active { background: #6C5CE7; border-color: #6C5CE7; color: #fff; }
+  
+  .faq-list { margin: 48px 0; }
   .faq-item { border-bottom: 1px solid #1f1f2e; }
   .faq-question { padding: 24px 0; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: color 0.2s; }
   .faq-question:hover { color: #A29BFE; }
-  .faq-question-number { color: #6C5CE7; font-weight: 700; margin-right: 16px; font-size: 14px; min-width: 28px; }
-  .faq-question-text { flex: 1; font-size: 17px; font-weight: 600; }
-  .faq-toggle { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #27272a; display: flex; align-items: center; justify-content: center; transition: all 0.3s; flex-shrink: 0; color: #A0A0B0; }
+  .faq-question-text { flex: 1; font-size: 17px; font-weight: 600; padding-right: 20px; }
+  .faq-toggle { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #27272a; display: flex; align-items: center; justify-content: center; transition: all 0.3s; flex-shrink: 0; color: #A0A0B0; font-size: 20px; }
   .faq-item.active .faq-toggle { background: #6C5CE7; border-color: #6C5CE7; color: #fff; transform: rotate(45deg); }
   .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; }
   .faq-item.active .faq-answer { max-height: 500px; padding-bottom: 24px; }
-  .faq-answer p { color: #A0A0B0; font-size: 15px; line-height: 1.7; padding-left: 44px; }
+  .faq-answer p { color: #A0A0B0; font-size: 15px; line-height: 1.7; }
   
-  .ask-section { padding: 80px 0; background: #0d0d14; }
-  .ask-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; padding: 48px; max-width: 700px; margin: 0 auto; }
-  .ask-card h2 { font-size: 32px; margin-bottom: 16px; }
-  .ask-card > p { color: #A0A0B0; margin-bottom: 32px; }
-  .form-group { margin-bottom: 20px; }
-  .form-group label { display: block; font-size: 14px; color: #A0A0B0; margin-bottom: 8px; font-weight: 500; }
-  .form-group input, .form-group textarea { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 10px; padding: 14px 16px; color: #fff; font-size: 15px; font-family: inherit; }
-  .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #6C5CE7; }
-  .form-group textarea { resize: vertical; min-height: 120px; }
-  .btn-submit { width: 100%; background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 16px; border-radius: 12px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
-  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
-  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-  .success-box { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 20px; color: #34d399; text-align: center; display: none; margin-bottom: 24px; }
-  .success-box.active { display: block; }
-  .error-box { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 20px; color: #ef4444; text-align: center; display: none; margin-bottom: 24px; }
-  .error-box.active { display: block; }
+  .faq-empty { text-align: center; padding: 60px 20px; color: #A0A0B0; display: none; }
+  .faq-empty-icon { font-size: 64px; margin-bottom: 16px; opacity: 0.5; }
+  
+  .still-questions { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; padding: 48px; text-align: center; margin: 80px 0; }
+  .still-questions h2 { font-size: 32px; margin-bottom: 16px; }
+  .still-questions p { color: #A0A0B0; font-size: 16px; margin-bottom: 32px; max-width: 500px; margin-left: auto; margin-right: auto; }
+  .still-questions-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 14px 28px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 15px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; border: none; cursor: pointer; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
+  .btn-secondary { background: transparent; color: #fff; padding: 14px 28px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid #27272a; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+  .btn-secondary:hover { border-color: #6C5CE7; background: rgba(108, 92, 231, 0.05); }
   
   footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
   
@@ -76,16 +86,16 @@
   .mobile-menu.active { display: flex; }
   .mobile-menu a { display: block; padding: 16px; color: #fff; text-decoration: none; font-size: 18px; border-radius: 8px; text-align: center; }
   .mobile-menu a:hover { background: rgba(108, 92, 231, 0.15); }
+  .btn-nav-mobile { background: linear-gradient(135deg, #6C5CE7, #A29BFE) !important; font-weight: 700 !important; }
   
   @media (max-width: 768px) {
     .nav-links { display: none !important; }
     .burger { display: flex !important; }
+    .hero { padding: 60px 0 40px; }
     .hero h1 { font-size: 36px !important; }
     .hero p { font-size: 16px; }
-    .faq-question-text { font-size: 15px; }
-    .faq-answer p { padding-left: 0; font-size: 14px; }
-    .ask-card { padding: 32px 24px; }
-    .ask-card h2 { font-size: 24px; }
+    .still-questions { padding: 32px 24px; }
+    .still-questions h2 { font-size: 24px !important; }
   }
 </style>
 </head>
@@ -94,9 +104,15 @@
 <nav>
   <a href="index.html" class="logo">Cliply</a>
   <div class="nav-links">
-    <a href="index.html">Главная</a>
-    <a href="index.html#pricing">Тарифы</a>
-    <a href="login.html" id="navAuthBtn">Войти</a>
+    <a href="features.html">Возможности</a>
+    <a href="examples.html">Примеры</a>
+    <a href="gallery.html">Галерея</a>
+    <a href="about.html">О нас</a>
+    <a href="pricing.html">Тарифы</a>
+    <a href="faq.html" style="color: #fff;">FAQ</a>
+    <a href="contacts.html">Контакты</a>
+    <a href="login.html" class="nav-btn-login" id="navAuthBtn">Войти</a>
+    <a href="login.html" class="nav-btn-cta">Попробовать</a>
   </div>
   <button class="burger" id="burgerBtn" aria-label="Меню">
     <span></span><span></span><span></span>
@@ -104,49 +120,56 @@
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="index.html">Главная</a>
-  <a href="index.html#pricing">Тарифы</a>
+  <a href="features.html">Возможности</a>
+  <a href="examples.html">Примеры</a>
+  <a href="gallery.html">Галерея</a>
+  <a href="about.html">О нас</a>
+  <a href="pricing.html">Тарифы</a>
+  <a href="faq.html" style="color: #6C5CE7;">FAQ</a>
+  <a href="contacts.html">Контакты</a>
   <a href="login.html" id="mobileAuthBtn">Войти</a>
+  <a href="login.html" class="btn-nav-mobile">Попробовать бесплатно</a>
 </div>
 
-<section class="hero">
+<section class="hero animate-fade-in">
   <div class="container">
-    <div class="hero-label">08 / ВОПРОСЫ</div>
-    <h1>Ответы на вопросы</h1>
-    <p>Всё, что нужно знать о Cliply. Не нашли ответ? Задайте свой вопрос ниже.</p>
+    <div class="hero-badge">ЧАСТЫЕ ВОПРОСЫ</div>
+    <h1>Всё, что нужно <span>знать о Cliply</span></h1>
+    <p>Ответы на самые популярные вопросы. Не нашли свой? Напишите в поддержку — ответим за 2 часа.</p>
+    
+    <div class="search-box animate-slide-up">
+      <span class="search-icon">🔍</span>
+      <input type="text" class="search-input" id="faqSearch" placeholder="Поиск по вопросам...">
+    </div>
   </div>
 </section>
 
-<section class="faq-section">
-  <div class="container">
-    <div class="faq-list" id="faqList"></div>
+<section class="container">
+  <div class="faq-categories animate-slide-up" id="faqCategories">
+    <button class="faq-category-btn active" data-category="all">Все вопросы</button>
+    <button class="faq-category-btn" data-category="general">Общие</button>
+    <button class="faq-category-btn" data-category="video">Видео</button>
+    <button class="faq-category-btn" data-category="pricing">Тарифы</button>
+    <button class="faq-category-btn" data-category="technical">Технические</button>
+    <button class="faq-category-btn" data-category="legal">Права</button>
   </div>
-</section>
-
-<section class="ask-section">
-  <div class="container">
-    <div class="ask-card">
-      <h2>Не нашли ответ?</h2>
-      <p>Задайте свой вопрос — мы ответим в течение 24 часов.</p>
-      <div class="success-box" id="askSuccess">
-        ✓ Вопрос отправлен! Мы ответим вам на email в течение 24 часов.
-      </div>
-      <div class="error-box" id="askError"></div>
-      <form id="askForm">
-        <div class="form-group">
-          <label>Ваше имя</label>
-          <input type="text" id="askName" placeholder="Как к вам обращаться?" required>
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="askEmail" placeholder="your@email.com" required>
-        </div>
-        <div class="form-group">
-          <label>Вопрос</label>
-          <textarea id="askQuestion" placeholder="Опишите ваш вопрос подробно..." required></textarea>
-        </div>
-        <button type="submit" class="btn-submit" id="askBtn">Отправить вопрос</button>
-      </form>
+  
+  <div class="faq-list" id="faqList">
+    <!-- FAQ вопросы будут добавлены через JS -->
+  </div>
+  
+  <div class="faq-empty" id="faqEmpty">
+    <div class="faq-empty-icon">🔍</div>
+    <h3>Ничего не найдено</h3>
+    <p>Попробуйте изменить поисковый запрос или выбрать другую категорию</p>
+  </div>
+  
+  <div class="still-questions animate-scale-in">
+    <h2>Остались вопросы?</h2>
+    <p>Напишите нам — ответим в течение 2 часов в рабочее время. Или посмотрите примеры работы сервиса.</p>
+    <div class="still-questions-buttons">
+      <a href="contacts.html" class="btn-primary">Написать в поддержку →</a>
+      <a href="examples.html" class="btn-secondary">Смотреть примеры</a>
     </div>
   </div>
 </section>
@@ -158,9 +181,10 @@
 </footer>
 
 <script>
-// Бургер-меню
 const burgerBtn = document.getElementById('burgerBtn');
 const mobileMenu = document.getElementById('mobileMenu');
+const mobileAuthBtn = document.getElementById('mobileAuthBtn');
+
 if (burgerBtn && mobileMenu) {
   burgerBtn.addEventListener('click', () => {
     burgerBtn.classList.toggle('active');
@@ -176,52 +200,160 @@ if (burgerBtn && mobileMenu) {
   });
 }
 
-// 30 вопросов FAQ
+// FAQ данные
 const faqData = [
-  { q: "Что такое Cliply?", a: "Cliply — это AI-сервис, который превращает фотографии товара в продающие видео для маркетплейсов (Wildberries, Ozon) и соцсетей. Загрузите 3-5 фото, опишите преимущества — и получите готовый ролик за 2 минуты." },
-  { q: "Какие фото нужны для генерации?", a: "Минимум 3, максимум 5 фотографий. Формат JPG, PNG или WebP. Размер до 10 МБ каждая. Подойдут фото из карточки WB или Ozon — главное, чтобы товар был хорошо виден." },
-  { q: "Сколько длится видео?", a: "От 15 до 60 секунд. Оптимальная длина для карточки маркетплейса — 20-30 секунд. Для Reels и TikTok — 15-20 секунд." },
-  { q: "Можно ли редактировать видео после генерации?", a: "Да. После генерации вы можете поменять музыку, отредактировать текст, пересобрать сценарий или сгенерировать видео заново с другим стилем." },
-  { q: "Кто владеет правами на видео?", a: "Вы получаете полную коммерческую лицензию с момента оплаты. Можете использовать видео в карточках, рекламе, соцсетях — где угодно." },
-  { q: "Подойдёт ли видео для рекламы?", a: "Да. Форматы подходят для Wildberries, Ozon, Яндекс.Маркет, Instagram Reels, TikTok, VK Клипы и YouTube Shorts. Все видео в вертикальном формате 9:16." },
-  { q: "Сколько стоит Cliply?", a: "Starter — 2 990 ₽/мес (30 видео), Pro — 7 990 ₽/мес (100 видео), Agency — 19 990 ₽/мес (безлимит). Первые 3 видео — бесплатно, без карты." },
-  { q: "Можно ли попробовать бесплатно?", a: "Да! После регистрации вы получаете 3 бесплатных видео. Карта не требуется. Если понравится — выберите тариф." },
-  { q: "Как отменить подписку?", a: "В личном кабинете в разделе 'Настройки' нажмите 'Отменить подписку'. Доступ сохранится до конца оплаченного периода." },
-  { q: "Возврат денег?", a: "Если в течение первых 7 дней вы не получили результат — напишите в поддержку, и мы вернём деньги без вопросов." },
-  { q: "Какие категории товаров поддерживаются?", a: "Одежда, косметика, электроника, товары для дома, здоровье, спорт, еда, детские товары и любые другие. AI адаптирует стиль под категорию." },
-  { q: "Можно ли добавить логотип?", a: "Да, в тарифах Pro и Agency можно загрузить логотип, который автоматически вставится в видео." },
-  { q: "Есть ли музыка в видео?", a: "Да. Библиотека из 50+ треков по настроению: энергичная, спокойная, премиальная, доверительная. Можно также загрузить свою музыку." },
-  { q: "Можно ли добавить озвучку?", a: "Да. AI-голос (мужской/женский) озвучит ваше описание товара. Доступно в тарифах Pro и Agency." },
-  { q: "Сколько времени занимает генерация?", a: "В среднем 2-5 минут. В пиковые часы — до 10 минут. Вы получите уведомление, когда видео будет готово." },
-  { q: "Можно ли генерировать видео пакетно?", a: "Да, в тарифе Agency доступна пакетная генерация — загрузите до 50 товаров и получите все видео одновременно." },
-  { q: "Есть ли API?", a: "Да, API доступен в тарифах Pro и Agency. Документация — в личном кабинете." },
-  { q: "Можно ли использовать для нескольких магазинов?", a: "Да. В тарифе Agency можно подключить до 10 магазинов и управлять ими из одного аккаунта." },
-  { q: "Как улучшить качество видео?", a: "Загружайте фото высокого разрешения (минимум 1000x1000 px), используйте разные ракурсы, пишите подробное описание товара." },
-  { q: "Что делать, если видео не понравилось?", a: "Перегенерируйте с другим сценарием или стилем — это бесплатно в рамках тарифа. Или напишите в поддержку — поможем настроить." },
-  { q: "Есть ли мобильное приложение?", a: "Сейчас Cliply работает в браузере (в том числе на мобильных). Нативное приложение — в планах на 2027 год." },
-  { q: "Как связаться с поддержкой?", a: "Нажмите на кнопку 💬 в левом нижнем углу на любой странице. Или напишите на support@cliply.ru. Отвечаем в течение 2 часов." },
-  { q: "Безопасно ли загружать фото товаров?", a: "Да. Все фото хранятся в зашифрованном виде на серверах Supabase. Мы не передаём данные третьим лицам." },
-  { q: "Можно ли экспортировать видео в разных форматах?", a: "Да. MP4 (по умолчанию), MOV, GIF. Пропорции: 9:16 (вертикальное), 1:1 (квадрат), 16:9 (горизонтальное)." },
-  { q: "Работает ли Cliply с видео, а не только с фото?", a: "Сейчас — только фото. Видео-исходники — в планах на Q2 2027." },
-  { q: "Можно ли удалить свой аккаунт?", a: "Да. В разделе 'Настройки' → 'Удалить аккаунт'. Все данные будут удалены в течение 30 дней." },
-  { q: "Есть ли скидки для крупных селлеров?", a: "Да. Если вам нужно более 500 видео в месяц — напишите на sales@cliply.ru, обсудим индивидуальные условия." },
-  { q: "Как работает AI?", a: "Мы используем комбинацию моделей: компьютерное зрение для анализа фото, NLP для генерации сценария, и видео-модели для рендеринга. Всё происходит на наших серверах." },
-  { q: "Можно ли использовать Cliply для услуг, а не товаров?", a: "Да. Подойдёт для салонов красоты, фитнес-студий, ресторанов — любых бизнесов, где нужно показать результат." },
-  { q: "Планируете ли вы выход на международный рынок?", a: "Да. Английская версия и поддержка Amazon, Shopify — в планах на Q1 2027." }
+  {
+    category: 'general',
+    question: 'Что такое Cliply?',
+    answer: 'Cliply — это AI-сервис для создания продающих видео для маркетплейсов (Wildberries, Ozon) и социальных сетей. Вы загружаете 3-5 фото товара, описываете преимущества — и через 2 минуты получаете готовый ролик с музыкой, озвучкой и титрами.'
+  },
+  {
+    category: 'general',
+    question: 'Кому подходит Cliply?',
+    answer: 'Сервис создан для селлеров маркетплейсов, интернет-магазинов, брендов и агентств. Если вы продаёте товары онлайн и хотите увеличить конверсию карточки — Cliply для вас. Видео в карточке повышает конверсию на 34% в среднем.'
+  },
+  {
+    category: 'general',
+    question: 'Нужны ли специальные навыки?',
+    answer: 'Нет. Cliply создан для людей без опыта в видеопроизводстве. Весь процесс автоматизирован: AI сам создаёт сценарий, подбирает музыку, добавляет озвучку и монтирует видео. Вам нужно только загрузить фото и описать товар.'
+  },
+  {
+    category: 'video',
+    question: 'Какие фото нужны для генерации?',
+    answer: 'Минимум 3, максимум 5 фотографий. Формат JPG, PNG или WebP. Размер до 10 МБ каждая. Подойдут фото из карточки WB или Ozon — главное, чтобы товар был хорошо виден. Фото с разных ракурсов дают лучший результат.'
+  },
+  {
+    category: 'video',
+    question: 'Сколько длится видео?',
+    answer: 'От 15 до 60 секунд в зависимости от выбранного сценария. Оптимальная длина для карточки маркетплейса — 20-30 секунд. Для Reels и TikTok — 15-20 секунд. Для YouTube — до 60 секунд.'
+  },
+  {
+    category: 'video',
+    question: 'Можно ли редактировать после генерации?',
+    answer: 'Да. После генерации вы можете поменять музыку, отредактировать текст, пересобрать сценарий или сгенерировать видео заново с другим стилем. Все изменения применяются мгновенно.'
+  },
+  {
+    category: 'video',
+    question: 'Какие форматы видео поддерживаются?',
+    answer: '9:16 (вертикальное для Stories, Reels, TikTok), 1:1 (квадратное для постов), 16:9 (горизонтальное для YouTube и сайтов). Экспорт в MP4 и WebM. Все видео оптимизированы для быстрой загрузки.'
+  },
+  {
+    category: 'pricing',
+    question: 'Есть ли бесплатный период?',
+    answer: 'Да! Все новые пользователи получают 3 бесплатных видео без необходимости привязывать карту. Этого достаточно, чтобы оценить качество и понять, подходит ли вам сервис.'
+  },
+  {
+    category: 'pricing',
+    question: 'Какие тарифы доступны?',
+    answer: 'Starter (2 990 ₽/мес, 30 видео), Pro (7 990 ₽/мес, 100 видео) и Agency (19 990 ₽/мес, безлимит). При годовой оплате скидка 20%. Можно сменить тариф в любой момент.'
+  },
+  {
+    category: 'pricing',
+    question: 'Что будет, если я превышу лимит видео?',
+    answer: 'Вы сможете продолжать пользоваться сервисом, но генерация новых видео будет приостановлена до следующего месяца. Либо вы можете перейти на более высокий тариф в любой момент — разница будет пересчитана пропорционально.'
+  },
+  {
+    category: 'pricing',
+    question: 'Можно ли отменить подписку?',
+    answer: 'Да, вы можете отменить подписку в любой момент в разделе "Настройки". Доступ к платным функциям сохранится до конца оплаченного периода. Возврат средств возможен в течение первых 7 дней после оплаты.'
+  },
+  {
+    category: 'pricing',
+    question: 'Какие способы оплаты принимаются?',
+    answer: 'Банковские карты (Visa, Mastercard, МИР), СБП (Система быстрых платежей), а также оплата по счёту для юридических лиц на тарифе Agency. Все платежи защищены и проходят через лицензированных провайдеров.'
+  },
+  {
+    category: 'technical',
+    question: 'Как быстро генерируется видео?',
+    answer: 'В среднем 2-3 минуты. Точное время зависит от выбранного сценария и качества фото. На тарифе Pro и Agency генерация происходит в приоритетной очереди — обычно за 1-2 минуты.'
+  },
+  {
+    category: 'technical',
+    question: 'Работает ли сервис на мобильных устройствах?',
+    answer: 'Да. Cliply полностью адаптивен и работает на всех устройствах: компьютерах, планшетах и смартфонах. Вы можете создавать видео прямо с телефона. Также доступно PWA-приложение для установки на домашний экран.'
+  },
+  {
+    category: 'technical',
+    question: 'Что если генерация не удалась?',
+    answer: 'Если видео не сгенерировалось из-за технической ошибки, мы автоматически вернём использованную квоту. Вы сможете попробовать снова без потери видео. Если проблема повторяется — напишите в поддержку.'
+  },
+  {
+    category: 'technical',
+    question: 'Можно ли использовать API?',
+    answer: 'API доступен на тарифе Agency. Он позволяет интегрировать генерацию видео в ваши внутренние системы, автоматизировать создание контента для большого количества товаров. Документация API предоставляется после подключения.'
+  },
+  {
+    category: 'legal',
+    question: 'Кто владеет правами на видео?',
+    answer: 'Вы получаете полную коммерческую лицензию с момента оплаты. Можете использовать видео в карточках маркетплейсов, рекламе, соцсетях, на сайте — где угодно. Никаких ограничений по использованию.'
+  },
+  {
+    category: 'legal',
+    question: 'Можно ли использовать видео для рекламы?',
+    answer: 'Да. Форматы подходят для Wildberries, Ozon, Яндекс.Маркет, Instagram Reels, TikTok, VK Клипы и YouTube Shorts. Все видео в вертикальном формате 9:16, оптимизированы для рекламных площадок.'
+  },
+  {
+    category: 'legal',
+    question: 'Безопасны ли мои фото?',
+    answer: 'Да. Фото хранятся на защищённых серверах с шифрованием. Мы не передаём данные третьим лицам. После генерации видео оригинальные фото удаляются через 30 дней. Вы можете удалить их вручную в любой момент.'
+  },
+  {
+    category: 'legal',
+    question: 'Есть ли политика конфиденциальности?',
+    answer: 'Да. Полная политика конфиденциальности и пользовательское соглашение доступны на страницах privacy.html и terms.html. Мы соответствуем требованиям 152-ФЗ о персональных данных.'
+  }
 ];
 
-// Рендер FAQ
-const faqList = document.getElementById('faqList');
-faqList.innerHTML = faqData.map((item, i) => `
-  <div class="faq-item">
-    <div class="faq-question" onclick="toggleFaq(this)">
-      <span class="faq-question-number">${String(i + 1).padStart(2, '0')}</span>
-      <span class="faq-question-text">${item.q}</span>
-      <div class="faq-toggle">+</div>
-    </div>
-    <div class="faq-answer"><p>${item.a}</p></div>
-  </div>
-`).join('');
+let currentCategory = 'all';
+let searchQuery = '';
+
+function renderFaq() {
+  const faqList = document.getElementById('faqList');
+  const faqEmpty = document.getElementById('faqEmpty');
+  
+  let filtered = faqData;
+  
+  if (currentCategory !== 'all') {
+    filtered = filtered.filter(item => item.category === currentCategory);
+  }
+  
+  if (searchQuery) {
+    const query = searchQuery.toLowerCase();
+    filtered = filtered.filter(item => 
+      item.question.toLowerCase().includes(query) || 
+      item.answer.toLowerCase().includes(query)
+    );
+  }
+  
+  if (filtered.length === 0) {
+    faqList.style.display = 'none';
+    faqEmpty.style.display = 'block';
+    return;
+  }
+  
+  faqList.style.display = 'block';
+  faqEmpty.style.display = 'none';
+  
+  faqList.innerHTML = filtered.map((item, index) => {
+    const delayClass = `delay-${(index % 6) + 1}`;
+    return `
+      <div class="faq-item animate-slide-up ${delayClass}">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span class="faq-question-text">${item.question}</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-answer">
+          <p>${item.answer}</p>
+        </div>
+      </div>
+    `;
+  }).join('');
+  
+  // Переинициализируем анимации для новых элементов
+  if (window.scrollAnimations) {
+    window.scrollAnimations.init();
+  }
+}
 
 function toggleFaq(element) {
   const item = element.parentElement;
@@ -230,120 +362,38 @@ function toggleFaq(element) {
   if (!wasActive) item.classList.add('active');
 }
 
-// ===== ОТПРАВКА ВОПРОСА С СОХРАНЕНИЕМ В БАЗУ =====
-document.getElementById('askForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  
-  const name = document.getElementById('askName').value.trim();
-  const email = document.getElementById('askEmail').value.trim();
-  const question = document.getElementById('askQuestion').value.trim();
-  
-  document.getElementById('askSuccess').classList.remove('active');
-  document.getElementById('askError').classList.remove('active');
-  
-  if (!name || !email || !question) {
-    document.getElementById('askError').textContent = 'Заполните все поля';
-    document.getElementById('askError').classList.add('active');
-    return;
-  }
-  
-  const btn = document.getElementById('askBtn');
-  btn.textContent = 'Отправка...';
-  btn.disabled = true;
-  
-  try {
-    // Шаг 1: Сохраняем вопрос в таблицу support_questions
-    const { data: questionData, error: questionError } = await supabaseClient
-      .from('support_questions')
-      .insert({
-        name: name,
-        email: email,
-        question: question,
-        status: 'new'
-      })
-      .select()
-      .single();
-    
-    if (questionError) {
-      throw new Error('Ошибка сохранения вопроса: ' + questionError.message);
-    }
-    
-    // Шаг 2: Создаём conversation для возможности ответа
-    const { data: convData, error: convError } = await supabaseClient
-      .from('support_conversations')
-      .insert({
-        user_name: name,
-        user_email: email,
-        status: 'open'
-      })
-      .select()
-      .single();
-    
-    if (convError) {
-      console.error('Conversation error:', convError);
-    }
-    
-    // Шаг 3: Сохраняем первое сообщение в conversation
-    if (convData) {
-      await supabaseClient.from('support_messages').insert({
-        conversation_id: convData.id,
-        sender: 'user',
-        message: question
-      });
-    }
-    
-    // Шаг 4: Отправляем уведомление в Telegram через Edge Function
-    const conversationId = convData ? convData.id : questionData.id;
-    try {
-      await fetch(
-        'https://djvdklcahpqbjotukmxt.supabase.co/functions/v1/send-telegram',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            record: {
-              name: name,
-              email: email,
-              question: question,
-              conversation_id: conversationId,
-              created_at: new Date().toISOString()
-            }
-          })
-        }
-      );
-    } catch (e) {
-      console.log('Telegram notification error:', e);
-    }
-    
-    // Успех
-    document.getElementById('askSuccess').classList.add('active');
-    document.getElementById('askForm').reset();
-    showToast('Вопрос отправлен!', 'success');
-    
-  } catch (err) {
-    console.error('Send error:', err);
-    document.getElementById('askError').textContent = 'Ошибка отправки. Попробуйте ещё раз или напишите на support@cliply.ru';
-    document.getElementById('askError').classList.add('active');
-  } finally {
-    btn.textContent = 'Отправить вопрос';
-    btn.disabled = false;
+// Фильтрация по категориям
+document.getElementById('faqCategories').addEventListener('click', (e) => {
+  if (e.target.classList.contains('faq-category-btn')) {
+    document.querySelectorAll('.faq-category-btn').forEach(btn => btn.classList.remove('active'));
+    e.target.classList.add('active');
+    currentCategory = e.target.dataset.category;
+    renderFaq();
   }
 });
 
-// Проверка авторизации
+// Поиск
+document.getElementById('faqSearch').addEventListener('input', (e) => {
+  searchQuery = e.target.value;
+  renderFaq();
+});
+
+// Авторизация
 (async () => {
   const user = await getCurrentUser();
   const btn = document.getElementById('navAuthBtn');
   if (user && btn) {
     btn.textContent = 'Дашборд';
     btn.href = 'dashboard.html';
-    if (document.getElementById('mobileAuthBtn')) {
-      document.getElementById('mobileAuthBtn').textContent = 'Дашборд';
-      document.getElementById('mobileAuthBtn').href = 'dashboard.html';
-    }
+    if (mobileAuthBtn) { mobileAuthBtn.textContent = 'Дашборд'; mobileAuthBtn.href = 'dashboard.html'; }
   }
 })();
+
+// Первоначальный рендер
+renderFaq();
 </script>
+
+<script src="scroll-animations.js"></script>
 
 <script>
 if ('serviceWorker' in navigator) {
