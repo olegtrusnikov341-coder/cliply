@@ -12,12 +12,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- CSP Headers (задача 29) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://djvdklcahpqbjotukmxt.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://djvdklcahpqbjotukmxt.supabase.co wss://djvdklcahpqbjotukmxt.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="security.js"></script>
 <script src="auth.js"></script>
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
 <link rel="stylesheet" href="mobile.css">
-<link rel="stylesheet" href="scroll-animations.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; display: flex; flex-direction: column; }
@@ -33,7 +38,6 @@
   .support-hero h1 { font-size: 40px; font-family: 'Manrope'; font-weight: 800; margin-bottom: 12px; }
   .support-hero p { color: #A0A0B0; font-size: 16px; max-width: 500px; margin: 0 auto; }
   
-  /* Экран входа */
   .login-screen { text-align: center; padding: 80px 20px; }
   .login-screen-icon { font-size: 80px; margin-bottom: 24px; opacity: 0.6; }
   .login-screen h2 { font-size: 28px; font-family: 'Manrope'; margin-bottom: 16px; }
@@ -41,10 +45,8 @@
   .login-screen a { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; display: inline-block; }
   .login-screen a:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   
-  /* Layout поддержки */
   .support-layout { display: grid; grid-template-columns: 300px 1fr; gap: 20px; padding: 20px 0 80px; min-height: 550px; }
   
-  /* Список разговоров */
   .conversations-panel { background: #141414; border: 1px solid #1f1f2e; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; }
   .conv-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #1f1f2e; }
   .conv-header h3 { font-size: 16px; font-weight: 600; }
@@ -62,7 +64,6 @@
   .conv-status.closed { background: rgba(16, 185, 129, 0.2); color: #34d399; }
   .conv-empty { text-align: center; color: #A0A0B0; padding: 30px 10px; font-size: 14px; }
   
-  /* Чат */
   .chat-panel { background: #141414; border: 1px solid #1f1f2e; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; }
   .chat-header { padding-bottom: 16px; border-bottom: 1px solid #1f1f2e; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
   .chat-header-info h3 { font-size: 18px; margin-bottom: 4px; }
@@ -79,7 +80,7 @@
   .chat-message .msg-sender { font-size: 11px; font-weight: 600; margin-bottom: 4px; }
   .chat-message.user .msg-sender { color: #A29BFE; text-align: right; }
   .chat-message.bot .msg-sender { color: #6C5CE7; }
-  .chat-message-text { font-size: 15px; line-height: 1.5; }
+  .chat-message-text { font-size: 15px; line-height: 1.5; word-wrap: break-word; }
   .chat-message-time { font-size: 11px; color: #666; margin-top: 4px; }
   .chat-empty-state { text-align: center; color: #A0A0B0; padding: 60px 20px; }
   .chat-empty-state-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
@@ -101,22 +102,24 @@
   
   footer { padding: 30px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; margin-top: auto; }
   
-  /* Модальное окно нового чата */
   .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
   .modal-overlay.active { display: flex; }
   .modal { background: #141414; border: 1px solid #1f1f2e; border-radius: 16px; padding: 32px; max-width: 500px; width: 100%; animation: modalAppear 0.3s ease; }
   @keyframes modalAppear { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
   .modal h3 { font-size: 22px; margin-bottom: 16px; font-family: 'Manrope'; }
   .modal p { color: #A0A0B0; margin-bottom: 20px; font-size: 14px; }
-  .modal textarea { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 10px; padding: 14px 16px; color: #fff; font-size: 15px; font-family: inherit; min-height: 120px; resize: vertical; margin-bottom: 16px; }
+  .modal textarea { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 10px; padding: 14px 16px; color: #fff; font-size: 15px; font-family: inherit; min-height: 120px; resize: vertical; margin-bottom: 8px; }
   .modal textarea:focus { outline: none; border-color: #6C5CE7; }
+  .char-counter { text-align: right; font-size: 12px; color: #666; margin-bottom: 16px; }
+  .char-counter.warning { color: #f59e0b; }
+  .char-counter.danger { color: #ef4444; }
   .modal-actions { display: flex; gap: 12px; justify-content: flex-end; }
-  .modal-btn { padding: 10px 20px; border-radius: 10px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .modal-btn { padding: 10px 20px; border-radius: 10px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
   .modal-btn-cancel { background: transparent; color: #A0A0B0; border: 1px solid #27272a; }
   .modal-btn-cancel:hover { border-color: #A0A0B0; }
   .modal-btn-submit { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; }
   .modal-btn-submit:hover { transform: translateY(-1px); }
-  .modal-btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  .modal-btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   
   @media (max-width: 768px) {
     .support-layout { grid-template-columns: 1fr; }
@@ -136,7 +139,7 @@
   </div>
 </nav>
 
-<section class="support-hero animate-fade-in">
+<section class="support-hero">
   <div class="container">
     <div class="support-hero-icon">💬</div>
     <h1>Поддержка Cliply</h1>
@@ -147,7 +150,7 @@
 <section class="container">
   <div id="supportContent">
     <div class="login-screen">
-      <div class="login-screen-icon">🔒</div>
+      <div class="login-screen-icon"></div>
       <h2>Войдите в аккаунт</h2>
       <p>Чтобы получить доступ к поддержке и истории обращений, войдите в свой аккаунт. Сообщения сохраняются 7 дней.</p>
       <a href="login.html">Войти в аккаунт</a>
@@ -159,12 +162,12 @@
   </div>
 </section>
 
-<!-- Модальное окно нового чата -->
 <div class="modal-overlay" id="newChatModal">
   <div class="modal">
     <h3>Новое обращение</h3>
     <p>Опишите вашу проблему — мы ответим в течение 2 часов.</p>
-    <textarea id="newChatMessage" placeholder="Напишите ваш вопрос подробно..."></textarea>
+    <textarea id="newChatMessage" placeholder="Напишите ваш вопрос подробно..." maxlength="5000"></textarea>
+    <div class="char-counter" id="charCounter">0 / 5000</div>
     <div class="modal-actions">
       <button class="modal-btn modal-btn-cancel" onclick="closeNewChatModal()">Отмена</button>
       <button class="modal-btn modal-btn-submit" id="newChatSubmit" onclick="submitNewChat()">Отправить</button>
@@ -184,21 +187,17 @@ let conversations = [];
 let activeConversationId = null;
 let autoRefreshInterval = null;
 
-// Инициализация
 (async () => {
   currentUser = await getCurrentUser();
   
   if (!currentUser) {
-    // Показываем экран входа (уже в HTML по умолчанию)
     return;
   }
   
-  // Загружаем разговоры
   await loadConversations();
   renderSupportLayout();
 })();
 
-// Загрузка разговоров пользователя
 async function loadConversations() {
   try {
     const { data, error } = await supabaseClient
@@ -218,14 +217,13 @@ async function loadConversations() {
   }
 }
 
-// Рендер layout поддержки
 function renderSupportLayout() {
   const content = document.getElementById('supportContent');
   
   if (conversations.length === 0) {
     content.innerHTML = `
-      <div style="text-align:center;padding:60px 20px;" class="animate-slide-up">
-        <div style="font-size:64px;margin-bottom:16px;opacity:0.5;">💬</div>
+      <div style="text-align:center;padding:60px 20px;">
+        <div style="font-size:64px;margin-bottom:16px;opacity:0.5;"></div>
         <h3 style="font-size:20px;margin-bottom:12px;font-family:'Manrope';">У вас ещё нет обращений</h3>
         <p style="color:#A0A0B0;margin-bottom:24px;">Напишите нам — мы ответим в течение 2 часов</p>
         <button onclick="openNewChatModal()" style="background:linear-gradient(135deg,#6C5CE7,#A29BFE);color:#fff;padding:14px 32px;border-radius:12px;border:none;font-size:16px;font-weight:600;cursor:pointer;">Начать разговор</button>
@@ -236,7 +234,7 @@ function renderSupportLayout() {
   
   content.innerHTML = `
     <div class="support-layout">
-      <div class="conversations-panel animate-slide-left delay-1">
+      <div class="conversations-panel">
         <div class="conv-header">
           <h3>Мои обращения</h3>
           <button class="btn-new-chat" onclick="openNewChatModal()">+ Новый</button>
@@ -250,10 +248,12 @@ function renderSupportLayout() {
             const time = new Date(conv.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
             const statusClass = conv.status === 'open' ? 'open' : 'closed';
             const statusText = conv.status === 'open' ? 'Открыто' : 'Закрыто';
+            const safeTitle = SecurityUtils ? SecurityUtils.sanitizeHTML(conv.user_name || 'Обращение') : (conv.user_name || 'Обращение');
+            const safePreview = SecurityUtils ? SecurityUtils.sanitizeHTML(lastMsg.substring(0, 50)) : lastMsg.substring(0, 50);
             return `
               <div class="conv-item" data-id="${conv.id}" onclick="selectConversation('${conv.id}')">
-                <div class="conv-item-title">${conv.user_name || 'Обращение'}</div>
-                <div class="conv-item-preview">${lastMsg.substring(0, 50)}${lastMsg.length > 50 ? '...' : ''}</div>
+                <div class="conv-item-title">${safeTitle}</div>
+                <div class="conv-item-preview">${safePreview}${lastMsg.length > 50 ? '...' : ''}</div>
                 <div class="conv-item-date">
                   <span>${date} ${time}</span>
                   <span class="conv-status ${statusClass}">${statusText}</span>
@@ -263,31 +263,27 @@ function renderSupportLayout() {
           }).join('')}
         </div>
       </div>
-      <div class="chat-panel animate-slide-right delay-2" id="chatPanel">
+      <div class="chat-panel" id="chatPanel">
         <div class="chat-empty-state">
-          <div class="chat-empty-state-icon">👈</div>
+          <div class="chat-empty-state-icon"></div>
           <div>Выберите разговор слева</div>
         </div>
       </div>
     </div>
   `;
   
-  // Автовыбор первого (самого нового) разговора
   if (conversations.length > 0) {
     selectConversation(conversations[0].id);
   }
 }
 
-// Выбор разговора
 async function selectConversation(convId) {
   activeConversationId = convId;
   
-  // Обновляем активный элемент
   document.querySelectorAll('.conv-item').forEach(el => el.classList.remove('active'));
   const activeEl = document.querySelector(`.conv-item[data-id="${convId}"]`);
   if (activeEl) activeEl.classList.add('active');
   
-  // Загружаем сообщения
   const { data: messages } = await supabaseClient
     .from('support_messages')
     .select('*')
@@ -313,22 +309,25 @@ async function selectConversation(convId) {
       </div>
     </div>
     <div class="chat-messages" id="chatMessages">
-      ${messages && messages.length > 0 ? messages.map(msg => `
-        <div class="chat-message ${msg.sender === 'admin' ? 'bot' : 'user'}">
-          ${msg.sender === 'admin' ? '<div class="msg-sender">👨‍💼 Поддержка Cliply</div>' : ''}
-          <div class="chat-message-text">${msg.message}</div>
-          <div class="chat-message-time">${new Date(msg.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</div>
-        </div>
-      `).join('') : '<div class="chat-empty-state"><div class="chat-empty-state-icon">💬</div><div>Начните диалог</div></div>'}
+      ${messages && messages.length > 0 ? messages.map(msg => {
+        const safeMsg = SecurityUtils ? SecurityUtils.sanitizeHTML(msg.message) : msg.message;
+        const time = new Date(msg.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+        return `
+          <div class="chat-message ${msg.sender === 'admin' ? 'bot' : 'user'}">
+            ${msg.sender === 'admin' ? '<div class="msg-sender">👨‍💼 Поддержка Cliply</div>' : ''}
+            <div class="chat-message-text">${safeMsg}</div>
+            <div class="chat-message-time">${time}</div>
+          </div>
+        `;
+      }).join('') : '<div class="chat-empty-state"><div class="chat-empty-state-icon">💬</div><div>Начните диалог</div></div>'}
     </div>
     <div class="chat-input-area">
-      <textarea class="chat-input" id="chatInput" placeholder="Напишите сообщение..." rows="1"></textarea>
+      <textarea class="chat-input" id="chatInput" placeholder="Напишите сообщение..." rows="1" maxlength="5000"></textarea>
       <button class="chat-send" id="chatSend" onclick="sendMessage()">Отправить</button>
     </div>
     <div class="chat-hint">Сообщения хранятся <strong>7 дней</strong>. Ответ поддержки появится здесь автоматически.</div>
   `;
   
-  // Настраиваем textarea
   const input = document.getElementById('chatInput');
   input.addEventListener('input', () => {
     input.style.height = 'auto';
@@ -341,20 +340,18 @@ async function selectConversation(convId) {
     }
   });
   
-  // Запускаем автообновление
   startAutoRefresh();
   
-  // Скролл вниз
   setTimeout(() => {
     const msgs = document.getElementById('chatMessages');
     if (msgs) msgs.scrollTop = msgs.scrollHeight;
   }, 100);
 }
 
-// Открыть модалку нового чата
 function openNewChatModal() {
   document.getElementById('newChatModal').classList.add('active');
   document.getElementById('newChatMessage').value = '';
+  updateCharCounter();
   document.getElementById('newChatMessage').focus();
 }
 
@@ -362,12 +359,50 @@ function closeNewChatModal() {
   document.getElementById('newChatModal').classList.remove('active');
 }
 
-// Отправка нового обращения
+function updateCharCounter() {
+  const textarea = document.getElementById('newChatMessage');
+  const counter = document.getElementById('charCounter');
+  if (!textarea || !counter) return;
+  
+  const len = textarea.value.length;
+  counter.textContent = `${len} / 5000`;
+  counter.className = 'char-counter';
+  if (len > 4500) counter.classList.add('danger');
+  else if (len > 3500) counter.classList.add('warning');
+}
+
+document.getElementById('newChatMessage').addEventListener('input', updateCharCounter);
+
 async function submitNewChat() {
-  const message = document.getElementById('newChatMessage').value.trim();
+  const textarea = document.getElementById('newChatMessage');
+  let message = textarea.value.trim();
+  
   if (!message) {
     showToast('Напишите сообщение', 'warning');
     return;
+  }
+  
+  // Rate limiting (задача 30)
+  if (typeof SecurityUtils !== 'undefined') {
+    const limit = SecurityUtils.checkActionLimit('message');
+    if (!limit.allowed) {
+      showToast(`Слишком много сообщений. Подождите ${limit.waitSeconds} сек.`, 'warning');
+      return;
+    }
+    
+    // Валидация (задача 31)
+    const msgCheck = SecurityUtils.validateMessage(message);
+    if (!msgCheck.valid) {
+      showToast(msgCheck.reason, 'warning');
+      return;
+    }
+    message = msgCheck.value;
+  } else {
+    // Fallback валидация
+    if (message.length > 5000) {
+      showToast('Сообщение слишком длинное (максимум 5000 символов)', 'warning');
+      return;
+    }
   }
   
   const btn = document.getElementById('newChatSubmit');
@@ -375,7 +410,6 @@ async function submitNewChat() {
   btn.disabled = true;
   
   try {
-    // Создаём conversation
     const { data: conv, error: convError } = await supabaseClient
       .from('support_conversations')
       .insert({
@@ -389,14 +423,12 @@ async function submitNewChat() {
     
     if (convError) throw convError;
     
-    // Сохраняем первое сообщение
     await supabaseClient.from('support_messages').insert({
       conversation_id: conv.id,
       sender: 'user',
       message: message
     });
     
-    // Уведомление в Telegram
     try {
       await fetch(
         'https://djvdklcahpqbjotukmxt.supabase.co/functions/v1/send-telegram',
@@ -433,31 +465,50 @@ async function submitNewChat() {
   }
 }
 
-// Отправка сообщения в существующий разговор
 async function sendMessage() {
   const input = document.getElementById('chatInput');
-  const text = input.value.trim();
+  let text = input.value.trim();
   if (!text || !activeConversationId) return;
+  
+  // Rate limiting
+  if (typeof SecurityUtils !== 'undefined') {
+    const limit = SecurityUtils.checkActionLimit('message');
+    if (!limit.allowed) {
+      showToast(`Слишком много сообщений. Подождите ${limit.waitSeconds} сек.`, 'warning');
+      return;
+    }
+    
+    const msgCheck = SecurityUtils.validateMessage(text);
+    if (!msgCheck.valid) {
+      showToast(msgCheck.reason, 'warning');
+      return;
+    }
+    text = msgCheck.value;
+  } else {
+    if (text.length > 5000) {
+      showToast('Сообщение слишком длинное', 'warning');
+      return;
+    }
+  }
   
   const sendBtn = document.getElementById('chatSend');
   sendBtn.disabled = true;
   
-  // Добавляем в UI сразу
   const msgsContainer = document.getElementById('chatMessages');
   const empty = msgsContainer.querySelector('.chat-empty-state');
   if (empty) empty.remove();
   
   const time = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+  const safeText = SecurityUtils ? SecurityUtils.sanitizeHTML(text) : text;
   const msgEl = document.createElement('div');
   msgEl.className = 'chat-message user';
-  msgEl.innerHTML = `<div class="chat-message-text">${text}</div><div class="chat-message-time">${time}</div>`;
+  msgEl.innerHTML = `<div class="chat-message-text">${safeText}</div><div class="chat-message-time">${time}</div>`;
   msgsContainer.appendChild(msgEl);
   msgsContainer.scrollTop = msgsContainer.scrollHeight;
   
   input.value = '';
   input.style.height = 'auto';
   
-  // Сохраняем в базу
   try {
     await supabaseClient.from('support_messages').insert({
       conversation_id: activeConversationId,
@@ -465,13 +516,11 @@ async function sendMessage() {
       message: text
     });
     
-    // Обновляем статус conversation на open
     await supabaseClient
       .from('support_conversations')
       .update({ status: 'open', updated_at: new Date().toISOString() })
       .eq('id', activeConversationId);
     
-    // Уведомление в Telegram
     try {
       await fetch(
         'https://djvdklcahpqbjotukmxt.supabase.co/functions/v1/send-telegram',
@@ -502,7 +551,6 @@ async function sendMessage() {
   sendBtn.disabled = false;
 }
 
-// Закрыть разговор
 async function closeConversation() {
   if (!activeConversationId) return;
   if (!confirm('Закрыть это обращение?')) return;
@@ -517,7 +565,6 @@ async function closeConversation() {
   showToast('Обращение закрыто', 'success');
 }
 
-// Автообновление чата (проверка новых ответов от поддержки)
 function startAutoRefresh() {
   if (autoRefreshInterval) clearInterval(autoRefreshInterval);
   autoRefreshInterval = setInterval(async () => {
@@ -536,27 +583,27 @@ function startAutoRefresh() {
     
     const currentCount = msgsContainer.querySelectorAll('.chat-message').length;
     if (messages.length > currentCount) {
-      // Появились новые сообщения (ответ поддержки)
-      msgsContainer.innerHTML = messages.map(msg => `
-        <div class="chat-message ${msg.sender === 'admin' ? 'bot' : 'user'}">
-          ${msg.sender === 'admin' ? '<div class="msg-sender">👨‍💼 Поддержка Cliply</div>' : ''}
-          <div class="chat-message-text">${msg.message}</div>
-          <div class="chat-message-time">${new Date(msg.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</div>
-        </div>
-      `).join('');
+      msgsContainer.innerHTML = messages.map(msg => {
+        const safeMsg = SecurityUtils ? SecurityUtils.sanitizeHTML(msg.message) : msg.message;
+        const time = new Date(msg.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+        return `
+          <div class="chat-message ${msg.sender === 'admin' ? 'bot' : 'user'}">
+            ${msg.sender === 'admin' ? '<div class="msg-sender">👨‍💼 Поддержка Cliply</div>' : ''}
+            <div class="chat-message-text">${safeMsg}</div>
+            <div class="chat-message-time">${time}</div>
+          </div>
+        `;
+      }).join('');
       msgsContainer.scrollTop = msgsContainer.scrollHeight;
-      showToast(' Новый ответ от поддержки!', 'success');
+      showToast('🔔 Новый ответ от поддержки!', 'success');
     }
   }, 8000);
 }
 
-// Очистка интервала при уходе со страницы
 window.addEventListener('beforeunload', () => {
   if (autoRefreshInterval) clearInterval(autoRefreshInterval);
 });
 </script>
-
-<script src="scroll-animations.js"></script>
 
 <script>
 if ('serviceWorker' in navigator) {
