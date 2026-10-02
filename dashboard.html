@@ -151,15 +151,19 @@
   .status-done { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
   .status-progress { background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
   .status-failed { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+  .status-published { background: rgba(108, 92, 231, 0.2); color: #A29BFE; border: 1px solid rgba(108, 92, 231, 0.3); }
   .project-info { padding: 16px; }
   .project-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
   .project-date { font-size: 12px; color: #A0A0B0; margin-bottom: 12px; }
-  .project-actions { display: flex; gap: 8px; }
-  .btn-small { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #27272a; background: transparent; color: #A0A0B0; font-size: 13px; cursor: pointer; transition: 0.2s; }
+  .project-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn-small { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #27272a; background: transparent; color: #A0A0B0; font-size: 13px; cursor: pointer; transition: 0.2s; min-width: 80px; }
   .btn-small:hover { border-color: #6C5CE7; color: #fff; }
   .btn-small.primary { background: #6C5CE7; border-color: #6C5CE7; color: #fff; }
+  .btn-small.gallery { background: rgba(108, 92, 231, 0.15); border-color: rgba(108, 92, 231, 0.3); color: #A29BFE; }
+  .btn-small.gallery:hover { background: rgba(108, 92, 231, 0.25); }
   .btn-small.danger { border-color: rgba(239, 68, 68, 0.3); color: #ef4444; }
   .btn-small.danger:hover { background: rgba(239, 68, 68, 0.1); border-color: #ef4444; }
+  .btn-small:disabled { opacity: 0.5; cursor: not-allowed; }
   .empty-state { text-align: center; padding: 60px 20px; color: #A0A0B0; }
   .empty-state-icon { font-size: 64px; margin-bottom: 16px; opacity: 0.5; }
   .empty-state-text { font-size: 16px; margin-bottom: 8px; }
@@ -220,6 +224,128 @@
   .welcome-btn-secondary { background: transparent; color: #A0A0B0; border: 1px solid #27272a; }
   .welcome-btn-secondary:hover { border-color: #6C5CE7; color: #fff; }
   
+  /* МОДАЛЬНОЕ ОКНО ПУБЛИКАЦИИ В ГАЛЕРЕЮ */
+  .publish-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .publish-modal.active { display: flex; animation: modalFadeIn 0.3s ease; }
+  .publish-modal-content {
+    background: #141414;
+    border: 1px solid #27272a;
+    border-radius: 20px;
+    padding: 32px;
+    max-width: 500px;
+    width: 100%;
+    position: relative;
+  }
+  .publish-modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    background: transparent;
+    border: none;
+    color: #A0A0B0;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.2s;
+  }
+  .publish-modal-close:hover { background: #1f1f23; color: #fff; }
+  .publish-modal h3 {
+    font-size: 24px;
+    font-weight: 700;
+    font-family: 'Manrope';
+    margin-bottom: 8px;
+  }
+  .publish-modal > p {
+    color: #A0A0B0;
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  .publish-modal .form-group { margin-bottom: 16px; }
+  .publish-modal .form-group label { font-size: 13px; }
+  .publish-modal .form-group input,
+  .publish-modal .form-group textarea {
+    width: 100%;
+    background: #0A0A0F;
+    border: 1px solid #27272a;
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #fff;
+    font-size: 14px;
+    font-family: inherit;
+  }
+  .publish-modal .form-group input:focus,
+  .publish-modal .form-group textarea:focus {
+    outline: none;
+    border-color: #6C5CE7;
+  }
+  .publish-modal .form-group textarea { min-height: 100px; resize: vertical; }
+  .publish-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 20px 0;
+    padding: 16px;
+    background: rgba(108, 92, 231, 0.08);
+    border: 1px solid rgba(108, 92, 231, 0.2);
+    border-radius: 10px;
+  }
+  .publish-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    accent-color: #6C5CE7;
+    cursor: pointer;
+  }
+  .publish-checkbox label {
+    font-size: 13px;
+    color: #A0A0B0;
+    line-height: 1.5;
+    cursor: pointer;
+  }
+  .publish-checkbox label strong { color: #fff; }
+  .publish-modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+  }
+  .publish-btn {
+    padding: 12px 24px;
+    border-radius: 10px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .publish-btn-cancel {
+    background: transparent;
+    color: #A0A0B0;
+    border: 1px solid #27272a;
+  }
+  .publish-btn-cancel:hover { border-color: #6C5CE7; color: #fff; }
+  .publish-btn-submit {
+    background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+    color: #fff;
+  }
+  .publish-btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4); }
+  .publish-btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  
   /* Toast для достижений */
   .achievement-toast { position: fixed; top: 24px; right: 24px; background: #141414; border: 2px solid #6C5CE7; border-radius: 16px; padding: 20px 24px; display: flex; align-items: center; gap: 16px; box-shadow: 0 20px 60px rgba(108, 92, 231, 0.4); z-index: 10001; animation: achievementSlideIn 0.5s ease; max-width: 400px; }
   @keyframes achievementSlideIn { from { opacity: 0; transform: translateX(100px); } to { opacity: 1; transform: translateX(0); } }
@@ -236,6 +362,7 @@
     .welcome-features { grid-template-columns: 1fr !important; }
     .onboarding-tooltip { max-width: 90% !important; padding: 20px !important; }
     .achievement-toast { right: 12px; left: 12px; max-width: none; }
+    .publish-modal-content { padding: 24px !important; }
   }
 </style>
 </head>
@@ -265,7 +392,7 @@
     <div class="welcome-features">
       <div class="welcome-feature"><div class="welcome-feature-icon">📸</div><div class="welcome-feature-text">Загрузите 3-5 фото товара</div></div>
       <div class="welcome-feature"><div class="welcome-feature-icon">✨</div><div class="welcome-feature-text">AI создаст продающий сценарий</div></div>
-      <div class="welcome-feature"><div class="welcome-feature-icon">🎬</div><div class="welcome-feature-text">Получите видео за 2 минуты</div></div>
+      <div class="welcome-feature"><div class="welcome-feature-icon"></div><div class="welcome-feature-text">Получите видео за 2 минуты</div></div>
       <div class="welcome-feature"><div class="welcome-feature-icon">📈</div><div class="welcome-feature-text">+34% к конверсии карточки</div></div>
     </div>
     <div class="welcome-actions">
@@ -275,11 +402,42 @@
   </div>
 </div>
 
+<!-- МОДАЛЬНОЕ ОКНО ПУБЛИКАЦИИ В ГАЛЕРЕЮ -->
+<div class="publish-modal" id="publishModal">
+  <div class="publish-modal-content">
+    <button class="publish-modal-close" onclick="closePublishModal()">×</button>
+    <h3>📤 Опубликовать в галерее</h3>
+    <p>Ваше видео будет отправлено на модерацию. После одобрения оно появится в публичной галерее Cliply.</p>
+    
+    <div class="form-group">
+      <label>Название видео</label>
+      <input type="text" id="publishTitle" placeholder="Например: Крем для лица увлажняющий">
+    </div>
+    
+    <div class="form-group">
+      <label>Описание (необязательно)</label>
+      <textarea id="publishDescription" placeholder="Расскажите о товаре подробнее..."></textarea>
+    </div>
+    
+    <div class="publish-checkbox">
+      <input type="checkbox" id="publishAgree">
+      <label for="publishAgree">
+        <strong>Я соглашаюсь</strong> на публикацию этого видео в публичной галерее Cliply. Я подтверждаю, что владею правами на загруженные материалы.
+      </label>
+    </div>
+    
+    <div class="publish-modal-actions">
+      <button class="publish-btn publish-btn-cancel" onclick="closePublishModal()">Отмена</button>
+      <button class="publish-btn publish-btn-submit" id="publishSubmitBtn" onclick="submitToGallery()">Отправить на модерацию</button>
+    </div>
+  </div>
+</div>
+
 <div class="layout">
   <aside class="sidebar">
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu" id="navMenu">
-      <li><a href="dashboard.html" class="active">📊 Дашборд</a></li>
+      <li><a href="dashboard.html" class="active"> Дашборд</a></li>
       <li><a href="analytics.html">📈 Аналитика</a></li>
       <li><a href="achievements.html">🏆 Достижения</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
@@ -298,10 +456,10 @@
   
   <div class="mobile-menu" id="mobileMenu">
     <a href="dashboard.html" class="active">📊 Дашборд</a>
-    <a href="analytics.html">📈 Аналитика</a>
-    <a href="achievements.html"> Достижения</a>
+    <a href="analytics.html"> Аналитика</a>
+    <a href="achievements.html">🏆 Достижения</a>
     <a href="pricing.html">💎 Тарифы</a>
-    <a href="settings.html">️ Настройки</a>
+    <a href="settings.html">⚙️ Настройки</a>
     <a href="support.html">💬 Техподдержка</a>
     <a href="index.html" class="btn-nav-mobile">← На главную</a>
     <a href="#" onclick="logout(); return false;" style="color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); margin-top: 16px;">Выйти</a>
@@ -309,7 +467,7 @@
   
   <main class="main">
     <div id="offlineBanner" class="offline-banner">
-      <span>️</span>
+      <span>⚠️</span>
       <span>Нет подключения к интернету. Некоторые функции могут быть недоступны.</span>
     </div>
     <div class="header">
@@ -408,6 +566,7 @@ let allVideos = [];
 let networkManager = null;
 let allNotifications = [];
 let notificationsCheckInterval = null;
+let currentPublishVideoId = null;
 
 // ===== ДОСТИЖЕНИЯ =====
 let allAchievements = [];
@@ -427,7 +586,6 @@ async function loadAchievements() {
 
 async function checkAndAwardAchievements() {
   if (!currentUser || allAchievements.length === 0) return;
-  
   try {
     const { count: videoCount } = await supabaseClient.from('videos').select('*', { count: 'exact', head: true }).eq('user_id', currentUser.id);
     const { count: reviewCount } = await supabaseClient.from('reviews').select('*', { count: 'exact', head: true }).eq('user_id', currentUser.id);
@@ -438,50 +596,29 @@ async function checkAndAwardAchievements() {
     for (const achievement of allAchievements) {
       const alreadyUnlocked = userAchievements.some(ua => ua.achievement_id === achievement.id);
       if (alreadyUnlocked) continue;
-      
       let currentProgress = 0;
       let shouldUnlock = false;
-      
       switch (achievement.code) {
         case 'first_video': case 'five_videos': case 'ten_videos': case 'fifty_videos':
-          currentProgress = videoCount || 0;
-          shouldUnlock = currentProgress >= achievement.requirement;
-          break;
+          currentProgress = videoCount || 0; shouldUnlock = currentProgress >= achievement.requirement; break;
         case 'first_review': case 'five_reviews':
-          currentProgress = reviewCount || 0;
-          shouldUnlock = currentProgress >= achievement.requirement;
-          break;
+          currentProgress = reviewCount || 0; shouldUnlock = currentProgress >= achievement.requirement; break;
         case 'all_scenarios':
-          currentProgress = uniqueScenarios.length;
-          shouldUnlock = currentProgress >= achievement.requirement;
-          break;
+          currentProgress = uniqueScenarios.length; shouldUnlock = currentProgress >= achievement.requirement; break;
         case 'social_butterfly':
-          currentProgress = supportCount || 0;
-          shouldUnlock = currentProgress >= achievement.requirement;
-          break;
+          currentProgress = supportCount || 0; shouldUnlock = currentProgress >= achievement.requirement; break;
         case 'beloved':
           const name = (currentUser.profile?.full_name || '').toLowerCase().trim();
-          shouldUnlock = name === 'богдана' || name === 'богдан';
-          currentProgress = shouldUnlock ? 1 : 0;
-          break;
+          shouldUnlock = name === 'богдана' || name === 'богдан'; currentProgress = shouldUnlock ? 1 : 0; break;
         case 'night_owl':
-          const hour = new Date().getHours();
-          shouldUnlock = hour >= 0 && hour < 5;
-          currentProgress = shouldUnlock ? 1 : 0;
-          break;
+          const hour = new Date().getHours(); shouldUnlock = hour >= 0 && hour < 5; currentProgress = shouldUnlock ? 1 : 0; break;
         case 'perfectionist':
           const desc = document.getElementById('productDescription')?.value || '';
-          shouldUnlock = desc.length > 200;
-          currentProgress = shouldUnlock ? desc.length : 0;
-          break;
+          shouldUnlock = desc.length > 200; currentProgress = shouldUnlock ? desc.length : 0; break;
         default: continue;
       }
-      
-      if (shouldUnlock) {
-        await unlockAchievement(achievement, currentProgress);
-      } else if (currentProgress > 0) {
-        await updateAchievementProgress(achievement.id, currentProgress);
-      }
+      if (shouldUnlock) await unlockAchievement(achievement, currentProgress);
+      else if (currentProgress > 0) await updateAchievementProgress(achievement.id, currentProgress);
     }
   } catch (e) { console.error('Check achievements error:', e); }
 }
@@ -518,14 +655,7 @@ async function unlockAchievementByCode(code, progress) {
 function showAchievementToast(achievement) {
   const toast = document.createElement('div');
   toast.className = 'achievement-toast';
-  toast.innerHTML = `
-    <div class="achievement-toast-icon">${achievement.icon}</div>
-    <div class="achievement-toast-content">
-      <div class="achievement-toast-label">Новое достижение!</div>
-      <div class="achievement-toast-title">${achievement.name}</div>
-      <div class="achievement-toast-desc">${achievement.description}</div>
-    </div>
-  `;
+  toast.innerHTML = `<div class="achievement-toast-icon">${achievement.icon}</div><div class="achievement-toast-content"><div class="achievement-toast-label">Новое достижение!</div><div class="achievement-toast-title">${achievement.name}</div><div class="achievement-toast-desc">${achievement.description}</div></div>`;
   document.body.appendChild(toast);
   setTimeout(() => { toast.style.animation = 'achievementSlideIn 0.5s ease reverse'; setTimeout(() => toast.remove(), 500); }, 4000);
 }
@@ -533,7 +663,7 @@ function showAchievementToast(achievement) {
 // ===== ОНБОРДИНГ =====
 const ONBOARDING_STEPS = [
   { selector: '#uploadZone', icon: '', title: 'Шаг 1: Загрузите фото товара', text: 'Перетащите сюда 3-5 фотографий товара или нажмите, чтобы выбрать.', position: 'bottom' },
-  { selector: '#descriptionGroup', icon: '✍️', title: 'Шаг 2: Опишите товар', text: 'Расскажите, чем ваш товар лучше аналогов. AI сам превратит это в продающий сценарий.', position: 'bottom' },
+  { selector: '#descriptionGroup', icon: '️', title: 'Шаг 2: Опишите товар', text: 'Расскажите, чем ваш товар лучше аналогов. AI сам превратит это в продающий сценарий.', position: 'bottom' },
   { selector: '#scenarioGroup', icon: '', title: 'Шаг 3: Выберите сценарий', text: '6 готовых форматов под разные задачи: обзор, распаковка, отзыв и другие.', position: 'top' },
   { selector: '#btnGenerate', icon: '', title: 'Шаг 4: Сгенерируйте видео', text: 'Нажмите кнопку — и через 2 минуты получите готовый ролик 9:16.', position: 'top' }
 ];
@@ -637,6 +767,115 @@ function initOnboarding() {
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { const tooltip = document.getElementById('onboardingTooltip'); if (tooltip.classList.contains('active')) skipOnboarding(); } });
 }
 
+// ===== ПУБЛИКАЦИЯ В ГАЛЕРЕЮ =====
+function openPublishModal(videoId) {
+  const video = allVideos.find(v => v.id === videoId);
+  if (!video) return;
+  
+  currentPublishVideoId = videoId;
+  document.getElementById('publishTitle').value = video.product_name || '';
+  document.getElementById('publishDescription').value = video.product_description || '';
+  document.getElementById('publishAgree').checked = false;
+  
+  document.getElementById('publishModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePublishModal() {
+  document.getElementById('publishModal').classList.remove('active');
+  document.body.style.overflow = '';
+  currentPublishVideoId = null;
+}
+
+async function submitToGallery() {
+  if (!currentPublishVideoId) return;
+  
+  const title = document.getElementById('publishTitle').value.trim();
+  const description = document.getElementById('publishDescription').value.trim();
+  const agreed = document.getElementById('publishAgree').checked;
+  
+  if (!title) { showToast('Введите название видео', 'warning'); return; }
+  if (!agreed) { showToast('Необходимо согласие на публикацию', 'warning'); return; }
+  
+  const video = allVideos.find(v => v.id === currentPublishVideoId);
+  if (!video) return;
+  
+  const btn = document.getElementById('publishSubmitBtn');
+  btn.textContent = 'Отправка...';
+  btn.disabled = true;
+  
+  try {
+    // Проверяем, не опубликовано ли уже
+    const { data: existing } = await supabaseClient
+      .from('gallery_videos')
+      .select('id, status')
+      .eq('video_id', currentPublishVideoId)
+      .eq('user_id', currentUser.id)
+      .single();
+    
+    if (existing) {
+      if (existing.status === 'approved') {
+        showToast('Это видео уже опубликовано в галерее!', 'warning');
+        closePublishModal();
+        return;
+      }
+      if (existing.status === 'pending') {
+        showToast('Это видео уже отправлено на модерацию', 'info');
+        closePublishModal();
+        return;
+      }
+      // Если rejected — обновляем
+      const { error } = await supabaseClient
+        .from('gallery_videos')
+        .update({
+          status: 'pending',
+          product_name: title,
+          product_description: description,
+          approved_at: null,
+          approved_by: null
+        })
+        .eq('id', existing.id);
+      
+      if (error) throw error;
+    } else {
+      // Создаём новую запись
+      const { error } = await supabaseClient
+        .from('gallery_videos')
+        .insert({
+          video_id: currentPublishVideoId,
+          user_id: currentUser.id,
+          user_name: currentUser.profile?.full_name || currentUser.email,
+          user_role: ROLES[currentUser.profile?.role_level]?.name || 'Селлер',
+          product_name: title,
+          product_description: description,
+          scenario: video.scenario,
+          video_url: video.video_url,
+          status: 'pending'
+        });
+      
+      if (error) throw error;
+    }
+    
+    closePublishModal();
+    showToast('📤 Видео отправлено на модерацию! Мы рассмотрим его в течение 24 часов.', 'success');
+    
+    // Обновляем отображение
+    await loadVideos();
+    
+  } catch (e) {
+    console.error('Publish error:', e);
+    showToast('Ошибка: ' + e.message, 'error');
+  } finally {
+    btn.textContent = 'Отправить на модерацию';
+    btn.disabled = false;
+  }
+}
+
+// Закрытие модалки по клику на overlay
+document.getElementById('publishModal').addEventListener('click', (e) => {
+  if (e.target.id === 'publishModal') closePublishModal();
+});
+
 async function initDashboard() {
   showVideoCardSkeleton('#projectsGrid', 4);
   
@@ -687,7 +926,6 @@ async function initDashboard() {
   initNotificationsUI();
   initOnboarding();
   
-  // Проверяем "Любимая" при входе
   await checkBelovedAchievement();
   
   const needsOnboarding = await checkOnboardingStatus();
@@ -705,13 +943,10 @@ async function initDashboard() {
   await checkReviewEligibility();
 }
 
-// Проверка "Любимая" при входе
 async function checkBelovedAchievement() {
   if (!currentUser) return;
   const name = (currentUser.profile?.full_name || '').toLowerCase().trim();
-  if (name === 'богдана' || name === 'богдан') {
-    await unlockAchievementByCode('beloved', 1);
-  }
+  if (name === 'богдана' || name === 'богдан') await unlockAchievementByCode('beloved', 1);
 }
 
 // ===== УВЕДОМЛЕНИЯ =====
@@ -747,7 +982,7 @@ function renderNotifications() {
   }).join('');
 }
 
-function getNotificationIcon(type) { const icons = { 'video_done': '🎬', 'support_reply': '💬', 'review': '⭐', 'system': '', 'achievement': '🏆' }; return icons[type] || '🔔'; }
+function getNotificationIcon(type) { const icons = { 'video_done': '', 'support_reply': '💬', 'review': '⭐', 'system': '', 'achievement': '' }; return icons[type] || '🔔'; }
 function formatNotificationTime(dateStr) { const date = new Date(dateStr); const diff = new Date() - date; const minutes = Math.floor(diff / 60000); const hours = Math.floor(diff / 3600000); const days = Math.floor(diff / 86400000); if (minutes < 1) return 'только что'; if (minutes < 60) return `${minutes} мин. назад`; if (hours < 24) return `${hours} ч. назад`; if (days < 7) return `${days} дн. назад`; return date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' }); }
 
 async function handleNotificationClick(notifId, link) {
@@ -792,14 +1027,29 @@ async function createNotification(type, title, message, link = null) {
 // ===== ВИДЕО =====
 async function loadVideos() {
   try {
-    const { data, error } = await networkManager.supabaseRequest(() => supabaseClient.from('videos').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }), 'Загрузка видео');
+    const { data, error } = await networkManager.supabaseRequest(
+      () => supabaseClient.from('videos').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }),
+      'Загрузка видео'
+    );
     if (error) { showToast('Ошибка загрузки видео: ' + error.message, 'error'); return; }
     allVideos = data || [];
-    renderVideos();
+    
+    // Загружаем статусы публикаций в галерею
+    const { data: galleryData } = await supabaseClient
+      .from('gallery_videos')
+      .select('video_id, status')
+      .eq('user_id', currentUser.id);
+    
+    const galleryStatusMap = {};
+    if (galleryData) {
+      galleryData.forEach(g => { galleryStatusMap[g.video_id] = g.status; });
+    }
+    
+    renderVideos(galleryStatusMap);
   } catch (error) { showToast('Не удалось загрузить видео', 'error'); }
 }
 
-function renderVideos() {
+function renderVideos(galleryStatusMap = {}) {
   const grid = document.getElementById('projectsGrid');
   const searchTerm = document.getElementById('searchInput').value.toLowerCase();
   const statusFilter = document.getElementById('statusFilter').value;
@@ -809,14 +1059,33 @@ function renderVideos() {
     return matchesSearch && matchesStatus;
   });
   if (filteredVideos.length === 0) {
-    grid.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;"><div class="empty-state-icon">🎬</div><div class="empty-state-text">${allVideos.length === 0 ? 'У вас ещё нет видео' : 'Ничего не найдено'}</div><div class="empty-state-subtext">${allVideos.length === 0 ? 'Создайте первое видео выше' : 'Попробуйте изменить фильтры'}</div></div>`;
+    grid.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;"><div class="empty-state-icon"></div><div class="empty-state-text">${allVideos.length === 0 ? 'У вас ещё нет видео' : 'Ничего не найдено'}</div><div class="empty-state-subtext">${allVideos.length === 0 ? 'Создайте первое видео выше' : 'Попробуйте изменить фильтры'}</div></div>`;
     return;
   }
   grid.innerHTML = filteredVideos.map(video => {
     const statusClass = video.status === 'done' ? 'status-done' : video.status === 'processing' ? 'status-progress' : 'status-failed';
     const statusText = video.status === 'done' ? 'Готово' : video.status === 'processing' ? 'В процессе' : 'Ошибка';
     const date = new Date(video.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-    return `<div class="project-card content-fade-in"><div class="project-preview">${video.status === 'done' ? '' : video.status === 'processing' ? '' : '❌'}<span class="project-status ${statusClass}">${statusText}</span></div><div class="project-info"><div class="project-title">${video.product_name || 'Без названия'}</div><div class="project-date">${date}</div><div class="project-actions">${video.status === 'done' ? `<button class="btn-small primary" onclick="downloadVideo('${video.id}')">Скачать</button>` : ''}<button class="btn-small" onclick="regenerateVideo('${video.id}')">Перегенерировать</button><button class="btn-small danger" onclick="deleteVideo('${video.id}')">Удалить</button></div></div></div>`;
+    
+    const galleryStatus = galleryStatusMap[video.id];
+    let galleryBadge = '';
+    let publishBtn = '';
+    
+    if (galleryStatus === 'approved') {
+      galleryBadge = '<span class="project-status status-published" style="top: auto; bottom: 12px; left: 12px; right: auto;">🖼️ В галерее</span>';
+    } else if (galleryStatus === 'pending') {
+      galleryBadge = '<span class="project-status status-progress" style="top: auto; bottom: 12px; left: 12px; right: auto;">⏳ На модерации</span>';
+    } else if (galleryStatus === 'rejected') {
+      galleryBadge = '<span class="project-status status-failed" style="top: auto; bottom: 12px; left: 12px; right: auto;"> Отклонено</span>';
+    }
+    
+    if (video.status === 'done' && !galleryStatus) {
+      publishBtn = `<button class="btn-small gallery" onclick="openPublishModal('${video.id}')">📤 В галерею</button>`;
+    } else if (video.status === 'done' && galleryStatus === 'rejected') {
+      publishBtn = `<button class="btn-small gallery" onclick="openPublishModal('${video.id}')">📤 Повторить</button>`;
+    }
+    
+    return `<div class="project-card content-fade-in"><div class="project-preview">${video.status === 'done' ? '' : video.status === 'processing' ? '' : ''}<span class="project-status ${statusClass}">${statusText}</span>${galleryBadge}</div><div class="project-info"><div class="project-title">${video.product_name || 'Без названия'}</div><div class="project-date">${date}</div><div class="project-actions">${video.status === 'done' ? `<button class="btn-small primary" onclick="downloadVideo('${video.id}')">Скачать</button>${publishBtn}` : ''}<button class="btn-small" onclick="regenerateVideo('${video.id}')">Перегенерировать</button><button class="btn-small danger" onclick="deleteVideo('${video.id}')">Удалить</button></div></div></div>`;
   }).join('');
 }
 
@@ -841,8 +1110,8 @@ async function deleteVideo(videoId) {
   } catch (error) { showToast('Не удалось удалить видео', 'error'); }
 }
 
-document.getElementById('searchInput').addEventListener('input', renderVideos);
-document.getElementById('statusFilter').addEventListener('change', renderVideos);
+document.getElementById('searchInput').addEventListener('input', () => renderVideos());
+document.getElementById('statusFilter').addEventListener('change', () => renderVideos());
 
 const uploadZone = document.getElementById('uploadZone');
 const fileInput = document.getElementById('fileInput');
@@ -915,7 +1184,7 @@ async function generatePrompt() {
   const btn = document.getElementById('btnGeneratePrompt');
   const originalText = textarea.value.trim();
   if (!originalText) { showToast('Сначала введите описание товара', 'warning'); return; }
-  btn.disabled = true; btn.textContent = '⏳ Генерация...';
+  btn.disabled = true; btn.textContent = ' Генерация...';
   await new Promise(resolve => setTimeout(resolve, 2000));
   textarea.value = `${originalText}\n\n[AI-улучшенная версия]:\nСоздай динамичное вертикальное видео (9:16) длительностью 15 секунд для маркетплейса.\n\nКлючевые акценты:\n• Покажи товар с разных ракурсов\n• Подчеркни главные преимущества\n• Современный минималистичный стиль\n• Энергичная фоновая музыка\n• Призыв к действию "Закажи сейчас"`;
   btn.disabled = false; btn.textContent = '✨ Улучшить промпт';
@@ -1032,7 +1301,7 @@ function showReviewModal() {
       rating: selectedRating, review_text: text, product_category: category
     });
     if (error) { showToast('Ошибка: ' + error.message, 'error'); btn.textContent = 'Опубликовать отзыв'; btn.disabled = false; }
-    else { showToast('Спасибо за отзыв! ', 'success'); modal.remove(); await checkAndAwardAchievements(); }
+    else { showToast('Спасибо за отзыв! ⭐', 'success'); modal.remove(); await checkAndAwardAchievements(); }
   });
 }
 
