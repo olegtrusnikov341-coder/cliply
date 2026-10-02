@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
-<title>Возможности Cliply — AI-генерация видео</title>
-<meta name="description" content="Все возможности Cliply: 6 типов видео, AI-сценарии, музыка, озвучка, экспорт в разных форматах.">
+<title>Возможности Cliply — AI-инструменты для селлеров</title>
+<meta name="description" content="Все возможности Cliply: 6 типов видео, AI-сценарии, озвучка, музыка и экспорт для маркетплейсов.">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#6C5CE7">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -18,53 +18,62 @@
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
 <link rel="stylesheet" href="mobile.css">
+<link rel="stylesheet" href="scroll-animations.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; line-height: 1.6; }
   h1, h2, h3, h4 { font-family: 'Manrope', sans-serif; font-weight: 800; line-height: 1.1; }
-  
   .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
   
   nav { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: rgba(10,10,15,0.95); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid #1f1f2e; }
   .logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
   .nav-links { display: flex; align-items: center; gap: 24px; }
   .nav-links a { color: #A0A0B0; text-decoration: none; font-size: 14px; transition: color 0.2s; }
-  .nav-links a:hover { color: #fff; }
+  .nav-links a:hover, .nav-links a.active { color: #fff; }
   .nav-btn-login { color: #fff !important; border: 1px solid #27272a; padding: 8px 20px; border-radius: 100px; }
   .nav-btn-login:hover { border-color: #6C5CE7; }
   .nav-btn-cta { background: linear-gradient(135deg, #6C5CE7, #A29BFE) !important; color: #fff !important; padding: 10px 24px !important; border-radius: 100px; font-weight: 600 !important; border: none; }
-  .nav-btn-cta:hover { box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   
   .hero { padding: 100px 0 60px; text-align: center; }
-  .hero-label { font-size: 13px; font-weight: 700; color: #6C5CE7; letter-spacing: 3px; margin-bottom: 16px; text-transform: uppercase; }
+  .hero-badge { display: inline-block; background: rgba(108, 92, 231, 0.15); color: #A29BFE; padding: 8px 20px; border-radius: 100px; font-size: 13px; font-weight: 600; margin-bottom: 32px; border: 1px solid rgba(108, 92, 231, 0.3); letter-spacing: 2px; }
   .hero h1 { font-size: 64px; margin-bottom: 24px; max-width: 900px; margin-left: auto; margin-right: auto; }
   .hero h1 span { background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .hero p { font-size: 20px; color: #A0A0B0; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+  .hero p { font-size: 20px; color: #A0A0B0; max-width: 700px; margin: 0 auto; line-height: 1.6; }
   
-  .section { padding: 80px 0; }
+  .section { padding: 100px 0; }
   .section-label { font-size: 13px; font-weight: 700; color: #6C5CE7; letter-spacing: 3px; margin-bottom: 16px; text-transform: uppercase; }
   .section-title { font-size: 48px; margin-bottom: 24px; max-width: 800px; }
   .section-subtitle { font-size: 18px; color: #A0A0B0; max-width: 600px; line-height: 1.6; margin-bottom: 48px; }
   
   .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
-  .feature-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; padding: 32px; transition: all 0.3s; }
-  .feature-card:hover { border-color: #6C5CE7; transform: translateY(-4px); box-shadow: 0 10px 40px rgba(108, 92, 231, 0.15); }
-  .feature-icon { font-size: 48px; margin-bottom: 20px; }
+  .feature-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; padding: 40px 32px; transition: all 0.3s; }
+  .feature-card:hover { border-color: #6C5CE7; transform: translateY(-4px); box-shadow: 0 20px 40px rgba(108, 92, 231, 0.15); }
+  .feature-icon { font-size: 48px; margin-bottom: 24px; }
   .feature-card h3 { font-size: 22px; margin-bottom: 12px; }
   .feature-card p { color: #A0A0B0; font-size: 15px; line-height: 1.6; }
   
   .video-types { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 48px; }
   .video-type-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; padding: 32px; display: flex; gap: 24px; transition: all 0.3s; }
-  .video-type-card:hover { border-color: #6C5CE7; }
+  .video-type-card:hover { border-color: #6C5CE7; transform: translateY(-2px); }
   .video-type-icon { font-size: 48px; flex-shrink: 0; }
-  .video-type-content h3 { font-size: 22px; margin-bottom: 12px; }
-  .video-type-content p { color: #A0A0B0; font-size: 15px; line-height: 1.6; margin-bottom: 16px; }
-  .video-type-tag { display: inline-block; background: rgba(108, 92, 231, 0.15); color: #A29BFE; padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 600; border: 1px solid rgba(108, 92, 231, 0.3); }
+  .video-type-info h3 { font-size: 20px; margin-bottom: 8px; }
+  .video-type-info p { color: #A0A0B0; font-size: 14px; line-height: 1.6; margin-bottom: 12px; }
+  .video-type-meta { display: flex; gap: 12px; font-size: 12px; color: #6C5CE7; font-weight: 600; }
+  .video-type-meta span { background: rgba(108, 92, 231, 0.15); padding: 4px 10px; border-radius: 100px; border: 1px solid rgba(108, 92, 231, 0.3); }
   
-  .specs-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 48px; }
-  .spec-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 16px; padding: 24px; text-align: center; }
-  .spec-value { font-size: 36px; font-weight: 800; font-family: 'Manrope'; color: #6C5CE7; margin-bottom: 8px; }
-  .spec-label { color: #A0A0B0; font-size: 14px; }
+  .ai-features { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 48px; }
+  .ai-feature { background: #141414; border: 1px solid #1f1f2e; border-radius: 16px; padding: 28px 20px; text-align: center; transition: all 0.3s; }
+  .ai-feature:hover { border-color: #6C5CE7; transform: translateY(-2px); }
+  .ai-feature-icon { font-size: 36px; margin-bottom: 16px; }
+  .ai-feature h4 { font-size: 16px; margin-bottom: 8px; }
+  .ai-feature p { color: #A0A0B0; font-size: 13px; line-height: 1.5; }
+  
+  .export-formats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 48px; }
+  .export-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 16px; padding: 28px; text-align: center; transition: all 0.3s; }
+  .export-card:hover { border-color: #6C5CE7; transform: translateY(-2px); }
+  .export-icon { font-size: 40px; margin-bottom: 12px; }
+  .export-name { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .export-desc { color: #A0A0B0; font-size: 13px; }
   
   .cta-section { text-align: center; padding: 100px 0; background: linear-gradient(180deg, transparent, rgba(108, 92, 231, 0.05)); }
   .cta-section h2 { font-size: 48px; margin-bottom: 24px; }
@@ -74,7 +83,7 @@
   
   footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
   
-  .burger { display: none; flex-direction: column; gap: 5px; background: transparent; border: none; cursor: pointer; padding: 8px; z-index: 1001; }
+  .burger { display: none; flex-direction: column; gap: 5px; background: transparent; border: none; cursor: pointer; padding: 8px; }
   .burger span { display: block; width: 24px; height: 2px; background: #fff; transition: all 0.3s; border-radius: 2px; }
   .burger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .burger.active span:nth-child(2) { opacity: 0; }
@@ -83,18 +92,16 @@
   .mobile-menu.active { display: flex; }
   .mobile-menu a { display: block; padding: 16px; color: #fff; text-decoration: none; font-size: 18px; border-radius: 8px; text-align: center; }
   .mobile-menu a:hover { background: rgba(108, 92, 231, 0.15); }
-  .btn-nav-mobile { background: linear-gradient(135deg, #6C5CE7, #A29BFE) !important; font-weight: 700 !important; }
   
   @media (max-width: 768px) {
     .nav-links { display: none !important; }
     .burger { display: flex !important; }
-    .hero { padding: 60px 0 40px; }
     .hero h1 { font-size: 36px !important; }
     .hero p { font-size: 16px; }
     .section { padding: 60px 0; }
     .section-title { font-size: 32px !important; }
-    .features-grid, .video-types, .specs-grid { grid-template-columns: 1fr !important; }
-    .video-type-card { flex-direction: column; }
+    .features-grid, .video-types, .ai-features, .export-formats { grid-template-columns: 1fr !important; }
+    .cta-section h2 { font-size: 32px !important; }
   }
 </style>
 </head>
@@ -103,10 +110,13 @@
 <nav>
   <a href="index.html" class="logo">Cliply</a>
   <div class="nav-links">
-    <a href="index.html">Главная</a>
-    <a href="features.html" style="color: #fff;">Возможности</a>
+    <a href="features.html" class="active">Возможности</a>
+    <a href="examples.html">Примеры</a>
+    <a href="gallery.html">Галерея</a>
+    <a href="about.html">О нас</a>
     <a href="index.html#pricing">Тарифы</a>
     <a href="faq.html">FAQ</a>
+    <a href="contacts.html">Контакты</a>
     <a href="login.html" class="nav-btn-login" id="navAuthBtn">Войти</a>
     <a href="login.html" class="nav-btn-cta">Попробовать</a>
   </div>
@@ -116,74 +126,128 @@
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="index.html">Главная</a>
   <a href="features.html" style="color: #6C5CE7;">Возможности</a>
+  <a href="examples.html">Примеры</a>
+  <a href="gallery.html">Галерея</a>
+  <a href="about.html">О нас</a>
   <a href="index.html#pricing">Тарифы</a>
   <a href="faq.html">FAQ</a>
+  <a href="contacts.html">Контакты</a>
   <a href="login.html" id="mobileAuthBtn">Войти</a>
-  <a href="login.html" class="btn-nav-mobile">Попробовать бесплатно</a>
+  <a href="login.html" class="btn-nav-mobile" style="background: linear-gradient(135deg, #6C5CE7, #A29BFE) !important; font-weight: 700 !important;">Попробовать бесплатно</a>
 </div>
 
-<section class="hero">
+<section class="hero animate-fade-in">
   <div class="container">
-    <div class="hero-label">03 / ВОЗМОЖНОСТИ</div>
-    <h1>Всё, что нужно для <span>продающего видео</span></h1>
-    <p>6 готовых типов видео, AI-сценарии, библиотека музыки и озвучка. Всё в одном сервисе.</p>
+    <div class="hero-badge">ВОЗМОЖНОСТИ</div>
+    <h1>Всё для создания <span>продающего видео</span></h1>
+    <p>6 типов видео, AI-сценарии, профессиональная озвучка и экспорт для всех маркетплейсов. Всё в одном сервисе.</p>
+  </div>
+</section>
+
+<section class="section" style="background: #0d0d14;">
+  <div class="container">
+    <div class="section-label animate-fade-in">01 / КЛЮЧЕВЫЕ ФУНКЦИИ</div>
+    <h2 class="section-title animate-slide-up">Что умеет Cliply</h2>
+    <p class="section-subtitle animate-slide-up delay-1">Три главные возможности, которые экономят ваше время и деньги.</p>
+    
+    <div class="features-grid">
+      <div class="feature-card animate-slide-up delay-1">
+        <div class="feature-icon"></div>
+        <h3>AI-генерация видео</h3>
+        <p>Загрузите 3-5 фото товара — AI сам создаст динамичное видео с переходами, музыкой и титрами за 2 минуты.</p>
+      </div>
+      <div class="feature-card animate-slide-up delay-2">
+        <div class="feature-icon"></div>
+        <h3>Готовые сценарии</h3>
+        <p>6 проверенных форматов: обзор, 3 причины купить, распаковка, проблема-решение, отзыв, сравнение с конкурентами.</p>
+      </div>
+      <div class="feature-card animate-slide-up delay-3">
+        <div class="feature-icon">🎯</div>
+        <h3>Для маркетплейсов</h3>
+        <p>Все видео в формате 9:16, оптимизированы для Wildberries, Ozon, Яндекс.Маркет, Instagram Reels и TikTok.</p>
+      </div>
+    </div>
   </div>
 </section>
 
 <section class="section">
   <div class="container">
-    <div class="section-label">ТИПЫ ВИДЕО</div>
-    <h2 class="section-title">Выберите формат под вашу задачу</h2>
-    <p class="section-subtitle">Каждый тип видео оптимизирован под конкретную цель: показать товар, вызвать эмоцию или убедить купить.</p>
+    <div class="section-label animate-fade-in">02 / ТИПЫ ВИДЕО</div>
+    <h2 class="section-title animate-slide-up">Выберите формат под задачу</h2>
+    <p class="section-subtitle animate-slide-up delay-1">Каждый тип видео решает свою задачу: от показа товара до сравнения с конкурентами.</p>
+    
     <div class="video-types">
-      <div class="video-type-card">
+      <div class="video-type-card animate-slide-left delay-1">
         <div class="video-type-icon">📦</div>
-        <div class="video-type-content">
+        <div class="video-type-info">
           <h3>Обзор товара</h3>
-          <p>Покажите товар в действии со всех ракурсов. Идеально для карточек маркетплейсов.</p>
-          <span class="video-type-tag">15-30 сек</span>
+          <p>Покажите товар в действии со всех ракурсов. Идеально для электроники, одежды и косметики.</p>
+          <div class="video-type-meta">
+            <span>15-30 сек</span>
+            <span>9:16</span>
+            <span>HD/Full HD</span>
+          </div>
         </div>
       </div>
-      <div class="video-type-card">
+      <div class="video-type-card animate-slide-left delay-2">
         <div class="video-type-icon">🎯</div>
-        <div class="video-type-content">
+        <div class="video-type-info">
           <h3>3 причины купить</h3>
-          <p>Продающие триггеры для быстрого решения. Работает на импульсивные покупки.</p>
-          <span class="video-type-tag">15-20 сек</span>
+          <p>Продающие триггеры для быстрого решения. Коротко, ёмко, с призывом к действию.</p>
+          <div class="video-type-meta">
+            <span>15-20 сек</span>
+            <span>9:16</span>
+            <span>Энергичная музыка</span>
+          </div>
         </div>
       </div>
-      <div class="video-type-card">
-        <div class="video-type-icon">⚡</div>
-        <div class="video-type-content">
-          <h3>Проблема → Решение</h3>
-          <p>Покажите боль клиента и как ваш товар её решает. Высокая конверсия.</p>
-          <span class="video-type-tag">20-30 сек</span>
-        </div>
-      </div>
-      <div class="video-type-card">
+      <div class="video-type-card animate-slide-left delay-3">
         <div class="video-type-icon">🎁</div>
-        <div class="video-type-content">
+        <div class="video-type-info">
           <h3>Распаковка</h3>
-          <p>Эффект присутствия и эмоциональная вовлечённость. Отлично для соцсетей.</p>
-          <span class="video-type-tag">20-40 сек</span>
+          <p>Эффект присутствия и эмоциональная вовлечённость. Покупатель чувствует, что распаковывает сам.</p>
+          <div class="video-type-meta">
+            <span>20-30 сек</span>
+            <span>9:16</span>
+            <span>ASMR-стиль</span>
+          </div>
         </div>
       </div>
-      <div class="video-type-card">
+      <div class="video-type-card animate-slide-left delay-4">
+        <div class="video-type-icon">⚡</div>
+        <div class="video-type-info">
+          <h3>Проблема → Решение</h3>
+          <p>Для товаров, решающих конкретную боль клиента. Сначала проблема, потом ваш товар как решение.</p>
+          <div class="video-type-meta">
+            <span>20-40 сек</span>
+            <span>9:16</span>
+            <span>Сторителлинг</span>
+          </div>
+        </div>
+      </div>
+      <div class="video-type-card animate-slide-left delay-5">
         <div class="video-type-icon">⭐</div>
-        <div class="video-type-content">
+        <div class="video-type-info">
           <h3>Отзыв покупателя</h3>
-          <p>Социальное доказательство и доверие. Увеличивает конверсию на 25-40%.</p>
-          <span class="video-type-tag">15-25 сек</span>
+          <p>Социальное доказательство и доверие. Формат "друг рекомендует другу" работает лучше рекламы.</p>
+          <div class="video-type-meta">
+            <span>15-25 сек</span>
+            <span>9:16</span>
+            <span>Доверительный тон</span>
+          </div>
         </div>
       </div>
-      <div class="video-type-card">
+      <div class="video-type-card animate-slide-left delay-6">
         <div class="video-type-icon">⚖️</div>
-        <div class="video-type-content">
+        <div class="video-type-info">
           <h3>Сравнение с аналогами</h3>
-          <p>Покажите, почему ваш товар лучше конкурентов. Работает на осознанный выбор.</p>
-          <span class="video-type-tag">25-40 сек</span>
+          <p>Почему ваш товар лучше конкурентов. Наглядное сравнение характеристик и преимуществ.</p>
+          <div class="video-type-meta">
+            <span>25-45 сек</span>
+            <span>9:16, 1:1</span>
+            <span>Инфографика</span>
+          </div>
         </div>
       </div>
     </div>
@@ -192,39 +256,50 @@
 
 <section class="section" style="background: #0d0d14;">
   <div class="container">
-    <div class="section-label">AI-ФУНКЦИИ</div>
-    <h2 class="section-title">Искусственный интеллект делает всё за вас</h2>
-    <p class="section-subtitle">От анализа фото до генерации сценария — AI берёт на себя всю рутину.</p>
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon"></div>
-        <h3>AI-анализ фото</h3>
-        <p>Автоматически определяет товар, его цвет, форму и лучшие ракурсы для показа.</p>
+    <div class="section-label animate-fade-in">03 / AI-ФУНКЦИИ</div>
+    <h2 class="section-title animate-slide-up">Искусственный интеллект в деталях</h2>
+    <p class="section-subtitle animate-slide-up delay-1">AI берёт на себя всю рутину: от сценария до финального монтажа.</p>
+    
+    <div class="ai-features">
+      <div class="ai-feature animate-scale-in delay-1">
+        <div class="ai-feature-icon">✍️</div>
+        <h4>AI-сценарий</h4>
+        <p>Автоматически создаёт продающий текст на основе описания товара</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">✍️</div>
-        <h3>Генерация сценария</h3>
-        <p>AI пишет продающий текст на основе описания товара и выбранного типа видео.</p>
+      <div class="ai-feature animate-scale-in delay-2">
+        <div class="ai-feature-icon">🎙️</div>
+        <h4>AI-озвучка</h4>
+        <p>Профессиональный голос диктора без необходимости записи</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">🎙️</div>
-        <h3>AI-озвучка</h3>
-        <p>Мужской или женский голос озвучит ваш сценарий. Доступно в тарифах Pro и Agency.</p>
+      <div class="ai-feature animate-scale-in delay-3">
+        <div class="ai-feature-icon">🎵</div>
+        <h4>Подбор музыки</h4>
+        <p>AI выбирает трек под настроение и стиль видео</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon"></div>
-        <h3>Подбор музыки</h3>
-        <p>Библиотека из 50+ треков по настроению: энергичная, спокойная, премиальная.</p>
+      <div class="ai-feature animate-scale-in delay-4">
+        <div class="ai-feature-icon">🎬</div>
+        <h4>Авто-монтаж</h4>
+        <p>Плавные переходы, тайминг и эффекты без ручного монтажа</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">✨</div>
-        <h3>Улучшение промпта</h3>
-        <p>AI превратит ваше короткое описание в детальный сценарий с ключевыми акцентами.</p>
+      <div class="ai-feature animate-scale-in delay-5">
+        <div class="ai-feature-icon">📊</div>
+        <h4>Анализ товара</h4>
+        <p>AI определяет ключевые преимущества и УТП товара</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon"></div>
-        <h3>Автомонтаж</h3>
-        <p>AI сам собирает видео: переходы, титры, музыка, озвучка — всё за 2 минуты.</p>
+      <div class="ai-feature animate-scale-in delay-6">
+        <div class="ai-feature-icon">🎨</div>
+        <h4>Стилизация</h4>
+        <p>Автоматическая цветокоррекция и улучшение фото</p>
+      </div>
+      <div class="ai-feature animate-scale-in delay-1">
+        <div class="ai-feature-icon">📝</div>
+        <h4>Титры и текст</h4>
+        <p>Автоматическое добавление субтитров и надписей</p>
+      </div>
+      <div class="ai-feature animate-scale-in delay-2">
+        <div class="ai-feature-icon">🔄</div>
+        <h4>Вариативность</h4>
+        <p>Генерация нескольких версий видео для A/B тестирования</p>
       </div>
     </div>
   </div>
@@ -232,59 +307,39 @@
 
 <section class="section">
   <div class="container">
-    <div class="section-label">ЭКСПОРТ</div>
-    <h2 class="section-title">Любой формат для любой площадки</h2>
-    <p class="section-subtitle">Экспортируйте видео в нужном формате и пропорциях под конкретную площадку.</p>
-    <div class="specs-grid">
-      <div class="spec-card">
-        <div class="spec-value">9:16</div>
-        <div class="spec-label">Вертикальное<br>Reels, TikTok, Shorts</div>
+    <div class="section-label animate-fade-in">04 / ЭКСПОРТ</div>
+    <h2 class="section-title animate-slide-up">Форматы для всех площадок</h2>
+    <p class="section-subtitle animate-slide-up delay-1">Экспортируйте видео в нужном формате одним кликом.</p>
+    
+    <div class="export-formats">
+      <div class="export-card animate-slide-up delay-1">
+        <div class="export-icon">📱</div>
+        <div class="export-name">9:16</div>
+        <div class="export-desc">Вертикальное видео для Stories, Reels, TikTok</div>
       </div>
-      <div class="spec-card">
-        <div class="spec-value">1:1</div>
-        <div class="spec-label">Квадратное<br>Instagram, VK</div>
+      <div class="export-card animate-slide-up delay-2">
+        <div class="export-icon">⬜</div>
+        <div class="export-name">1:1</div>
+        <div class="export-desc">Квадратное видео для постов в соцсетях</div>
       </div>
-      <div class="spec-card">
-        <div class="spec-value">16:9</div>
-        <div class="spec-label">Горизонтальное<br>YouTube, сайт</div>
+      <div class="export-card animate-slide-up delay-3">
+        <div class="export-icon">🖥️</div>
+        <div class="export-name">16:9</div>
+        <div class="export-desc">Горизонтальное видео для YouTube и сайтов</div>
       </div>
-      <div class="spec-card">
-        <div class="spec-value">MP4</div>
-        <div class="spec-label">Универсальный<br>формат</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" style="background: #0d0d14;">
-  <div class="container">
-    <div class="section-label">ИНТЕГРАЦИИ</div>
-    <h2 class="section-title">Работает с вашими инструментами</h2>
-    <p class="section-subtitle">Подключайте Cliply к вашим маркетплейсам и CRM через API.</p>
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🛍️</div>
-        <h3>Wildberries</h3>
-        <p>Загружайте видео прямо в карточку товара. Поддержка всех категорий.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon"></div>
-        <h3>Ozon</h3>
-        <p>Интеграция с карточками Ozon. Автоматическая загрузка видео.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🔌</div>
-        <h3>API доступ</h3>
-        <p>REST API для интеграции с вашими системами. Документация в личном кабинете.</p>
+      <div class="export-card animate-slide-up delay-4">
+        <div class="export-icon"></div>
+        <div class="export-name">MP4 / WebM</div>
+        <div class="export-desc">Универсальные форматы для всех платформ</div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="cta-section">
+<section class="cta-section animate-fade-in">
   <div class="container">
-    <h2>Готовы попробовать?</h2>
-    <p>3 видео бесплатно. Без карты. Без обязательств. Убедитесь сами, что Cliply работает.</p>
+    <h2>Готовы попробовать все возможности?</h2>
+    <p>3 видео бесплатно. Без карты. Без обязательств.</p>
     <a href="login.html" class="btn-primary">Создать первое видео →</a>
   </div>
 </section>
@@ -298,7 +353,6 @@
 <script>
 const burgerBtn = document.getElementById('burgerBtn');
 const mobileMenu = document.getElementById('mobileMenu');
-const mobileAuthBtn = document.getElementById('mobileAuthBtn');
 
 if (burgerBtn && mobileMenu) {
   burgerBtn.addEventListener('click', () => {
@@ -321,18 +375,19 @@ if (burgerBtn && mobileMenu) {
   if (user && btn) {
     btn.textContent = 'Дашборд';
     btn.href = 'dashboard.html';
+    const mobileAuthBtn = document.getElementById('mobileAuthBtn');
     if (mobileAuthBtn) { mobileAuthBtn.textContent = 'Дашборд'; mobileAuthBtn.href = 'dashboard.html'; }
   }
 })();
 </script>
 
+<script src="scroll-animations.js"></script>
+
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.getRegistrations().then(registrations => {
-      for (let registration of registrations) {
-        registration.update();
-      }
+      for (let registration of registrations) { registration.update(); }
     });
   });
 }
