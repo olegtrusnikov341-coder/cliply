@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
 <link rel="stylesheet" href="mobile.css">
+<link rel="stylesheet" href="scroll-animations.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; }
@@ -104,7 +105,8 @@
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu" id="navMenu">
       <li><a href="dashboard.html">📊 Дашборд</a></li>
-      <li><a href="analytics.html" class="active">📈 Аналитика</a></li>
+      <li><a href="analytics.html" class="active"> Аналитика</a></li>
+      <li><a href="achievements.html">🏆 Достижения</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
       <li><a href="settings.html">⚙️ Настройки</a></li>
       <li><a href="support.html">💬 Техподдержка</a></li>
@@ -113,12 +115,12 @@
   </aside>
   
   <main class="main">
-    <div class="page-header">
+    <div class="page-header animate-fade-in">
       <h1>📈 Аналитика</h1>
       <p>Статистика использования и прогресс</p>
     </div>
     
-    <div class="analytics-header">
+    <div class="analytics-header animate-slide-up">
       <h2 style="font-size: 22px; font-weight: 700; font-family: 'Manrope';">Ваша статистика</h2>
       <div class="period-selector">
         <button class="period-btn active" data-period="7" onclick="changePeriod(7, this)">7 дней</button>
@@ -128,15 +130,15 @@
     </div>
     
     <div class="kpi-grid">
-      <div class="kpi-card">
+      <div class="kpi-card animate-slide-up delay-1">
         <div class="kpi-header">
           <span class="kpi-label">Всего видео</span>
-          <div class="kpi-icon purple"></div>
+          <div class="kpi-icon purple">🎬</div>
         </div>
         <div class="kpi-value" id="kpiTotal">0</div>
         <div class="kpi-change neutral" id="kpiTotalChange">—</div>
       </div>
-      <div class="kpi-card">
+      <div class="kpi-card animate-slide-up delay-2">
         <div class="kpi-header">
           <span class="kpi-label">За период</span>
           <div class="kpi-icon green">📈</div>
@@ -144,7 +146,7 @@
         <div class="kpi-value" id="kpiPeriod">0</div>
         <div class="kpi-change neutral" id="kpiPeriodChange">—</div>
       </div>
-      <div class="kpi-card">
+      <div class="kpi-card animate-slide-up delay-3">
         <div class="kpi-header">
           <span class="kpi-label">Готово</span>
           <div class="kpi-icon blue">✅</div>
@@ -152,7 +154,7 @@
         <div class="kpi-value" id="kpiDone">0</div>
         <div class="kpi-change neutral" id="kpiDoneRate">—</div>
       </div>
-      <div class="kpi-card">
+      <div class="kpi-card animate-slide-up delay-4">
         <div class="kpi-header">
           <span class="kpi-label">В процессе</span>
           <div class="kpi-icon orange">⏳</div>
@@ -163,14 +165,14 @@
     </div>
     
     <div class="charts-grid">
-      <div class="chart-card">
+      <div class="chart-card animate-slide-up delay-1">
         <h3>Активность по дням</h3>
         <div class="chart-subtitle">Количество созданных видео</div>
         <div class="chart-container">
           <canvas id="activityChart"></canvas>
         </div>
       </div>
-      <div class="chart-card">
+      <div class="chart-card animate-slide-up delay-2">
         <h3>Статусы видео</h3>
         <div class="chart-subtitle">Распределение по статусам</div>
         <div class="chart-container small">
@@ -179,7 +181,7 @@
       </div>
     </div>
     
-    <div class="usage-card">
+    <div class="usage-card animate-scale-in">
       <div class="usage-header">
         <div>
           <h3>Использование тарифа</h3>
@@ -199,7 +201,7 @@
       </div>
     </div>
     
-    <div class="top-scenarios">
+    <div class="top-scenarios animate-slide-up">
       <h3>🏆 Ваши любимые сценарии</h3>
       <div class="scenario-list" id="scenarioList">
         <div style="text-align: center; padding: 20px; color: #A0A0B0;">Загрузка...</div>
@@ -227,7 +229,7 @@ async function initAnalytics() {
   if (currentUser.profile.role_level <= 2) {
     const menu = document.getElementById('navMenu');
     const adminLink = document.createElement('li');
-    adminLink.innerHTML = '<a href="admin.html"> Админ-панель</a>';
+    adminLink.innerHTML = '<a href="admin.html">👑 Админ-панель</a>';
     menu.insertBefore(adminLink, menu.children[1]);
   }
   
@@ -519,13 +521,13 @@ window.changePeriod = function(period, btn) {
 initAnalytics();
 </script>
 
+<script src="scroll-animations.js"></script>
+
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.getRegistrations().then(registrations => {
-      for (let registration of registrations) {
-        registration.update();
-      }
+      for (let registration of registrations) { registration.update(); }
     });
   });
 }
