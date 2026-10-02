@@ -12,7 +12,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<!-- CSP Headers (задача 29) -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://djvdklcahpqbjotukmxt.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://djvdklcahpqbjotukmxt.supabase.co wss://djvdklcahpqbjotukmxt.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
@@ -26,7 +25,7 @@
 <link rel="stylesheet" href="scroll-animations.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; }
+  body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; overflow-x: hidden; }
   .layout { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
   .sidebar { background: #141414; border-right: 1px solid #27272a; padding: 24px 16px; display: flex; flex-direction: column; }
   .sidebar-logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; margin-bottom: 40px; display: block; }
@@ -53,13 +52,15 @@
     justify-content: space-between;
     align-items: center;
     font-size: 13px;
+    flex-wrap: wrap;
+    gap: 8px;
   }
   .admin-info-bar .admin-name { color: #A29BFE; font-weight: 600; }
   .admin-info-bar .admin-role { color: #6C5CE7; }
   .admin-info-bar .admin-time { color: #A0A0B0; }
   
   .tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 1px solid #1f1f2e; padding-bottom: 0; flex-wrap: wrap; }
-  .tab { padding: 12px 20px; background: transparent; border: none; color: #A0A0B0; font-size: 15px; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; margin-bottom: -1px; display: flex; align-items: center; gap: 8px; }
+  .tab { padding: 12px 20px; background: transparent; border: none; color: #A0A0B0; font-size: 15px; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; margin-bottom: -1px; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
   .tab:hover { color: #fff; }
   .tab.active { color: #6C5CE7; border-bottom-color: #6C5CE7; }
   .tab-badge { background: #ef4444; color: #fff; font-size: 11px; padding: 2px 7px; border-radius: 10px; font-weight: 600; }
@@ -68,16 +69,15 @@
   .tab-content { display: none; }
   .tab-content.active { display: block; }
   
-  .admin-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 28px; margin-bottom: 24px; }
+  .admin-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 28px; margin-bottom: 24px; overflow-x: auto; }
   .admin-card h2 { font-size: 20px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 8px; }
-  .admin-card .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .admin-card .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
   .admin-card .card-header .count { color: #A0A0B0; font-size: 14px; font-weight: 400; }
   
   .add-user-form { display: grid; grid-template-columns: 1fr 1fr 180px auto; gap: 12px; align-items: end; }
   .form-group label { display: block; font-size: 13px; color: #A0A0B0; margin-bottom: 6px; }
   .form-group input, .form-group select { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 8px; padding: 10px 14px; color: #fff; font-size: 14px; font-family: inherit; }
   .form-group input:focus, .form-group select:focus { outline: none; border-color: #6C5CE7; }
-  .form-group .field-hint { font-size: 11px; color: #666; margin-top: 4px; }
   .btn-create { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 10px 20px; border-radius: 8px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; white-space: nowrap; }
   .btn-create:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4); }
   .btn-create:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
@@ -145,7 +145,7 @@
   .admin-chat-send:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   .admin-chat-send:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   
-  .admin-chat-actions { display: flex; gap: 8px; margin-top: 12px; }
+  .admin-chat-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
   .btn-admin-action { padding: 8px 14px; border-radius: 8px; border: 1px solid #27272a; background: transparent; color: #A0A0B0; font-size: 13px; cursor: pointer; transition: 0.2s; }
   .btn-admin-action:hover { border-color: #6C5CE7; color: #fff; }
   .btn-admin-action.danger:hover { border-color: #ef4444; color: #ef4444; }
@@ -166,21 +166,21 @@
   .gallery-mod-card.status-approved { border-left: 4px solid #10b981; }
   .gallery-mod-card.status-rejected { border-left: 4px solid #ef4444; }
   
-  .gallery-mod-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-  .gallery-mod-title { font-size: 16px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 4px; }
-  .gallery-mod-status { font-size: 11px; padding: 4px 10px; border-radius: 100px; font-weight: 600; white-space: nowrap; }
+  .gallery-mod-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 8px; }
+  .gallery-mod-title { font-size: 16px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 4px; word-break: break-word; }
+  .gallery-mod-status { font-size: 11px; padding: 4px 10px; border-radius: 100px; font-weight: 600; white-space: nowrap; flex-shrink: 0; }
   .status-pending .gallery-mod-status { background: rgba(245, 158, 11, 0.2); color: #facc15; }
   .status-approved .gallery-mod-status { background: rgba(16, 185, 129, 0.2); color: #34d399; }
   .status-rejected .gallery-mod-status { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
   
   .gallery-mod-author { font-size: 13px; color: #A0A0B0; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-  .gallery-mod-author-avatar { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #6C5CE7, #A29BFE); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
-  .gallery-mod-description { font-size: 13px; color: #A0A0B0; line-height: 1.5; margin-bottom: 16px; max-height: 60px; overflow: hidden; }
-  .gallery-mod-meta { display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 16px; }
-  .gallery-mod-actions { display: flex; gap: 8px; }
-  .btn-approve { flex: 1; padding: 8px; border-radius: 8px; border: none; background: #10b981; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .gallery-mod-author-avatar { width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, #6C5CE7, #A29BFE); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .gallery-mod-description { font-size: 13px; color: #A0A0B0; line-height: 1.5; margin-bottom: 16px; max-height: 60px; overflow: hidden; word-break: break-word; }
+  .gallery-mod-meta { display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-bottom: 16px; flex-wrap: wrap; gap: 4px; }
+  .gallery-mod-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn-approve { flex: 1; padding: 8px; border-radius: 8px; border: none; background: #10b981; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; min-width: 100px; }
   .btn-approve:hover { background: #059669; }
-  .btn-reject { flex: 1; padding: 8px; border-radius: 8px; border: none; background: #ef4444; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .btn-reject { flex: 1; padding: 8px; border-radius: 8px; border: none; background: #ef4444; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; min-width: 100px; }
   .btn-reject:hover { background: #dc2626; }
   .btn-view { padding: 8px 12px; border-radius: 8px; border: 1px solid #27272a; background: transparent; color: #A0A0B0; font-size: 13px; cursor: pointer; transition: all 0.2s; }
   .btn-view:hover { border-color: #6C5CE7; color: #fff; }
@@ -188,41 +188,129 @@
   .gallery-mod-empty { text-align: center; padding: 60px 20px; color: #A0A0B0; grid-column: 1 / -1; }
   .gallery-mod-empty-icon { font-size: 64px; margin-bottom: 16px; opacity: 0.5; }
   
-  /* ===== АУДИТ ЛОГИ ===== */
+  /* ===== АУДИТ ЛОГИ — УЛУЧШЕННОЕ ОТОБРАЖЕНИЕ ===== */
   .audit-log-list {
-    max-height: 500px;
+    max-height: 600px;
     overflow-y: auto;
   }
   .audit-log-item {
-    padding: 12px 16px;
+    padding: 16px;
     border-bottom: 1px solid #1f1f2e;
-    font-size: 13px;
     display: flex;
-    gap: 12px;
+    gap: 16px;
     align-items: flex-start;
+    background: #0A0A0F;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    transition: background 0.2s;
   }
-  .audit-log-item:last-child { border-bottom: none; }
-  .audit-log-time {
-    color: #666;
-    font-size: 11px;
-    white-space: nowrap;
-    min-width: 140px;
+  .audit-log-item:hover {
+    background: rgba(108, 92, 231, 0.05);
   }
-  .audit-log-action {
-    color: #A29BFE;
-    font-weight: 600;
-    min-width: 140px;
+  .audit-log-item:last-child { border-bottom: none; margin-bottom: 0; }
+  
+  .audit-log-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
   }
-  .audit-log-details {
-    color: #A0A0B0;
+  .audit-log-icon.video { background: rgba(108, 92, 231, 0.15); }
+  .audit-log-icon.role { background: rgba(59, 130, 246, 0.15); }
+  .audit-log-icon.user { background: rgba(16, 185, 129, 0.15); }
+  .audit-log-icon.support { background: rgba(234, 179, 8, 0.15); }
+  .audit-log-icon.gallery { background: rgba(245, 158, 11, 0.15); }
+  .audit-log-icon.system { background: rgba(161, 161, 170, 0.15); }
+  
+  .audit-log-content {
     flex: 1;
+    min-width: 0;
+  }
+  
+  .audit-log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .audit-log-action {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
     word-break: break-word;
   }
+  
+  .audit-log-time {
+    font-size: 11px;
+    color: #666;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  
+  .audit-log-details {
+    font-size: 13px;
+    color: #A0A0B0;
+    line-height: 1.5;
+    word-break: break-word;
+  }
+  
+  .audit-log-details .detail-item {
+    display: inline-block;
+    background: rgba(108, 92, 231, 0.1);
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin: 2px 4px 2px 0;
+    font-size: 12px;
+    color: #A29BFE;
+  }
+  
+  .audit-log-admin {
+    font-size: 12px;
+    color: #6C5CE7;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+  
   .audit-log-empty {
     text-align: center;
-    padding: 40px 20px;
+    padding: 60px 20px;
     color: #A0A0B0;
   }
+  
+  .audit-log-empty-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+  
+  .audit-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .audit-filter-btn {
+    padding: 8px 16px;
+    border-radius: 100px;
+    border: 1px solid #27272a;
+    background: transparent;
+    color: #A0A0B0;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .audit-filter-btn:hover { border-color: #6C5CE7; color: #fff; }
+  .audit-filter-btn.active { background: #6C5CE7; border-color: #6C5CE7; color: #fff; }
   
   @media (max-width: 768px) {
     .sidebar { display: none !important; }
@@ -232,6 +320,19 @@
     .support-layout { grid-template-columns: 1fr !important; }
     .conv-list-panel { max-height: 250px; }
     .gallery-moderation-grid { grid-template-columns: 1fr !important; }
+    
+    .audit-log-item {
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .audit-log-header {
+      flex-direction: column;
+    }
+    
+    .audit-log-time {
+      align-self: flex-start;
+    }
   }
 </style>
 </head>
@@ -286,7 +387,6 @@
           <div class="form-group">
             <label>Имя</label>
             <input type="text" id="newUserName" placeholder="Имя пользователя" maxlength="100">
-            <div class="field-hint">Максимум 100 символов</div>
           </div>
           <div class="form-group">
             <label>Email</label>
@@ -400,8 +500,21 @@
         <p style="color: #A0A0B0; font-size: 14px; margin-bottom: 20px;">
           Все важные действия в системе: создание/удаление видео, изменение ролей, подозрительная активность.
         </p>
+        
+        <div class="audit-filters" id="auditFilters">
+          <button class="audit-filter-btn active" data-filter="all">Все</button>
+          <button class="audit-filter-btn" data-filter="video">Видео</button>
+          <button class="audit-filter-btn" data-filter="role">Роли</button>
+          <button class="audit-filter-btn" data-filter="user">Пользователи</button>
+          <button class="audit-filter-btn" data-filter="support">Поддержка</button>
+          <button class="audit-filter-btn" data-filter="gallery">Галерея</button>
+        </div>
+        
         <div class="audit-log-list" id="auditLogList">
-          <div class="audit-log-empty">Загрузка логов...</div>
+          <div class="audit-log-empty">
+            <div class="audit-log-empty-icon">📋</div>
+            <div>Загрузка логов...</div>
+          </div>
         </div>
       </div>
     </div>
@@ -418,12 +531,31 @@
   let galleryVideos = [];
   let currentGalleryFilter = 'all';
   let auditLogs = [];
+  let currentAuditFilter = 'all';
 
   const ADMIN_ROLES = {
     1: { name: 'Owner', color: '#6C5CE7' },
     2: { name: 'Admin', color: '#3b82f6' },
     3: { name: 'Moderator', color: '#10b981' },
     4: { name: 'User', color: '#A1A1AA' }
+  };
+
+  // Маппинг действий для иконок и категорий
+  const ACTION_MAP = {
+    'video_created': { icon: '🎬', category: 'video', label: 'Создание видео' },
+    'video_deleted': { icon: '🗑️', category: 'video', label: 'Удаление видео' },
+    'role_changed': { icon: '👑', category: 'role', label: 'Изменение роли' },
+    'user_created': { icon: '', category: 'user', label: 'Создание пользователя' },
+    'user_deleted': { icon: '❌', category: 'user', label: 'Удаление пользователя' },
+    'user_promoted': { icon: '⬆️', category: 'user', label: 'Повышение пользователя' },
+    'admin_login': { icon: '🔐', category: 'system', label: 'Вход в админку' },
+    'support_reply': { icon: '💬', category: 'support', label: 'Ответ в поддержке' },
+    'support_closed': { icon: '✅', category: 'support', label: 'Закрытие обращения' },
+    'support_reopened': { icon: '🔄', category: 'support', label: 'Открытие обращения' },
+    'support_deleted': { icon: '️', category: 'support', label: 'Удаление обращения' },
+    'gallery_approved': { icon: '✓', category: 'gallery', label: 'Одобрение видео' },
+    'gallery_rejected': { icon: '✗', category: 'gallery', label: 'Отклонение видео' },
+    'suspicious_activity': { icon: '⚠️', category: 'system', label: 'Подозрительная активность' }
   };
 
   function showError(message) {
@@ -437,7 +569,6 @@
     if (box) box.style.display = 'none';
   }
 
-  // ===== ПРОВЕРКА ПРАВ ДОСТУПА (задача 9) =====
   function requireAdminRole(minLevel = 2) {
     if (!currentUser || !currentUser.profile) {
       showError('Профиль не загружен');
@@ -452,7 +583,6 @@
     return true;
   }
 
-  // ===== ЛОГИРОВАНИЕ ДЕЙСТВИЙ АДМИНА (задача 23) =====
   async function logAdminAction(action, details = {}) {
     if (!currentUser) return;
     try {
@@ -494,19 +624,18 @@
       if (!currentUser) { showError('Не удалось получить данные пользователя.'); return; }
       if (!currentUser.profile) { showError('Профиль пользователя не найден.'); return; }
       
-      // Проверка прав (задача 9)
-      if (!requireAdminRole(2)) return;
+      const roleLevel = currentUser.profile.role_level || 4;
+      if (roleLevel > 2) { showToast('Доступ запрещён', 'error'); window.location.href = 'dashboard.html'; return; }
       
-      // Отображение информации об админе
       document.getElementById('adminInfoBar').style.display = 'flex';
-      document.getElementById('adminName').textContent = SecurityUtils ? SecurityUtils.sanitizeHTML(currentUser.profile.full_name || 'Админ') : (currentUser.profile.full_name || 'Админ');
+      const safeName = SecurityUtils ? SecurityUtils.sanitizeHTML(currentUser.profile.full_name || 'Админ') : (currentUser.profile.full_name || 'Админ');
+      document.getElementById('adminName').textContent = safeName;
       document.getElementById('adminRole').textContent = ' • ' + ADMIN_ROLES[currentUser.profile.role_level].name;
       document.getElementById('adminTime').textContent = 'Вход: ' + new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
       
       await Promise.allSettled([loadUsers(), loadAllConversations(), loadGalleryVideos()]);
       updateOpenConvBadge();
       
-      // Лог входа админа
       await logAdminAction('admin_login', { ip: 'client-side' });
       
     } catch (e) { showError('Ошибка инициализации: ' + e.message); }
@@ -585,16 +714,12 @@
     }).join('');
   }
 
-  // ===== СОЗДАНИЕ ПОЛЬЗОВАТЕЛЯ С ВАЛИДАЦИЕЙ (задачи 21, 31) =====
   window.createUser = async function() {
     hideError();
-    
-    // Проверка прав
     if (!requireAdminRole(2)) return;
     
-    // Rate limiting (задача 30)
     if (typeof SecurityUtils !== 'undefined') {
-      const limit = SecurityUtils.checkActionLimit('contact'); // используем тот же лимит
+      const limit = SecurityUtils.checkActionLimit('contact');
       if (!limit.allowed) {
         showToast(`Слишком много попыток. Подождите ${limit.waitSeconds} сек.`, 'warning');
         return;
@@ -605,34 +730,16 @@
     const email = document.getElementById('newUserEmail').value.trim();
     const role = parseInt(document.getElementById('newUserRole').value);
     
-    // Валидация (задача 31)
     if (typeof SecurityUtils !== 'undefined') {
       const nameCheck = SecurityUtils.validateUserName(name);
-      if (!nameCheck.valid) {
-        showError(nameCheck.reason);
-        return;
-      }
-      
-      if (!SecurityUtils.isValidEmail(email)) {
-        showError('Некорректный email');
-        return;
-      }
-      
-      if (SecurityUtils.isDisposableEmail(email)) {
-        showError('Одноразовые email не поддерживаются');
-        return;
-      }
+      if (!nameCheck.valid) { showError(nameCheck.reason); return; }
+      if (!SecurityUtils.isValidEmail(email)) { showError('Некорректный email'); return; }
+      if (SecurityUtils.isDisposableEmail(email)) { showError('Одноразовые email не поддерживаются'); return; }
     } else {
-      if (!name || !email) {
-        showError('Заполните имя и email');
-        return;
-      }
+      if (!name || !email) { showError('Заполните имя и email'); return; }
     }
     
-    if (role < 2 || role > 4) {
-      showError('Недопустимая роль');
-      return;
-    }
+    if (role < 2 || role > 4) { showError('Недопустимая роль'); return; }
     
     const btn = document.getElementById('btnCreateUser');
     btn.textContent = 'Создание...'; btn.disabled = true;
@@ -670,32 +777,22 @@
         await logAdminAction('user_created', { email: email, role: role, name: name });
         
         showToast(`Пользователь ${name} добавлен!`, 'success');
-      } catch (e2) {
-        showError('Ошибка: ' + e2.message);
-      }
+      } catch (e2) { showError('Ошибка: ' + e2.message); }
     } finally { 
       btn.textContent = 'Создать'; 
       btn.disabled = false; 
     }
   };
 
-  // ===== СМЕНА РОЛИ С ПРОВЕРКОЙ ПРАВ (задача 9) =====
   window.changeUserRole = async function(userId, newRole) {
     hideError();
     if (!requireAdminRole(2)) return;
     
     const newRoleInt = parseInt(newRole);
-    if (newRoleInt < 2 || newRoleInt > 4) {
-      showError('Недопустимая роль');
-      return;
-    }
+    if (newRoleInt < 2 || newRoleInt > 4) { showError('Недопустимая роль'); return; }
     
-    // Запрет понижать Owner
     const targetUser = allUsers.find(u => u.id === userId);
-    if (targetUser && targetUser.role_level === 1) {
-      showError('Нельзя изменить роль Owner');
-      return;
-    }
+    if (targetUser && targetUser.role_level === 1) { showError('Нельзя изменить роль Owner'); return; }
     
     try {
       const { error } = await supabaseClient.from('profiles').update({ role_level: newRoleInt }).eq('id', userId);
@@ -717,10 +814,7 @@
     if (!requireAdminRole(2)) return;
     
     const newRoleInt = parseInt(newRole);
-    if (newRoleInt < 2 || newRoleInt > 4) {
-      showError('Недопустимая роль');
-      return;
-    }
+    if (newRoleInt < 2 || newRoleInt > 4) { showError('Недопустимая роль'); return; }
     
     try {
       const { error } = await supabaseClient.from('profiles').update({ role_level: newRoleInt }).eq('id', userId);
@@ -738,17 +832,9 @@
     hideError();
     if (!requireAdminRole(2)) return;
     
-    // Запрет удалять Owner
     const targetUser = allUsers.find(u => u.id === userId);
-    if (targetUser && targetUser.role_level === 1) {
-      showError('Нельзя удалить Owner');
-      return;
-    }
-    
-    if (targetUser && targetUser.id === currentUser.id) {
-      showError('Нельзя удалить себя');
-      return;
-    }
+    if (targetUser && targetUser.role_level === 1) { showError('Нельзя удалить Owner'); return; }
+    if (targetUser && targetUser.id === currentUser.id) { showError('Нельзя удалить себя'); return; }
     
     if (!confirm('Удалить этого пользователя? Это действие необратимо.')) return;
     
@@ -833,7 +919,7 @@
       const safeMsg = SecurityUtils ? SecurityUtils.sanitizeHTML(msg.message) : msg.message;
       const safeSender = SecurityUtils ? SecurityUtils.sanitizeHTML(conv.user_name || 'Пользователь') : (conv.user_name || 'Пользователь');
       return `<div class="admin-msg ${msg.sender}"><div class="msg-sender">${msg.sender === 'admin' ? '👨‍💼 Вы (Поддержка)' : '👤 ' + safeSender}</div><div class="admin-msg-text">${safeMsg}</div><div class="admin-msg-time">${new Date(msg.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</div></div>`;
-    }).join('') : '<div class="admin-chat-empty"><div style="font-size:48px;margin-bottom:12px;opacity:0.5;"></div><div>Нет сообщений</div></div>'}</div><div class="admin-chat-input-area"><textarea class="admin-chat-input" id="adminChatInput" placeholder="Напишите ответ..." rows="1" maxlength="5000"></textarea><button class="admin-chat-send" id="adminChatSend" onclick="sendAdminReply()">Ответить</button></div><div class="admin-chat-actions">${conv.status === 'open' ? `<button class="btn-admin-action" onclick="closeAdminConv()">✅ Закрыть обращение</button>` : `<button class="btn-admin-action" onclick="reopenAdminConv()">🔄 Открыть заново</button>`}<button class="btn-admin-action danger" onclick="deleteAdminConv()">🗑 Удалить</button></div>`;
+    }).join('') : '<div class="admin-chat-empty"><div style="font-size:48px;margin-bottom:12px;opacity:0.5;"></div><div>Нет сообщений</div></div>'}</div><div class="admin-chat-input-area"><textarea class="admin-chat-input" id="adminChatInput" placeholder="Напишите ответ..." rows="1" maxlength="5000"></textarea><button class="admin-chat-send" id="adminChatSend" onclick="sendAdminReply()">Ответить</button></div><div class="admin-chat-actions">${conv.status === 'open' ? `<button class="btn-admin-action" onclick="closeAdminConv()">✅ Закрыть обращение</button>` : `<button class="btn-admin-action" onclick="reopenAdminConv()"> Открыть заново</button>`}<button class="btn-admin-action danger" onclick="deleteAdminConv()">🗑 Удалить</button></div>`;
     const input = document.getElementById('adminChatInput');
     input.addEventListener('input', () => { input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 100) + 'px'; });
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendAdminReply(); } });
@@ -847,13 +933,9 @@
     let text = input.value.trim();
     if (!text || !activeAdminConvId) return;
     
-    // Валидация (задача 31)
     if (typeof SecurityUtils !== 'undefined') {
       const msgCheck = SecurityUtils.validateMessage(text);
-      if (!msgCheck.valid) {
-        showToast(msgCheck.reason, 'warning');
-        return;
-      }
+      if (!msgCheck.valid) { showToast(msgCheck.reason, 'warning'); return; }
       text = msgCheck.value;
     }
     
@@ -960,7 +1042,7 @@
     }
     
     if (filtered.length === 0) {
-      grid.innerHTML = `<div class="gallery-mod-empty"><div class="gallery-mod-empty-icon">️</div><div>Нет видео${currentGalleryFilter !== 'all' ? ' в этой категории' : ''}</div></div>`;
+      grid.innerHTML = `<div class="gallery-mod-empty"><div class="gallery-mod-empty-icon">🖼️</div><div>Нет видео${currentGalleryFilter !== 'all' ? ' в этой категории' : ''}</div></div>`;
       return;
     }
     
@@ -976,10 +1058,7 @@
       
       let actionsHtml = '';
       if (video.status === 'pending') {
-        actionsHtml = `
-          <button class="btn-approve" onclick="approveGalleryVideo('${video.id}')">✓ Одобрить</button>
-          <button class="btn-reject" onclick="rejectGalleryVideo('${video.id}')"> Отклонить</button>
-        `;
+        actionsHtml = `<button class="btn-approve" onclick="approveGalleryVideo('${video.id}')">✓ Одобрить</button><button class="btn-reject" onclick="rejectGalleryVideo('${video.id}')">✗ Отклонить</button>`;
       } else if (video.status === 'approved') {
         actionsHtml = `<button class="btn-reject" onclick="rejectGalleryVideo('${video.id}')">Отменить одобрение</button>`;
       } else {
@@ -1001,9 +1080,7 @@
             <span>📅 ${date}</span>
             <span>❤️ ${video.likes_count || 0} • 👁 ${video.views_count || 0}</span>
           </div>
-          <div class="gallery-mod-actions">
-            ${actionsHtml}
-          </div>
+          <div class="gallery-mod-actions">${actionsHtml}</div>
         </div>
       `;
     }).join('');
@@ -1029,9 +1106,7 @@
       }).eq('id', videoId);
       
       if (error) throw error;
-      
       await logAdminAction('gallery_approved', { video_id: videoId });
-      
       showToast('Видео одобрено и опубликовано в галерее!', 'success');
       await loadGalleryVideos();
     } catch (e) { showToast('Ошибка: ' + e.message, 'error'); }
@@ -1048,15 +1123,13 @@
       }).eq('id', videoId);
       
       if (error) throw error;
-      
       await logAdminAction('gallery_rejected', { video_id: videoId });
-      
       showToast('Видео отклонено', 'success');
       await loadGalleryVideos();
     } catch (e) { showToast('Ошибка: ' + e.message, 'error'); }
   };
 
-  // ===== АУДИТ ЛОГИ (задача 23) =====
+  // ===== АУДИТ ЛОГИ — УЛУЧШЕННОЕ ОТОБРАЖЕНИЕ =====
   async function loadAuditLogs() {
     if (!requireAdminRole(2)) return;
     
@@ -1075,48 +1148,84 @@
       auditLogs = data || [];
       document.getElementById('auditCount').textContent = auditLogs.length + ' записей';
       
-      if (auditLogs.length === 0) {
-        document.getElementById('auditLogList').innerHTML = '<div class="audit-log-empty">Нет записей в журнале</div>';
-        return;
-      }
-      
-      document.getElementById('auditLogList').innerHTML = auditLogs.map(log => {
-        const time = new Date(log.created_at).toLocaleString('ru-RU', { 
-          day: '2-digit', month: '2-digit', year: 'numeric', 
-          hour: '2-digit', minute: '2-digit', second: '2-digit' 
-        });
-        
-        let detailsText = '';
-        try {
-          const details = typeof log.details === 'string' ? JSON.parse(log.details) : log.details;
-          if (details) {
-            const parts = [];
-            if (details.admin_name) parts.push(`Админ: ${details.admin_name}`);
-            if (details.admin_role) parts.push(`Роль: ${details.admin_role}`);
-            if (details.email) parts.push(`Email: ${SecurityUtils ? SecurityUtils.maskEmail(details.email) : details.email}`);
-            if (details.target_user_id) parts.push(`Цель: ${details.target_user_id.substring(0, 8)}...`);
-            if (details.video_id) parts.push(`Видео: ${details.video_id.substring(0, 8)}...`);
-            if (details.conversation_id) parts.push(`Чат: ${details.conversation_id.substring(0, 8)}...`);
-            detailsText = parts.join(' • ');
-          }
-        } catch (e) {
-          detailsText = '—';
-        }
-        
-        return `
-          <div class="audit-log-item">
-            <div class="audit-log-time">${time}</div>
-            <div class="audit-log-action">${log.action}</div>
-            <div class="audit-log-details">${detailsText || '—'}</div>
-          </div>
-        `;
-      }).join('');
+      renderAuditLogs();
       
     } catch (e) {
       console.error('Load audit logs error:', e);
       document.getElementById('auditLogList').innerHTML = '<div class="audit-log-empty">Ошибка загрузки</div>';
     }
   }
+
+  function renderAuditLogs() {
+    const list = document.getElementById('auditLogList');
+    if (!list) return;
+    
+    let filtered = auditLogs;
+    if (currentAuditFilter !== 'all') {
+      filtered = auditLogs.filter(log => {
+        const actionInfo = ACTION_MAP[log.action] || { category: 'system' };
+        return actionInfo.category === currentAuditFilter;
+      });
+    }
+    
+    if (filtered.length === 0) {
+      list.innerHTML = '<div class="audit-log-empty"><div class="audit-log-empty-icon">📋</div><div>Нет записей в журнале</div></div>';
+      return;
+    }
+    
+    list.innerHTML = filtered.map(log => {
+      const actionInfo = ACTION_MAP[log.action] || { icon: '📝', category: 'system', label: log.action };
+      const time = new Date(log.created_at).toLocaleString('ru-RU', { 
+        day: '2-digit', month: '2-digit', year: 'numeric', 
+        hour: '2-digit', minute: '2-digit', second: '2-digit' 
+      });
+      
+      let detailsHtml = '';
+      try {
+        const details = typeof log.details === 'string' ? JSON.parse(log.details) : log.details;
+        if (details) {
+          const parts = [];
+          if (details.admin_name) parts.push(`<span class="detail-item">👤 ${SecurityUtils ? SecurityUtils.sanitizeHTML(details.admin_name) : details.admin_name}</span>`);
+          if (details.admin_role) parts.push(`<span class="detail-item">🎭 ${details.admin_role}</span>`);
+          if (details.email) parts.push(`<span class="detail-item">📧 ${SecurityUtils ? SecurityUtils.maskEmail(details.email) : details.email}</span>`);
+          if (details.name) parts.push(`<span class="detail-item">📝 ${SecurityUtils ? SecurityUtils.sanitizeHTML(details.name) : details.name}</span>`);
+          if (details.old_role !== undefined && details.new_role !== undefined) {
+            parts.push(`<span class="detail-item">🔄 ${details.old_role} → ${details.new_role}</span>`);
+          }
+          if (details.target_user_id) parts.push(`<span class="detail-item">🎯 ID: ${details.target_user_id.substring(0, 8)}...</span>`);
+          if (details.video_id) parts.push(`<span class="detail-item"> ID: ${details.video_id.substring(0, 8)}...</span>`);
+          if (details.conversation_id) parts.push(`<span class="detail-item">💬 ID: ${details.conversation_id.substring(0, 8)}...</span>`);
+          if (details.product_name) parts.push(`<span class="detail-item">📦 ${SecurityUtils ? SecurityUtils.sanitizeHTML(details.product_name) : details.product_name}</span>`);
+          if (details.scenario) parts.push(`<span class="detail-item">🎭 ${SecurityUtils ? SecurityUtils.sanitizeHTML(details.scenario) : details.scenario}</span>`);
+          detailsHtml = parts.join(' ');
+        }
+      } catch (e) {
+        detailsHtml = '<span class="detail-item">Данные недоступны</span>';
+      }
+      
+      return `
+        <div class="audit-log-item">
+          <div class="audit-log-icon ${actionInfo.category}">${actionInfo.icon}</div>
+          <div class="audit-log-content">
+            <div class="audit-log-header">
+              <div class="audit-log-action">${actionInfo.label}</div>
+              <div class="audit-log-time">${time}</div>
+            </div>
+            <div class="audit-log-details">${detailsHtml || 'Нет деталей'}</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  document.getElementById('auditFilters').addEventListener('click', (e) => {
+    const btn = e.target.closest('.audit-filter-btn');
+    if (!btn) return;
+    document.querySelectorAll('.audit-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentAuditFilter = btn.dataset.filter;
+    renderAuditLogs();
+  });
 
   initAdmin();
 })();
