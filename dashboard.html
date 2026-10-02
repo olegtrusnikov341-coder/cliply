@@ -30,6 +30,7 @@
 <link rel="stylesheet" href="micro-animations.css">
 <link rel="stylesheet" href="visual-effects.css">
 <link rel="stylesheet" href="mobile.css">
+<link rel="stylesheet" href="scroll-animations.css">
 <script src="transitions.js"></script>
 <script src="micro-animations.js"></script>
 <script src="draft.js"></script>
@@ -346,14 +347,14 @@
 
 <div class="welcome-modal" id="welcomeModal">
   <div class="welcome-content">
-    <div class="welcome-icon"></div>
+    <div class="welcome-icon">👋</div>
     <h2>Добро пожаловать в Cliply!</h2>
     <p>Давайте познакомимся с сервисом за 30 секунд — и вы сможете создать своё первое продающее видео.</p>
     <div class="welcome-features">
       <div class="welcome-feature"><div class="welcome-feature-icon">📸</div><div class="welcome-feature-text">Загрузите 3-5 фото товара</div></div>
       <div class="welcome-feature"><div class="welcome-feature-icon">✨</div><div class="welcome-feature-text">AI создаст продающий сценарий</div></div>
       <div class="welcome-feature"><div class="welcome-feature-icon">🎬</div><div class="welcome-feature-text">Получите видео за 2 минуты</div></div>
-      <div class="welcome-feature"><div class="welcome-feature-icon">📈</div><div class="welcome-feature-text">+34% к конверсии карточки</div></div>
+      <div class="welcome-feature"><div class="welcome-feature-icon"></div><div class="welcome-feature-text">+34% к конверсии карточки</div></div>
     </div>
     <div class="welcome-actions">
       <button class="welcome-btn welcome-btn-secondary" id="welcomeSkip">Пропустить тур</button>
@@ -366,7 +367,7 @@
 <div class="publish-modal" id="publishModal">
   <div class="publish-modal-content">
     <button class="publish-modal-close" onclick="closePublishModal()">×</button>
-    <h3> Опубликовать в галерее</h3>
+    <h3>📤 Опубликовать в галерее</h3>
     <p>Ваше видео будет отправлено на модерацию. После одобрения оно появится в публичной галерее Cliply.</p>
     <div class="form-group">
       <label>Название видео</label>
@@ -421,7 +422,7 @@
   
   <main class="main">
     <div id="offlineBanner" class="offline-banner">
-      <span>⚠️</span>
+      <span>️</span>
       <span>Нет подключения к интернету. Некоторые функции могут быть недоступны.</span>
     </div>
     <div class="header">
@@ -429,7 +430,7 @@
       <div class="header-right">
         <div class="notifications-wrapper">
           <button class="notifications-btn" id="notificationsBtn" title="Уведомления">
-            🔔
+            
             <span class="notifications-badge hidden" id="notificationsBadge">0</span>
           </button>
           <div class="notifications-dropdown" id="notificationsDropdown">
@@ -453,9 +454,9 @@
     </div>
 
     <!-- РЕФЕРАЛЬНЫЙ ВИДЖЕТ -->
-    <div class="referral-card" id="referralCard" style="display: none;">
+    <div class="referral-card animate-slide-up" id="referralCard" style="display: none;">
       <div class="referral-info">
-        <h3> Пригласи друга — получи 5 видео бесплатно</h3>
+        <h3>🎁 Пригласи друга — получи 5 видео бесплатно</h3>
         <p>Поделитесь своей ссылкой. Когда друг зарегистрируется и создаст первое видео, вы оба получите бонус.</p>
         <div class="referral-link-box">
           <input type="text" class="referral-link-input" id="referralLinkInput" readonly>
@@ -474,12 +475,12 @@
       </div>
     </div>
 
-    <div class="create-card">
+    <div class="create-card animate-scale-in">
       <div class="create-card-header">
         <h2>Создать новое видео</h2>
         <div style="display: flex; gap: 12px; align-items: center;">
           <span id="draftIndicator" class="draft-indicator"></span>
-          <button id="clearDraftBtn" class="btn-clear-draft" style="display: none;"> Очистить черновик</button>
+          <button id="clearDraftBtn" class="btn-clear-draft" style="display: none;">🗑 Очистить черновик</button>
         </div>
       </div>
       <div class="upload-zone" id="uploadZone">
@@ -518,7 +519,7 @@
       <button class="btn-generate" onclick="startGeneration()" id="btnGenerate">Сгенерировать видео →</button>
     </div>
     <div class="videos-section">
-      <div class="videos-section-header">
+      <div class="videos-section-header animate-fade-in">
         <h2>Ваши видео</h2>
         <div class="videos-controls">
           <input type="text" id="searchInput" class="search-input" placeholder="🔍 Поиск по названию...">
@@ -640,9 +641,9 @@ function showAchievementToast(achievement) {
 // ===== ОНБОРДИНГ =====
 const ONBOARDING_STEPS = [
   { selector: '#uploadZone', icon: '📸', title: 'Шаг 1: Загрузите фото товара', text: 'Перетащите сюда 3-5 фотографий товара или нажмите, чтобы выбрать.', position: 'bottom' },
-  { selector: '#descriptionGroup', icon: '️', title: 'Шаг 2: Опишите товар', text: 'Расскажите, чем ваш товар лучше аналогов. AI сам превратит это в продающий сценарий.', position: 'bottom' },
-  { selector: '#scenarioGroup', icon: '🎬', title: 'Шаг 3: Выберите сценарий', text: '6 готовых форматов под разные задачи: обзор, распаковка, отзыв и другие.', position: 'top' },
-  { selector: '#btnGenerate', icon: '', title: 'Шаг 4: Сгенерируйте видео', text: 'Нажмите кнопку — и через 2 минуты получите готовый ролик 9:16.', position: 'top' }
+  { selector: '#descriptionGroup', icon: '✍️', title: 'Шаг 2: Опишите товар', text: 'Расскажите, чем ваш товар лучше аналогов. AI сам превратит это в продающий сценарий.', position: 'bottom' },
+  { selector: '#scenarioGroup', icon: '', title: 'Шаг 3: Выберите сценарий', text: '6 готовых форматов под разные задачи: обзор, распаковка, отзыв и другие.', position: 'top' },
+  { selector: '#btnGenerate', icon: '🚀', title: 'Шаг 4: Сгенерируйте видео', text: 'Нажмите кнопку — и через 2 минуты получите готовый ролик 9:16.', position: 'top' }
 ];
 let currentOnboardingStep = 0;
 let highlightedElement = null;
@@ -724,7 +725,7 @@ async function finishOnboarding() {
   document.getElementById('onboardingOverlay').classList.remove('active');
   document.getElementById('onboardingTooltip').classList.remove('active');
   saveOnboardingStatus(true);
-  showToast('🎉 Отлично! Теперь вы готовы создать первое видео!', 'success');
+  showToast(' Отлично! Теперь вы готовы создать первое видео!', 'success');
   await unlockAchievementByCode('onboarding_done', 1);
 }
 
@@ -829,7 +830,7 @@ async function submitToGallery() {
       if (error) throw error;
     }
     closePublishModal();
-    showToast('📤 Видео отправлено на модерацию!', 'success');
+    showToast(' Видео отправлено на модерацию!', 'success');
     await loadVideos();
   } catch (e) { showToast('Ошибка: ' + e.message, 'error'); }
   finally { btn.textContent = 'Отправить на модерацию'; btn.disabled = false; }
@@ -877,7 +878,7 @@ async function initDashboard() {
   await loadVideos();
   await loadNotifications();
   await loadAchievements();
-  await loadReferralData(); // Загружаем реферальные данные
+  await loadReferralData();
   startNotificationsCheck();
   initNotificationsUI();
   initOnboarding();
@@ -1002,7 +1003,7 @@ function renderVideos(galleryStatusMap = {}) {
     else if (galleryStatus === 'pending') galleryBadge = '<span class="project-status status-progress" style="top: auto; bottom: 12px; left: 12px; right: auto;">⏳ На модерации</span>';
     else if (galleryStatus === 'rejected') galleryBadge = '<span class="project-status status-failed" style="top: auto; bottom: 12px; left: 12px; right: auto;">✗ Отклонено</span>';
     if (video.status === 'done' && !galleryStatus) publishBtn = `<button class="btn-small gallery" onclick="openPublishModal('${video.id}')">📤 В галерею</button>`;
-    else if (video.status === 'done' && galleryStatus === 'rejected') publishBtn = `<button class="btn-small gallery" onclick="openPublishModal('${video.id}')"> Повторить</button>`;
+    else if (video.status === 'done' && galleryStatus === 'rejected') publishBtn = `<button class="btn-small gallery" onclick="openPublishModal('${video.id}')">📤 Повторить</button>`;
     return `<div class="project-card content-fade-in"><div class="project-preview">${video.status === 'done' ? '🎬' : video.status === 'processing' ? '⏳' : '❌'}<span class="project-status ${statusClass}">${statusText}</span>${galleryBadge}</div><div class="project-info"><div class="project-title">${video.product_name || 'Без названия'}</div><div class="project-date">${date}</div><div class="project-actions">${video.status === 'done' ? `<button class="btn-small primary" onclick="downloadVideo('${video.id}')">Скачать</button>${publishBtn}` : ''}<button class="btn-small" onclick="regenerateVideo('${video.id}')">Перегенерировать</button><button class="btn-small danger" onclick="deleteVideo('${video.id}')">Удалить</button></div></div></div>`;
   }).join('');
 }
@@ -1189,6 +1190,8 @@ function showReviewModal() {
 
 initDashboard();
 </script>
+
+<script src="scroll-animations.js"></script>
 
 <script>
 if ('serviceWorker' in navigator) {
