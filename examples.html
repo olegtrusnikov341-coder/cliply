@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
 <link rel="stylesheet" href="mobile.css">
+<link rel="stylesheet" href="scroll-animations.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; line-height: 1.6; }
@@ -46,7 +47,7 @@
   .section-title { font-size: 48px; margin-bottom: 24px; max-width: 800px; }
   .section-subtitle { font-size: 18px; color: #A0A0B0; max-width: 600px; line-height: 1.6; margin-bottom: 48px; }
   
-  .filter-tabs { display: flex; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
+  .filter-tabs { display: flex; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; justify-content: center; }
   .filter-tab { padding: 10px 20px; background: transparent; border: 1px solid #27272a; border-radius: 100px; color: #A0A0B0; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
   .filter-tab:hover { border-color: #6C5CE7; color: #fff; }
   .filter-tab.active { background: #6C5CE7; border-color: #6C5CE7; color: #fff; }
@@ -114,8 +115,11 @@
     <a href="index.html">Главная</a>
     <a href="features.html">Возможности</a>
     <a href="examples.html" style="color: #fff;">Примеры</a>
-    <a href="pricing.html">Тарифы</a>
+    <a href="gallery.html">Галерея</a>
+    <a href="about.html">О нас</a>
+    <a href="index.html#pricing">Тарифы</a>
     <a href="faq.html">FAQ</a>
+    <a href="contacts.html">Контакты</a>
     <a href="login.html" class="nav-btn-login" id="navAuthBtn">Войти</a>
     <a href="login.html" class="nav-btn-cta">Попробовать</a>
   </div>
@@ -128,13 +132,16 @@
   <a href="index.html">Главная</a>
   <a href="features.html">Возможности</a>
   <a href="examples.html" style="color: #6C5CE7;">Примеры</a>
-  <a href="pricing.html">Тарифы</a>
+  <a href="gallery.html">Галерея</a>
+  <a href="about.html">О нас</a>
+  <a href="index.html#pricing">Тарифы</a>
   <a href="faq.html">FAQ</a>
+  <a href="contacts.html">Контакты</a>
   <a href="login.html" id="mobileAuthBtn">Войти</a>
   <a href="login.html" class="btn-nav-mobile">Попробовать бесплатно</a>
 </div>
 
-<section class="hero">
+<section class="hero animate-fade-in">
   <div class="container">
     <div class="hero-label">04 / ПРИМЕРЫ</div>
     <h1>Реальные видео, <span>реальные результаты</span></h1>
@@ -144,7 +151,7 @@
 
 <section class="section">
   <div class="container">
-    <div class="filter-tabs">
+    <div class="filter-tabs animate-slide-up" id="filterTabs">
       <button class="filter-tab active" data-filter="all">Все</button>
       <button class="filter-tab" data-filter="cosmetics">Косметика</button>
       <button class="filter-tab" data-filter="electronics">Электроника</button>
@@ -155,12 +162,12 @@
     </div>
     
     <div class="examples-grid" id="examplesGrid">
-      <div class="example-card" data-category="cosmetics">
-        <div class="example-preview">💄<span class="example-tag">15 сек</span><span class="example-type">Обзор</span></div>
+      <div class="example-card animate-scale-in delay-1" data-category="cosmetics">
+        <div class="example-preview"><span class="example-tag">15 сек</span><span class="example-type">Обзор</span></div>
         <div class="example-info">
           <h3>Увлажняющий крем</h3>
           <p>Премиальная косметика для лица. Показ текстуры и нанесения.</p>
-          <div class="example-meta"><span> Энергичная</span><span>✨ Премиум стиль</span></div>
+          <div class="example-meta"><span>🎵 Энергичная</span><span>✨ Премиум стиль</span></div>
           <div class="example-stats">
             <div class="example-stat">
               <div class="example-stat-value">+47%</div>
@@ -174,12 +181,12 @@
         </div>
       </div>
       
-      <div class="example-card" data-category="electronics">
+      <div class="example-card animate-scale-in delay-2" data-category="electronics">
         <div class="example-preview">🎧<span class="example-tag">20 сек</span><span class="example-type">Обзор</span></div>
         <div class="example-info">
           <h3>Беспроводные наушники</h3>
           <p>Технические характеристики и преимущества в динамичном ролике.</p>
-          <div class="example-meta"><span>🎵 Современная</span><span>⚡ Техно стиль</span></div>
+          <div class="example-meta"><span>🎵 Современная</span><span> Техно стиль</span></div>
           <div class="example-stats">
             <div class="example-stat">
               <div class="example-stat-value">+52%</div>
@@ -193,7 +200,7 @@
         </div>
       </div>
       
-      <div class="example-card" data-category="clothing">
+      <div class="example-card animate-scale-in delay-3" data-category="clothing">
         <div class="example-preview">👕<span class="example-tag">15 сек</span><span class="example-type">Lifestyle</span></div>
         <div class="example-info">
           <h3>Мужская футболка</h3>
@@ -212,12 +219,12 @@
         </div>
       </div>
       
-      <div class="example-card" data-category="home">
+      <div class="example-card animate-scale-in delay-4" data-category="home">
         <div class="example-preview">🏠<span class="example-tag">25 сек</span><span class="example-type">Распаковка</span></div>
         <div class="example-info">
           <h3>Органайзер для кухни</h3>
           <p>Распаковка и демонстрация функциональности в интерьере.</p>
-          <div class="example-meta"><span> Спокойная</span><span>🎁 Распаковка</span></div>
+          <div class="example-meta"><span>🎵 Спокойная</span><span>🎁 Распаковка</span></div>
           <div class="example-stats">
             <div class="example-stat">
               <div class="example-stat-value">+41%</div>
@@ -231,12 +238,12 @@
         </div>
       </div>
       
-      <div class="example-card" data-category="health">
+      <div class="example-card animate-scale-in delay-5" data-category="health">
         <div class="example-preview">💊<span class="example-tag">20 сек</span><span class="example-type">Отзыв</span></div>
         <div class="example-info">
           <h3>Омега-3 капсулы</h3>
           <p>Доверительный формат с акцентом на пользу для здоровья.</p>
-          <div class="example-meta"><span> Доверительная</span><span>⭐ Отзыв</span></div>
+          <div class="example-meta"><span>🎵 Доверительная</span><span>⭐ Отзыв</span></div>
           <div class="example-stats">
             <div class="example-stat">
               <div class="example-stat-value">+35%</div>
@@ -250,12 +257,12 @@
         </div>
       </div>
       
-      <div class="example-card" data-category="sport">
+      <div class="example-card animate-scale-in delay-6" data-category="sport">
         <div class="example-preview">⚽<span class="example-tag">15 сек</span><span class="example-type">Продающее</span></div>
         <div class="example-info">
           <h3>Фитнес-резинки</h3>
           <p>Энергичный ролик с демонстрацией упражнений.</p>
-          <div class="example-meta"><span>🎵 Энергичная</span><span>🔥 Продающее</span></div>
+          <div class="example-meta"><span> Энергичная</span><span> Продающее</span></div>
           <div class="example-stats">
             <div class="example-stat">
               <div class="example-stat-value">+44%</div>
@@ -269,12 +276,12 @@
         </div>
       </div>
       
-      <div class="example-card" data-category="cosmetics">
+      <div class="example-card animate-scale-in delay-1" data-category="cosmetics">
         <div class="example-preview">💅<span class="example-tag">18 сек</span><span class="example-type">3 причины</span></div>
         <div class="example-info">
           <h3>Лак для ногтей</h3>
           <p>Три ключевых преимущества в формате "3 причины купить".</p>
-          <div class="example-meta"><span> Яркая</span><span> Продающее</span></div>
+          <div class="example-meta"><span>🎵 Яркая</span><span>🎯 Продающее</span></div>
           <div class="example-stats">
             <div class="example-stat">
               <div class="example-stat-value">+39%</div>
@@ -288,7 +295,7 @@
         </div>
       </div>
       
-      <div class="example-card" data-category="electronics">
+      <div class="example-card animate-scale-in delay-2" data-category="electronics">
         <div class="example-preview">📱<span class="example-tag">22 сек</span><span class="example-type">Сравнение</span></div>
         <div class="example-info">
           <h3>Смарт-часы</h3>
@@ -307,7 +314,7 @@
         </div>
       </div>
       
-      <div class="example-card" data-category="home">
+      <div class="example-card animate-scale-in delay-3" data-category="home">
         <div class="example-preview">🛋️<span class="example-tag">20 сек</span><span class="example-type">Проблема→Решение</span></div>
         <div class="example-info">
           <h3>Ортопедическая подушка</h3>
@@ -331,46 +338,46 @@
 
 <section class="section categories-section">
   <div class="container">
-    <div class="section-label">КАТЕГОРИИ</div>
-    <h2 class="section-title">Работает с любыми товарами</h2>
-    <p class="section-subtitle">Выберите свою категорию — мы подберём идеальный стиль и сценарий.</p>
+    <div class="section-label animate-fade-in">КАТЕГОРИИ</div>
+    <h2 class="section-title animate-slide-up">Работает с любыми товарами</h2>
+    <p class="section-subtitle animate-slide-up delay-1">Выберите свою категорию — мы подберём идеальный стиль и сценарий.</p>
     <div class="categories-grid">
-      <div class="category-card">
-        <div class="category-icon">👕</div>
+      <div class="category-card animate-scale-in delay-1">
+        <div class="category-icon"></div>
         <div class="category-name">Одежда</div>
         <div class="category-count">1,247 видео</div>
       </div>
-      <div class="category-card">
+      <div class="category-card animate-scale-in delay-2">
         <div class="category-icon">💄</div>
         <div class="category-name">Косметика</div>
         <div class="category-count">892 видео</div>
       </div>
-      <div class="category-card">
+      <div class="category-card animate-scale-in delay-3">
         <div class="category-icon">📱</div>
         <div class="category-name">Электроника</div>
         <div class="category-count">1,534 видео</div>
       </div>
-      <div class="category-card">
-        <div class="category-icon"></div>
+      <div class="category-card animate-scale-in delay-4">
+        <div class="category-icon">🏠</div>
         <div class="category-name">Для дома</div>
         <div class="category-count">723 видео</div>
       </div>
-      <div class="category-card">
-        <div class="category-icon"></div>
+      <div class="category-card animate-scale-in delay-5">
+        <div class="category-icon">💊</div>
         <div class="category-name">Здоровье</div>
         <div class="category-count">456 видео</div>
       </div>
-      <div class="category-card">
-        <div class="category-icon"></div>
+      <div class="category-card animate-scale-in delay-6">
+        <div class="category-icon">⚽</div>
         <div class="category-name">Спорт</div>
         <div class="category-count">389 видео</div>
       </div>
-      <div class="category-card">
+      <div class="category-card animate-scale-in delay-1">
         <div class="category-icon">🍫</div>
         <div class="category-name">Еда</div>
         <div class="category-count">267 видео</div>
       </div>
-      <div class="category-card">
+      <div class="category-card animate-scale-in delay-2">
         <div class="category-icon">🧸</div>
         <div class="category-name">Детские</div>
         <div class="category-count">512 видео</div>
@@ -379,7 +386,7 @@
   </div>
 </section>
 
-<section class="cta-section">
+<section class="cta-section animate-fade-in">
   <div class="container">
     <h2>Создайте своё видео</h2>
     <p>3 видео бесплатно. Без карты. Без обязательств. Убедитесь сами, что Cliply работает.</p>
@@ -427,8 +434,12 @@ filterTabs.forEach(tab => {
     exampleCards.forEach(card => {
       if (filter === 'all' || card.dataset.category === filter) {
         card.style.display = 'block';
+        // Перезапускаем анимацию при фильтрации
+        card.classList.remove('visible');
+        setTimeout(() => card.classList.add('visible'), 50);
       } else {
         card.style.display = 'none';
+        card.classList.remove('visible');
       }
     });
   });
@@ -444,6 +455,8 @@ filterTabs.forEach(tab => {
   }
 })();
 </script>
+
+<script src="scroll-animations.js"></script>
 
 <script>
 if ('serviceWorker' in navigator) {
