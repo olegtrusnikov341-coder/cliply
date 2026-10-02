@@ -18,102 +18,158 @@
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
 <link rel="stylesheet" href="mobile.css">
+<link rel="stylesheet" href="scroll-animations.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; line-height: 1.6; }
   h1, h2, h3 { font-family: 'Manrope', sans-serif; font-weight: 800; }
-  .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; width: 100%; }
   
-  nav { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f1f2e; }
+  nav { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: rgba(10,10,15,0.95); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid #1f1f2e; }
   .logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
-  .nav-back { color: #A0A0B0; text-decoration: none; font-size: 14px; }
-  .nav-back:hover { color: #fff; }
+  .nav-links { display: flex; align-items: center; gap: 24px; }
+  .nav-links a { color: #A0A0B0; text-decoration: none; font-size: 14px; transition: color 0.2s; }
+  .nav-links a:hover { color: #fff; }
+  .nav-btn-login { color: #fff !important; border: 1px solid #27272a; padding: 8px 20px; border-radius: 100px; }
+  .nav-btn-login:hover { border-color: #6C5CE7; }
+  .nav-btn-cta { background: linear-gradient(135deg, #6C5CE7, #A29BFE) !important; color: #fff !important; padding: 10px 24px !important; border-radius: 100px; font-weight: 600 !important; border: none; }
   
-  .hero { padding: 60px 0 40px; text-align: center; }
+  .hero { padding: 80px 0 40px; text-align: center; }
   .hero-label { font-size: 13px; font-weight: 700; color: #6C5CE7; letter-spacing: 3px; margin-bottom: 16px; text-transform: uppercase; }
-  .hero h1 { font-size: 48px; margin-bottom: 16px; }
+  .hero h1 { font-size: 56px; margin-bottom: 16px; }
+  .hero h1 span { background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   .hero p { font-size: 18px; color: #A0A0B0; max-width: 600px; margin: 0 auto; }
   
-  .contacts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 40px 0; }
-  .contact-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 16px; padding: 32px; text-align: center; transition: all 0.3s; }
-  .contact-card:hover { border-color: #6C5CE7; transform: translateY(-4px); }
-  .contact-icon { font-size: 40px; margin-bottom: 16px; }
-  .contact-card h3 { font-size: 18px; margin-bottom: 8px; }
-  .contact-card p { color: #A0A0B0; font-size: 14px; margin-bottom: 16px; }
-  .contact-link { color: #6C5CE7; text-decoration: none; font-weight: 600; font-size: 15px; }
-  .contact-link:hover { text-decoration: underline; }
+  .contacts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 48px 0; }
+  .contact-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; padding: 40px 32px; text-align: center; transition: all 0.3s; }
+  .contact-card:hover { border-color: #6C5CE7; transform: translateY(-4px); box-shadow: 0 20px 40px rgba(108, 92, 231, 0.15); }
+  .contact-icon { font-size: 56px; margin-bottom: 20px; }
+  .contact-card h3 { font-size: 22px; margin-bottom: 12px; }
+  .contact-card p { color: #A0A0B0; font-size: 14px; margin-bottom: 20px; min-height: 40px; }
+  .contact-link { color: #6C5CE7; text-decoration: none; font-weight: 600; font-size: 15px; transition: color 0.2s; }
+  .contact-link:hover { color: #A29BFE; }
   
-  .form-section { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; padding: 48px; max-width: 700px; margin: 0 auto 80px; }
-  .form-section h2 { font-size: 28px; margin-bottom: 16px; text-align: center; }
-  .form-section > p { color: #A0A0B0; text-align: center; margin-bottom: 32px; }
-  .form-group { margin-bottom: 20px; }
+  .form-section { background: #141414; border: 1px solid #1f1f2e; border-radius: 24px; padding: 48px; max-width: 700px; margin: 0 auto 80px; }
+  .form-section h2 { font-size: 32px; margin-bottom: 16px; text-align: center; }
+  .form-section > p { color: #A0A0B0; text-align: center; margin-bottom: 32px; font-size: 16px; }
+  .form-group { margin-bottom: 24px; }
   .form-group label { display: block; font-size: 14px; color: #A0A0B0; margin-bottom: 8px; font-weight: 500; }
-  .form-group input, .form-group textarea { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 10px; padding: 14px 16px; color: #fff; font-size: 15px; font-family: inherit; }
+  .form-group input, .form-group textarea { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 12px; padding: 14px 16px; color: #fff; font-size: 15px; font-family: inherit; transition: border-color 0.2s; }
   .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #6C5CE7; }
-  .form-group textarea { resize: vertical; min-height: 120px; }
+  .form-group textarea { resize: vertical; min-height: 140px; }
   .btn-submit { width: 100%; background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 16px; border-radius: 12px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
   .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   .success-box { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 20px; color: #34d399; text-align: center; display: none; margin-bottom: 24px; }
-  .success-box.active { display: block; }
+  .success-box.active { display: block; animation: slideDown 0.3s ease; }
   .error-box { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 20px; color: #ef4444; text-align: center; display: none; margin-bottom: 24px; }
-  .error-box.active { display: block; }
+  .error-box.active { display: block; animation: slideDown 0.3s ease; }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
   
-  footer { padding: 40px 0; text-align: center; color: #A0A0B0; font-size: 14px; border-top: 1px solid #1f1f2e; }
+  .info-section { background: #0d0d14; padding: 80px 0; margin: 40px 0; }
+  .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 48px; margin-top: 48px; }
+  .info-block h3 { font-size: 20px; margin-bottom: 16px; color: #6C5CE7; }
+  .info-block p { color: #A0A0B0; font-size: 15px; line-height: 1.7; margin-bottom: 12px; }
+  .info-block ul { list-style: none; padding: 0; }
+  .info-block li { color: #A0A0B0; font-size: 15px; padding: 8px 0; padding-left: 24px; position: relative; }
+  .info-block li:before { content: "✓"; position: absolute; left: 0; color: #6C5CE7; font-weight: 700; }
+  
+  footer { padding: 60px 0 40px; border-top: 1px solid #1f1f2e; }
+  
+  .burger { display: none; flex-direction: column; gap: 5px; background: transparent; border: none; cursor: pointer; padding: 8px; z-index: 1001; }
+  .burger span { display: block; width: 24px; height: 2px; background: #fff; transition: all 0.3s; border-radius: 2px; }
+  .burger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .burger.active span:nth-child(2) { opacity: 0; }
+  .burger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .mobile-menu { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(10,10,15,0.98); backdrop-filter: blur(20px); z-index: 1000; padding: 80px 24px 24px; flex-direction: column; gap: 8px; }
+  .mobile-menu.active { display: flex; }
+  .mobile-menu a { display: block; padding: 16px; color: #fff; text-decoration: none; font-size: 18px; border-radius: 8px; text-align: center; }
+  .mobile-menu a:hover { background: rgba(108, 92, 231, 0.15); }
+  .btn-nav-mobile { background: linear-gradient(135deg, #6C5CE7, #A29BFE) !important; font-weight: 700 !important; }
   
   @media (max-width: 768px) {
-    .hero h1 { font-size: 32px !important; }
+    .nav-links { display: none !important; }
+    .burger { display: flex !important; }
+    .hero { padding: 60px 0 30px; }
+    .hero h1 { font-size: 36px !important; }
+    .hero p { font-size: 16px; }
     .contacts-grid { grid-template-columns: 1fr !important; }
     .form-section { padding: 32px 24px; }
+    .info-grid { grid-template-columns: 1fr !important; gap: 32px; }
   }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="container" style="display:flex;justify-content:space-between;align-items:center;width:100%;">
-    <a href="index.html" class="logo">Cliply</a>
-    <a href="index.html" class="nav-back">← На главную</a>
+  <a href="index.html" class="logo">Cliply</a>
+  <div class="nav-links">
+    <a href="features.html">Возможности</a>
+    <a href="examples.html">Примеры</a>
+    <a href="gallery.html">Галерея</a>
+    <a href="about.html">О нас</a>
+    <a href="pricing.html">Тарифы</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contacts.html" style="color: #fff;">Контакты</a>
+    <a href="login.html" class="nav-btn-login" id="navAuthBtn">Войти</a>
+    <a href="login.html" class="nav-btn-cta">Попробовать</a>
   </div>
+  <button class="burger" id="burgerBtn" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
-<section class="hero">
+<div class="mobile-menu" id="mobileMenu">
+  <a href="features.html">Возможности</a>
+  <a href="examples.html">Примеры</a>
+  <a href="gallery.html">Галерея</a>
+  <a href="about.html">О нас</a>
+  <a href="pricing.html">Тарифы</a>
+  <a href="faq.html">FAQ</a>
+  <a href="contacts.html" style="color: #6C5CE7;">Контакты</a>
+  <a href="login.html" id="mobileAuthBtn">Войти</a>
+  <a href="login.html" class="btn-nav-mobile">Попробовать бесплатно</a>
+</div>
+
+<section class="hero animate-fade-in">
   <div class="container">
     <div class="hero-label">СВЯЗЬ С НАМИ</div>
-    <h1>Контакты</h1>
+    <h1>Свяжитесь <span>с командой Cliply</span></h1>
     <p>Мы всегда на связи и готовы помочь. Выберите удобный способ или напишите через форму ниже.</p>
   </div>
 </section>
 
 <section class="container">
   <div class="contacts-grid">
-    <div class="contact-card">
+    <div class="contact-card animate-slide-up delay-1">
       <div class="contact-icon">✉️</div>
       <h3>Email</h3>
-      <p>Для общих вопросов и сотрудничества</p>
+      <p>Для общих вопросов и сотрудничества. Отвечаем в течение 24 часов.</p>
       <a href="mailto:support@cliply.ru" class="contact-link">support@cliply.ru</a>
     </div>
-    <div class="contact-card">
-      <div class="contact-icon">📱</div>
+    <div class="contact-card animate-slide-up delay-2">
+      <div class="contact-icon"></div>
       <h3>Telegram</h3>
-      <p>Быстрая поддержка и новости</p>
+      <p>Быстрая поддержка и новости. Подпишитесь на канал для обновлений.</p>
       <a href="https://t.me/cliply_support" target="_blank" class="contact-link">@cliply_support</a>
     </div>
-    <div class="contact-card">
+    <div class="contact-card animate-slide-up delay-3">
       <div class="contact-icon">💬</div>
       <h3>Чат в приложении</h3>
-      <p>Для зарегистрированных пользователей</p>
+      <p>Для зарегистрированных пользователей. Ответ в течение 2 часов.</p>
       <a href="support.html" class="contact-link">Открыть чат →</a>
     </div>
   </div>
   
-  <div class="form-section">
+  <div class="form-section animate-scale-in">
     <h2>Напишите нам</h2>
     <p>Заполните форму, и мы ответим в течение 24 часов.</p>
+    
     <div class="success-box" id="formSuccess">
       ✓ Сообщение отправлено! Мы свяжемся с вами в ближайшее время.
     </div>
     <div class="error-box" id="formError"></div>
+    
     <form id="contactForm">
       <div class="form-group">
         <label>Ваше имя</label>
@@ -124,33 +180,125 @@
         <input type="email" id="contactEmail" placeholder="your@email.com" required>
       </div>
       <div class="form-group">
+        <label>Тема обращения</label>
+        <input type="text" id="contactSubject" placeholder="Кратко опишите тему">
+      </div>
+      <div class="form-group">
         <label>Сообщение</label>
-        <textarea id="contactMessage" placeholder="Опишите ваш вопрос или предложение..." required></textarea>
+        <textarea id="contactMessage" placeholder="Опишите ваш вопрос или предложение подробно..." required></textarea>
       </div>
       <button type="submit" class="btn-submit" id="contactBtn">Отправить сообщение</button>
     </form>
   </div>
 </section>
 
+<section class="info-section">
+  <div class="container">
+    <div class="section-label animate-fade-in" style="text-align: center; font-size: 13px; font-weight: 700; color: #6C5CE7; letter-spacing: 3px; margin-bottom: 16px; text-transform: uppercase;">ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ</div>
+    <h2 class="animate-slide-up" style="text-align: center; font-size: 36px; margin-bottom: 16px;">Часы работы и реквизиты</h2>
+    <p class="animate-slide-up delay-1" style="text-align: center; color: #A0A0B0; font-size: 16px; max-width: 600px; margin: 0 auto;">Вся необходимая информация для связи и сотрудничества</p>
+    
+    <div class="info-grid">
+      <div class="info-block animate-slide-left delay-1">
+        <h3>🕐 Часы работы поддержки</h3>
+        <ul>
+          <li>Понедельник — Пятница: 10:00 — 19:00 МСК</li>
+          <li>Суббота: 11:00 — 17:00 МСК</li>
+          <li>Воскресенье: выходной</li>
+          <li>Email-поддержка: круглосуточно</li>
+        </ul>
+        <p style="margin-top: 16px;">В рабочее время отвечаем в течение 2 часов. Вне рабочего времени — в течение 24 часов.</p>
+      </div>
+      
+      <div class="info-block animate-slide-right delay-2">
+        <h3>📋 Реквизиты для сотрудничества</h3>
+        <p><strong style="color: #fff;">Для партнёрств и интеграций:</strong></p>
+        <p>partners@cliply.ru</p>
+        <p><strong style="color: #fff;">Для прессы и СМИ:</strong></p>
+        <p>press@cliply.ru</p>
+        <p><strong style="color: #fff;">Для юридических лиц:</strong></p>
+        <p>enterprise@cliply.ru</p>
+      </div>
+      
+      <div class="info-block animate-slide-left delay-1">
+        <h3>🌐 Социальные сети</h3>
+        <ul>
+          <li>Telegram канал: @cliply_news</li>
+          <li>Telegram поддержка: @cliply_support</li>
+          <li>ВКонтакте: vk.com/cliply</li>
+          <li>YouTube: youtube.com/@cliply</li>
+        </ul>
+        <p style="margin-top: 16px;">Подписывайтесь на наши соцсети, чтобы быть в курсе обновлений и получать полезные материалы для селлеров.</p>
+      </div>
+      
+      <div class="info-block animate-slide-right delay-2">
+        <h3>📍 О компании</h3>
+        <p><strong style="color: #fff;">Cliply</strong> — AI-сервис для создания продающих видео для селлеров маркетплейсов.</p>
+        <p>Мы помогаем предпринимателям увеличивать конверсию карточек товаров с помощью автоматической генерации видео на основе искусственного интеллекта.</p>
+        <p style="margin-top: 16px;">Основана в 2024 году. Офис: Москва, Россия.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="container">
-    © 2026 Cliply. Все права защищены.
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; margin-bottom: 32px;">
+      <a href="index.html" class="logo" style="font-size: 24px;">Cliply</a>
+      <div style="display: flex; gap: 16px;">
+        <a href="https://t.me/cliply_support" target="_blank" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">📱</a>
+        <a href="https://vk.com/cliply" target="_blank" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">💬</a>
+        <a href="mailto:support@cliply.ru" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">✉️</a>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 24px; border-top: 1px solid #1f1f2e; padding-top: 24px;">
+      <a href="features.html" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">Возможности</a>
+      <a href="examples.html" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">Примеры</a>
+      <a href="gallery.html" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">Галерея</a>
+      <a href="about.html" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">О нас</a>
+      <a href="pricing.html" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">Тарифы</a>
+      <a href="faq.html" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">FAQ</a>
+    </div>
+    <div style="text-align: center; color: #666; font-size: 13px;">
+      © 2026 Cliply. Все права защищены.
+    </div>
   </div>
 </footer>
 
 <script>
+const burgerBtn = document.getElementById('burgerBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+const mobileAuthBtn = document.getElementById('mobileAuthBtn');
+
+if (burgerBtn && mobileMenu) {
+  burgerBtn.addEventListener('click', () => {
+    burgerBtn.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+    document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+  });
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      burgerBtn.classList.remove('active');
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  });
+}
+
+// Обработка формы обратной связи
 document.getElementById('contactForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   
   const name = document.getElementById('contactName').value.trim();
   const email = document.getElementById('contactEmail').value.trim();
+  const subject = document.getElementById('contactSubject').value.trim();
   const message = document.getElementById('contactMessage').value.trim();
   
   document.getElementById('formSuccess').classList.remove('active');
   document.getElementById('formError').classList.remove('active');
   
   if (!name || !email || !message) {
-    document.getElementById('formError').textContent = 'Заполните все поля';
+    document.getElementById('formError').textContent = 'Заполните все обязательные поля';
     document.getElementById('formError').classList.add('active');
     return;
   }
@@ -165,6 +313,7 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
       .insert({
         name: name,
         email: email,
+        subject: subject || 'Без темы',
         question: message,
         status: 'new'
       });
@@ -174,7 +323,12 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
     document.getElementById('formSuccess').classList.add('active');
     document.getElementById('contactForm').reset();
     showToast('Сообщение отправлено!', 'success');
+    
+    // Прокрутка к сообщению об успехе
+    document.getElementById('formSuccess').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    
   } catch (err) {
+    console.error('Form submit error:', err);
     document.getElementById('formError').textContent = 'Ошибка отправки. Попробуйте ещё раз или напишите на support@cliply.ru';
     document.getElementById('formError').classList.add('active');
   } finally {
@@ -182,7 +336,20 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
     btn.disabled = false;
   }
 });
+
+// Авторизация
+(async () => {
+  const user = await getCurrentUser();
+  const btn = document.getElementById('navAuthBtn');
+  if (user && btn) {
+    btn.textContent = 'Дашборд';
+    btn.href = 'dashboard.html';
+    if (mobileAuthBtn) { mobileAuthBtn.textContent = 'Дашборд'; mobileAuthBtn.href = 'dashboard.html'; }
+  }
+})();
 </script>
+
+<script src="scroll-animations.js"></script>
 
 <script>
 if ('serviceWorker' in navigator) {
