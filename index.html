@@ -18,6 +18,11 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Cliply — AI-видео для селлеров">
 <meta property="og:description" content="Превратите фото товара в продающее видео за 2 минуты.">
+<!-- CSP Headers (задача 29) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://djvdklcahpqbjotukmxt.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://djvdklcahpqbjotukmxt.supabase.co wss://djvdklcahpqbjotukmxt.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
 <link rel="preconnect" href="https://djvdklcahpqbjotukmxt.supabase.co">
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -120,7 +125,6 @@
   .testimonial-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #6C5CE7, #A29BFE); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; color: #fff; }
   .testimonial-name { font-weight: 600; }
   .testimonial-role { color: #A0A0B0; font-size: 14px; }
-  .testimonial-stat { background: rgba(108, 92, 231, 0.15); color: #A29BFE; padding: 4px 12px; border-radius: 100px; font-size: 13px; font-weight: 600; margin-top: 8px; display: inline-block; border: 1px solid rgba(108, 92, 231, 0.3); }
   
   .faq-list { margin-top: 48px; max-width: 800px; }
   .faq-item { border-bottom: 1px solid #1f1f2e; }
@@ -172,17 +176,8 @@
   .mobile-menu a:hover { background: rgba(108, 92, 231, 0.15); }
   .btn-nav-mobile { background: linear-gradient(135deg, #6C5CE7, #A29BFE) !important; font-weight: 700 !important; }
   
-  /* ===== КАЛЬКУЛЯТОР ROI ===== */
-  .roi-calculator {
-    background: #141414;
-    border: 1px solid #1f1f2e;
-    border-radius: 24px;
-    padding: 40px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    margin-top: 48px;
-  }
+  /* КАЛЬКУЛЯТОР ROI */
+  .roi-calculator { background: #141414; border: 1px solid #1f1f2e; border-radius: 24px; padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 48px; }
   .roi-slider-group { margin-bottom: 32px; }
   .roi-slider-group:last-child { margin-bottom: 0; }
   .roi-slider-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
@@ -319,37 +314,25 @@
             <div class="roi-value" id="roiProducts">50</div>
           </div>
           <input type="range" id="sliderProducts" min="5" max="500" value="50" step="5" class="roi-slider">
-          <div class="roi-slider-labels">
-            <span>5</span>
-            <span>500</span>
-          </div>
+          <div class="roi-slider-labels"><span>5</span><span>500</span></div>
         </div>
-        
         <div class="roi-slider-group">
           <div class="roi-slider-header">
             <label>Средняя цена товара, ₽</label>
             <div class="roi-value" id="roiPrice">1 500</div>
           </div>
           <input type="range" id="sliderPrice" min="300" max="10000" value="1500" step="100" class="roi-slider">
-          <div class="roi-slider-labels">
-            <span>300 ₽</span>
-            <span>10 000 ₽</span>
-          </div>
+          <div class="roi-slider-labels"><span>300 ₽</span><span>10 000 ₽</span></div>
         </div>
-        
         <div class="roi-slider-group">
           <div class="roi-slider-header">
             <label>Посетителей в день на товар</label>
             <div class="roi-value" id="roiVisitors">100</div>
           </div>
           <input type="range" id="sliderVisitors" min="10" max="1000" value="100" step="10" class="roi-slider">
-          <div class="roi-slider-labels">
-            <span>10</span>
-            <span>1 000</span>
-          </div>
+          <div class="roi-slider-labels"><span>10</span><span>1 000</span></div>
         </div>
       </div>
-      
       <div class="roi-result">
         <div class="roi-result-label">Дополнительный доход в месяц</div>
         <div class="roi-result-value" id="roiResult">0 ₽</div>
@@ -406,24 +389,15 @@
       <div class="feature-list">
         <div class="feature-item animate-slide-left delay-1">
           <div class="feature-item-icon">📦</div>
-          <div>
-            <div class="feature-item-title">Обзор товара</div>
-            <div class="feature-item-desc">Покажите товар в действии со всех ракурсов</div>
-          </div>
+          <div><div class="feature-item-title">Обзор товара</div><div class="feature-item-desc">Покажите товар в действии со всех ракурсов</div></div>
         </div>
         <div class="feature-item animate-slide-left delay-2">
           <div class="feature-item-icon">🎯</div>
-          <div>
-            <div class="feature-item-title">3 причины купить</div>
-            <div class="feature-item-desc">Продающие триггеры для быстрого решения</div>
-          </div>
+          <div><div class="feature-item-title">3 причины купить</div><div class="feature-item-desc">Продающие триггеры для быстрого решения</div></div>
         </div>
         <div class="feature-item animate-slide-left delay-3">
           <div class="feature-item-icon">🎁</div>
-          <div>
-            <div class="feature-item-title">Распаковка</div>
-            <div class="feature-item-desc">Эффект присутствия и эмоциональная вовлечённость</div>
-          </div>
+          <div><div class="feature-item-title">Распаковка</div><div class="feature-item-desc">Эффект присутствия и эмоциональная вовлечённость</div></div>
         </div>
       </div>
     </div>
@@ -433,24 +407,15 @@
       <div class="feature-list">
         <div class="feature-item animate-slide-left delay-1">
           <div class="feature-item-icon">⚡</div>
-          <div>
-            <div class="feature-item-title">Проблема → Решение</div>
-            <div class="feature-item-desc">Для товаров, решающих конкретную боль клиента</div>
-          </div>
+          <div><div class="feature-item-title">Проблема → Решение</div><div class="feature-item-desc">Для товаров, решающих конкретную боль клиента</div></div>
         </div>
         <div class="feature-item animate-slide-left delay-2">
           <div class="feature-item-icon">⭐</div>
-          <div>
-            <div class="feature-item-title">Отзыв покупателя</div>
-            <div class="feature-item-desc">Социальное доказательство и доверие</div>
-          </div>
+          <div><div class="feature-item-title">Отзыв покупателя</div><div class="feature-item-desc">Социальное доказательство и доверие</div></div>
         </div>
         <div class="feature-item animate-slide-left delay-3">
           <div class="feature-item-icon">⚖️</div>
-          <div>
-            <div class="feature-item-title">Сравнение с аналогами</div>
-            <div class="feature-item-desc">Почему ваш товар лучше конкурентов</div>
-          </div>
+          <div><div class="feature-item-title">Сравнение с аналогами</div><div class="feature-item-desc">Почему ваш товар лучше конкурентов</div></div>
         </div>
       </div>
     </div>
@@ -464,7 +429,7 @@
     <p class="section-subtitle animate-slide-up delay-1">Реальные видео, созданные селлерами за 2 минуты.</p>
     <div class="examples-grid">
       <div class="example-card animate-scale-in delay-1">
-        <div class="example-preview"><span class="example-tag">15 сек</span></div>
+        <div class="example-preview">💄<span class="example-tag">15 сек</span></div>
         <div class="example-info">
           <h3>Косметика</h3>
           <p>Увлажняющий крем для лица</p>
@@ -472,7 +437,7 @@
         </div>
       </div>
       <div class="example-card animate-scale-in delay-2">
-        <div class="example-preview">🎧<span class="example-tag">20 сек</span></div>
+        <div class="example-preview"><span class="example-tag">20 сек</span></div>
         <div class="example-info">
           <h3>Электроника</h3>
           <p>Беспроводные наушники</p>
@@ -480,7 +445,7 @@
         </div>
       </div>
       <div class="example-card animate-scale-in delay-3">
-        <div class="example-preview">👕<span class="example-tag">15 сек</span></div>
+        <div class="example-preview"><span class="example-tag">15 сек</span></div>
         <div class="example-info">
           <h3>Одежда</h3>
           <p>Мужская футболка премиум</p>
@@ -488,11 +453,11 @@
         </div>
       </div>
       <div class="example-card animate-scale-in delay-4">
-        <div class="example-preview">🏠<span class="example-tag">25 сек</span></div>
+        <div class="example-preview"><span class="example-tag">25 сек</span></div>
         <div class="example-info">
           <h3>Товары для дома</h3>
           <p>Органайзер для кухни</p>
-          <div class="example-meta"><span> Спокойная</span><span>🎁 Распаковка</span></div>
+          <div class="example-meta"><span>🎵 Спокойная</span><span>🎁 Распаковка</span></div>
         </div>
       </div>
       <div class="example-card animate-scale-in delay-5">
@@ -521,14 +486,14 @@
     <h2 class="section-title animate-slide-up">Работает с любыми товарами</h2>
     <p class="section-subtitle animate-slide-up delay-1">Выберите свою категорию — мы подберём идеальный стиль и сценарий.</p>
     <div class="categories-grid">
-      <div class="category-card animate-fade-in delay-1"><div class="category-icon"></div><div class="category-name">Одежда</div></div>
+      <div class="category-card animate-fade-in delay-1"><div class="category-icon">👕</div><div class="category-name">Одежда</div></div>
       <div class="category-card animate-fade-in delay-2"><div class="category-icon">💄</div><div class="category-name">Косметика</div></div>
-      <div class="category-card animate-fade-in delay-3"><div class="category-icon"></div><div class="category-name">Электроника</div></div>
+      <div class="category-card animate-fade-in delay-3"><div class="category-icon">📱</div><div class="category-name">Электроника</div></div>
       <div class="category-card animate-fade-in delay-4"><div class="category-icon">🏠</div><div class="category-name">Для дома</div></div>
-      <div class="category-card animate-fade-in delay-5"><div class="category-icon"></div><div class="category-name">Здоровье</div></div>
+      <div class="category-card animate-fade-in delay-5"><div class="category-icon">💊</div><div class="category-name">Здоровье</div></div>
       <div class="category-card animate-fade-in delay-6"><div class="category-icon">⚽</div><div class="category-name">Спорт</div></div>
       <div class="category-card animate-fade-in delay-1"><div class="category-icon">🍫</div><div class="category-name">Еда</div></div>
-      <div class="category-card animate-fade-in delay-2"><div class="category-icon">🧸</div><div class="category-name">Детские</div></div>
+      <div class="category-card animate-fade-in delay-2"><div class="category-icon"></div><div class="category-name">Детские</div></div>
     </div>
   </div>
 </section>
@@ -668,7 +633,7 @@
           <li>Персональный менеджер</li>
           <li>White-label решение</li>
         </ul>
-        <a href="login.html" class="pricing-btn pricing-btn-secondary">Связаться</a>
+        <a href="contacts.html" class="pricing-btn pricing-btn-secondary">Связаться</a>
       </div>
     </div>
   </div>
@@ -687,9 +652,9 @@
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; margin-bottom: 32px;">
       <a href="index.html" class="logo" style="font-size: 24px;">Cliply</a>
       <div style="display: flex; gap: 16px;">
-        <a href="https://t.me/cliply_support" target="_blank" style="color: #A0A0B0; text-decoration: none; font-size: 20px; transition: color 0.2s;" title="Telegram"></a>
-        <a href="https://vk.com/cliply" target="_blank" style="color: #A0A0B0; text-decoration: none; font-size: 20px; transition: color 0.2s;" title="ВКонтакте">💬</a>
-        <a href="mailto:support@cliply.ru" style="color: #A0A0B0; text-decoration: none; font-size: 20px; transition: color 0.2s;" title="Email">️</a>
+        <a href="https://t.me/cliply_support" target="_blank" rel="noopener noreferrer" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">📱</a>
+        <a href="https://vk.com/cliply" target="_blank" rel="noopener noreferrer" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">💬</a>
+        <a href="mailto:support@cliply.ru" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">✉️</a>
       </div>
     </div>
     <div style="display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 24px; border-top: 1px solid #1f1f2e; padding-top: 24px;">
@@ -711,22 +676,21 @@
   </div>
 </footer>
 
-<button class="support-btn" onclick="openSupport()" title="Написать в поддержку">💬</button>
+<button class="support-btn" onclick="openSupport()" title="Написать в поддержку"></button>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="security.js"></script>
 <script src="auth.js"></script>
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
 <script src="transitions.js"></script>
 <script src="micro-animations.js"></script>
-<script src="scroll-animations.js"></script>
 <script>
-// ===== КАЛЬКУЛЯТОР ROI =====
+// КАЛЬКУЛЯТОР ROI
 (function() {
   const sliderProducts = document.getElementById('sliderProducts');
   const sliderPrice = document.getElementById('sliderPrice');
   const sliderVisitors = document.getElementById('sliderVisitors');
-  
   if (!sliderProducts) return;
   
   const displayProducts = document.getElementById('roiProducts');
@@ -736,9 +700,7 @@
   const displayWithout = document.getElementById('roiWithout');
   const displayWith = document.getElementById('roiWith');
   
-  function formatNumber(n) {
-    return Math.round(n).toLocaleString('ru-RU');
-  }
+  function formatNumber(n) { return Math.round(n).toLocaleString('ru-RU'); }
   
   function calculateROI() {
     const products = parseInt(sliderProducts.value);
@@ -768,7 +730,6 @@
     const start = parseFloat(element.dataset.current || '0');
     const duration = 400;
     const startTime = performance.now();
-    
     function update(currentTime) {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
@@ -776,18 +737,14 @@
       const current = start + (target - start) * eased;
       element.textContent = formatNumber(current) + suffix;
       element.dataset.current = current;
-      if (progress < 1) {
-        animationFrame = requestAnimationFrame(update);
-      }
+      if (progress < 1) animationFrame = requestAnimationFrame(update);
     }
-    
     animationFrame = requestAnimationFrame(update);
   }
   
   sliderProducts.addEventListener('input', calculateROI);
   sliderPrice.addEventListener('input', calculateROI);
   sliderVisitors.addEventListener('input', calculateROI);
-  
   calculateROI();
 })();
 
@@ -812,14 +769,13 @@ if (burgerBtn && mobileMenu) {
 
 async function loadSellerCount() {
   try {
-    const { count, error } = await supabaseClient
-      .from('profiles')
-      .select('*', { count: 'exact', head: true });
-    
+    const { count, error } = await supabaseClient.from('profiles').select('*', { count: 'exact', head: true });
+    const el = document.getElementById('sellerCount');
     if (!error && count !== null) {
-      document.getElementById('sellerCount').textContent = count.toLocaleString('ru-RU');
+      const safeCount = SecurityUtils ? SecurityUtils.sanitizeHTML(String(count)) : String(count);
+      el.textContent = parseInt(safeCount).toLocaleString('ru-RU');
     } else {
-      document.getElementById('sellerCount').textContent = '—';
+      el.textContent = '—';
     }
   } catch (e) {
     document.getElementById('sellerCount').textContent = '—';
@@ -831,21 +787,10 @@ async function loadTestimonials() {
   if (!grid) return;
   
   try {
-    const { data, error } = await supabaseClient
-      .from('reviews')
-      .select('*')
-      .eq('approved', true)
-      .order('created_at', { ascending: false })
-      .limit(6);
+    const { data, error } = await supabaseClient.from('reviews').select('*').eq('approved', true).order('created_at', { ascending: false }).limit(6);
     
     if (error || !data || data.length === 0) {
-      grid.innerHTML = `
-        <div class="testimonial-card" style="text-align:center;padding:60px 20px;grid-column:1/-1;">
-          <div style="font-size:48px;margin-bottom:16px;">💬</div>
-          <div style="font-size:20px;font-weight:600;margin-bottom:8px;">Пока нет отзывов</div>
-          <div style="color:#A0A0B0;font-size:15px;">Будьте первым — оставьте отзыв после 3-й генерации видео!</div>
-        </div>
-      `;
+      grid.innerHTML = `<div class="testimonial-card" style="text-align:center;padding:60px 20px;grid-column:1/-1;"><div style="font-size:48px;margin-bottom:16px;">💬</div><div style="font-size:20px;font-weight:600;margin-bottom:8px;">Пока нет отзывов</div><div style="color:#A0A0B0;font-size:15px;">Будьте первым — оставьте отзыв после 3-й генерации видео!</div></div>`;
       return;
     }
     
@@ -855,31 +800,16 @@ async function loadTestimonials() {
       const initial = review.user_name.charAt(0).toUpperCase();
       const color = colors[i % colors.length];
       const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+      const safeName = SecurityUtils ? SecurityUtils.sanitizeHTML(review.user_name) : review.user_name;
+      const safeRole = SecurityUtils ? SecurityUtils.sanitizeHTML(review.user_role || 'Селлер') : (review.user_role || 'Селлер');
+      const safeText = SecurityUtils ? SecurityUtils.sanitizeHTML(review.review_text) : review.review_text;
+      const safeCategory = review.product_category ? (SecurityUtils ? SecurityUtils.sanitizeHTML(review.product_category) : review.product_category) : '';
       
-      return `
-        <div class="testimonial-card">
-          <div style="color:#6C5CE7;font-size:20px;margin-bottom:12px;letter-spacing:2px;">${stars}</div>
-          <div class="testimonial-quote">"${review.review_text}"</div>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar" style="background:${color};">${initial}</div>
-            <div>
-              <div class="testimonial-name">${review.user_name}</div>
-              <div class="testimonial-role">${review.user_role || 'Селлер'}${review.product_category ? ' • ' + review.product_category : ''}</div>
-            </div>
-          </div>
-        </div>
-      `;
+      return `<div class="testimonial-card"><div style="color:#6C5CE7;font-size:20px;margin-bottom:12px;letter-spacing:2px;">${stars}</div><div class="testimonial-quote">"${safeText}"</div><div class="testimonial-author"><div class="testimonial-avatar" style="background:${color};">${initial}</div><div><div class="testimonial-name">${safeName}</div><div class="testimonial-role">${safeRole}${safeCategory ? ' • ' + safeCategory : ''}</div></div></div></div>`;
     }).join('');
-    
   } catch (e) {
     console.log('Reviews load error:', e);
-    grid.innerHTML = `
-      <div class="testimonial-card" style="text-align:center;padding:60px 20px;grid-column:1/-1;">
-        <div style="font-size:48px;margin-bottom:16px;">💬</div>
-        <div style="font-size:20px;font-weight:600;margin-bottom:8px;">Пока нет отзывов</div>
-        <div style="color:#A0A0B0;font-size:15px;">Будьте первым — оставьте отзыв после 3-й генерации видео!</div>
-      </div>
-    `;
+    grid.innerHTML = `<div class="testimonial-card" style="text-align:center;padding:60px 20px;grid-column:1/-1;"><div style="font-size:48px;margin-bottom:16px;"></div><div style="font-size:20px;font-weight:600;margin-bottom:8px;">Пока нет отзывов</div><div style="color:#A0A0B0;font-size:15px;">Будьте первым — оставьте отзыв после 3-й генерации видео!</div></div>`;
   }
 }
 
@@ -923,13 +853,13 @@ if ('serviceWorker' in navigator) {
 }
 </script>
 
+<script src="scroll-animations.js"></script>
+
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.getRegistrations().then(registrations => {
-      for (let registration of registrations) {
-        registration.update();
-      }
+      for (let registration of registrations) { registration.update(); }
     });
   });
 }
