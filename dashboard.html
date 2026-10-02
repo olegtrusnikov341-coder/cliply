@@ -19,7 +19,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- CSP Headers (задача 29) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://djvdklcahpqbjotukmxt.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://djvdklcahpqbjotukmxt.supabase.co wss://djvdklcahpqbjotukmxt.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="security.js"></script>
 <script src="auth.js"></script>
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
@@ -371,11 +377,11 @@
     <p>Ваше видео будет отправлено на модерацию. После одобрения оно появится в публичной галерее Cliply.</p>
     <div class="form-group">
       <label>Название видео</label>
-      <input type="text" id="publishTitle" placeholder="Например: Крем для лица увлажняющий">
+      <input type="text" id="publishTitle" placeholder="Например: Крем для лица увлажняющий" maxlength="200">
     </div>
     <div class="form-group">
       <label>Описание (необязательно)</label>
-      <textarea id="publishDescription" placeholder="Расскажите о товаре подробнее..."></textarea>
+      <textarea id="publishDescription" placeholder="Расскажите о товаре подробнее..." maxlength="2000"></textarea>
     </div>
     <div class="publish-checkbox">
       <input type="checkbox" id="publishAgree">
@@ -430,7 +436,7 @@
       <div class="header-right">
         <div class="notifications-wrapper">
           <button class="notifications-btn" id="notificationsBtn" title="Уведомления">
-            
+            🔔
             <span class="notifications-badge hidden" id="notificationsBadge">0</span>
           </button>
           <div class="notifications-dropdown" id="notificationsDropdown">
@@ -440,7 +446,7 @@
             </div>
             <div class="notifications-list" id="notificationsList">
               <div class="notifications-empty">
-                <div class="notifications-empty-icon">🔔</div>
+                <div class="notifications-empty-icon"></div>
                 <div>Загрузка уведомлений...</div>
               </div>
             </div>
@@ -501,7 +507,7 @@
       <div class="form-group" id="descriptionGroup">
         <label>Описание товара и ключевые преимущества</label>
         <div class="prompt-row">
-          <textarea id="productDescription" placeholder="Например: Бутылка для воды 1л, экологичный пластик, не протекает, удобная крышка..."></textarea>
+          <textarea id="productDescription" placeholder="Например: Бутылка для воды 1л, экологичный пластик, не протекает, удобная крышка..." maxlength="2000"></textarea>
           <button class="btn-prompt" onclick="generatePrompt()" id="btnGeneratePrompt">✨ Улучшить промпт</button>
         </div>
       </div>
@@ -522,7 +528,7 @@
       <div class="videos-section-header animate-fade-in">
         <h2>Ваши видео</h2>
         <div class="videos-controls">
-          <input type="text" id="searchInput" class="search-input" placeholder="🔍 Поиск по названию...">
+          <input type="text" id="searchInput" class="search-input" placeholder="🔍 Поиск по названию..." maxlength="100">
           <select id="statusFilter" class="filter-select">
             <option value="all">Все статусы</option>
             <option value="done">Готово</option>
@@ -633,16 +639,16 @@ async function unlockAchievementByCode(code, progress) {
 function showAchievementToast(achievement) {
   const toast = document.createElement('div');
   toast.className = 'achievement-toast';
-  toast.innerHTML = `<div class="achievement-toast-icon">${achievement.icon}</div><div class="achievement-toast-content"><div class="achievement-toast-label">Новое достижение!</div><div class="achievement-toast-title">${achievement.name}</div><div class="achievement-toast-desc">${achievement.description}</div></div>`;
+  toast.innerHTML = `<div class="achievement-toast-icon">${SecurityUtils ? SecurityUtils.sanitizeHTML(achievement.icon) : achievement.icon}</div><div class="achievement-toast-content"><div class="achievement-toast-label">Новое достижение!</div><div class="achievement-toast-title">${SecurityUtils ? SecurityUtils.sanitizeHTML(achievement.name) : achievement.name}</div><div class="achievement-toast-desc">${SecurityUtils ? SecurityUtils.sanitizeHTML(achievement.description) : achievement.description}</div></div>`;
   document.body.appendChild(toast);
   setTimeout(() => { toast.style.animation = 'achievementSlideIn 0.5s ease reverse'; setTimeout(() => toast.remove(), 500); }, 4000);
 }
 
 // ===== ОНБОРДИНГ =====
 const ONBOARDING_STEPS = [
-  { selector: '#uploadZone', icon: '📸', title: 'Шаг 1: Загрузите фото товара', text: 'Перетащите сюда 3-5 фотографий товара или нажмите, чтобы выбрать.', position: 'bottom' },
+  { selector: '#uploadZone', icon: '', title: 'Шаг 1: Загрузите фото товара', text: 'Перетащите сюда 3-5 фотографий товара или нажмите, чтобы выбрать.', position: 'bottom' },
   { selector: '#descriptionGroup', icon: '✍️', title: 'Шаг 2: Опишите товар', text: 'Расскажите, чем ваш товар лучше аналогов. AI сам превратит это в продающий сценарий.', position: 'bottom' },
-  { selector: '#scenarioGroup', icon: '', title: 'Шаг 3: Выберите сценарий', text: '6 готовых форматов под разные задачи: обзор, распаковка, отзыв и другие.', position: 'top' },
+  { selector: '#scenarioGroup', icon: '🎬', title: 'Шаг 3: Выберите сценарий', text: '6 готовых форматов под разные задачи: обзор, распаковка, отзыв и другие.', position: 'top' },
   { selector: '#btnGenerate', icon: '🚀', title: 'Шаг 4: Сгенерируйте видео', text: 'Нажмите кнопку — и через 2 минуты получите готовый ролик 9:16.', position: 'top' }
 ];
 let currentOnboardingStep = 0;
@@ -725,7 +731,7 @@ async function finishOnboarding() {
   document.getElementById('onboardingOverlay').classList.remove('active');
   document.getElementById('onboardingTooltip').classList.remove('active');
   saveOnboardingStatus(true);
-  showToast(' Отлично! Теперь вы готовы создать первое видео!', 'success');
+  showToast('🎉 Отлично! Теперь вы готовы создать первое видео!', 'success');
   await unlockAchievementByCode('onboarding_done', 1);
 }
 
@@ -789,8 +795,8 @@ function openPublishModal(videoId) {
   const video = allVideos.find(v => v.id === videoId);
   if (!video) return;
   currentPublishVideoId = videoId;
-  document.getElementById('publishTitle').value = video.product_name || '';
-  document.getElementById('publishDescription').value = video.product_description || '';
+  document.getElementById('publishTitle').value = SecurityUtils ? SecurityUtils.sanitizeString(video.product_name || '', 200) : (video.product_name || '');
+  document.getElementById('publishDescription').value = SecurityUtils ? SecurityUtils.sanitizeString(video.product_description || '', 2000) : (video.product_description || '');
   document.getElementById('publishAgree').checked = false;
   document.getElementById('publishModal').classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -804,15 +810,37 @@ function closePublishModal() {
 
 async function submitToGallery() {
   if (!currentPublishVideoId) return;
-  const title = document.getElementById('publishTitle').value.trim();
-  const description = document.getElementById('publishDescription').value.trim();
+  
+  let title = document.getElementById('publishTitle').value.trim();
+  let description = document.getElementById('publishDescription').value.trim();
   const agreed = document.getElementById('publishAgree').checked;
+  
+  // Валидация через SecurityUtils
+  if (typeof SecurityUtils !== 'undefined') {
+    const titleCheck = SecurityUtils.validateProductName(title);
+    if (!titleCheck.valid) {
+      showToast(titleCheck.reason, 'warning');
+      return;
+    }
+    title = titleCheck.value;
+    
+    const descCheck = SecurityUtils.validateDescription(description);
+    if (!descCheck.valid) {
+      showToast(descCheck.reason, 'warning');
+      return;
+    }
+    description = descCheck.value;
+  }
+  
   if (!title) { showToast('Введите название видео', 'warning'); return; }
   if (!agreed) { showToast('Необходимо согласие на публикацию', 'warning'); return; }
+  
   const video = allVideos.find(v => v.id === currentPublishVideoId);
   if (!video) return;
+  
   const btn = document.getElementById('publishSubmitBtn');
   btn.textContent = 'Отправка...'; btn.disabled = true;
+  
   try {
     const { data: existing } = await supabaseClient.from('gallery_videos').select('id, status').eq('video_id', currentPublishVideoId).eq('user_id', currentUser.id).single();
     if (existing) {
@@ -823,14 +851,14 @@ async function submitToGallery() {
     } else {
       const { error } = await supabaseClient.from('gallery_videos').insert({
         video_id: currentPublishVideoId, user_id: currentUser.id,
-        user_name: currentUser.profile?.full_name || currentUser.email,
+        user_name: SecurityUtils ? SecurityUtils.sanitizeHTML(currentUser.profile?.full_name || currentUser.email) : (currentUser.profile?.full_name || currentUser.email),
         user_role: ROLES[currentUser.profile?.role_level]?.name || 'Селлер',
         product_name: title, product_description: description, scenario: video.scenario, video_url: video.video_url, status: 'pending'
       });
       if (error) throw error;
     }
     closePublishModal();
-    showToast(' Видео отправлено на модерацию!', 'success');
+    showToast('📤 Видео отправлено на модерацию!', 'success');
     await loadVideos();
   } catch (e) { showToast('Ошибка: ' + e.message, 'error'); }
   finally { btn.textContent = 'Отправить на модерацию'; btn.disabled = false; }
@@ -852,20 +880,20 @@ async function initDashboard() {
   await new Promise(resolve => setTimeout(resolve, 800));
   
   document.getElementById('welcomeText').classList.remove('skeleton', 'skeleton-title');
-  document.getElementById('welcomeText').textContent = `Добро пожаловать, ${currentUser.profile.full_name || 'Селлер'}!`;
+  document.getElementById('welcomeText').textContent = `Добро пожаловать, ${SecurityUtils ? SecurityUtils.sanitizeHTML(currentUser.profile.full_name || 'Селлер') : (currentUser.profile.full_name || 'Селлер')}!`;
   showContentWithAnimation('#welcomeText');
   document.getElementById('roleBadge').classList.remove('skeleton', 'skeleton-badge');
   const role = ROLES[currentUser.profile.role_level];
   const badge = document.getElementById('roleBadge');
   const badgeText = document.getElementById('roleBadgeText');
-  badgeText.textContent = `${role.name} • ${currentUser.email}`;
+  badgeText.textContent = `${role.name} • ${SecurityUtils ? SecurityUtils.maskEmail(currentUser.email) : currentUser.email}`;
   badge.style.color = role.color; badge.style.borderColor = role.color + '4D'; badge.style.background = role.color + '26';
   showContentWithAnimation('#roleBadge');
   
   if (currentUser.profile.role_level <= 2) {
     const menu = document.getElementById('navMenu');
     const adminLink = document.createElement('li');
-    adminLink.innerHTML = '<a href="admin.html">👑 Админ-панель</a>';
+    adminLink.innerHTML = '<a href="admin.html"> Админ-панель</a>';
     menu.insertBefore(adminLink, menu.children[3]);
   }
   
@@ -928,10 +956,12 @@ function renderNotifications() {
     const unreadClass = notif.is_read ? '' : 'unread';
     const time = formatNotificationTime(notif.created_at);
     const icon = getNotificationIcon(notif.type);
-    return `<div class="notification-item ${unreadClass}" data-id="${notif.id}" onclick="handleNotificationClick('${notif.id}', '${notif.link || ''}')"><div class="notif-content"><div class="notif-title">${icon} ${notif.title}</div><div class="notif-message">${notif.message}</div><div class="notif-time">${time}</div></div></div>`;
+    const safeTitle = SecurityUtils ? SecurityUtils.sanitizeHTML(notif.title) : notif.title;
+    const safeMessage = SecurityUtils ? SecurityUtils.sanitizeHTML(notif.message) : notif.message;
+    return `<div class="notification-item ${unreadClass}" data-id="${notif.id}" onclick="handleNotificationClick('${notif.id}', '${notif.link || ''}')"><div class="notif-content"><div class="notif-title">${icon} ${safeTitle}</div><div class="notif-message">${safeMessage}</div><div class="notif-time">${time}</div></div></div>`;
   }).join('');
 }
-function getNotificationIcon(type) { const icons = { 'video_done': '🎬', 'support_reply': '💬', 'review': '⭐', 'system': '📢', 'achievement': '🏆' }; return icons[type] || '🔔'; }
+function getNotificationIcon(type) { const icons = { 'video_done': '', 'support_reply': '💬', 'review': '⭐', 'system': '📢', 'achievement': '🏆' }; return icons[type] || '🔔'; }
 function formatNotificationTime(dateStr) { const date = new Date(dateStr); const diff = new Date() - date; const minutes = Math.floor(diff / 60000); const hours = Math.floor(diff / 3600000); const days = Math.floor(diff / 86400000); if (minutes < 1) return 'только что'; if (minutes < 60) return `${minutes} мин. назад`; if (hours < 24) return `${hours} ч. назад`; if (days < 7) return `${days} дн. назад`; return date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' }); }
 async function handleNotificationClick(notifId, link) {
   const notif = allNotifications.find(n => n.id === notifId);
@@ -1004,7 +1034,8 @@ function renderVideos(galleryStatusMap = {}) {
     else if (galleryStatus === 'rejected') galleryBadge = '<span class="project-status status-failed" style="top: auto; bottom: 12px; left: 12px; right: auto;">✗ Отклонено</span>';
     if (video.status === 'done' && !galleryStatus) publishBtn = `<button class="btn-small gallery" onclick="openPublishModal('${video.id}')">📤 В галерею</button>`;
     else if (video.status === 'done' && galleryStatus === 'rejected') publishBtn = `<button class="btn-small gallery" onclick="openPublishModal('${video.id}')">📤 Повторить</button>`;
-    return `<div class="project-card content-fade-in"><div class="project-preview">${video.status === 'done' ? '🎬' : video.status === 'processing' ? '⏳' : '❌'}<span class="project-status ${statusClass}">${statusText}</span>${galleryBadge}</div><div class="project-info"><div class="project-title">${video.product_name || 'Без названия'}</div><div class="project-date">${date}</div><div class="project-actions">${video.status === 'done' ? `<button class="btn-small primary" onclick="downloadVideo('${video.id}')">Скачать</button>${publishBtn}` : ''}<button class="btn-small" onclick="regenerateVideo('${video.id}')">Перегенерировать</button><button class="btn-small danger" onclick="deleteVideo('${video.id}')">Удалить</button></div></div></div>`;
+    const safeTitle = SecurityUtils ? SecurityUtils.sanitizeHTML(video.product_name || 'Без названия') : (video.product_name || 'Без названия');
+    return `<div class="project-card content-fade-in"><div class="project-preview">${video.status === 'done' ? '🎬' : video.status === 'processing' ? '⏳' : '❌'}<span class="project-status ${statusClass}">${statusText}</span>${galleryBadge}</div><div class="project-info"><div class="project-title">${safeTitle}</div><div class="project-date">${date}</div><div class="project-actions">${video.status === 'done' ? `<button class="btn-small primary" onclick="downloadVideo('${video.id}')">Скачать</button>${publishBtn}` : ''}<button class="btn-small" onclick="regenerateVideo('${video.id}')">Перегенерировать</button><button class="btn-small danger" onclick="deleteVideo('${video.id}')">Удалить</button></div></div></div>`;
   }).join('');
 }
 async function downloadVideo(videoId) {
@@ -1043,18 +1074,30 @@ fileInput.addEventListener('change', (e) => { handleFiles(Array.from(e.target.fi
 function formatFileSize(bytes) { if (bytes < 1024) return bytes + ' Б'; if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' КБ'; return (bytes / (1024 * 1024)).toFixed(2) + ' МБ'; }
 function getTotalSize() { return uploadedPhotos.reduce((sum, f) => sum + f.size, 0); }
 async function handleFiles(files) {
-  const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
-  const maxSize = 10 * 1024 * 1024;
   const errors = []; const filesToAdd = [];
+  
   for (const file of files) {
-    if (uploadedPhotos.length + filesToAdd.length >= 5) { errors.push(`${file.name}: максимум 5 фото`); continue; }
-    if (!validTypes.includes(file.type)) { errors.push(`${file.name}: неподдерживаемый формат`); continue; }
-    if (file.size > maxSize) { errors.push(`${file.name}: файл больше 10 МБ`); continue; }
+    // Валидация через SecurityUtils (задача 16)
+    if (typeof SecurityUtils !== 'undefined') {
+      const fileCheck = SecurityUtils.validateFile(file);
+      if (!fileCheck.valid) {
+        errors.push(`${file.name}: ${fileCheck.reason}`);
+        continue;
+      }
+    } else {
+      // Fallback валидация
+      const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+      const maxSize = 10 * 1024 * 1024;
+      if (uploadedPhotos.length + filesToAdd.length >= 5) { errors.push(`${file.name}: максимум 5 фото`); continue; }
+      if (!validTypes.includes(file.type)) { errors.push(`${file.name}: неподдерживаемый формат`); continue; }
+      if (file.size > maxSize) { errors.push(`${file.name}: файл больше 10 МБ`); continue; }
+    }
     filesToAdd.push(file);
   }
+  
   const errorsContainer = document.getElementById('validationErrors');
   const errorsList = document.getElementById('validationErrorsList');
-  if (errors.length > 0) { errorsList.innerHTML = errors.map(e => `<li>${e}</li>`).join(''); errorsContainer.classList.add('active'); setTimeout(() => errorsContainer.classList.remove('active'), 5000); }
+  if (errors.length > 0) { errorsList.innerHTML = errors.map(e => `<li>${SecurityUtils ? SecurityUtils.sanitizeHTML(e) : e}</li>`).join(''); errorsContainer.classList.add('active'); setTimeout(() => errorsContainer.classList.remove('active'), 5000); }
   else { errorsContainer.classList.remove('active'); }
   if (filesToAdd.length === 0) return;
   uploadZone.classList.add('uploading'); uploadProgress.classList.add('active'); uploadProgressText.classList.add('active'); uploadProgressText.textContent = 'Загрузка фото...';
@@ -1083,13 +1126,14 @@ function updatePhotoPreview() {
     const reader = new FileReader();
     reader.onload = (e) => {
       const div = document.createElement('div'); div.className = 'photo-preview';
-      div.innerHTML = `<div class="photo-status-icon valid">✓</div><img src="${e.target.result}" alt="${photo.name}" loading="lazy"><div class="photo-info">${photo.name}</div><button class="photo-remove" onclick="removePhoto(${index})" title="Удалить">×</button>`;
+      const safeName = SecurityUtils ? SecurityUtils.sanitizeHTML(photo.name) : photo.name;
+      div.innerHTML = `<div class="photo-status-icon valid">✓</div><img src="${e.target.result}" alt="${safeName}" loading="lazy"><div class="photo-info">${safeName}</div><button class="photo-remove" onclick="removePhoto(${index})" title="Удалить">×</button>`;
       container.appendChild(div);
     };
     reader.readAsDataURL(photo);
   });
 }
-function removePhoto(index) { const name = uploadedPhotos[index].name; uploadedPhotos.splice(index, 1); updatePhotoPreview(); showToast(`Фото "${name}" удалено`, 'info'); }
+function removePhoto(index) { const name = uploadedPhotos[index].name; uploadedPhotos.splice(index, 1); updatePhotoPreview(); showToast(`Фото "${SecurityUtils ? SecurityUtils.sanitizeHTML(name) : name}" удалено`, 'info'); }
 async function generatePrompt() {
   const textarea = document.getElementById('productDescription');
   const btn = document.getElementById('btnGeneratePrompt');
@@ -1103,26 +1147,56 @@ async function generatePrompt() {
 }
 async function startGeneration() {
   const btn = document.getElementById('btnGenerate');
+  
+  // Rate limiting (задача 22)
+  if (typeof SecurityUtils !== 'undefined') {
+    const limit = SecurityUtils.checkActionLimit('generate');
+    if (!limit.allowed) {
+      btn.classList.add('rate-limited');
+      setTimeout(() => btn.classList.remove('rate-limited'), 400);
+      showToast(`Слишком много запросов. Подождите ${limit.waitSeconds} сек.`, 'warning');
+      return;
+    }
+  }
+  
   const allowed = networkManager.rateLimit('generate', () => {});
-  if (!allowed) { btn.classList.add('rate-limited'); setTimeout(() => btn.classList.remove('rate-limited'), 400); showToast('Подождите перед повторным нажатием', 'warning'); return; }
+  if (!allowed) {
+    btn.classList.add('rate-limited');
+    setTimeout(() => btn.classList.remove('rate-limited'), 400);
+    showToast('Подождите перед повторным нажатием', 'warning');
+    return;
+  }
   if (!networkManager.checkOnline()) { showToast('Генерация недоступна без интернета', 'error'); return; }
-  const description = document.getElementById('productDescription').value.trim();
+  
+  let description = document.getElementById('productDescription').value.trim();
   const scenario = document.getElementById('scenarioSelect').value;
+  
+  // Валидация описания (задача 31)
+  if (typeof SecurityUtils !== 'undefined') {
+    const descCheck = SecurityUtils.validateDescription(description);
+    if (!descCheck.valid) {
+      showToast(descCheck.reason, 'warning');
+      return;
+    }
+    description = descCheck.value;
+  }
+  
   const errors = [];
   if (uploadedPhotos.length < 3) errors.push('Загрузите минимум 3 фото товара');
   if (!description) errors.push('Введите описание товара');
   if (errors.length > 0) {
     const errorsContainer = document.getElementById('validationErrors');
     const errorsList = document.getElementById('validationErrorsList');
-    errorsList.innerHTML = errors.map(e => `<li>${e}</li>`).join('');
+    errorsList.innerHTML = errors.map(e => `<li>${SecurityUtils ? SecurityUtils.sanitizeHTML(e) : e}</li>`).join('');
     errorsContainer.classList.add('active');
     setTimeout(() => errorsContainer.classList.remove('active'), 5000);
     return;
   }
   btn.textContent = '⏳ Генерация...'; btn.disabled = true;
   try {
+    const safeProductName = SecurityUtils ? SecurityUtils.sanitizeString(description.split(',')[0] || 'Новое видео', 200) : (description.split(',')[0] || 'Новое видео');
     const { data: video, error } = await networkManager.supabaseRequest(
-      () => supabaseClient.from('videos').insert({ user_id: currentUser.id, product_name: description.split(',')[0] || 'Новое видео', product_description: description, scenario: scenario, status: 'processing' }).select().single(),
+      () => supabaseClient.from('videos').insert({ user_id: currentUser.id, product_name: safeProductName, product_description: description, scenario: scenario, status: 'processing' }).select().single(),
       'Создание видео'
     );
     if (error) { showToast('Ошибка создания видео: ' + error.message, 'error'); btn.textContent = 'Сгенерировать видео →'; btn.disabled = false; return; }
@@ -1136,7 +1210,7 @@ async function startGeneration() {
         if (updateError) { showToast('Ошибка обновления статуса', 'error'); }
         else {
           showToast('Видео успешно сгенерировано!', 'success');
-          await createNotification('video_done', 'Видео готово!', `Ваше видео "${video.product_name || 'Новое видео'}" успешно создано.`, 'dashboard.html');
+          await createNotification('video_done', 'Видео готово!', `Ваше видео "${safeProductName}" успешно создано.`, 'dashboard.html');
           await loadVideos();
           if (draftManager) draftManager.clear();
           await checkAndAwardAchievements();
@@ -1163,7 +1237,7 @@ function showReviewModal() {
       <button onclick="this.closest('div').parentElement.remove()" style="position:absolute;top:16px;right:16px;background:transparent;border:none;color:#A0A0B0;font-size:24px;cursor:pointer;">×</button>
       <div style="text-align:center;margin-bottom:24px;"><div style="font-size:48px;margin-bottom:16px;">⭐</div><h3 style="font-size:24px;font-family:'Manrope';margin-bottom:8px;">Поделитесь впечатлением</h3><p style="color:#A0A0B0;font-size:14px;">Вы создали 3 видео. Расскажите другим селлерам о Cliply!</p></div>
       <div style="margin-bottom:20px;"><label style="display:block;font-size:14px;color:#A0A0B0;margin-bottom:8px;">Ваша оценка</label><div id="ratingStars" style="display:flex;gap:8px;font-size:32px;cursor:pointer;"><span data-rating="1" style="color:#6C5CE7;transition:color 0.2s;">★</span><span data-rating="2" style="color:#6C5CE7;transition:color 0.2s;">★</span><span data-rating="3" style="color:#6C5CE7;transition:color 0.2s;">★</span><span data-rating="4" style="color:#6C5CE7;transition:color 0.2s;">★</span><span data-rating="5" style="color:#6C5CE7;transition:color 0.2s;">★</span></div></div>
-      <div style="margin-bottom:20px;"><label style="display:block;font-size:14px;color:#A0A0B0;margin-bottom:8px;">Ваш отзыв</label><textarea id="reviewText" placeholder="Расскажите, как Cliply помог вашему бизнесу..." style="width:100%;background:#0A0A0F;border:1px solid #27272a;border-radius:8px;padding:12px 16px;color:#fff;font-size:15px;font-family:inherit;min-height:100px;resize:vertical;"></textarea></div>
+      <div style="margin-bottom:20px;"><label style="display:block;font-size:14px;color:#A0A0B0;margin-bottom:8px;">Ваш отзыв</label><textarea id="reviewText" placeholder="Расскажите, как Cliply помог вашему бизнесу..." style="width:100%;background:#0A0A0F;border:1px solid #27272a;border-radius:8px;padding:12px 16px;color:#fff;font-size:15px;font-family:inherit;min-height:100px;resize:vertical;" maxlength="2000"></textarea></div>
       <div style="margin-bottom:20px;"><label style="display:block;font-size:14px;color:#A0A0B0;margin-bottom:8px;">Категория товара</label><select id="reviewCategory" style="width:100%;background:#0A0A0F;border:1px solid #27272a;border-radius:8px;padding:12px 16px;color:#fff;font-size:15px;"><option>Одежда</option><option>Косметика</option><option>Электроника</option><option>Товары для дома</option><option>Здоровье</option><option>Спорт</option><option>Еда</option><option>Другое</option></select></div>
       <button id="submitReviewBtn" style="width:100%;background:linear-gradient(135deg,#6C5CE7,#A29BFE);color:#fff;padding:14px;border-radius:12px;border:none;font-size:15px;font-weight:600;cursor:pointer;">Опубликовать отзыв</button>
       <button onclick="this.closest('div').parentElement.remove()" style="width:100%;background:transparent;color:#A0A0B0;padding:12px;border:none;font-size:14px;cursor:pointer;margin-top:8px;">Напомнить позже</button>
@@ -1178,11 +1252,22 @@ function showReviewModal() {
   });
   modal.querySelector('#ratingStars').addEventListener('mouseleave', () => { stars.forEach((s, i) => { s.style.color = i < selectedRating ? '#6C5CE7' : '#27272a'; }); });
   modal.querySelector('#submitReviewBtn').addEventListener('click', async () => {
-    const text = modal.querySelector('#reviewText').value.trim();
+    let text = modal.querySelector('#reviewText').value.trim();
     const category = modal.querySelector('#reviewCategory').value;
+    
+    // Валидация отзыва
+    if (typeof SecurityUtils !== 'undefined') {
+      const textCheck = SecurityUtils.validateMessage(text);
+      if (!textCheck.valid) {
+        showToast(textCheck.reason, 'warning');
+        return;
+      }
+      text = textCheck.value;
+    }
+    
     if (!text) { showToast('Напишите отзыв', 'warning'); return; }
     const btn = modal.querySelector('#submitReviewBtn'); btn.textContent = 'Публикация...'; btn.disabled = true;
-    const { error } = await supabaseClient.from('reviews').insert({ user_id: currentUser.id, user_name: currentUser.profile.full_name || currentUser.email, user_role: ROLES[currentUser.profile.role_level]?.name || 'Селлер', rating: selectedRating, review_text: text, product_category: category });
+    const { error } = await supabaseClient.from('reviews').insert({ user_id: currentUser.id, user_name: SecurityUtils ? SecurityUtils.sanitizeHTML(currentUser.profile.full_name || currentUser.email) : (currentUser.profile.full_name || currentUser.email), user_role: ROLES[currentUser.profile.role_level]?.name || 'Селлер', rating: selectedRating, review_text: text, product_category: category });
     if (error) { showToast('Ошибка: ' + error.message, 'error'); btn.textContent = 'Опубликовать отзыв'; btn.disabled = false; }
     else { showToast('Спасибо за отзыв! ⭐', 'success'); modal.remove(); await checkAndAwardAchievements(); }
   });
