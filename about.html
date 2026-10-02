@@ -17,6 +17,7 @@
 <script src="auth.js"></script>
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
+<link rel="stylesheet" href="scroll-animations.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; line-height: 1.6; }
@@ -79,6 +80,7 @@
   .mobile-menu { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(10,10,15,0.98); backdrop-filter: blur(20px); z-index: 1000; padding: 80px 24px 24px; flex-direction: column; gap: 8px; }
   .mobile-menu.active { display: flex; }
   .mobile-menu a { display: block; padding: 16px; color: #fff; text-decoration: none; font-size: 18px; border-radius: 8px; text-align: center; }
+  .mobile-menu a:hover { background: rgba(108, 92, 231, 0.15); }
   
   @media (max-width: 768px) {
     .nav-links { display: none !important; }
@@ -125,7 +127,7 @@
   <a href="login.html" class="btn-nav-mobile" style="background: linear-gradient(135deg, #6C5CE7, #A29BFE) !important; font-weight: 700 !important;">Попробовать бесплатно</a>
 </div>
 
-<section class="hero">
+<section class="hero animate-fade-in">
   <div class="container">
     <div class="hero-badge">О КОМПАНИИ</div>
     <h1>Мы делаем <span>AI-видео</span> доступным для каждого селлера</h1>
@@ -135,19 +137,19 @@
 
 <div class="container">
   <div class="stats-bar">
-    <div class="stat-item">
+    <div class="stat-item animate-slide-up delay-1">
       <div class="stat-value" id="statUsers">—</div>
       <div class="stat-label">Активных селлеров</div>
     </div>
-    <div class="stat-item">
+    <div class="stat-item animate-slide-up delay-2">
       <div class="stat-value">50 000+</div>
       <div class="stat-label">Созданных видео</div>
     </div>
-    <div class="stat-item">
+    <div class="stat-item animate-slide-up delay-3">
       <div class="stat-value">+34%</div>
       <div class="stat-label">Средний рост конверсии</div>
     </div>
-    <div class="stat-item">
+    <div class="stat-item animate-slide-up delay-4">
       <div class="stat-value">24/7</div>
       <div class="stat-label">Поддержка и генерация</div>
     </div>
@@ -156,30 +158,30 @@
 
 <section class="section">
   <div class="container">
-    <div class="section-label">НАША КОМАНДА</div>
-    <h2 class="section-title">Люди, которые создают Cliply</h2>
-    <p class="section-subtitle">Мы объединили опыт в AI, e-commerce и видеопроизводстве, чтобы создать идеальный инструмент.</p>
+    <div class="section-label animate-fade-in">НАША КОМАНДА</div>
+    <h2 class="section-title animate-slide-up">Люди, которые создают Cliply</h2>
+    <p class="section-subtitle animate-slide-up delay-1">Мы объединили опыт в AI, e-commerce и видеопроизводстве, чтобы создать идеальный инструмент.</p>
     
     <div class="team-grid">
-      <div class="team-card">
+      <div class="team-card animate-slide-up delay-1">
         <div class="team-avatar">А</div>
         <div class="team-name">Александр Петров</div>
         <div class="team-role">CEO & Founder</div>
         <div class="team-bio">10 лет в e-commerce. Ранее руководил видео-продакшеном для топ-селлеров WB.</div>
       </div>
-      <div class="team-card">
+      <div class="team-card animate-slide-up delay-2">
         <div class="team-avatar">М</div>
         <div class="team-name">Мария Иванова</div>
         <div class="team-role">Head of AI</div>
         <div class="team-bio">PhD в Computer Vision. Разрабатывает нейросети для генерации и монтажа видео.</div>
       </div>
-      <div class="team-card">
+      <div class="team-card animate-slide-up delay-3">
         <div class="team-avatar">Д</div>
         <div class="team-name">Дмитрий Соколов</div>
         <div class="team-role">CTO</div>
         <div class="team-bio">Архитектор высоконагруженных систем. Отвечает за скорость и стабильность сервиса.</div>
       </div>
-      <div class="team-card">
+      <div class="team-card animate-slide-up delay-4">
         <div class="team-avatar">Е</div>
         <div class="team-name">Елена Смирнова</div>
         <div class="team-role">Head of Design</div>
@@ -191,21 +193,21 @@
 
 <section class="section" style="background: #0d0d14;">
   <div class="container">
-    <div class="section-label">НАШИ ЦЕННОСТИ</div>
-    <h2 class="section-title">Что нами движет</h2>
+    <div class="section-label animate-fade-in">НАШИ ЦЕННОСТИ</div>
+    <h2 class="section-title animate-slide-up">Что нами движет</h2>
     <div class="values-grid">
-      <div class="value-card">
+      <div class="value-card animate-scale-in delay-1">
         <div class="value-icon">🚀</div>
         <div class="value-title">Скорость результата</div>
         <div class="value-desc">Селлер не должен ждать неделями. Видео должно быть готово за минуты, а не за дни.</div>
       </div>
-      <div class="value-card">
+      <div class="value-card animate-scale-in delay-2">
         <div class="value-icon">💡</div>
         <div class="value-title">Доступность технологий</div>
         <div class="value-desc">Сложный AI должен быть завернут в простой интерфейс. Никаких промптов и настроек.</div>
       </div>
-      <div class="value-card">
-        <div class="value-icon"></div>
+      <div class="value-card animate-scale-in delay-3">
+        <div class="value-icon">🎯</div>
         <div class="value-title">Фокус на клиенте</div>
         <div class="value-desc">Мы слушаем селлеров. Каждая новая функция рождается из реальных запросов пользователей.</div>
       </div>
@@ -213,7 +215,7 @@
   </div>
 </section>
 
-<section class="cta-section">
+<section class="cta-section animate-fade-in">
   <div class="container">
     <h2>Присоединяйтесь к тысячам селлеров</h2>
     <p>Создайте первое видео бесплатно и оцените разницу в конверсии.</p>
@@ -278,5 +280,7 @@ if (burgerBtn && mobileMenu) {
   } catch (e) {}
 })();
 </script>
+
+<script src="scroll-animations.js"></script>
 </body>
 </html>
