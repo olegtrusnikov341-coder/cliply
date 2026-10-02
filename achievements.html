@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<title>Достижения Cliply</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#6C5CE7">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth.js"></script>
+<link rel="stylesheet" href="toast.css">
+<script src="toast.js"></script>
+<link rel="stylesheet" href="mobile.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; }
+  .layout { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+  .sidebar { background: #141414; border-right: 1px solid #27272a; padding: 24px 16px; display: flex; flex-direction: column; }
+  .sidebar-logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; margin-bottom: 40px; display: block; }
+  .nav-menu { list-style: none; flex: 1; }
+  .nav-menu li { margin-bottom: 4px; }
+  .nav-menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; transition: 0.2s; }
+  .nav-menu a:hover { background: #1f1f23; color: #fff; }
+  .nav-menu a.active { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; border: 1px solid rgba(108, 92, 231, 0.3); }
+  .btn-logout { padding: 12px 16px; color: #A0A0B0; border-radius: 8px; font-size: 15px; border: 1px solid #27272a; text-align: center; transition: 0.2s; cursor: pointer; margin-top: 16px; background: transparent; }
+  .btn-logout:hover { border-color: #6C5CE7; color: #fff; }
+  
+  .main { padding: 32px 48px; max-width: 1200px; }
+  .page-header { margin-bottom: 32px; }
+  .page-header h1 { font-size: 28px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 8px; }
+  .page-header p { color: #A0A0B0; font-size: 15px; }
+  
+  /* Профиль пользователя */
+  .profile-card {
+    background: linear-gradient(135deg, rgba(108, 92, 231, 0.15), rgba(162, 155, 254, 0.05));
+    border: 1px solid rgba(108, 92, 231, 0.3);
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .profile-avatar {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px; font-weight: 800; font-family: 'Manrope';
+    color: #fff; flex-shrink: 0;
+    box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4);
+  }
+  .profile-info { flex: 1; }
+  .profile-name { font-size: 24px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 4px; }
+  .profile-email { font-size: 14px; color: #A0A0B0; margin-bottom: 12px; }
+  .profile-level {
+    display: inline-block;
+    background: rgba(108, 92, 231, 0.2);
+    color: #A29BFE;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid rgba(108, 92, 231, 0.3);
+  }
+  .profile-stats {
+    display: flex;
+    gap: 32px;
+  }
+  .profile-stat {
+    text-align: center;
+  }
+  .profile-stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    font-family: 'Manrope';
+    color: #6C5CE7;
+  }
+  .profile-stat-label {
+    font-size: 12px;
+    color: #A0A0B0;
+    margin-top: 4px;
+  }
+  
+  /* Общий прогресс */
+  .progress-card {
+    background: #141414;
+    border: 1px solid #27272a;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .progress-header h3 { font-size: 16px; font-weight: 600; }
+  .progress-percent { font-size: 24px; font-weight: 800; font-family: 'Manrope'; color: #6C5CE7; }
+  .progress-bar-bg {
+    height: 12px;
+    background: #27272a;
+    border-radius: 100px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6C5CE7, #A29BFE);
+    border-radius: 100px;
+    transition: width 0.8s ease;
+  }
+  .progress-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #A0A0B0;
+  }
+  .progress-footer strong { color: #fff; }
+  
+  /* Категории */
+  .categories-filter {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .category-btn {
+    padding: 10px 20px;
+    border-radius: 100px;
+    border: 1px solid #27272a;
+    background: transparent;
+    color: #A0A0B0;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .category-btn:hover { border-color: #6C5CE7; color: #fff; }
+  .category-btn.active {
+    background: #6C5CE7;
+    border-color: #6C5CE7;
+    color: #fff;
+  }
+  .category-btn .count {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 11px;
+    margin-left: 6px;
+  }
+  .category-btn.active .count { background: rgba(255,255,255,0.3); }
+  
+  /* Сетка достижений */
+  .achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .achievement-card {
+    background: #141414;
+    border: 1px solid #27272a;
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .achievement-card.unlocked {
+    border-color: rgba(108, 92, 231, 0.4);
+    background: linear-gradient(135deg, rgba(108, 92, 231, 0.08), rgba(162, 155, 254, 0.04));
+  }
+  .achievement-card.unlocked:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(108, 92, 231, 0.2);
+  }
+  .achievement-card.locked { opacity: 0.5; }
+  .achievement-card.locked:hover { opacity: 0.7; }
+  
+  .achievement-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .achievement-icon { font-size: 48px; }
+  .achievement-card.locked .achievement-icon { filter: grayscale(1); }
+  .achievement-badge {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+  .badge-unlocked {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+  .badge-new {
+    background: #ef4444;
+    color: #fff;
+    animation: badgePulse 2s ease infinite;
+  }
+  @keyframes badgePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  
+  .achievement-name {
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Manrope';
+    margin-bottom: 6px;
+  }
+  .achievement-description {
+    font-size: 13px;
+    color: #A0A0B0;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    min-height: 40px;
+  }
+  .achievement-category-tag {
+    display: inline-block;
+    font-size: 11px;
+    color: #6C5CE7;
+    background: rgba(108, 92, 231, 0.15);
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(108, 92, 231, 0.3);
+  }
+  
+  .achievement-progress {
+    height: 6px;
+    background: #27272a;
+    border-radius: 100px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .achievement-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #6C5CE7, #A29BFE);
+    border-radius: 100px;
+    transition: width 0.5s ease;
+  }
+  .achievement-progress-text {
+    font-size: 12px;
+    color: #666;
+    display: flex;
+    justify-content: space-between;
+  }
+  .achievement-date {
+    font-size: 11px;
+    color: #6C5CE7;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #A0A0B0;
+    grid-column: 1 / -1;
+  }
+  .empty-state-icon { font-size: 64px; margin-bottom: 16px; opacity: 0.5; }
+  
+  /* Toast уведомления о достижениях */
+  .achievement-toast {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    background: #141414;
+    border: 2px solid #6C5CE7;
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 20px 60px rgba(108, 92, 231, 0.4);
+    z-index: 10001;
+    animation: achievementSlideIn 0.5s ease;
+    max-width: 400px;
+  }
+  @keyframes achievementSlideIn {
+    from { opacity: 0; transform: translateX(100px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .achievement-toast-icon { font-size: 48px; flex-shrink: 0; }
+  .achievement-toast-content { flex: 1; }
+  .achievement-toast-label { font-size: 11px; color: #6C5CE7; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+  .achievement-toast-title { font-size: 18px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 4px; }
+  .achievement-toast-desc { font-size: 13px; color: #A0A0B0; }
+  
+  @media (max-width: 768px) {
+    .sidebar { display: none !important; }
+    .layout { grid-template-columns: 1fr !important; }
+    .main { padding: 20px 16px !important; }
+    .profile-card { flex-direction: column; text-align: center; }
+    .profile-stats { justify-content: center; }
+    .achievements-grid { grid-template-columns: 1fr !important; }
+    .achievement-toast { right: 12px; left: 12px; max-width: none; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a href="index.html" class="sidebar-logo">Cliply</a>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="dashboard.html"> Дашборд</a></li>
+      <li><a href="analytics.html"> Аналитика</a></li>
+      <li><a href="achievements.html" class="active">🏆 Достижения</a></li>
+      <li><a href="pricing.html"> Тарифы</a></li>
+      <li><a href="settings.html">⚙️ Настройки</a></li>
+      <li><a href="support.html">💬 Техподдержка</a></li>
+    </ul>
+    <button class="btn-logout" onclick="logout()">Выйти</button>
+  </aside>
+  
+  <main class="main">
+    <div class="page-header">
+      <h1> Достижения</h1>
+      <p>Выполняйте задания и получайте награды за активность</p>
+    </div>
+    
+    <!-- Профиль -->
+    <div class="profile-card" id="profileCard">
+      <div class="profile-avatar" id="profileAvatar">?</div>
+      <div class="profile-info">
+        <div class="profile-name" id="profileName">Загрузка...</div>
+        <div class="profile-email" id="profileEmail">—</div>
+        <span class="profile-level" id="profileLevel">Уровень не определён</span>
+      </div>
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <div class="profile-stat-value" id="statUnlocked">0</div>
+          <div class="profile-stat-label">Получено</div>
+        </div>
+        <div class="profile-stat">
+          <div class="profile-stat-value" id="statTotal">0</div>
+          <div class="profile-stat-label">Всего</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Общий прогресс -->
+    <div class="progress-card">
+      <div class="progress-header">
+        <h3>Общий прогресс</h3>
+        <div class="progress-percent" id="progressPercent">0%</div>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressBar" style="width: 0%;"></div>
+      </div>
+      <div class="progress-footer">
+        <span>Получено: <strong id="progressUnlocked">0</strong> из <strong id="progressTotal">0</strong></span>
+        <span id="progressRemaining">Осталось: 0</span>
+      </div>
+    </div>
+    
+    <!-- Фильтры -->
+    <div class="categories-filter" id="categoriesFilter">
+      <button class="category-btn active" data-category="all">Все <span class="count" id="countAll">0</span></button>
+      <button class="category-btn" data-category="Начало">Начало <span class="count" id="countStart">0</span></button>
+      <button class="category-btn" data-category="Продуктивность">Продуктивность <span class="count" id="countProd">0</span></button>
+      <button class="category-btn" data-category="Мастерство">Мастерство <span class="count" id="countMaster">0</span></button>
+      <button class="category-btn" data-category="Сообщество">Сообщество <span class="count" id="countCommunity">0</span></button>
+      <button class="category-btn" data-category="Статус">Статус <span class="count" id="countStatus">0</span></button>
+    </div>
+    
+    <!-- Сетка достижений -->
+    <div class="achievements-grid" id="achievementsGrid">
+      <div class="empty-state">
+        <div class="empty-state-icon">🏆</div>
+        <div>Загрузка достижений...</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+let currentUser = null;
+let allAchievements = [];
+let userAchievements = [];
+let currentCategory = 'all';
+
+async function initPage() {
+  currentUser = await requireAuth();
+  if (!currentUser) return;
+  
+  // Добавляем админ-панель если нужно
+  if (currentUser.profile.role_level <= 2) {
+    const menu = document.getElementById('navMenu');
+    const adminLink = document.createElement('li');
+    adminLink.innerHTML = '<a href="admin.html">👑 Админ-панель</a>';
+    menu.insertBefore(adminLink, menu.children[3]);
+  }
+  
+  // Заполняем профиль
+  document.getElementById('profileName').textContent = currentUser.profile.full_name || 'Селлер';
+  document.getElementById('profileEmail').textContent = currentUser.email;
+  const role = ROLES[currentUser.profile.role_level];
+  document.getElementById('profileLevel').textContent = role.name;
+  document.getElementById('profileLevel').style.color = role.color;
+  document.getElementById('profileLevel').style.borderColor = role.color + '4D';
+  document.getElementById('profileLevel').style.background = role.color + '26';
+  
+  const initial = (currentUser.profile.full_name || currentUser.email).charAt(0).toUpperCase();
+  document.getElementById('profileAvatar').textContent = initial;
+  
+  await loadAchievements();
+  initFilters();
+}
+
+async function loadAchievements() {
+  try {
+    const { data: achievements, error: achError } = await supabaseClient
+      .from('achievements')
+      .select('*')
+      .order('category', { ascending: true });
+    if (achError) throw achError;
+    allAchievements = achievements || [];
+    
+    const { data: userAch, error: userAchError } = await supabaseClient
+      .from('user_achievements')
+      .select('achievement_id, unlocked_at, progress')
+      .eq('user_id', currentUser.id);
+    if (userAchError) throw userAchError;
+    userAchievements = userAch || [];
+    
+    renderAchievements();
+    updateStats();
+    
+  } catch (e) {
+    console.error('Load achievements error:', e);
+  }
+}
+
+function updateStats() {
+  const unlocked = userAchievements.length;
+  const total = allAchievements.length;
+  const percent = total > 0 ? Math.round((unlocked / total) * 100) : 0;
+  
+  document.getElementById('statUnlocked').textContent = unlocked;
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('progressPercent').textContent = percent + '%';
+  document.getElementById('progressBar').style.width = percent + '%';
+  document.getElementById('progressUnlocked').textContent = unlocked;
+  document.getElementById('progressTotal').textContent = total;
+  document.getElementById('progressRemaining').textContent = `Осталось: ${total - unlocked}`;
+  
+  // Счётчики категорий
+  const counts = { 'Начало': 0, 'Продуктивность': 0, 'Мастерство': 0, 'Сообщество': 0, 'Статус': 0 };
+  allAchievements.forEach(a => { if (counts[a.category] !== undefined) counts[a.category]++; });
+  
+  document.getElementById('countAll').textContent = total;
+  document.getElementById('countStart').textContent = counts['Начало'];
+  document.getElementById('countProd').textContent = counts['Продуктивность'];
+  document.getElementById('countMaster').textContent = counts['Мастерство'];
+  document.getElementById('countCommunity').textContent = counts['Сообщество'];
+  document.getElementById('countStatus').textContent = counts['Статус'];
+}
+
+function renderAchievements() {
+  const grid = document.getElementById('achievementsGrid');
+  if (!grid) return;
+  
+  let filtered = allAchievements;
+  if (currentCategory !== 'all') {
+    filtered = allAchievements.filter(a => a.category === currentCategory);
+  }
+  
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🏆</div><div>Нет достижений в этой категории</div></div>';
+    return;
+  }
+  
+  grid.innerHTML = filtered.map(achievement => {
+    const userAch = userAchievements.find(ua => ua.achievement_id === achievement.id);
+    const isUnlocked = !!userAch;
+    const progress = userAch ? userAch.progress : 0;
+    const progressPercent = Math.min((progress / achievement.requirement) * 100, 100);
+    
+    const unlockedDate = userAch 
+      ? new Date(userAch.unlocked_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' })
+      : null;
+    
+    const cardClass = isUnlocked ? 'achievement-card unlocked' : 'achievement-card locked';
+    
+    return `
+      <div class="${cardClass}">
+        <div class="achievement-header">
+          <span class="achievement-icon">${achievement.icon}</span>
+          ${isUnlocked 
+            ? `<span class="achievement-badge badge-unlocked">✓ Получено</span>`
+            : ''
+          }
+        </div>
+        <div class="achievement-category-tag">${achievement.category}</div>
+        <div class="achievement-name">${achievement.name}</div>
+        <div class="achievement-description">${achievement.description}</div>
+        ${!isUnlocked ? `
+          <div class="achievement-progress">
+            <div class="achievement-progress-bar" style="width: ${progressPercent}%"></div>
+          </div>
+          <div class="achievement-progress-text">
+            <span>${progress} / ${achievement.requirement}</span>
+            <span>${Math.round(progressPercent)}%</span>
+          </div>
+        ` : `
+          <div class="achievement-date">📅 Получено ${unlockedDate}</div>
+        `}
+      </div>
+    `;
+  }).join('');
+}
+
+function initFilters() {
+  document.getElementById('categoriesFilter').addEventListener('click', (e) => {
+    const btn = e.target.closest('.category-btn');
+    if (!btn) return;
+    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCategory = btn.dataset.category;
+    renderAchievements();
+  });
+}
+
+initPage();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      for (let registration of registrations) { registration.update(); }
+    });
+  });
+}
+</script>
+</body>
+</html>
