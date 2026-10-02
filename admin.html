@@ -12,7 +12,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- CSP Headers (задача 29) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://djvdklcahpqbjotukmxt.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://djvdklcahpqbjotukmxt.supabase.co wss://djvdklcahpqbjotukmxt.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="security.js"></script>
 <script src="auth.js"></script>
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
@@ -37,6 +43,21 @@
   .page-header h1 { font-size: 28px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 8px; }
   .page-header p { color: #A0A0B0; font-size: 15px; }
   
+  .admin-info-bar {
+    background: rgba(108, 92, 231, 0.1);
+    border: 1px solid rgba(108, 92, 231, 0.3);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+  }
+  .admin-info-bar .admin-name { color: #A29BFE; font-weight: 600; }
+  .admin-info-bar .admin-role { color: #6C5CE7; }
+  .admin-info-bar .admin-time { color: #A0A0B0; }
+  
   .tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 1px solid #1f1f2e; padding-bottom: 0; flex-wrap: wrap; }
   .tab { padding: 12px 20px; background: transparent; border: none; color: #A0A0B0; font-size: 15px; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; margin-bottom: -1px; display: flex; align-items: center; gap: 8px; }
   .tab:hover { color: #fff; }
@@ -56,6 +77,7 @@
   .form-group label { display: block; font-size: 13px; color: #A0A0B0; margin-bottom: 6px; }
   .form-group input, .form-group select { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 8px; padding: 10px 14px; color: #fff; font-size: 14px; font-family: inherit; }
   .form-group input:focus, .form-group select:focus { outline: none; border-color: #6C5CE7; }
+  .form-group .field-hint { font-size: 11px; color: #666; margin-top: 4px; }
   .btn-create { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 10px 20px; border-radius: 8px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; white-space: nowrap; }
   .btn-create:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4); }
   .btn-create:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
@@ -112,7 +134,7 @@
   .admin-msg .msg-sender { font-size: 11px; font-weight: 600; margin-bottom: 4px; }
   .admin-msg.user .msg-sender { color: #A29BFE; text-align: right; }
   .admin-msg.admin .msg-sender { color: #6C5CE7; }
-  .admin-msg-text { font-size: 15px; line-height: 1.5; }
+  .admin-msg-text { font-size: 15px; line-height: 1.5; word-wrap: break-word; }
   .admin-msg-time { font-size: 11px; color: #666; margin-top: 4px; }
   .admin-chat-empty { text-align: center; color: #A0A0B0; padding: 80px 20px; }
   
@@ -166,6 +188,42 @@
   .gallery-mod-empty { text-align: center; padding: 60px 20px; color: #A0A0B0; grid-column: 1 / -1; }
   .gallery-mod-empty-icon { font-size: 64px; margin-bottom: 16px; opacity: 0.5; }
   
+  /* ===== АУДИТ ЛОГИ ===== */
+  .audit-log-list {
+    max-height: 500px;
+    overflow-y: auto;
+  }
+  .audit-log-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid #1f1f2e;
+    font-size: 13px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .audit-log-item:last-child { border-bottom: none; }
+  .audit-log-time {
+    color: #666;
+    font-size: 11px;
+    white-space: nowrap;
+    min-width: 140px;
+  }
+  .audit-log-action {
+    color: #A29BFE;
+    font-weight: 600;
+    min-width: 140px;
+  }
+  .audit-log-details {
+    color: #A0A0B0;
+    flex: 1;
+    word-break: break-word;
+  }
+  .audit-log-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #A0A0B0;
+  }
+  
   @media (max-width: 768px) {
     .sidebar { display: none !important; }
     .layout { grid-template-columns: 1fr !important; }
@@ -197,6 +255,14 @@
     
     <div id="errorBox" class="error-box"></div>
     
+    <div class="admin-info-bar animate-slide-up" id="adminInfoBar" style="display: none;">
+      <div>
+        <span class="admin-name" id="adminName">—</span>
+        <span class="admin-role" id="adminRole">—</span>
+      </div>
+      <div class="admin-time" id="adminTime">—</div>
+    </div>
+    
     <div class="tabs animate-slide-up">
       <button class="tab active" data-tab="users" onclick="switchTab('users')">👥 Пользователи</button>
       <button class="tab" data-tab="support" onclick="switchTab('support')">
@@ -207,6 +273,9 @@
         🖼️ Галерея
         <span class="tab-badge pending" id="pendingGalleryCount" style="display:none;">0</span>
       </button>
+      <button class="tab" data-tab="audit" onclick="switchTab('audit')">
+        📋 Аудит
+      </button>
     </div>
     
     <!-- Вкладка: Пользователи -->
@@ -216,11 +285,12 @@
         <div class="add-user-form">
           <div class="form-group">
             <label>Имя</label>
-            <input type="text" id="newUserName" placeholder="Имя пользователя">
+            <input type="text" id="newUserName" placeholder="Имя пользователя" maxlength="100">
+            <div class="field-hint">Максимум 100 символов</div>
           </div>
           <div class="form-group">
             <label>Email</label>
-            <input type="email" id="newUserEmail" placeholder="email@example.com">
+            <input type="email" id="newUserEmail" placeholder="email@example.com" maxlength="255">
           </div>
           <div class="form-group">
             <label>Роль</label>
@@ -319,6 +389,22 @@
         </div>
       </div>
     </div>
+    
+    <!-- Вкладка: Аудит -->
+    <div class="tab-content" id="tab-audit">
+      <div class="admin-card animate-scale-in">
+        <div class="card-header">
+          <h2>📋 Журнал действий</h2>
+          <span class="count" id="auditCount">0</span>
+        </div>
+        <p style="color: #A0A0B0; font-size: 14px; margin-bottom: 20px;">
+          Все важные действия в системе: создание/удаление видео, изменение ролей, подозрительная активность.
+        </p>
+        <div class="audit-log-list" id="auditLogList">
+          <div class="audit-log-empty">Загрузка логов...</div>
+        </div>
+      </div>
+    </div>
   </main>
 </div>
 
@@ -331,6 +417,7 @@
   let supportRefreshInterval = null;
   let galleryVideos = [];
   let currentGalleryFilter = 'all';
+  let auditLogs = [];
 
   const ADMIN_ROLES = {
     1: { name: 'Owner', color: '#6C5CE7' },
@@ -345,6 +432,47 @@
     console.error('[Admin Error]', message);
   }
 
+  function hideError() {
+    const box = document.getElementById('errorBox');
+    if (box) box.style.display = 'none';
+  }
+
+  // ===== ПРОВЕРКА ПРАВ ДОСТУПА (задача 9) =====
+  function requireAdminRole(minLevel = 2) {
+    if (!currentUser || !currentUser.profile) {
+      showError('Профиль не загружен');
+      return false;
+    }
+    if (currentUser.profile.role_level > minLevel) {
+      showError('Недостаточно прав для этого действия');
+      showToast('Доступ запрещён', 'error');
+      window.location.href = 'dashboard.html';
+      return false;
+    }
+    return true;
+  }
+
+  // ===== ЛОГИРОВАНИЕ ДЕЙСТВИЙ АДМИНА (задача 23) =====
+  async function logAdminAction(action, details = {}) {
+    if (!currentUser) return;
+    try {
+      await supabaseClient.from('audit_logs').insert({
+        user_id: currentUser.id,
+        action: action,
+        table_name: 'admin_panel',
+        details: JSON.stringify({
+          ...details,
+          admin_name: currentUser.profile?.full_name,
+          admin_role: ADMIN_ROLES[currentUser.profile?.role_level]?.name,
+          timestamp: new Date().toISOString(),
+          url: window.location.href
+        })
+      });
+    } catch (e) {
+      console.error('Audit log error:', e);
+    }
+  }
+
   window.switchTab = function(tabName) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -357,6 +485,7 @@
     else if (supportRefreshInterval) clearInterval(supportRefreshInterval);
     
     if (tabName === 'gallery') loadGalleryVideos();
+    if (tabName === 'audit') loadAuditLogs();
   };
 
   async function initAdmin() {
@@ -365,11 +494,20 @@
       if (!currentUser) { showError('Не удалось получить данные пользователя.'); return; }
       if (!currentUser.profile) { showError('Профиль пользователя не найден.'); return; }
       
-      const roleLevel = currentUser.profile.role_level || 4;
-      if (roleLevel > 2) { showToast('Доступ запрещён', 'error'); window.location.href = 'dashboard.html'; return; }
+      // Проверка прав (задача 9)
+      if (!requireAdminRole(2)) return;
+      
+      // Отображение информации об админе
+      document.getElementById('adminInfoBar').style.display = 'flex';
+      document.getElementById('adminName').textContent = SecurityUtils ? SecurityUtils.sanitizeHTML(currentUser.profile.full_name || 'Админ') : (currentUser.profile.full_name || 'Админ');
+      document.getElementById('adminRole').textContent = ' • ' + ADMIN_ROLES[currentUser.profile.role_level].name;
+      document.getElementById('adminTime').textContent = 'Вход: ' + new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
       
       await Promise.allSettled([loadUsers(), loadAllConversations(), loadGalleryVideos()]);
       updateOpenConvBadge();
+      
+      // Лог входа админа
+      await logAdminAction('admin_login', { ip: 'client-side' });
       
     } catch (e) { showError('Ошибка инициализации: ' + e.message); }
   }
@@ -412,7 +550,7 @@
       const isAdmin = user.role_level === 2;
       const isMe = user.id === currentUser?.id;
       let roleBadge = '';
-      if (isOwner) roleBadge = '<span class="role-badge role-owner"> Owner</span>';
+      if (isOwner) roleBadge = '<span class="role-badge role-owner">👑 Owner</span>';
       else if (isAdmin) roleBadge = '<span class="role-badge role-admin">Admin</span>';
       else roleBadge = '<span class="role-badge role-moderator">Moderator</span>';
       
@@ -421,7 +559,10 @@
       else if (isMe) actionsHtml = '<span style="color:#666;font-size:13px;">Это вы</span>';
       else actionsHtml = `<select class="role-select" onchange="changeUserRole('${user.id}', this.value)"><option value="2" ${user.role_level === 2 ? 'selected' : ''}>Admin</option><option value="3" ${user.role_level === 3 ? 'selected' : ''}>Moderator</option><option value="4">Понизить до User</option></select><button class="btn-small" onclick="deleteUser('${user.id}')" style="margin-left:8px;">Удалить</button>`;
       
-      return `<tr><td><strong>${user.full_name || '—'}</strong></td><td>${user.email || '—'}</td><td>${roleBadge}</td><td>${actionsHtml}</td></tr>`;
+      const safeName = SecurityUtils ? SecurityUtils.sanitizeHTML(user.full_name || '—') : (user.full_name || '—');
+      const safeEmail = SecurityUtils ? SecurityUtils.maskEmail(user.email || '—') : (user.email || '—');
+      
+      return `<tr><td><strong>${safeName}</strong></td><td>${safeEmail}</td><td>${roleBadge}</td><td>${actionsHtml}</td></tr>`;
     }).join('');
   }
 
@@ -436,63 +577,199 @@
       let actionsHtml = '';
       if (isMe) actionsHtml = '<span style="color:#666;font-size:13px;">Это вы</span>';
       else actionsHtml = `<select class="role-select" onchange="promoteUser('${user.id}', this.value)"><option value="4" selected>User</option><option value="3">Повысить до Moderator</option><option value="2">Повысить до Admin</option></select><button class="btn-small" onclick="deleteUser('${user.id}')" style="margin-left:8px;">Удалить</button>`;
-      return `<tr><td><strong>${user.full_name || '—'}</strong></td><td>${user.email || '—'}</td><td>${roleBadge}</td><td>${actionsHtml}</td></tr>`;
+      
+      const safeName = SecurityUtils ? SecurityUtils.sanitizeHTML(user.full_name || '—') : (user.full_name || '—');
+      const safeEmail = SecurityUtils ? SecurityUtils.maskEmail(user.email || '—') : (user.email || '—');
+      
+      return `<tr><td><strong>${safeName}</strong></td><td>${safeEmail}</td><td>${roleBadge}</td><td>${actionsHtml}</td></tr>`;
     }).join('');
   }
 
+  // ===== СОЗДАНИЕ ПОЛЬЗОВАТЕЛЯ С ВАЛИДАЦИЕЙ (задачи 21, 31) =====
   window.createUser = async function() {
+    hideError();
+    
+    // Проверка прав
+    if (!requireAdminRole(2)) return;
+    
+    // Rate limiting (задача 30)
+    if (typeof SecurityUtils !== 'undefined') {
+      const limit = SecurityUtils.checkActionLimit('contact'); // используем тот же лимит
+      if (!limit.allowed) {
+        showToast(`Слишком много попыток. Подождите ${limit.waitSeconds} сек.`, 'warning');
+        return;
+      }
+    }
+    
     const name = document.getElementById('newUserName').value.trim();
     const email = document.getElementById('newUserEmail').value.trim();
     const role = parseInt(document.getElementById('newUserRole').value);
-    if (!name || !email) { showToast('Заполните имя и email', 'warning'); return; }
+    
+    // Валидация (задача 31)
+    if (typeof SecurityUtils !== 'undefined') {
+      const nameCheck = SecurityUtils.validateUserName(name);
+      if (!nameCheck.valid) {
+        showError(nameCheck.reason);
+        return;
+      }
+      
+      if (!SecurityUtils.isValidEmail(email)) {
+        showError('Некорректный email');
+        return;
+      }
+      
+      if (SecurityUtils.isDisposableEmail(email)) {
+        showError('Одноразовые email не поддерживаются');
+        return;
+      }
+    } else {
+      if (!name || !email) {
+        showError('Заполните имя и email');
+        return;
+      }
+    }
+    
+    if (role < 2 || role > 4) {
+      showError('Недопустимая роль');
+      return;
+    }
+    
     const btn = document.getElementById('btnCreateUser');
     btn.textContent = 'Создание...'; btn.disabled = true;
+    
     try {
-      const { data, error } = await supabaseClient.rpc('create_user_with_role', { p_email: email, p_password: 'Cliply2026!', p_full_name: name, p_role_level: role });
+      const { data, error } = await supabaseClient.rpc('create_user_with_role', { 
+        p_email: email.toLowerCase(), 
+        p_password: 'Cliply2026!', 
+        p_full_name: name, 
+        p_role_level: role 
+      });
+      
       if (error) throw error;
-      document.getElementById('newUserName').value = ''; document.getElementById('newUserEmail').value = '';
+      
+      document.getElementById('newUserName').value = '';
+      document.getElementById('newUserEmail').value = '';
+      
       await loadUsers();
+      await logAdminAction('user_created', { email: email, role: role, name: name });
+      
       showToast(`Пользователь ${name} создан! Пароль: Cliply2026!`, 'success');
     } catch (e) {
       try {
-        const { error: insertError } = await supabaseClient.from('profiles').insert({ email: email, full_name: name, role_level: role });
+        const { error: insertError } = await supabaseClient.from('profiles').insert({ 
+          email: email.toLowerCase(), 
+          full_name: name, 
+          role_level: role 
+        });
         if (insertError) throw insertError;
-        document.getElementById('newUserName').value = ''; document.getElementById('newUserEmail').value = '';
+        
+        document.getElementById('newUserName').value = '';
+        document.getElementById('newUserEmail').value = '';
+        
         await loadUsers();
+        await logAdminAction('user_created', { email: email, role: role, name: name });
+        
         showToast(`Пользователь ${name} добавлен!`, 'success');
-      } catch (e2) { showToast('Ошибка: ' + e2.message, 'error'); }
-    } finally { btn.textContent = 'Создать'; btn.disabled = false; }
+      } catch (e2) {
+        showError('Ошибка: ' + e2.message);
+      }
+    } finally { 
+      btn.textContent = 'Создать'; 
+      btn.disabled = false; 
+    }
   };
 
+  // ===== СМЕНА РОЛИ С ПРОВЕРКОЙ ПРАВ (задача 9) =====
   window.changeUserRole = async function(userId, newRole) {
+    hideError();
+    if (!requireAdminRole(2)) return;
+    
+    const newRoleInt = parseInt(newRole);
+    if (newRoleInt < 2 || newRoleInt > 4) {
+      showError('Недопустимая роль');
+      return;
+    }
+    
+    // Запрет понижать Owner
+    const targetUser = allUsers.find(u => u.id === userId);
+    if (targetUser && targetUser.role_level === 1) {
+      showError('Нельзя изменить роль Owner');
+      return;
+    }
+    
     try {
-      const { error } = await supabaseClient.from('profiles').update({ role_level: parseInt(newRole) }).eq('id', userId);
+      const { error } = await supabaseClient.from('profiles').update({ role_level: newRoleInt }).eq('id', userId);
       if (error) throw error;
-      showToast('Роль изменена', 'success'); await loadUsers();
-    } catch (e) { showToast('Ошибка: ' + e.message, 'error'); }
+      
+      await logAdminAction('role_changed', { 
+        target_user_id: userId, 
+        old_role: targetUser?.role_level, 
+        new_role: newRoleInt 
+      });
+      
+      showToast('Роль изменена', 'success');
+      await loadUsers();
+    } catch (e) { showError('Ошибка: ' + e.message); }
   };
 
   window.promoteUser = async function(userId, newRole) {
+    hideError();
+    if (!requireAdminRole(2)) return;
+    
+    const newRoleInt = parseInt(newRole);
+    if (newRoleInt < 2 || newRoleInt > 4) {
+      showError('Недопустимая роль');
+      return;
+    }
+    
     try {
-      const { error } = await supabaseClient.from('profiles').update({ role_level: parseInt(newRole) }).eq('id', userId);
+      const { error } = await supabaseClient.from('profiles').update({ role_level: newRoleInt }).eq('id', userId);
       if (error) throw error;
-      const newRoleName = parseInt(newRole) === 2 ? 'Admin' : 'Moderator';
-      showToast(`Пользователь повышен до ${newRoleName}`, 'success'); await loadUsers();
-    } catch (e) { showToast('Ошибка: ' + e.message, 'error'); }
+      
+      const newRoleName = ADMIN_ROLES[newRoleInt]?.name || 'User';
+      await logAdminAction('user_promoted', { target_user_id: userId, new_role: newRoleInt });
+      
+      showToast(`Пользователь повышен до ${newRoleName}`, 'success');
+      await loadUsers();
+    } catch (e) { showError('Ошибка: ' + e.message); }
   };
 
   window.deleteUser = async function(userId) {
-    if (!confirm('Удалить этого пользователя?')) return;
+    hideError();
+    if (!requireAdminRole(2)) return;
+    
+    // Запрет удалять Owner
+    const targetUser = allUsers.find(u => u.id === userId);
+    if (targetUser && targetUser.role_level === 1) {
+      showError('Нельзя удалить Owner');
+      return;
+    }
+    
+    if (targetUser && targetUser.id === currentUser.id) {
+      showError('Нельзя удалить себя');
+      return;
+    }
+    
+    if (!confirm('Удалить этого пользователя? Это действие необратимо.')) return;
+    
     try {
       const { error } = await supabaseClient.rpc('delete_user_by_id', { p_user_id: userId });
       if (error) throw error;
-      await loadUsers(); showToast('Пользователь удалён', 'success');
+      
+      await logAdminAction('user_deleted', { target_user_id: userId });
+      
+      await loadUsers();
+      showToast('Пользователь удалён', 'success');
     } catch (e) {
       try {
         const { error: deleteError } = await supabaseClient.from('profiles').delete().eq('id', userId);
         if (deleteError) throw deleteError;
-        await loadUsers(); showToast('Пользователь удалён', 'success');
-      } catch (e2) { showToast('Ошибка: ' + e2.message, 'error'); }
+        
+        await logAdminAction('user_deleted', { target_user_id: userId });
+        
+        await loadUsers();
+        showToast('Пользователь удалён', 'success');
+      } catch (e2) { showError('Ошибка: ' + e2.message); }
     }
   };
 
@@ -526,7 +803,12 @@
       const time = new Date(conv.updated_at || conv.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
       const statusClass = conv.status === 'open' ? 'open' : 'closed';
       const statusText = conv.status === 'open' ? 'Открыто' : 'Закрыто';
-      return `<div class="conv-list-item ${isActive} ${readClass}" data-id="${conv.id}" onclick="selectAdminConversation('${conv.id}')"><div class="conv-list-name">${conv.user_name || 'Гость'}</div><div class="conv-list-email">${conv.user_email || '—'}</div><div class="conv-list-preview">${lastMsg.substring(0, 45)}${lastMsg.length > 45 ? '...' : ''}</div><div class="conv-list-meta"><span class="conv-list-date">${date} ${time}</span><span class="conv-list-status ${statusClass}">${statusText}</span></div></div>`;
+      
+      const safeName = SecurityUtils ? SecurityUtils.sanitizeHTML(conv.user_name || 'Гость') : (conv.user_name || 'Гость');
+      const safeEmail = SecurityUtils ? SecurityUtils.maskEmail(conv.user_email || '—') : (conv.user_email || '—');
+      const safePreview = SecurityUtils ? SecurityUtils.sanitizeHTML(lastMsg.substring(0, 45)) : lastMsg.substring(0, 45);
+      
+      return `<div class="conv-list-item ${isActive} ${readClass}" data-id="${conv.id}" onclick="selectAdminConversation('${conv.id}')"><div class="conv-list-name">${safeName}</div><div class="conv-list-email">${safeEmail}</div><div class="conv-list-preview">${safePreview}${lastMsg.length > 45 ? '...' : ''}</div><div class="conv-list-meta"><span class="conv-list-date">${date} ${time}</span><span class="conv-list-status ${statusClass}">${statusText}</span></div></div>`;
     }).join('');
     list.innerHTML = html;
   }
@@ -542,8 +824,16 @@
     if (unreadMsgs.length > 0) { await supabaseClient.from('support_messages').update({ is_read: true }).in('id', unreadMsgs.map(m => m.id)); }
     const { data: messages } = await supabaseClient.from('support_messages').select('*').eq('conversation_id', convId).order('created_at', { ascending: true });
     const date = new Date(conv.created_at).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    
+    const safeName = SecurityUtils ? SecurityUtils.sanitizeHTML(conv.user_name || 'Гость') : (conv.user_name || 'Гость');
+    const safeEmail = SecurityUtils ? SecurityUtils.maskEmail(conv.user_email || '—') : (conv.user_email || '—');
+    
     const panel = document.getElementById('adminChatPanel');
-    panel.innerHTML = `<div class="admin-chat-header"><h3>${conv.user_name || 'Гость'} — ${conv.user_email || '—'}</h3><p>Обращение от ${date} • Статус: ${conv.status === 'open' ? '🟡 Открыто' : '✅ Закрыто'}</p></div><div class="admin-chat-messages" id="adminChatMessages">${messages && messages.length > 0 ? messages.map(msg => `<div class="admin-msg ${msg.sender}"><div class="msg-sender">${msg.sender === 'admin' ? '👨‍💼 Вы (Поддержка)' : '👤 ' + (conv.user_name || 'Пользователь')}</div><div class="admin-msg-text">${msg.message}</div><div class="admin-msg-time">${new Date(msg.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</div></div>`).join('') : '<div class="admin-chat-empty"><div style="font-size:48px;margin-bottom:12px;opacity:0.5;"></div><div>Нет сообщений</div></div>'}</div><div class="admin-chat-input-area"><textarea class="admin-chat-input" id="adminChatInput" placeholder="Напишите ответ..." rows="1"></textarea><button class="admin-chat-send" id="adminChatSend" onclick="sendAdminReply()">Ответить</button></div><div class="admin-chat-actions">${conv.status === 'open' ? `<button class="btn-admin-action" onclick="closeAdminConv()">✅ Закрыть обращение</button>` : `<button class="btn-admin-action" onclick="reopenAdminConv()">🔄 Открыть заново</button>`}<button class="btn-admin-action danger" onclick="deleteAdminConv()"> Удалить</button></div>`;
+    panel.innerHTML = `<div class="admin-chat-header"><h3>${safeName} — ${safeEmail}</h3><p>Обращение от ${date} • Статус: ${conv.status === 'open' ? '🟡 Открыто' : '✅ Закрыто'}</p></div><div class="admin-chat-messages" id="adminChatMessages">${messages && messages.length > 0 ? messages.map(msg => {
+      const safeMsg = SecurityUtils ? SecurityUtils.sanitizeHTML(msg.message) : msg.message;
+      const safeSender = SecurityUtils ? SecurityUtils.sanitizeHTML(conv.user_name || 'Пользователь') : (conv.user_name || 'Пользователь');
+      return `<div class="admin-msg ${msg.sender}"><div class="msg-sender">${msg.sender === 'admin' ? '👨‍💼 Вы (Поддержка)' : '👤 ' + safeSender}</div><div class="admin-msg-text">${safeMsg}</div><div class="admin-msg-time">${new Date(msg.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</div></div>`;
+    }).join('') : '<div class="admin-chat-empty"><div style="font-size:48px;margin-bottom:12px;opacity:0.5;"></div><div>Нет сообщений</div></div>'}</div><div class="admin-chat-input-area"><textarea class="admin-chat-input" id="adminChatInput" placeholder="Напишите ответ..." rows="1" maxlength="5000"></textarea><button class="admin-chat-send" id="adminChatSend" onclick="sendAdminReply()">Ответить</button></div><div class="admin-chat-actions">${conv.status === 'open' ? `<button class="btn-admin-action" onclick="closeAdminConv()">✅ Закрыть обращение</button>` : `<button class="btn-admin-action" onclick="reopenAdminConv()">🔄 Открыть заново</button>`}<button class="btn-admin-action danger" onclick="deleteAdminConv()">🗑 Удалить</button></div>`;
     const input = document.getElementById('adminChatInput');
     input.addEventListener('input', () => { input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 100) + 'px'; });
     input.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendAdminReply(); } });
@@ -552,9 +842,21 @@
   };
 
   window.sendAdminReply = async function() {
+    hideError();
     const input = document.getElementById('adminChatInput');
-    const text = input.value.trim();
+    let text = input.value.trim();
     if (!text || !activeAdminConvId) return;
+    
+    // Валидация (задача 31)
+    if (typeof SecurityUtils !== 'undefined') {
+      const msgCheck = SecurityUtils.validateMessage(text);
+      if (!msgCheck.valid) {
+        showToast(msgCheck.reason, 'warning');
+        return;
+      }
+      text = msgCheck.value;
+    }
+    
     const btn = document.getElementById('adminChatSend');
     btn.disabled = true; btn.textContent = '...';
     try {
@@ -564,6 +866,9 @@
       if (conv && conv.user_id) {
         await supabaseClient.from('notifications').insert({ user_id: conv.user_id, type: 'support_reply', title: 'Вам ответили в поддержке', message: text.substring(0, 100) + (text.length > 100 ? '...' : ''), link: 'support.html', is_read: false });
       }
+      
+      await logAdminAction('support_reply', { conversation_id: activeAdminConvId, user_id: conv?.user_id });
+      
       input.value = ''; input.style.height = 'auto';
       await selectAdminConversation(activeAdminConvId);
       showToast('Ответ отправлен', 'success');
@@ -573,25 +878,31 @@
 
   window.closeAdminConv = async function() {
     if (!activeAdminConvId) return;
+    if (!requireAdminRole(2)) return;
     await supabaseClient.from('support_conversations').update({ status: 'closed', updated_at: new Date().toISOString() }).eq('id', activeAdminConvId);
+    await logAdminAction('support_closed', { conversation_id: activeAdminConvId });
     await loadAllConversations(); updateOpenConvBadge(); selectAdminConversation(activeAdminConvId);
     showToast('Обращение закрыто', 'success');
   };
 
   window.reopenAdminConv = async function() {
     if (!activeAdminConvId) return;
+    if (!requireAdminRole(2)) return;
     await supabaseClient.from('support_conversations').update({ status: 'open', updated_at: new Date().toISOString() }).eq('id', activeAdminConvId);
+    await logAdminAction('support_reopened', { conversation_id: activeAdminConvId });
     await loadAllConversations(); updateOpenConvBadge(); selectAdminConversation(activeAdminConvId);
     showToast('Обращение открыто заново', 'success');
   };
 
   window.deleteAdminConv = async function() {
     if (!activeAdminConvId) return;
+    if (!requireAdminRole(2)) return;
     if (!confirm('Удалить это обращение и все сообщения?')) return;
     await supabaseClient.from('support_conversations').delete().eq('id', activeAdminConvId);
+    await logAdminAction('support_deleted', { conversation_id: activeAdminConvId });
     activeAdminConvId = null;
     await loadAllConversations(); updateOpenConvBadge(); renderAdminConvList();
-    document.getElementById('adminChatPanel').innerHTML = '<div class="admin-chat-empty"><div style="font-size:48px;margin-bottom:12px;opacity:0.5;"></div><div>Выберите обращение слева</div></div>';
+    document.getElementById('adminChatPanel').innerHTML = '<div class="admin-chat-empty"><div style="font-size:48px;margin-bottom:12px;opacity:0.5;">👈</div><div>Выберите обращение слева</div></div>';
     showToast('Обращение удалено', 'success');
   };
 
@@ -649,7 +960,7 @@
     }
     
     if (filtered.length === 0) {
-      grid.innerHTML = `<div class="gallery-mod-empty"><div class="gallery-mod-empty-icon">🖼️</div><div>Нет видео${currentGalleryFilter !== 'all' ? ' в этой категории' : ''}</div></div>`;
+      grid.innerHTML = `<div class="gallery-mod-empty"><div class="gallery-mod-empty-icon">️</div><div>Нет видео${currentGalleryFilter !== 'all' ? ' в этой категории' : ''}</div></div>`;
       return;
     }
     
@@ -658,6 +969,10 @@
       const date = new Date(video.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
       const statusText = video.status === 'pending' ? 'Ожидает' : video.status === 'approved' ? 'Одобрено' : 'Отклонено';
       const statusClass = `status-${video.status}`;
+      
+      const safeName = SecurityUtils ? SecurityUtils.sanitizeHTML(video.product_name || 'Без названия') : (video.product_name || 'Без названия');
+      const safeAuthor = SecurityUtils ? SecurityUtils.sanitizeHTML(video.user_name || 'Неизвестно') : (video.user_name || 'Неизвестно');
+      const safeDesc = SecurityUtils ? SecurityUtils.sanitizeHTML(video.product_description || 'Без описания') : (video.product_description || 'Без описания');
       
       let actionsHtml = '';
       if (video.status === 'pending') {
@@ -674,14 +989,14 @@
       return `
         <div class="gallery-mod-card ${statusClass}">
           <div class="gallery-mod-header">
-            <div class="gallery-mod-title">${video.product_name || 'Без названия'}</div>
+            <div class="gallery-mod-title">${safeName}</div>
             <div class="gallery-mod-status">${statusText}</div>
           </div>
           <div class="gallery-mod-author">
             <div class="gallery-mod-author-avatar">${initial}</div>
-            <span>${video.user_name || 'Неизвестно'}</span>
+            <span>${safeAuthor}</span>
           </div>
-          <div class="gallery-mod-description">${video.product_description || 'Без описания'}</div>
+          <div class="gallery-mod-description">${safeDesc}</div>
           <div class="gallery-mod-meta">
             <span>📅 ${date}</span>
             <span>❤️ ${video.likes_count || 0} • 👁 ${video.views_count || 0}</span>
@@ -704,6 +1019,7 @@
   });
 
   window.approveGalleryVideo = async function(videoId) {
+    if (!requireAdminRole(2)) return;
     if (!confirm('Одобрить это видео для публикации в галерее?')) return;
     try {
       const { error } = await supabaseClient.from('gallery_videos').update({
@@ -713,12 +1029,16 @@
       }).eq('id', videoId);
       
       if (error) throw error;
+      
+      await logAdminAction('gallery_approved', { video_id: videoId });
+      
       showToast('Видео одобрено и опубликовано в галерее!', 'success');
       await loadGalleryVideos();
     } catch (e) { showToast('Ошибка: ' + e.message, 'error'); }
   };
 
   window.rejectGalleryVideo = async function(videoId) {
+    if (!requireAdminRole(2)) return;
     if (!confirm('Отклонить это видео?')) return;
     try {
       const { error } = await supabaseClient.from('gallery_videos').update({
@@ -728,10 +1048,75 @@
       }).eq('id', videoId);
       
       if (error) throw error;
+      
+      await logAdminAction('gallery_rejected', { video_id: videoId });
+      
       showToast('Видео отклонено', 'success');
       await loadGalleryVideos();
     } catch (e) { showToast('Ошибка: ' + e.message, 'error'); }
   };
+
+  // ===== АУДИТ ЛОГИ (задача 23) =====
+  async function loadAuditLogs() {
+    if (!requireAdminRole(2)) return;
+    
+    try {
+      const { data, error } = await supabaseClient
+        .from('audit_logs')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(100);
+      
+      if (error) {
+        document.getElementById('auditLogList').innerHTML = '<div class="audit-log-empty">Ошибка загрузки логов</div>';
+        return;
+      }
+      
+      auditLogs = data || [];
+      document.getElementById('auditCount').textContent = auditLogs.length + ' записей';
+      
+      if (auditLogs.length === 0) {
+        document.getElementById('auditLogList').innerHTML = '<div class="audit-log-empty">Нет записей в журнале</div>';
+        return;
+      }
+      
+      document.getElementById('auditLogList').innerHTML = auditLogs.map(log => {
+        const time = new Date(log.created_at).toLocaleString('ru-RU', { 
+          day: '2-digit', month: '2-digit', year: 'numeric', 
+          hour: '2-digit', minute: '2-digit', second: '2-digit' 
+        });
+        
+        let detailsText = '';
+        try {
+          const details = typeof log.details === 'string' ? JSON.parse(log.details) : log.details;
+          if (details) {
+            const parts = [];
+            if (details.admin_name) parts.push(`Админ: ${details.admin_name}`);
+            if (details.admin_role) parts.push(`Роль: ${details.admin_role}`);
+            if (details.email) parts.push(`Email: ${SecurityUtils ? SecurityUtils.maskEmail(details.email) : details.email}`);
+            if (details.target_user_id) parts.push(`Цель: ${details.target_user_id.substring(0, 8)}...`);
+            if (details.video_id) parts.push(`Видео: ${details.video_id.substring(0, 8)}...`);
+            if (details.conversation_id) parts.push(`Чат: ${details.conversation_id.substring(0, 8)}...`);
+            detailsText = parts.join(' • ');
+          }
+        } catch (e) {
+          detailsText = '—';
+        }
+        
+        return `
+          <div class="audit-log-item">
+            <div class="audit-log-time">${time}</div>
+            <div class="audit-log-action">${log.action}</div>
+            <div class="audit-log-details">${detailsText || '—'}</div>
+          </div>
+        `;
+      }).join('');
+      
+    } catch (e) {
+      console.error('Load audit logs error:', e);
+      document.getElementById('auditLogList').innerHTML = '<div class="audit-log-empty">Ошибка загрузки</div>';
+    }
+  }
 
   initAdmin();
 })();
