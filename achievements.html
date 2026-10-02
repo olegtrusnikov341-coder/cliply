@@ -12,7 +12,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- CSP Headers (задача 29) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://djvdklcahpqbjotukmxt.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://djvdklcahpqbjotukmxt.supabase.co wss://djvdklcahpqbjotukmxt.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="security.js"></script>
 <script src="auth.js"></script>
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
@@ -37,7 +43,6 @@
   .page-header h1 { font-size: 28px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 8px; }
   .page-header p { color: #A0A0B0; font-size: 15px; }
   
-  /* Профиль пользователя */
   .profile-card {
     background: linear-gradient(135deg, rgba(108, 92, 231, 0.15), rgba(162, 155, 254, 0.05));
     border: 1px solid rgba(108, 92, 231, 0.3);
@@ -69,26 +74,11 @@
     font-weight: 600;
     border: 1px solid rgba(108, 92, 231, 0.3);
   }
-  .profile-stats {
-    display: flex;
-    gap: 32px;
-  }
-  .profile-stat {
-    text-align: center;
-  }
-  .profile-stat-value {
-    font-size: 28px;
-    font-weight: 800;
-    font-family: 'Manrope';
-    color: #6C5CE7;
-  }
-  .profile-stat-label {
-    font-size: 12px;
-    color: #A0A0B0;
-    margin-top: 4px;
-  }
+  .profile-stats { display: flex; gap: 32px; }
+  .profile-stat { text-align: center; }
+  .profile-stat-value { font-size: 28px; font-weight: 800; font-family: 'Manrope'; color: #6C5CE7; }
+  .profile-stat-label { font-size: 12px; color: #A0A0B0; margin-top: 4px; }
   
-  /* Общий прогресс */
   .progress-card {
     background: #141414;
     border: 1px solid #27272a;
@@ -96,202 +86,48 @@
     padding: 24px;
     margin-bottom: 32px;
   }
-  .progress-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-  }
+  .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
   .progress-header h3 { font-size: 16px; font-weight: 600; }
   .progress-percent { font-size: 24px; font-weight: 800; font-family: 'Manrope'; color: #6C5CE7; }
-  .progress-bar-bg {
-    height: 12px;
-    background: #27272a;
-    border-radius: 100px;
-    overflow: hidden;
-    margin-bottom: 12px;
-  }
-  .progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #6C5CE7, #A29BFE);
-    border-radius: 100px;
-    transition: width 0.8s ease;
-  }
-  .progress-footer {
-    display: flex;
-    justify-content: space-between;
-    font-size: 13px;
-    color: #A0A0B0;
-  }
+  .progress-bar-bg { height: 12px; background: #27272a; border-radius: 100px; overflow: hidden; margin-bottom: 12px; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #6C5CE7, #A29BFE); border-radius: 100px; transition: width 0.8s ease; }
+  .progress-footer { display: flex; justify-content: space-between; font-size: 13px; color: #A0A0B0; }
   .progress-footer strong { color: #fff; }
   
-  /* Категории */
-  .categories-filter {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
-  }
-  .category-btn {
-    padding: 10px 20px;
-    border-radius: 100px;
-    border: 1px solid #27272a;
-    background: transparent;
-    color: #A0A0B0;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
+  .categories-filter { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .category-btn { padding: 10px 20px; border-radius: 100px; border: 1px solid #27272a; background: transparent; color: #A0A0B0; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
   .category-btn:hover { border-color: #6C5CE7; color: #fff; }
-  .category-btn.active {
-    background: #6C5CE7;
-    border-color: #6C5CE7;
-    color: #fff;
-  }
-  .category-btn .count {
-    display: inline-block;
-    background: rgba(255,255,255,0.2);
-    padding: 2px 6px;
-    border-radius: 10px;
-    font-size: 11px;
-    margin-left: 6px;
-  }
+  .category-btn.active { background: #6C5CE7; border-color: #6C5CE7; color: #fff; }
+  .category-btn .count { display: inline-block; background: rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 10px; font-size: 11px; margin-left: 6px; }
   .category-btn.active .count { background: rgba(255,255,255,0.3); }
   
-  /* Сетка достижений */
-  .achievements-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
-  }
-  .achievement-card {
-    background: #141414;
-    border: 1px solid #27272a;
-    border-radius: 16px;
-    padding: 24px;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
-  .achievement-card.unlocked {
-    border-color: rgba(108, 92, 231, 0.4);
-    background: linear-gradient(135deg, rgba(108, 92, 231, 0.08), rgba(162, 155, 254, 0.04));
-  }
-  .achievement-card.unlocked:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgba(108, 92, 231, 0.2);
-  }
+  .achievements-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .achievement-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 24px; transition: all 0.3s; position: relative; overflow: hidden; }
+  .achievement-card.unlocked { border-color: rgba(108, 92, 231, 0.4); background: linear-gradient(135deg, rgba(108, 92, 231, 0.08), rgba(162, 155, 254, 0.04)); }
+  .achievement-card.unlocked:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(108, 92, 231, 0.2); }
   .achievement-card.locked { opacity: 0.5; }
   .achievement-card.locked:hover { opacity: 0.7; }
   
-  .achievement-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 12px;
-  }
+  .achievement-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
   .achievement-icon { font-size: 48px; }
   .achievement-card.locked .achievement-icon { filter: grayscale(1); }
-  .achievement-badge {
-    font-size: 11px;
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-weight: 600;
-  }
-  .badge-unlocked {
-    background: rgba(16, 185, 129, 0.2);
-    color: #34d399;
-    border: 1px solid rgba(16, 185, 129, 0.3);
-  }
-  .badge-new {
-    background: #ef4444;
-    color: #fff;
-    animation: badgePulse 2s ease infinite;
-  }
-  @keyframes badgePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  .achievement-badge { font-size: 11px; padding: 4px 8px; border-radius: 6px; font-weight: 600; }
+  .badge-unlocked { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
   
-  .achievement-name {
-    font-size: 18px;
-    font-weight: 700;
-    font-family: 'Manrope';
-    margin-bottom: 6px;
-  }
-  .achievement-description {
-    font-size: 13px;
-    color: #A0A0B0;
-    line-height: 1.5;
-    margin-bottom: 16px;
-    min-height: 40px;
-  }
-  .achievement-category-tag {
-    display: inline-block;
-    font-size: 11px;
-    color: #6C5CE7;
-    background: rgba(108, 92, 231, 0.15);
-    padding: 3px 10px;
-    border-radius: 100px;
-    margin-bottom: 12px;
-    border: 1px solid rgba(108, 92, 231, 0.3);
-  }
+  .achievement-name { font-size: 18px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 6px; }
+  .achievement-description { font-size: 13px; color: #A0A0B0; line-height: 1.5; margin-bottom: 16px; min-height: 40px; }
+  .achievement-category-tag { display: inline-block; font-size: 11px; color: #6C5CE7; background: rgba(108, 92, 231, 0.15); padding: 3px 10px; border-radius: 100px; margin-bottom: 12px; border: 1px solid rgba(108, 92, 231, 0.3); }
   
-  .achievement-progress {
-    height: 6px;
-    background: #27272a;
-    border-radius: 100px;
-    overflow: hidden;
-    margin-bottom: 8px;
-  }
-  .achievement-progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #6C5CE7, #A29BFE);
-    border-radius: 100px;
-    transition: width 0.5s ease;
-  }
-  .achievement-progress-text {
-    font-size: 12px;
-    color: #666;
-    display: flex;
-    justify-content: space-between;
-  }
-  .achievement-date {
-    font-size: 11px;
-    color: #6C5CE7;
-    margin-top: 8px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
+  .achievement-progress { height: 6px; background: #27272a; border-radius: 100px; overflow: hidden; margin-bottom: 8px; }
+  .achievement-progress-bar { height: 100%; background: linear-gradient(90deg, #6C5CE7, #A29BFE); border-radius: 100px; transition: width 0.5s ease; }
+  .achievement-progress-text { font-size: 12px; color: #666; display: flex; justify-content: space-between; }
+  .achievement-date { font-size: 11px; color: #6C5CE7; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
   
-  .empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: #A0A0B0;
-    grid-column: 1 / -1;
-  }
+  .empty-state { text-align: center; padding: 60px 20px; color: #A0A0B0; grid-column: 1 / -1; }
   .empty-state-icon { font-size: 64px; margin-bottom: 16px; opacity: 0.5; }
   
-  /* Toast уведомления о достижениях */
-  .achievement-toast {
-    position: fixed;
-    top: 24px;
-    right: 24px;
-    background: #141414;
-    border: 2px solid #6C5CE7;
-    border-radius: 16px;
-    padding: 20px 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    box-shadow: 0 20px 60px rgba(108, 92, 231, 0.4);
-    z-index: 10001;
-    animation: achievementSlideIn 0.5s ease;
-    max-width: 400px;
-  }
-  @keyframes achievementSlideIn {
-    from { opacity: 0; transform: translateX(100px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
+  .achievement-toast { position: fixed; top: 24px; right: 24px; background: #141414; border: 2px solid #6C5CE7; border-radius: 16px; padding: 20px 24px; display: flex; align-items: center; gap: 16px; box-shadow: 0 20px 60px rgba(108, 92, 231, 0.4); z-index: 10001; animation: achievementSlideIn 0.5s ease; max-width: 400px; }
+  @keyframes achievementSlideIn { from { opacity: 0; transform: translateX(100px); } to { opacity: 1; transform: translateX(0); } }
   .achievement-toast-icon { font-size: 48px; flex-shrink: 0; }
   .achievement-toast-content { flex: 1; }
   .achievement-toast-label { font-size: 11px; color: #6C5CE7; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
@@ -330,7 +166,6 @@
       <p>Выполняйте задания и получайте награды за активность</p>
     </div>
     
-    <!-- Профиль -->
     <div class="profile-card animate-slide-up" id="profileCard">
       <div class="profile-avatar" id="profileAvatar">?</div>
       <div class="profile-info">
@@ -350,7 +185,6 @@
       </div>
     </div>
     
-    <!-- Общий прогресс -->
     <div class="progress-card animate-scale-in">
       <div class="progress-header">
         <h3>Общий прогресс</h3>
@@ -365,7 +199,6 @@
       </div>
     </div>
     
-    <!-- Фильтры -->
     <div class="categories-filter animate-slide-up" id="categoriesFilter">
       <button class="category-btn active" data-category="all">Все <span class="count" id="countAll">0</span></button>
       <button class="category-btn" data-category="Начало">Начало <span class="count" id="countStart">0</span></button>
@@ -375,7 +208,6 @@
       <button class="category-btn" data-category="Статус">Статус <span class="count" id="countStatus">0</span></button>
     </div>
     
-    <!-- Сетка достижений -->
     <div class="achievements-grid" id="achievementsGrid">
       <div class="empty-state">
         <div class="empty-state-icon">🏆</div>
@@ -395,7 +227,6 @@ async function initPage() {
   currentUser = await requireAuth();
   if (!currentUser) return;
   
-  // Добавляем админ-панель если нужно
   if (currentUser.profile.role_level <= 2) {
     const menu = document.getElementById('navMenu');
     const adminLink = document.createElement('li');
@@ -403,9 +234,11 @@ async function initPage() {
     menu.insertBefore(adminLink, menu.children[3]);
   }
   
-  // Заполняем профиль
-  document.getElementById('profileName').textContent = currentUser.profile.full_name || 'Селлер';
-  document.getElementById('profileEmail').textContent = currentUser.email;
+  const safeName = SecurityUtils ? SecurityUtils.sanitizeHTML(currentUser.profile.full_name || 'Селлер') : (currentUser.profile.full_name || 'Селлер');
+  const safeEmail = SecurityUtils ? SecurityUtils.maskEmail(currentUser.email) : currentUser.email;
+  
+  document.getElementById('profileName').textContent = safeName;
+  document.getElementById('profileEmail').textContent = safeEmail;
   const role = ROLES[currentUser.profile.role_level];
   document.getElementById('profileLevel').textContent = role.name;
   document.getElementById('profileLevel').style.color = role.color;
@@ -456,7 +289,6 @@ function updateStats() {
   document.getElementById('progressTotal').textContent = total;
   document.getElementById('progressRemaining').textContent = `Осталось: ${total - unlocked}`;
   
-  // Счётчики категорий
   const counts = { 'Начало': 0, 'Продуктивность': 0, 'Мастерство': 0, 'Сообщество': 0, 'Статус': 0 };
   allAchievements.forEach(a => { if (counts[a.category] !== undefined) counts[a.category]++; });
   
@@ -478,7 +310,7 @@ function renderAchievements() {
   }
   
   if (filtered.length === 0) {
-    grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon"></div><div>Нет достижений в этой категории</div></div>';
+    grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🏆</div><div>Нет достижений в этой категории</div></div>';
     return;
   }
   
@@ -495,18 +327,21 @@ function renderAchievements() {
     const cardClass = isUnlocked ? 'achievement-card unlocked' : 'achievement-card locked';
     const delayClass = `delay-${(index % 6) + 1}`;
     
+    // Санитизация всех полей из БД (задача 14)
+    const safeIcon = SecurityUtils ? SecurityUtils.sanitizeHTML(achievement.icon || '🏆') : (achievement.icon || '🏆');
+    const safeName = SecurityUtils ? SecurityUtils.sanitizeHTML(achievement.name) : achievement.name;
+    const safeDesc = SecurityUtils ? SecurityUtils.sanitizeHTML(achievement.description) : achievement.description;
+    const safeCategory = SecurityUtils ? SecurityUtils.sanitizeHTML(achievement.category) : achievement.category;
+    
     return `
       <div class="${cardClass} animate-slide-up ${delayClass}">
         <div class="achievement-header">
-          <span class="achievement-icon">${achievement.icon}</span>
-          ${isUnlocked 
-            ? `<span class="achievement-badge badge-unlocked">✓ Получено</span>`
-            : ''
-          }
+          <span class="achievement-icon">${safeIcon}</span>
+          ${isUnlocked ? `<span class="achievement-badge badge-unlocked">✓ Получено</span>` : ''}
         </div>
-        <div class="achievement-category-tag">${achievement.category}</div>
-        <div class="achievement-name">${achievement.name}</div>
-        <div class="achievement-description">${achievement.description}</div>
+        <div class="achievement-category-tag">${safeCategory}</div>
+        <div class="achievement-name">${safeName}</div>
+        <div class="achievement-description">${safeDesc}</div>
         ${!isUnlocked ? `
           <div class="achievement-progress">
             <div class="achievement-progress-bar" style="width: ${progressPercent}%"></div>
@@ -516,7 +351,7 @@ function renderAchievements() {
             <span>${Math.round(progressPercent)}%</span>
           </div>
         ` : `
-          <div class="achievement-date">📅 Получено ${unlockedDate}</div>
+          <div class="achievement-date"> Получено ${unlockedDate}</div>
         `}
       </div>
     `;
