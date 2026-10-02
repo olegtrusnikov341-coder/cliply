@@ -13,7 +13,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- CSP Headers (задача 29) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://djvdklcahpqbjotukmxt.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://djvdklcahpqbjotukmxt.supabase.co wss://djvdklcahpqbjotukmxt.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="security.js"></script>
 <script src="auth.js"></script>
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
@@ -228,8 +234,8 @@
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; margin-bottom: 32px;">
       <a href="index.html" class="logo" style="font-size: 24px;">Cliply</a>
       <div style="display: flex; gap: 16px;">
-        <a href="https://t.me/cliply_support" target="_blank" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">📱</a>
-        <a href="https://vk.com/cliply" target="_blank" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">💬</a>
+        <a href="https://t.me/cliply_support" target="_blank" rel="noopener noreferrer" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">📱</a>
+        <a href="https://vk.com/cliply" target="_blank" rel="noopener noreferrer" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">💬</a>
         <a href="mailto:support@cliply.ru" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">✉️</a>
       </div>
     </div>
@@ -275,12 +281,35 @@ if (burgerBtn && mobileMenu) {
   }
   
   try {
-    const { count } = await supabaseClient.from('profiles').select('*', { count: 'exact', head: true });
-    if (count !== null) document.getElementById('statUsers').textContent = count.toLocaleString('ru-RU');
-  } catch (e) {}
+    const { count, error } = await supabaseClient.from('profiles').select('*', { count: 'exact', head: true });
+    if (error) throw error;
+    
+    const statEl = document.getElementById('statUsers');
+    if (count !== null && typeof count === 'number') {
+      // Санитизация числа перед выводом (защита от XSS через данные БД)
+      const safeCount = SecurityUtils ? SecurityUtils.sanitizeHTML(String(count)) : String(count);
+      statEl.textContent = parseInt(safeCount).toLocaleString('ru-RU');
+    } else {
+      statEl.textContent = '—';
+    }
+  } catch (e) {
+    console.error('Stats load error:', e);
+    const statEl = document.getElementById('statUsers');
+    if (statEl) statEl.textContent = '—';
+  }
 })();
 </script>
 
 <script src="scroll-animations.js"></script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      for (let registration of registrations) { registration.update(); }
+    });
+  });
+}
+</script>
 </body>
 </html>
