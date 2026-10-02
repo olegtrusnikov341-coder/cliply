@@ -12,8 +12,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- CSP Headers (задача 29) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://djvdklcahpqbjotukmxt.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://djvdklcahpqbjotukmxt.supabase.co wss://djvdklcahpqbjotukmxt.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="security.js"></script>
 <script src="auth.js"></script>
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
@@ -39,6 +45,7 @@
   .page-header p { color: #A0A0B0; font-size: 15px; }
   
   .analytics-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+  .analytics-header h2 { font-size: 22px; font-weight: 700; font-family: 'Manrope'; }
   .period-selector { display: flex; gap: 8px; background: #141414; border: 1px solid #27272a; border-radius: 10px; padding: 4px; }
   .period-btn { padding: 8px 16px; border-radius: 8px; border: none; background: transparent; color: #A0A0B0; font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.2s; }
   .period-btn.active { background: #6C5CE7; color: #fff; }
@@ -106,7 +113,7 @@
     <ul class="nav-menu" id="navMenu">
       <li><a href="dashboard.html">📊 Дашборд</a></li>
       <li><a href="analytics.html" class="active"> Аналитика</a></li>
-      <li><a href="achievements.html">🏆 Достижения</a></li>
+      <li><a href="achievements.html"> Достижения</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
       <li><a href="settings.html">⚙️ Настройки</a></li>
       <li><a href="support.html">💬 Техподдержка</a></li>
@@ -121,7 +128,7 @@
     </div>
     
     <div class="analytics-header animate-slide-up">
-      <h2 style="font-size: 22px; font-weight: 700; font-family: 'Manrope';">Ваша статистика</h2>
+      <h2>Ваша статистика</h2>
       <div class="period-selector">
         <button class="period-btn active" data-period="7" onclick="changePeriod(7, this)">7 дней</button>
         <button class="period-btn" data-period="30" onclick="changePeriod(30, this)">30 дней</button>
@@ -141,7 +148,7 @@
       <div class="kpi-card animate-slide-up delay-2">
         <div class="kpi-header">
           <span class="kpi-label">За период</span>
-          <div class="kpi-icon green">📈</div>
+          <div class="kpi-icon green"></div>
         </div>
         <div class="kpi-value" id="kpiPeriod">0</div>
         <div class="kpi-change neutral" id="kpiPeriodChange">—</div>
@@ -202,7 +209,7 @@
     </div>
     
     <div class="top-scenarios animate-slide-up">
-      <h3>🏆 Ваши любимые сценарии</h3>
+      <h3> Ваши любимые сценарии</h3>
       <div class="scenario-list" id="scenarioList">
         <div style="text-align: center; padding: 20px; color: #A0A0B0;">Загрузка...</div>
       </div>
@@ -360,7 +367,10 @@ function updateUsageCard(videos) {
 function updateTopScenarios(videos) {
   const scenarioCount = {};
   videos.forEach(v => {
-    const s = v.scenario || 'Неизвестно';
+    // Санитизация сценария из БД (задача 14)
+    const s = SecurityUtils 
+      ? SecurityUtils.sanitizeHTML(v.scenario || 'Неизвестно') 
+      : (v.scenario || 'Неизвестно');
     scenarioCount[s] = (scenarioCount[s] || 0) + 1;
   });
   
