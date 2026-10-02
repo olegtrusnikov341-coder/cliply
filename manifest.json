@@ -1,21 +1,23 @@
 {
-  "name": "Cliply — AI-генерация видео для маркетплейсов",
+  "name": "Cliply — AI-видео для селлеров",
   "short_name": "Cliply",
-  "description": "Превратите 3 фото товара в продающее видео за 2 минуты. AI-сервис для селлеров Wildberries и Ozon.",
-  "start_url": "/cliply/",
-  "scope": "/cliply/",
+  "description": "Создавайте продающие видео для маркетплейсов с помощью AI",
+  "start_url": "/cliply/index.html",
   "display": "standalone",
   "background_color": "#0A0A0F",
   "theme_color": "#6C5CE7",
-  "orientation": "portrait-primary",
-  "lang": "ru",
-  "categories": ["business", "productivity"],
+  "orientation": "portrait",
   "icons": [
     {
-      "src": "favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
     }
   ]
 }
