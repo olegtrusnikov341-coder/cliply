@@ -8,7 +8,7 @@
 <meta name="description" content="Создавайте продающие видео для маркетплейсов с помощью AI.">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#6C5CE7">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Cliply">
 <link rel="manifest" href="manifest.json">
@@ -19,7 +19,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<!-- CSP Headers (задача 29) -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://djvdklcahpqbjotukmxt.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://djvdklcahpqbjotukmxt.supabase.co wss://djvdklcahpqbjotukmxt.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
@@ -43,19 +42,34 @@
 <script src="network.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { overflow-x: hidden; max-width: 100vw; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; }
+  
   .layout { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
-  .sidebar { background: #141414; border-right: 1px solid #27272a; padding: 24px 16px; display: flex; flex-direction: column; }
+  
+  .sidebar { 
+    background: #141414; 
+    border-right: 1px solid #27272a; 
+    padding: 24px 16px; 
+    display: flex; 
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
   .sidebar-logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; margin-bottom: 40px; display: block; }
   .nav-menu { list-style: none; flex: 1; }
   .nav-menu li { margin-bottom: 4px; }
   .nav-menu a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; transition: 0.2s; }
   .nav-menu a:hover { background: #1f1f23; color: #fff; }
   .nav-menu a.active { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; border: 1px solid rgba(108, 92, 231, 0.3); }
-  .btn-logout { padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; border: 1px solid #27272a; text-align: center; transition: 0.2s; cursor: pointer; margin-top: 16px; background: transparent; }
+  .btn-logout { padding: 12px 16px; color: #A0A0B0; text-decoration: none; border-radius: 8px; font-size: 15px; border: 1px solid #27272a; text-align: center; transition: 0.2s; cursor: pointer; margin-top: 16px; background: transparent; width: 100%; }
   .btn-logout:hover { border-color: #6C5CE7; color: #fff; }
-  .main { padding: 32px 48px; }
-  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid #27272a; }
+  
+  .main { padding: 32px 48px; width: 100%; min-width: 0; }
+  
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid #27272a; flex-wrap: wrap; gap: 16px; }
   .header h1 { font-size: 28px; font-weight: 700; font-family: 'Manrope'; }
   .header-right { display: flex; align-items: center; gap: 16px; }
   .balance-badge { background: rgba(108, 92, 231, 0.15); color: #6C5CE7; padding: 10px 20px; border-radius: 100px; font-size: 14px; font-weight: 500; border: 1px solid rgba(108, 92, 231, 0.3); display: flex; align-items: center; gap: 8px; }
@@ -71,7 +85,7 @@
   .notifications-badge.hidden { display: none; }
   @keyframes badgePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
   
-  .notifications-dropdown { position: absolute; top: calc(100% + 12px); right: 0; width: 380px; max-height: 500px; background: #141414; border: 1px solid #27272a; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); z-index: 1000; overflow: hidden; display: none; }
+  .notifications-dropdown { position: absolute; top: calc(100% + 12px); right: 0; width: 380px; max-width: 90vw; max-height: 500px; background: #141414; border: 1px solid #27272a; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); z-index: 1000; overflow: hidden; display: none; }
   .notifications-dropdown.active { display: block; animation: dropdownAppear 0.2s ease; }
   @keyframes dropdownAppear { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
   .notifications-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #1f1f2e; }
@@ -86,14 +100,14 @@
   .notification-item.unread::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #6C5CE7; flex-shrink: 0; margin-top: 6px; }
   .notification-item:not(.unread)::before { content: ''; width: 8px; height: 8px; flex-shrink: 0; margin-top: 6px; }
   .notif-content { flex: 1; min-width: 0; }
-  .notif-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; color: #A0A0B0; }
-  .notif-message { font-size: 13px; color: #666; line-height: 1.4; }
+  .notif-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; color: #A0A0B0; word-break: break-word; }
+  .notif-message { font-size: 13px; color: #666; line-height: 1.4; word-break: break-word; }
   .notif-time { font-size: 11px; color: #666; margin-top: 6px; }
   .notifications-empty { padding: 40px 20px; text-align: center; color: #A0A0B0; }
   .notifications-empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
   
   .create-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 32px; margin-bottom: 40px; }
-  .create-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .create-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
   .create-card h2 { font-size: 22px; font-weight: 700; font-family: 'Manrope'; }
   .upload-zone { border: 2px dashed #6C5CE7; border-radius: 12px; padding: 48px 24px; text-align: center; margin-bottom: 24px; background: rgba(108, 92, 231, 0.05); cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
   .upload-zone:hover { background: rgba(108, 92, 231, 0.1); border-color: #A29BFE; }
@@ -146,7 +160,7 @@
   .videos-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
   .videos-section h2 { font-size: 22px; font-weight: 700; font-family: 'Manrope'; }
   .videos-controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-  .search-input { background: #141414; border: 1px solid #27272a; border-radius: 8px; padding: 10px 16px; color: #fff; font-size: 14px; width: 240px; transition: border-color 0.2s; }
+  .search-input { background: #141414; border: 1px solid #27272a; border-radius: 8px; padding: 10px 16px; color: #fff; font-size: 14px; width: 240px; max-width: 100%; transition: border-color 0.2s; }
   .search-input:focus { outline: none; border-color: #6C5CE7; }
   .filter-select { background: #141414; border: 1px solid #27272a; border-radius: 8px; padding: 10px 16px; color: #fff; font-size: 14px; cursor: pointer; }
   .filter-select:focus { outline: none; border-color: #6C5CE7; }
@@ -160,7 +174,7 @@
   .status-failed { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
   .status-published { background: rgba(108, 92, 231, 0.2); color: #A29BFE; border: 1px solid rgba(108, 92, 231, 0.3); }
   .project-info { padding: 16px; }
-  .project-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+  .project-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; word-break: break-word; }
   .project-date { font-size: 12px; color: #A0A0B0; margin-bottom: 12px; }
   .project-actions { display: flex; gap: 8px; flex-wrap: wrap; }
   .btn-small { flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #27272a; background: transparent; color: #A0A0B0; font-size: 13px; cursor: pointer; transition: 0.2s; min-width: 80px; }
@@ -186,9 +200,13 @@
   .btn-clear-draft:hover { border-color: #ef4444; color: #ef4444; }
   .offline-banner { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; padding: 12px 20px; border-radius: 8px; margin-bottom: 24px; display: none; align-items: center; gap: 12px; font-size: 14px; }
   .offline-banner.active { display: flex; }
-  .mobile-header { display: none; }
   
-  /* РЕФЕРАЛЬНЫЙ ВИДЖЕТ */
+  /* ===== МОБИЛЬНОЕ МЕНЮ (скрыто на десктопе) ===== */
+  .mobile-header { display: none; }
+  .mobile-menu { display: none; }
+  .burger { display: none; }
+  
+  /* ===== РЕФЕРАЛЬНЫЙ ВИДЖЕТ ===== */
   .referral-card {
     background: linear-gradient(135deg, rgba(108, 92, 231, 0.15), rgba(162, 155, 254, 0.05));
     border: 1px solid rgba(108, 92, 231, 0.3);
@@ -221,6 +239,7 @@
     font-size: 14px;
     font-family: monospace;
     outline: none;
+    min-width: 0;
   }
   .btn-copy {
     background: #6C5CE7;
@@ -243,7 +262,7 @@
   .referral-stat-value { font-size: 28px; font-weight: 800; font-family: 'Manrope'; color: #6C5CE7; }
   .referral-stat-label { font-size: 12px; color: #A0A0B0; margin-top: 4px; }
   
-  /* ОНБОРДИНГ */
+  /* ===== ОНБОРДИНГ ===== */
   .onboarding-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px); z-index: 9998; display: none; }
   .onboarding-overlay.active { display: block; }
   .onboarding-tooltip { position: fixed; z-index: 9999; background: #141414; border: 2px solid #6C5CE7; border-radius: 16px; padding: 24px; max-width: 420px; width: 90%; box-shadow: 0 20px 60px rgba(108, 92, 231, 0.4); display: none; }
@@ -279,17 +298,17 @@
   .welcome-feature { display: flex; align-items: center; gap: 10px; padding: 12px; background: #0A0A0F; border-radius: 10px; border: 1px solid #1f1f2e; }
   .welcome-feature-icon { font-size: 20px; }
   .welcome-feature-text { font-size: 13px; color: #d0d0d0; }
-  .welcome-actions { display: flex; gap: 12px; justify-content: center; }
+  .welcome-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
   .welcome-btn { padding: 14px 28px; border-radius: 12px; border: none; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
   .welcome-btn-primary { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   .welcome-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
   .welcome-btn-secondary { background: transparent; color: #A0A0B0; border: 1px solid #27272a; }
   .welcome-btn-secondary:hover { border-color: #6C5CE7; color: #fff; }
   
-  /* МОДАЛЬНОЕ ОКНО ПУБЛИКАЦИИ В ГАЛЕРЕЮ */
+  /* ===== МОДАЛЬНОЕ ОКНО ПУБЛИКАЦИИ ===== */
   .publish-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px; }
   .publish-modal.active { display: flex; animation: modalFadeIn 0.3s ease; }
-  .publish-modal-content { background: #141414; border: 1px solid #27272a; border-radius: 20px; padding: 32px; max-width: 500px; width: 100%; position: relative; }
+  .publish-modal-content { background: #141414; border: 1px solid #27272a; border-radius: 20px; padding: 32px; max-width: 500px; width: 100%; position: relative; max-height: 90vh; overflow-y: auto; }
   .publish-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; background: transparent; border: none; color: #A0A0B0; font-size: 20px; cursor: pointer; border-radius: 50%; transition: all 0.2s; }
   .publish-modal-close:hover { background: #1f1f23; color: #fff; }
   .publish-modal h3 { font-size: 24px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 8px; }
@@ -300,10 +319,10 @@
   .publish-modal .form-group input:focus, .publish-modal .form-group textarea:focus { outline: none; border-color: #6C5CE7; }
   .publish-modal .form-group textarea { min-height: 100px; resize: vertical; }
   .publish-checkbox { display: flex; align-items: flex-start; gap: 12px; margin: 20px 0; padding: 16px; background: rgba(108, 92, 231, 0.08); border: 1px solid rgba(108, 92, 231, 0.2); border-radius: 10px; }
-  .publish-checkbox input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; accent-color: #6C5CE7; cursor: pointer; }
+  .publish-checkbox input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; accent-color: #6C5CE7; cursor: pointer; flex-shrink: 0; }
   .publish-checkbox label { font-size: 13px; color: #A0A0B0; line-height: 1.5; cursor: pointer; }
   .publish-checkbox label strong { color: #fff; }
-  .publish-modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+  .publish-modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; flex-wrap: wrap; }
   .publish-btn { padding: 12px 24px; border-radius: 10px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
   .publish-btn-cancel { background: transparent; color: #A0A0B0; border: 1px solid #27272a; }
   .publish-btn-cancel:hover { border-color: #6C5CE7; color: #fff; }
@@ -311,25 +330,118 @@
   .publish-btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4); }
   .publish-btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   
-  /* Toast для достижений */
+  /* ===== TOAST ===== */
   .achievement-toast { position: fixed; top: 24px; right: 24px; background: #141414; border: 2px solid #6C5CE7; border-radius: 16px; padding: 20px 24px; display: flex; align-items: center; gap: 16px; box-shadow: 0 20px 60px rgba(108, 92, 231, 0.4); z-index: 10001; animation: achievementSlideIn 0.5s ease; max-width: 400px; }
   @keyframes achievementSlideIn { from { opacity: 0; transform: translateX(100px); } to { opacity: 1; transform: translateX(0); } }
   .achievement-toast-icon { font-size: 48px; flex-shrink: 0; }
-  .achievement-toast-content { flex: 1; }
+  .achievement-toast-content { flex: 1; min-width: 0; }
   .achievement-toast-label { font-size: 11px; color: #6C5CE7; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
-  .achievement-toast-title { font-size: 18px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 4px; }
-  .achievement-toast-desc { font-size: 13px; color: #A0A0B0; }
+  .achievement-toast-title { font-size: 18px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 4px; word-break: break-word; }
+  .achievement-toast-desc { font-size: 13px; color: #A0A0B0; word-break: break-word; }
   
+  /* ===== АДАПТИВНОСТЬ (только для мобильных) ===== */
   @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr !important; }
+    
     .sidebar { display: none !important; }
+    
+    .mobile-header { 
+      display: flex !important; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 16px; 
+      background: #141414; 
+      border-bottom: 1px solid #27272a; 
+      position: sticky; 
+      top: 0; 
+      z-index: 100; 
+    }
+    
+    .mobile-header .logo { 
+      font-weight: 800; 
+      font-size: 22px; 
+      font-family: 'Manrope'; 
+      background: linear-gradient(135deg, #6C5CE7, #A29BFE); 
+      -webkit-background-clip: text; 
+      -webkit-text-fill-color: transparent; 
+      text-decoration: none; 
+    }
+    
+    .burger { 
+      display: flex !important; 
+      flex-direction: column; 
+      gap: 5px; 
+      background: transparent; 
+      border: none; 
+      cursor: pointer; 
+      padding: 8px; 
+      z-index: 1001; 
+    }
+    .burger span { display: block; width: 24px; height: 2px; background: #fff; transition: all 0.3s; border-radius: 2px; }
+    .burger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .burger.active span:nth-child(2) { opacity: 0; }
+    .burger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    
+    .mobile-menu { 
+      display: none !important; 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      width: 100%; 
+      height: 100vh; 
+      background: rgba(10,10,15,0.98); 
+      backdrop-filter: blur(20px); 
+      z-index: 1000; 
+      padding: 80px 24px 24px; 
+      flex-direction: column; 
+      gap: 8px; 
+    }
+    .mobile-menu.active { display: flex !important; }
+    .mobile-menu a { display: block; padding: 16px; color: #fff; text-decoration: none; font-size: 18px; border-radius: 8px; text-align: center; }
+    .mobile-menu a:hover { background: rgba(108, 92, 231, 0.15); }
+    
     .main { padding: 20px 16px !important; }
+    
+    .header h1 { font-size: 22px !important; }
+    
+    .create-card { padding: 20px !important; }
+    .create-card h2 { font-size: 18px !important; }
+    
+    .upload-zone { padding: 32px 16px !important; }
+    
+    .projects-grid { grid-template-columns: 1fr !important; }
+    
+    .referral-card { flex-direction: column !important; padding: 20px !important; }
+    .referral-info { min-width: auto !important; }
+    .referral-link-box { max-width: 100% !important; flex-direction: column !important; }
+    .referral-link-input { width: 100% !important; margin-bottom: 8px !important; }
+    .btn-copy { width: 100% !important; padding: 12px !important; }
+    .referral-stats { width: 100% !important; justify-content: space-around !important; }
+    
+    .notifications-dropdown { width: calc(100vw - 32px) !important; right: 16px !important; }
+    
+    .achievement-toast { right: 12px !important; left: 12px !important; max-width: none !important; }
+    
     .welcome-content { padding: 32px 24px !important; }
     .welcome-features { grid-template-columns: 1fr !important; }
-    .onboarding-tooltip { max-width: 90% !important; padding: 20px !important; }
-    .achievement-toast { right: 12px; left: 12px; max-width: none; }
+    
+    .onboarding-tooltip { max-width: calc(100vw - 32px) !important; padding: 20px !important; }
+    
     .publish-modal-content { padding: 24px !important; }
-    .referral-card { flex-direction: column; align-items: flex-start; }
-    .referral-stats { width: 100%; justify-content: space-around; }
+    .publish-modal-actions { flex-direction: column !important; }
+    .publish-btn { width: 100% !important; }
+    
+    .videos-controls { width: 100% !important; flex-direction: column !important; }
+    .search-input, .filter-select { width: 100% !important; }
+    
+    .project-actions { flex-direction: column !important; }
+    .btn-small { width: 100% !important; }
+  }
+  
+  @media (max-width: 360px) {
+    .main { padding: 16px 12px !important; }
+    .header h1 { font-size: 20px !important; }
+    .create-card { padding: 16px !important; }
   }
 </style>
 </head>
@@ -357,10 +469,10 @@
     <h2>Добро пожаловать в Cliply!</h2>
     <p>Давайте познакомимся с сервисом за 30 секунд — и вы сможете создать своё первое продающее видео.</p>
     <div class="welcome-features">
-      <div class="welcome-feature"><div class="welcome-feature-icon">📸</div><div class="welcome-feature-text">Загрузите 3-5 фото товара</div></div>
+      <div class="welcome-feature"><div class="welcome-feature-icon"></div><div class="welcome-feature-text">Загрузите 3-5 фото товара</div></div>
       <div class="welcome-feature"><div class="welcome-feature-icon">✨</div><div class="welcome-feature-text">AI создаст продающий сценарий</div></div>
-      <div class="welcome-feature"><div class="welcome-feature-icon">🎬</div><div class="welcome-feature-text">Получите видео за 2 минуты</div></div>
-      <div class="welcome-feature"><div class="welcome-feature-icon"></div><div class="welcome-feature-text">+34% к конверсии карточки</div></div>
+      <div class="welcome-feature"><div class="welcome-feature-icon"></div><div class="welcome-feature-text">Получите видео за 2 минуты</div></div>
+      <div class="welcome-feature"><div class="welcome-feature-icon">📈</div><div class="welcome-feature-text">+34% к конверсии карточки</div></div>
     </div>
     <div class="welcome-actions">
       <button class="welcome-btn welcome-btn-secondary" id="welcomeSkip">Пропустить тур</button>
@@ -399,8 +511,8 @@
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu" id="navMenu">
       <li><a href="dashboard.html" class="active">📊 Дашборд</a></li>
-      <li><a href="analytics.html"> Аналитика</a></li>
-      <li><a href="achievements.html"> Достижения</a></li>
+      <li><a href="analytics.html">📈 Аналитика</a></li>
+      <li><a href="achievements.html">🏆 Достижения</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
       <li><a href="settings.html">⚙️ Настройки</a></li>
       <li><a href="support.html">💬 Техподдержка</a></li>
@@ -418,17 +530,17 @@
   <div class="mobile-menu" id="mobileMenu">
     <a href="dashboard.html" class="active">📊 Дашборд</a>
     <a href="analytics.html">📈 Аналитика</a>
-    <a href="achievements.html">🏆 Достижения</a>
+    <a href="achievements.html"> Достижения</a>
     <a href="pricing.html">💎 Тарифы</a>
-    <a href="settings.html">⚙️ Настройки</a>
+    <a href="settings.html">️ Настройки</a>
     <a href="support.html">💬 Техподдержка</a>
-    <a href="index.html" class="btn-nav-mobile">← На главную</a>
+    <a href="index.html">← На главную</a>
     <a href="#" onclick="logout(); return false;" style="color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); margin-top: 16px;">Выйти</a>
   </div>
   
   <main class="main">
     <div id="offlineBanner" class="offline-banner">
-      <span>️</span>
+      <span>⚠️</span>
       <span>Нет подключения к интернету. Некоторые функции могут быть недоступны.</span>
     </div>
     <div class="header">
@@ -446,7 +558,7 @@
             </div>
             <div class="notifications-list" id="notificationsList">
               <div class="notifications-empty">
-                <div class="notifications-empty-icon"></div>
+                <div class="notifications-empty-icon">🔔</div>
                 <div>Загрузка уведомлений...</div>
               </div>
             </div>
@@ -552,7 +664,6 @@ let allNotifications = [];
 let notificationsCheckInterval = null;
 let currentPublishVideoId = null;
 
-// ===== ДОСТИЖЕНИЯ =====
 let allAchievements = [];
 let userAchievements = [];
 
@@ -644,7 +755,6 @@ function showAchievementToast(achievement) {
   setTimeout(() => { toast.style.animation = 'achievementSlideIn 0.5s ease reverse'; setTimeout(() => toast.remove(), 500); }, 4000);
 }
 
-// ===== ОНБОРДИНГ =====
 const ONBOARDING_STEPS = [
   { selector: '#uploadZone', icon: '', title: 'Шаг 1: Загрузите фото товара', text: 'Перетащите сюда 3-5 фотографий товара или нажмите, чтобы выбрать.', position: 'bottom' },
   { selector: '#descriptionGroup', icon: '✍️', title: 'Шаг 2: Опишите товар', text: 'Расскажите, чем ваш товар лучше аналогов. AI сам превратит это в продающий сценарий.', position: 'bottom' },
@@ -731,7 +841,7 @@ async function finishOnboarding() {
   document.getElementById('onboardingOverlay').classList.remove('active');
   document.getElementById('onboardingTooltip').classList.remove('active');
   saveOnboardingStatus(true);
-  showToast('🎉 Отлично! Теперь вы готовы создать первое видео!', 'success');
+  showToast(' Отлично! Теперь вы готовы создать первое видео!', 'success');
   await unlockAchievementByCode('onboarding_done', 1);
 }
 
@@ -751,7 +861,6 @@ function initOnboarding() {
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { const tooltip = document.getElementById('onboardingTooltip'); if (tooltip.classList.contains('active')) skipOnboarding(); } });
 }
 
-// ===== РЕФЕРАЛЬНАЯ ПРОГРАММА =====
 async function loadReferralData() {
   if (!currentUser) return;
   try {
@@ -780,7 +889,7 @@ document.getElementById('btnCopyReferral').addEventListener('click', async () =>
   input.select();
   try {
     await navigator.clipboard.writeText(input.value);
-    showToast('🔗 Ссылка скопирована!', 'success');
+    showToast(' Ссылка скопирована!', 'success');
     const btn = document.getElementById('btnCopyReferral');
     btn.textContent = '✓ Скопировано';
     setTimeout(() => { btn.textContent = 'Копировать'; }, 2000);
@@ -790,7 +899,6 @@ document.getElementById('btnCopyReferral').addEventListener('click', async () =>
   }
 });
 
-// ===== ПУБЛИКАЦИЯ В ГАЛЕРЕЮ =====
 function openPublishModal(videoId) {
   const video = allVideos.find(v => v.id === videoId);
   if (!video) return;
@@ -815,20 +923,13 @@ async function submitToGallery() {
   let description = document.getElementById('publishDescription').value.trim();
   const agreed = document.getElementById('publishAgree').checked;
   
-  // Валидация через SecurityUtils
   if (typeof SecurityUtils !== 'undefined') {
     const titleCheck = SecurityUtils.validateProductName(title);
-    if (!titleCheck.valid) {
-      showToast(titleCheck.reason, 'warning');
-      return;
-    }
+    if (!titleCheck.valid) { showToast(titleCheck.reason, 'warning'); return; }
     title = titleCheck.value;
     
     const descCheck = SecurityUtils.validateDescription(description);
-    if (!descCheck.valid) {
-      showToast(descCheck.reason, 'warning');
-      return;
-    }
+    if (!descCheck.valid) { showToast(descCheck.reason, 'warning'); return; }
     description = descCheck.value;
   }
   
@@ -858,7 +959,7 @@ async function submitToGallery() {
       if (error) throw error;
     }
     closePublishModal();
-    showToast('📤 Видео отправлено на модерацию!', 'success');
+    showToast(' Видео отправлено на модерацию!', 'success');
     await loadVideos();
   } catch (e) { showToast('Ошибка: ' + e.message, 'error'); }
   finally { btn.textContent = 'Отправить на модерацию'; btn.disabled = false; }
@@ -893,7 +994,7 @@ async function initDashboard() {
   if (currentUser.profile.role_level <= 2) {
     const menu = document.getElementById('navMenu');
     const adminLink = document.createElement('li');
-    adminLink.innerHTML = '<a href="admin.html"> Админ-панель</a>';
+    adminLink.innerHTML = '<a href="admin.html">👑 Админ-панель</a>';
     menu.insertBefore(adminLink, menu.children[3]);
   }
   
@@ -915,12 +1016,24 @@ async function initDashboard() {
   if (needsOnboarding) setTimeout(() => showWelcomeModal(), 1500);
   if (window.microAnimations) window.microAnimations.initRipple();
   
+  // Мобильное меню
   const burgerBtn = document.getElementById('burgerBtn');
   const mobileMenu = document.getElementById('mobileMenu');
   if (burgerBtn && mobileMenu) {
-    burgerBtn.addEventListener('click', () => { burgerBtn.classList.toggle('active'); mobileMenu.classList.toggle('active'); document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : ''; });
-    mobileMenu.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => { burgerBtn.classList.remove('active'); mobileMenu.classList.remove('active'); document.body.style.overflow = ''; }); });
+    burgerBtn.addEventListener('click', () => { 
+      burgerBtn.classList.toggle('active'); 
+      mobileMenu.classList.toggle('active'); 
+      document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : ''; 
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => { 
+      link.addEventListener('click', () => { 
+        burgerBtn.classList.remove('active'); 
+        mobileMenu.classList.remove('active'); 
+        document.body.style.overflow = ''; 
+      }); 
+    });
   }
+  
   await checkReviewEligibility();
 }
 
@@ -930,7 +1043,6 @@ async function checkBelovedAchievement() {
   if (name === 'богдана' || name === 'богдан') await unlockAchievementByCode('beloved', 1);
 }
 
-// ===== УВЕДОМЛЕНИЯ =====
 async function loadNotifications() {
   if (!currentUser) return;
   try {
@@ -961,7 +1073,7 @@ function renderNotifications() {
     return `<div class="notification-item ${unreadClass}" data-id="${notif.id}" onclick="handleNotificationClick('${notif.id}', '${notif.link || ''}')"><div class="notif-content"><div class="notif-title">${icon} ${safeTitle}</div><div class="notif-message">${safeMessage}</div><div class="notif-time">${time}</div></div></div>`;
   }).join('');
 }
-function getNotificationIcon(type) { const icons = { 'video_done': '', 'support_reply': '💬', 'review': '⭐', 'system': '📢', 'achievement': '🏆' }; return icons[type] || '🔔'; }
+function getNotificationIcon(type) { const icons = { 'video_done': '', 'support_reply': '💬', 'review': '⭐', 'system': '', 'achievement': '🏆' }; return icons[type] || '🔔'; }
 function formatNotificationTime(dateStr) { const date = new Date(dateStr); const diff = new Date() - date; const minutes = Math.floor(diff / 60000); const hours = Math.floor(diff / 3600000); const days = Math.floor(diff / 86400000); if (minutes < 1) return 'только что'; if (minutes < 60) return `${minutes} мин. назад`; if (hours < 24) return `${hours} ч. назад`; if (days < 7) return `${days} дн. назад`; return date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' }); }
 async function handleNotificationClick(notifId, link) {
   const notif = allNotifications.find(n => n.id === notifId);
@@ -997,7 +1109,6 @@ async function createNotification(type, title, message, link = null) {
   } catch (e) { console.error(e); }
 }
 
-// ===== ВИДЕО =====
 async function loadVideos() {
   try {
     const { data, error } = await networkManager.supabaseRequest(() => supabaseClient.from('videos').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }), 'Загрузка видео');
@@ -1077,7 +1188,6 @@ async function handleFiles(files) {
   const errors = []; const filesToAdd = [];
   
   for (const file of files) {
-    // Валидация через SecurityUtils (задача 16)
     if (typeof SecurityUtils !== 'undefined') {
       const fileCheck = SecurityUtils.validateFile(file);
       if (!fileCheck.valid) {
@@ -1085,7 +1195,6 @@ async function handleFiles(files) {
         continue;
       }
     } else {
-      // Fallback валидация
       const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
       const maxSize = 10 * 1024 * 1024;
       if (uploadedPhotos.length + filesToAdd.length >= 5) { errors.push(`${file.name}: максимум 5 фото`); continue; }
@@ -1148,7 +1257,6 @@ async function generatePrompt() {
 async function startGeneration() {
   const btn = document.getElementById('btnGenerate');
   
-  // Rate limiting (задача 22)
   if (typeof SecurityUtils !== 'undefined') {
     const limit = SecurityUtils.checkActionLimit('generate');
     if (!limit.allowed) {
@@ -1171,7 +1279,6 @@ async function startGeneration() {
   let description = document.getElementById('productDescription').value.trim();
   const scenario = document.getElementById('scenarioSelect').value;
   
-  // Валидация описания (задача 31)
   if (typeof SecurityUtils !== 'undefined') {
     const descCheck = SecurityUtils.validateDescription(description);
     if (!descCheck.valid) {
@@ -1255,13 +1362,9 @@ function showReviewModal() {
     let text = modal.querySelector('#reviewText').value.trim();
     const category = modal.querySelector('#reviewCategory').value;
     
-    // Валидация отзыва
     if (typeof SecurityUtils !== 'undefined') {
       const textCheck = SecurityUtils.validateMessage(text);
-      if (!textCheck.valid) {
-        showToast(textCheck.reason, 'warning');
-        return;
-      }
+      if (!textCheck.valid) { showToast(textCheck.reason, 'warning'); return; }
       text = textCheck.value;
     }
     
@@ -1269,7 +1372,7 @@ function showReviewModal() {
     const btn = modal.querySelector('#submitReviewBtn'); btn.textContent = 'Публикация...'; btn.disabled = true;
     const { error } = await supabaseClient.from('reviews').insert({ user_id: currentUser.id, user_name: SecurityUtils ? SecurityUtils.sanitizeHTML(currentUser.profile.full_name || currentUser.email) : (currentUser.profile.full_name || currentUser.email), user_role: ROLES[currentUser.profile.role_level]?.name || 'Селлер', rating: selectedRating, review_text: text, product_category: category });
     if (error) { showToast('Ошибка: ' + error.message, 'error'); btn.textContent = 'Опубликовать отзыв'; btn.disabled = false; }
-    else { showToast('Спасибо за отзыв! ⭐', 'success'); modal.remove(); await checkAndAwardAchievements(); }
+    else { showToast('Спасибо за отзыв! ', 'success'); modal.remove(); await checkAndAwardAchievements(); }
   });
 }
 
