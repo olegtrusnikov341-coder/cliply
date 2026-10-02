@@ -36,11 +36,12 @@
   .page-header h1 { font-size: 28px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 8px; }
   .page-header p { color: #A0A0B0; font-size: 15px; }
   
-  .tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 1px solid #1f1f2e; padding-bottom: 0; }
+  .tabs { display: flex; gap: 4px; margin-bottom: 24px; border-bottom: 1px solid #1f1f2e; padding-bottom: 0; flex-wrap: wrap; }
   .tab { padding: 12px 20px; background: transparent; border: none; color: #A0A0B0; font-size: 15px; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; margin-bottom: -1px; display: flex; align-items: center; gap: 8px; }
   .tab:hover { color: #fff; }
   .tab.active { color: #6C5CE7; border-bottom-color: #6C5CE7; }
   .tab-badge { background: #ef4444; color: #fff; font-size: 11px; padding: 2px 7px; border-radius: 10px; font-weight: 600; }
+  .tab-badge.pending { background: #f59e0b; }
   
   .tab-content { display: none; }
   .tab-content.active { display: block; }
@@ -128,6 +129,161 @@
   
   .error-box { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 20px; color: #ef4444; text-align: center; margin-bottom: 24px; display: none; }
   
+  /* ===== ГАЛЕРЕЯ МОДЕРАЦИЯ ===== */
+  .gallery-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .gallery-filter-btn {
+    padding: 8px 16px;
+    border-radius: 100px;
+    border: 1px solid #27272a;
+    background: transparent;
+    color: #A0A0B0;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .gallery-filter-btn:hover { border-color: #6C5CE7; color: #fff; }
+  .gallery-filter-btn.active { background: #6C5CE7; border-color: #6C5CE7; color: #fff; }
+  .gallery-filter-btn .count {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 11px;
+    margin-left: 4px;
+  }
+  
+  .gallery-moderation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .gallery-mod-card {
+    background: #0A0A0F;
+    border: 1px solid #1f1f2e;
+    border-radius: 14px;
+    padding: 20px;
+    transition: all 0.3s;
+  }
+  .gallery-mod-card:hover {
+    border-color: #6C5CE7;
+  }
+  .gallery-mod-card.status-pending { border-left: 4px solid #f59e0b; }
+  .gallery-mod-card.status-approved { border-left: 4px solid #10b981; }
+  .gallery-mod-card.status-rejected { border-left: 4px solid #ef4444; }
+  
+  .gallery-mod-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .gallery-mod-title {
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Manrope';
+    margin-bottom: 4px;
+  }
+  .gallery-mod-status {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .status-pending .gallery-mod-status { background: rgba(245, 158, 11, 0.2); color: #facc15; }
+  .status-approved .gallery-mod-status { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+  .status-rejected .gallery-mod-status { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+  
+  .gallery-mod-author {
+    font-size: 13px;
+    color: #A0A0B0;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .gallery-mod-author-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .gallery-mod-description {
+    font-size: 13px;
+    color: #A0A0B0;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    max-height: 60px;
+    overflow: hidden;
+  }
+  .gallery-mod-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 16px;
+  }
+  .gallery-mod-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .btn-approve {
+    flex: 1;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    background: #10b981;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-approve:hover { background: #059669; }
+  .btn-reject {
+    flex: 1;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    background: #ef4444;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-reject:hover { background: #dc2626; }
+  .btn-view {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #27272a;
+    background: transparent;
+    color: #A0A0B0;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-view:hover { border-color: #6C5CE7; color: #fff; }
+  
+  .gallery-mod-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #A0A0B0;
+    grid-column: 1 / -1;
+  }
+  .gallery-mod-empty-icon { font-size: 64px; margin-bottom: 16px; opacity: 0.5; }
+  
   @media (max-width: 768px) {
     .sidebar { display: none !important; }
     .layout { grid-template-columns: 1fr !important; }
@@ -135,6 +291,7 @@
     .add-user-form { grid-template-columns: 1fr !important; }
     .support-layout { grid-template-columns: 1fr !important; }
     .conv-list-panel { max-height: 250px; }
+    .gallery-moderation-grid { grid-template-columns: 1fr !important; }
   }
 </style>
 </head>
@@ -153,7 +310,7 @@
   <main class="main">
     <div class="page-header">
       <h1>Админ-панель</h1>
-      <p>Управление пользователями и поддержка</p>
+      <p>Управление пользователями, поддержкой и галереей</p>
     </div>
     
     <div id="errorBox" class="error-box"></div>
@@ -164,8 +321,13 @@
         💬 Поддержка
         <span class="tab-badge" id="openConvCount" style="display:none;">0</span>
       </button>
+      <button class="tab" data-tab="gallery" onclick="switchTab('gallery')">
+        🖼️ Галерея
+        <span class="tab-badge pending" id="pendingGalleryCount" style="display:none;">0</span>
+      </button>
     </div>
     
+    <!-- Вкладка: Пользователи -->
     <div class="tab-content active" id="tab-users">
       <div class="admin-card">
         <h2>Добавить участника команды</h2>
@@ -236,6 +398,7 @@
       </div>
     </div>
     
+    <!-- Вкладка: Поддержка -->
     <div class="tab-content" id="tab-support">
       <div class="support-layout">
         <div class="conv-list-panel" id="adminConvList">
@@ -250,6 +413,30 @@
         </div>
       </div>
     </div>
+    
+    <!-- Вкладка: Галерея -->
+    <div class="tab-content" id="tab-gallery">
+      <div class="admin-card">
+        <div class="card-header">
+          <h2>Модерация галереи</h2>
+          <span class="count" id="galleryTotalCount">0</span>
+        </div>
+        
+        <div class="gallery-filters" id="galleryFilters">
+          <button class="gallery-filter-btn active" data-filter="all">Все <span class="count" id="galleryFilterAll">0</span></button>
+          <button class="gallery-filter-btn" data-filter="pending">Ожидают <span class="count" id="galleryFilterPending">0</span></button>
+          <button class="gallery-filter-btn" data-filter="approved">Одобрены <span class="count" id="galleryFilterApproved">0</span></button>
+          <button class="gallery-filter-btn" data-filter="rejected">Отклонены <span class="count" id="galleryFilterRejected">0</span></button>
+        </div>
+        
+        <div class="gallery-moderation-grid" id="galleryModerationGrid">
+          <div class="gallery-mod-empty">
+            <div class="gallery-mod-empty-icon">🖼️</div>
+            <div>Загрузка...</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 </div>
 
@@ -260,6 +447,8 @@
   let allConversations = [];
   let activeAdminConvId = null;
   let supportRefreshInterval = null;
+  let galleryVideos = [];
+  let currentGalleryFilter = 'all';
 
   const ADMIN_ROLES = {
     1: { name: 'Owner', color: '#6C5CE7' },
@@ -270,10 +459,7 @@
 
   function showError(message) {
     const box = document.getElementById('errorBox');
-    if (box) {
-      box.textContent = '⚠️ ' + message;
-      box.style.display = 'block';
-    }
+    if (box) { box.textContent = '⚠️ ' + message; box.style.display = 'block'; }
     console.error('[Admin Error]', message);
   }
 
@@ -285,72 +471,44 @@
     if (tab) tab.classList.add('active');
     if (content) content.classList.add('active');
     
-    if (tabName === 'support') {
-      startSupportRefresh();
-    } else {
-      if (supportRefreshInterval) clearInterval(supportRefreshInterval);
-    }
+    if (tabName === 'support') startSupportRefresh();
+    else if (supportRefreshInterval) clearInterval(supportRefreshInterval);
+    
+    if (tabName === 'gallery') loadGalleryVideos();
   };
 
   async function initAdmin() {
     try {
       currentUser = await requireAuth();
-      
-      if (!currentUser) {
-        showError('Не удалось получить данные пользователя.');
-        return;
-      }
-      
-      if (!currentUser.profile) {
-        showError('Профиль пользователя не найден.');
-        return;
-      }
+      if (!currentUser) { showError('Не удалось получить данные пользователя.'); return; }
+      if (!currentUser.profile) { showError('Профиль пользователя не найден.'); return; }
       
       const roleLevel = currentUser.profile.role_level || 4;
+      if (roleLevel > 2) { showToast('Доступ запрещён', 'error'); window.location.href = 'dashboard.html'; return; }
       
-      if (roleLevel > 2) {
-        showToast('Доступ запрещён', 'error');
-        window.location.href = 'dashboard.html';
-        return;
-      }
-      
-      await Promise.allSettled([
-        loadUsers(),
-        loadAllConversations()
-      ]);
-      
+      await Promise.allSettled([loadUsers(), loadAllConversations(), loadGalleryVideos()]);
       updateOpenConvBadge();
       
-    } catch (e) {
-      showError('Ошибка инициализации: ' + e.message);
-    }
+    } catch (e) { showError('Ошибка инициализации: ' + e.message); }
   }
 
   async function loadUsers() {
     try {
-      const { data, error } = await supabaseClient
-        .from('profiles')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
+      const { data, error } = await supabaseClient.from('profiles').select('*').order('created_at', { ascending: false });
       if (error) {
         showError('Не удалось загрузить пользователей: ' + error.message);
         document.getElementById('adminsTableBody').innerHTML = '<tr><td colspan="4" style="text-align:center;color:#ef4444;padding:30px;">Ошибка загрузки</td></tr>';
         document.getElementById('usersTableBody').innerHTML = '<tr><td colspan="4" style="text-align:center;color:#ef4444;padding:30px;">Ошибка загрузки</td></tr>';
         return;
       }
-      
       allUsers = data || [];
       renderUsersTables();
-    } catch (e) {
-      showError('Ошибка: ' + e.message);
-    }
+    } catch (e) { showError('Ошибка: ' + e.message); }
   }
 
   function renderUsersTables() {
     const admins = allUsers.filter(u => u.role_level >= 1 && u.role_level <= 3);
     const users = allUsers.filter(u => u.role_level === 4);
-    
     admins.sort((a, b) => a.role_level - b.role_level);
     
     const adminsCountEl = document.getElementById('adminsCount');
@@ -365,84 +523,38 @@
   function renderAdminsTable(admins) {
     const tbody = document.getElementById('adminsTableBody');
     if (!tbody) return;
-    
-    if (admins.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#A0A0B0;padding:30px;">Нет администраторов</td></tr>';
-      return;
-    }
+    if (admins.length === 0) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#A0A0B0;padding:30px;">Нет администраторов</td></tr>'; return; }
     
     tbody.innerHTML = admins.map(user => {
       const isOwner = user.role_level === 1;
       const isAdmin = user.role_level === 2;
       const isMe = user.id === currentUser?.id;
-      
       let roleBadge = '';
       if (isOwner) roleBadge = '<span class="role-badge role-owner">👑 Owner</span>';
       else if (isAdmin) roleBadge = '<span class="role-badge role-admin">Admin</span>';
       else roleBadge = '<span class="role-badge role-moderator">Moderator</span>';
       
       let actionsHtml = '';
-      if (isOwner) {
-        actionsHtml = '<span style="color:#666;font-size:13px;">Главный администратор</span>';
-      } else if (isMe) {
-        actionsHtml = '<span style="color:#666;font-size:13px;">Это вы</span>';
-      } else {
-        actionsHtml = `
-          <select class="role-select" onchange="changeUserRole('${user.id}', this.value)">
-            <option value="2" ${user.role_level === 2 ? 'selected' : ''}>Admin</option>
-            <option value="3" ${user.role_level === 3 ? 'selected' : ''}>Moderator</option>
-            <option value="4">Понизить до User</option>
-          </select>
-          <button class="btn-small" onclick="deleteUser('${user.id}')" style="margin-left:8px;">Удалить</button>
-        `;
-      }
+      if (isOwner) actionsHtml = '<span style="color:#666;font-size:13px;">Главный администратор</span>';
+      else if (isMe) actionsHtml = '<span style="color:#666;font-size:13px;">Это вы</span>';
+      else actionsHtml = `<select class="role-select" onchange="changeUserRole('${user.id}', this.value)"><option value="2" ${user.role_level === 2 ? 'selected' : ''}>Admin</option><option value="3" ${user.role_level === 3 ? 'selected' : ''}>Moderator</option><option value="4">Понизить до User</option></select><button class="btn-small" onclick="deleteUser('${user.id}')" style="margin-left:8px;">Удалить</button>`;
       
-      return `
-        <tr>
-          <td><strong>${user.full_name || '—'}</strong></td>
-          <td>${user.email || '—'}</td>
-          <td>${roleBadge}</td>
-          <td>${actionsHtml}</td>
-        </tr>
-      `;
+      return `<tr><td><strong>${user.full_name || '—'}</strong></td><td>${user.email || '—'}</td><td>${roleBadge}</td><td>${actionsHtml}</td></tr>`;
     }).join('');
   }
 
   function renderUsersTable(users) {
     const tbody = document.getElementById('usersTableBody');
     if (!tbody) return;
-    
-    if (users.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#A0A0B0;padding:30px;">Нет посетителей</td></tr>';
-      return;
-    }
+    if (users.length === 0) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#A0A0B0;padding:30px;">Нет посетителей</td></tr>'; return; }
     
     tbody.innerHTML = users.map(user => {
       const isMe = user.id === currentUser?.id;
       const roleBadge = '<span class="role-badge role-user">User</span>';
-      
       let actionsHtml = '';
-      if (isMe) {
-        actionsHtml = '<span style="color:#666;font-size:13px;">Это вы</span>';
-      } else {
-        actionsHtml = `
-          <select class="role-select" onchange="promoteUser('${user.id}', this.value)">
-            <option value="4" selected>User</option>
-            <option value="3">Повысить до Moderator</option>
-            <option value="2">Повысить до Admin</option>
-          </select>
-          <button class="btn-small" onclick="deleteUser('${user.id}')" style="margin-left:8px;">Удалить</button>
-        `;
-      }
-      
-      return `
-        <tr>
-          <td><strong>${user.full_name || '—'}</strong></td>
-          <td>${user.email || '—'}</td>
-          <td>${roleBadge}</td>
-          <td>${actionsHtml}</td>
-        </tr>
-      `;
+      if (isMe) actionsHtml = '<span style="color:#666;font-size:13px;">Это вы</span>';
+      else actionsHtml = `<select class="role-select" onchange="promoteUser('${user.id}', this.value)"><option value="4" selected>User</option><option value="3">Повысить до Moderator</option><option value="2">Повысить до Admin</option></select><button class="btn-small" onclick="deleteUser('${user.id}')" style="margin-left:8px;">Удалить</button>`;
+      return `<tr><td><strong>${user.full_name || '—'}</strong></td><td>${user.email || '—'}</td><td>${roleBadge}</td><td>${actionsHtml}</td></tr>`;
     }).join('');
   }
 
@@ -450,249 +562,110 @@
     const name = document.getElementById('newUserName').value.trim();
     const email = document.getElementById('newUserEmail').value.trim();
     const role = parseInt(document.getElementById('newUserRole').value);
-    
-    if (!name || !email) {
-      showToast('Заполните имя и email', 'warning');
-      return;
-    }
-    
+    if (!name || !email) { showToast('Заполните имя и email', 'warning'); return; }
     const btn = document.getElementById('btnCreateUser');
-    btn.textContent = 'Создание...';
-    btn.disabled = true;
-    
+    btn.textContent = 'Создание...'; btn.disabled = true;
     try {
-      const { data, error } = await supabaseClient.rpc('create_user_with_role', {
-        p_email: email,
-        p_password: 'Cliply2026!',
-        p_full_name: name,
-        p_role_level: role
-      });
-      
+      const { data, error } = await supabaseClient.rpc('create_user_with_role', { p_email: email, p_password: 'Cliply2026!', p_full_name: name, p_role_level: role });
       if (error) throw error;
-      
-      document.getElementById('newUserName').value = '';
-      document.getElementById('newUserEmail').value = '';
+      document.getElementById('newUserName').value = ''; document.getElementById('newUserEmail').value = '';
       await loadUsers();
       showToast(`Пользователь ${name} создан! Пароль: Cliply2026!`, 'success');
     } catch (e) {
       try {
-        const { error: insertError } = await supabaseClient
-          .from('profiles')
-          .insert({ email: email, full_name: name, role_level: role });
-        
+        const { error: insertError } = await supabaseClient.from('profiles').insert({ email: email, full_name: name, role_level: role });
         if (insertError) throw insertError;
-        
-        document.getElementById('newUserName').value = '';
-        document.getElementById('newUserEmail').value = '';
+        document.getElementById('newUserName').value = ''; document.getElementById('newUserEmail').value = '';
         await loadUsers();
         showToast(`Пользователь ${name} добавлен!`, 'success');
-      } catch (e2) {
-        showToast('Ошибка: ' + e2.message, 'error');
-      }
-    } finally {
-      btn.textContent = 'Создать';
-      btn.disabled = false;
-    }
+      } catch (e2) { showToast('Ошибка: ' + e2.message, 'error'); }
+    } finally { btn.textContent = 'Создать'; btn.disabled = false; }
   };
 
   window.changeUserRole = async function(userId, newRole) {
     try {
-      const { error } = await supabaseClient
-        .from('profiles')
-        .update({ role_level: parseInt(newRole) })
-        .eq('id', userId);
-      
+      const { error } = await supabaseClient.from('profiles').update({ role_level: parseInt(newRole) }).eq('id', userId);
       if (error) throw error;
-      showToast('Роль изменена', 'success');
-      await loadUsers();
-    } catch (e) {
-      showToast('Ошибка: ' + e.message, 'error');
-    }
+      showToast('Роль изменена', 'success'); await loadUsers();
+    } catch (e) { showToast('Ошибка: ' + e.message, 'error'); }
   };
 
   window.promoteUser = async function(userId, newRole) {
     try {
-      const { error } = await supabaseClient
-        .from('profiles')
-        .update({ role_level: parseInt(newRole) })
-        .eq('id', userId);
-      
+      const { error } = await supabaseClient.from('profiles').update({ role_level: parseInt(newRole) }).eq('id', userId);
       if (error) throw error;
-      
       const newRoleName = parseInt(newRole) === 2 ? 'Admin' : 'Moderator';
-      showToast(`Пользователь повышен до ${newRoleName}`, 'success');
-      await loadUsers();
-    } catch (e) {
-      showToast('Ошибка: ' + e.message, 'error');
-    }
+      showToast(`Пользователь повышен до ${newRoleName}`, 'success'); await loadUsers();
+    } catch (e) { showToast('Ошибка: ' + e.message, 'error'); }
   };
 
   window.deleteUser = async function(userId) {
     if (!confirm('Удалить этого пользователя?')) return;
-    
     try {
       const { error } = await supabaseClient.rpc('delete_user_by_id', { p_user_id: userId });
       if (error) throw error;
-      await loadUsers();
-      showToast('Пользователь удалён', 'success');
+      await loadUsers(); showToast('Пользователь удалён', 'success');
     } catch (e) {
       try {
         const { error: deleteError } = await supabaseClient.from('profiles').delete().eq('id', userId);
         if (deleteError) throw deleteError;
-        await loadUsers();
-        showToast('Пользователь удалён', 'success');
-      } catch (e2) {
-        showToast('Ошибка: ' + e2.message, 'error');
-      }
+        await loadUsers(); showToast('Пользователь удалён', 'success');
+      } catch (e2) { showToast('Ошибка: ' + e2.message, 'error'); }
     }
   };
 
   async function loadAllConversations() {
     try {
-      const { data, error } = await supabaseClient
-        .from('support_conversations')
-        .select(`
-          id, user_id, user_name, user_email, status, created_at, updated_at,
-          support_messages(message, sender, created_at, is_read)
-        `)
-        .order('updated_at', { ascending: false });
-      
-      if (error) {
-        const list = document.getElementById('adminConvList');
-        if (list) list.innerHTML = '<div class="conv-list-header">Все обращения</div><div class="conv-list-empty">Ошибка загрузки</div>';
-        return;
-      }
-      
+      const { data, error } = await supabaseClient.from('support_conversations').select(`id, user_id, user_name, user_email, status, created_at, updated_at, support_messages(message, sender, created_at, is_read)`).order('updated_at', { ascending: false });
+      if (error) { const list = document.getElementById('adminConvList'); if (list) list.innerHTML = '<div class="conv-list-header">Все обращения</div><div class="conv-list-empty">Ошибка загрузки</div>'; return; }
       allConversations = data || [];
       renderAdminConvList();
-    } catch (e) {
-      console.error('Load conversations error:', e);
-    }
+    } catch (e) { console.error('Load conversations error:', e); }
   }
 
   function updateOpenConvBadge() {
     const openCount = allConversations.filter(c => c.status === 'open').length;
     const badge = document.getElementById('openConvCount');
-    if (badge) {
-      if (openCount > 0) {
-        badge.textContent = openCount;
-        badge.style.display = 'inline';
-      } else {
-        badge.style.display = 'none';
-      }
-    }
+    if (badge) { if (openCount > 0) { badge.textContent = openCount; badge.style.display = 'inline'; } else { badge.style.display = 'none'; } }
   }
 
   function renderAdminConvList() {
     const list = document.getElementById('adminConvList');
     if (!list) return;
-    
-    if (allConversations.length === 0) {
-      list.innerHTML = '<div class="conv-list-header">Все обращения</div><div class="conv-list-empty">Нет обращений</div>';
-      return;
-    }
-    
+    if (allConversations.length === 0) { list.innerHTML = '<div class="conv-list-header">Все обращения</div><div class="conv-list-empty">Нет обращений</div>'; return; }
     let html = '<div class="conv-list-header">Все обращения</div>';
     html += allConversations.map(conv => {
       const msgs = conv.support_messages || [];
       const lastMsg = msgs.length > 0 ? msgs[msgs.length - 1].message : 'Нет сообщений';
-      
       const hasUnread = msgs.some(m => m.sender === 'user' && m.is_read === false);
       const readClass = hasUnread ? 'unread' : 'read';
       const isActive = conv.id === activeAdminConvId ? 'active' : '';
-      
       const date = new Date(conv.updated_at || conv.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
       const time = new Date(conv.updated_at || conv.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
       const statusClass = conv.status === 'open' ? 'open' : 'closed';
       const statusText = conv.status === 'open' ? 'Открыто' : 'Закрыто';
-      
-      return `
-        <div class="conv-list-item ${isActive} ${readClass}" data-id="${conv.id}" onclick="selectAdminConversation('${conv.id}')">
-          <div class="conv-list-name">${conv.user_name || 'Гость'}</div>
-          <div class="conv-list-email">${conv.user_email || '—'}</div>
-          <div class="conv-list-preview">${lastMsg.substring(0, 45)}${lastMsg.length > 45 ? '...' : ''}</div>
-          <div class="conv-list-meta">
-            <span class="conv-list-date">${date} ${time}</span>
-            <span class="conv-list-status ${statusClass}">${statusText}</span>
-          </div>
-        </div>
-      `;
+      return `<div class="conv-list-item ${isActive} ${readClass}" data-id="${conv.id}" onclick="selectAdminConversation('${conv.id}')"><div class="conv-list-name">${conv.user_name || 'Гость'}</div><div class="conv-list-email">${conv.user_email || '—'}</div><div class="conv-list-preview">${lastMsg.substring(0, 45)}${lastMsg.length > 45 ? '...' : ''}</div><div class="conv-list-meta"><span class="conv-list-date">${date} ${time}</span><span class="conv-list-status ${statusClass}">${statusText}</span></div></div>`;
     }).join('');
-    
     list.innerHTML = html;
   }
 
   window.selectAdminConversation = async function(convId) {
     activeAdminConvId = convId;
-    
     document.querySelectorAll('.conv-list-item').forEach(el => el.classList.remove('active'));
     const activeEl = document.querySelector(`.conv-list-item[data-id="${convId}"]`);
     if (activeEl) activeEl.classList.add('active');
-    
     const conv = allConversations.find(c => c.id === convId);
     if (!conv) return;
-    
     const unreadMsgs = (conv.support_messages || []).filter(m => m.sender === 'user' && m.is_read === false);
-    if (unreadMsgs.length > 0) {
-      await supabaseClient
-        .from('support_messages')
-        .update({ is_read: true })
-        .in('id', unreadMsgs.map(m => m.id));
-    }
-    
-    const { data: messages } = await supabaseClient
-      .from('support_messages')
-      .select('*')
-      .eq('conversation_id', convId)
-      .order('created_at', { ascending: true });
-    
+    if (unreadMsgs.length > 0) { await supabaseClient.from('support_messages').update({ is_read: true }).in('id', unreadMsgs.map(m => m.id)); }
+    const { data: messages } = await supabaseClient.from('support_messages').select('*').eq('conversation_id', convId).order('created_at', { ascending: true });
     const date = new Date(conv.created_at).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-    
     const panel = document.getElementById('adminChatPanel');
-    panel.innerHTML = `
-      <div class="admin-chat-header">
-        <h3>${conv.user_name || 'Гость'} — ${conv.user_email || '—'}</h3>
-        <p>Обращение от ${date} • Статус: ${conv.status === 'open' ? ' Открыто' : '✅ Закрыто'}</p>
-      </div>
-      <div class="admin-chat-messages" id="adminChatMessages">
-        ${messages && messages.length > 0 ? messages.map(msg => `
-          <div class="admin-msg ${msg.sender}">
-            <div class="msg-sender">${msg.sender === 'admin' ? '👨‍💼 Вы (Поддержка)' : '👤 ' + (conv.user_name || 'Пользователь')}</div>
-            <div class="admin-msg-text">${msg.message}</div>
-            <div class="admin-msg-time">${new Date(msg.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</div>
-          </div>
-        `).join('') : '<div class="admin-chat-empty"><div style="font-size:48px;margin-bottom:12px;opacity:0.5;">💬</div><div>Нет сообщений</div></div>'}
-      </div>
-      <div class="admin-chat-input-area">
-        <textarea class="admin-chat-input" id="adminChatInput" placeholder="Напишите ответ..." rows="1"></textarea>
-        <button class="admin-chat-send" id="adminChatSend" onclick="sendAdminReply()">Ответить</button>
-      </div>
-      <div class="admin-chat-actions">
-        ${conv.status === 'open' 
-          ? `<button class="btn-admin-action" onclick="closeAdminConv()">✅ Закрыть обращение</button>`
-          : `<button class="btn-admin-action" onclick="reopenAdminConv()">🔄 Открыть заново</button>`
-        }
-        <button class="btn-admin-action danger" onclick="deleteAdminConv()">🗑 Удалить</button>
-      </div>
-    `;
-    
+    panel.innerHTML = `<div class="admin-chat-header"><h3>${conv.user_name || 'Гость'} — ${conv.user_email || '—'}</h3><p>Обращение от ${date} • Статус: ${conv.status === 'open' ? '🟡 Открыто' : '✅ Закрыто'}</p></div><div class="admin-chat-messages" id="adminChatMessages">${messages && messages.length > 0 ? messages.map(msg => `<div class="admin-msg ${msg.sender}"><div class="msg-sender">${msg.sender === 'admin' ? '👨‍💼 Вы (Поддержка)' : '👤 ' + (conv.user_name || 'Пользователь')}</div><div class="admin-msg-text">${msg.message}</div><div class="admin-msg-time">${new Date(msg.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</div></div>`).join('') : '<div class="admin-chat-empty"><div style="font-size:48px;margin-bottom:12px;opacity:0.5;">💬</div><div>Нет сообщений</div></div>'}</div><div class="admin-chat-input-area"><textarea class="admin-chat-input" id="adminChatInput" placeholder="Напишите ответ..." rows="1"></textarea><button class="admin-chat-send" id="adminChatSend" onclick="sendAdminReply()">Ответить</button></div><div class="admin-chat-actions">${conv.status === 'open' ? `<button class="btn-admin-action" onclick="closeAdminConv()">✅ Закрыть обращение</button>` : `<button class="btn-admin-action" onclick="reopenAdminConv()">🔄 Открыть заново</button>`}<button class="btn-admin-action danger" onclick="deleteAdminConv()">🗑 Удалить</button></div>`;
     const input = document.getElementById('adminChatInput');
-    input.addEventListener('input', () => {
-      input.style.height = 'auto';
-      input.style.height = Math.min(input.scrollHeight, 100) + 'px';
-    });
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendAdminReply();
-      }
-    });
-    
-    setTimeout(() => {
-      const msgs = document.getElementById('adminChatMessages');
-      if (msgs) msgs.scrollTop = msgs.scrollHeight;
-    }, 100);
-    
+    input.addEventListener('input', () => { input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 100) + 'px'; });
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendAdminReply(); } });
+    setTimeout(() => { const msgs = document.getElementById('adminChatMessages'); if (msgs) msgs.scrollTop = msgs.scrollHeight; }, 100);
     await loadAllConversations();
   };
 
@@ -700,64 +673,33 @@
     const input = document.getElementById('adminChatInput');
     const text = input.value.trim();
     if (!text || !activeAdminConvId) return;
-    
     const btn = document.getElementById('adminChatSend');
-    btn.disabled = true;
-    btn.textContent = '...';
-    
+    btn.disabled = true; btn.textContent = '...';
     try {
-      await supabaseClient.from('support_messages').insert({
-        conversation_id: activeAdminConvId,
-        sender: 'admin',
-        message: text,
-        is_read: true
-      });
-      
-      await supabaseClient
-        .from('support_conversations')
-        .update({ status: 'open', updated_at: new Date().toISOString() })
-        .eq('id', activeAdminConvId);
-      
-      // Создаём уведомление для пользователя
+      await supabaseClient.from('support_messages').insert({ conversation_id: activeAdminConvId, sender: 'admin', message: text, is_read: true });
+      await supabaseClient.from('support_conversations').update({ status: 'open', updated_at: new Date().toISOString() }).eq('id', activeAdminConvId);
       const conv = allConversations.find(c => c.id === activeAdminConvId);
       if (conv && conv.user_id) {
-        await supabaseClient.from('notifications').insert({
-          user_id: conv.user_id,
-          type: 'support_reply',
-          title: 'Вам ответили в поддержке',
-          message: text.substring(0, 100) + (text.length > 100 ? '...' : ''),
-          link: 'support.html',
-          is_read: false
-        });
+        await supabaseClient.from('notifications').insert({ user_id: conv.user_id, type: 'support_reply', title: 'Вам ответили в поддержке', message: text.substring(0, 100) + (text.length > 100 ? '...' : ''), link: 'support.html', is_read: false });
       }
-      
-      input.value = '';
-      input.style.height = 'auto';
+      input.value = ''; input.style.height = 'auto';
       await selectAdminConversation(activeAdminConvId);
       showToast('Ответ отправлен', 'success');
-    } catch (e) {
-      showToast('Ошибка: ' + e.message, 'error');
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Ответить';
-    }
+    } catch (e) { showToast('Ошибка: ' + e.message, 'error'); }
+    finally { btn.disabled = false; btn.textContent = 'Ответить'; }
   };
 
   window.closeAdminConv = async function() {
     if (!activeAdminConvId) return;
     await supabaseClient.from('support_conversations').update({ status: 'closed', updated_at: new Date().toISOString() }).eq('id', activeAdminConvId);
-    await loadAllConversations();
-    updateOpenConvBadge();
-    selectAdminConversation(activeAdminConvId);
+    await loadAllConversations(); updateOpenConvBadge(); selectAdminConversation(activeAdminConvId);
     showToast('Обращение закрыто', 'success');
   };
 
   window.reopenAdminConv = async function() {
     if (!activeAdminConvId) return;
     await supabaseClient.from('support_conversations').update({ status: 'open', updated_at: new Date().toISOString() }).eq('id', activeAdminConvId);
-    await loadAllConversations();
-    updateOpenConvBadge();
-    selectAdminConversation(activeAdminConvId);
+    await loadAllConversations(); updateOpenConvBadge(); selectAdminConversation(activeAdminConvId);
     showToast('Обращение открыто заново', 'success');
   };
 
@@ -766,23 +708,148 @@
     if (!confirm('Удалить это обращение и все сообщения?')) return;
     await supabaseClient.from('support_conversations').delete().eq('id', activeAdminConvId);
     activeAdminConvId = null;
-    await loadAllConversations();
-    updateOpenConvBadge();
-    renderAdminConvList();
+    await loadAllConversations(); updateOpenConvBadge(); renderAdminConvList();
     document.getElementById('adminChatPanel').innerHTML = '<div class="admin-chat-empty"><div style="font-size:48px;margin-bottom:12px;opacity:0.5;">👈</div><div>Выберите обращение слева</div></div>';
     showToast('Обращение удалено', 'success');
   };
 
   function startSupportRefresh() {
     if (supportRefreshInterval) clearInterval(supportRefreshInterval);
-    supportRefreshInterval = setInterval(async () => {
-      await loadAllConversations();
-      updateOpenConvBadge();
-      if (activeAdminConvId) {
-        renderAdminConvList();
-      }
-    }, 10000);
+    supportRefreshInterval = setInterval(async () => { await loadAllConversations(); updateOpenConvBadge(); if (activeAdminConvId) renderAdminConvList(); }, 10000);
   }
+
+  // ===== ГАЛЕРЕЯ МОДЕРАЦИЯ =====
+  async function loadGalleryVideos() {
+    try {
+      const { data, error } = await supabaseClient.from('gallery_videos').select('*').order('created_at', { ascending: false });
+      if (error) { console.error('Gallery load error:', error); return; }
+      galleryVideos = data || [];
+      renderGalleryModeration();
+      updateGalleryBadge();
+    } catch (e) { console.error('Load gallery error:', e); }
+  }
+
+  function updateGalleryBadge() {
+    const pendingCount = galleryVideos.filter(v => v.status === 'pending').length;
+    const badge = document.getElementById('pendingGalleryCount');
+    if (badge) {
+      if (pendingCount > 0) { badge.textContent = pendingCount; badge.style.display = 'inline'; }
+      else { badge.style.display = 'none'; }
+    }
+    
+    const counts = {
+      all: galleryVideos.length,
+      pending: galleryVideos.filter(v => v.status === 'pending').length,
+      approved: galleryVideos.filter(v => v.status === 'approved').length,
+      rejected: galleryVideos.filter(v => v.status === 'rejected').length
+    };
+    
+    const elAll = document.getElementById('galleryFilterAll');
+    const elPending = document.getElementById('galleryFilterPending');
+    const elApproved = document.getElementById('galleryFilterApproved');
+    const elRejected = document.getElementById('galleryFilterRejected');
+    const elTotal = document.getElementById('galleryTotalCount');
+    
+    if (elAll) elAll.textContent = counts.all;
+    if (elPending) elPending.textContent = counts.pending;
+    if (elApproved) elApproved.textContent = counts.approved;
+    if (elRejected) elRejected.textContent = counts.rejected;
+    if (elTotal) elTotal.textContent = counts.all + ' видео';
+  }
+
+  function renderGalleryModeration() {
+    const grid = document.getElementById('galleryModerationGrid');
+    if (!grid) return;
+    
+    let filtered = galleryVideos;
+    if (currentGalleryFilter !== 'all') {
+      filtered = galleryVideos.filter(v => v.status === currentGalleryFilter);
+    }
+    
+    if (filtered.length === 0) {
+      grid.innerHTML = `<div class="gallery-mod-empty"><div class="gallery-mod-empty-icon">🖼️</div><div>Нет видео${currentGalleryFilter !== 'all' ? ' в этой категории' : ''}</div></div>`;
+      return;
+    }
+    
+    grid.innerHTML = filtered.map(video => {
+      const initial = (video.user_name || '?').charAt(0).toUpperCase();
+      const date = new Date(video.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
+      const statusText = video.status === 'pending' ? 'Ожидает' : video.status === 'approved' ? 'Одобрено' : 'Отклонено';
+      const statusClass = `status-${video.status}`;
+      
+      let actionsHtml = '';
+      if (video.status === 'pending') {
+        actionsHtml = `
+          <button class="btn-approve" onclick="approveGalleryVideo('${video.id}')">✓ Одобрить</button>
+          <button class="btn-reject" onclick="rejectGalleryVideo('${video.id}')"> Отклонить</button>
+        `;
+      } else if (video.status === 'approved') {
+        actionsHtml = `<button class="btn-reject" onclick="rejectGalleryVideo('${video.id}')">Отменить одобрение</button>`;
+      } else {
+        actionsHtml = `<button class="btn-approve" onclick="approveGalleryVideo('${video.id}')">Одобрить снова</button>`;
+      }
+      
+      return `
+        <div class="gallery-mod-card ${statusClass}">
+          <div class="gallery-mod-header">
+            <div class="gallery-mod-title">${video.product_name || 'Без названия'}</div>
+            <div class="gallery-mod-status">${statusText}</div>
+          </div>
+          <div class="gallery-mod-author">
+            <div class="gallery-mod-author-avatar">${initial}</div>
+            <span>${video.user_name || 'Неизвестно'}</span>
+          </div>
+          <div class="gallery-mod-description">${video.product_description || 'Без описания'}</div>
+          <div class="gallery-mod-meta">
+            <span> ${date}</span>
+            <span>❤️ ${video.likes_count || 0} • 👁 ${video.views_count || 0}</span>
+          </div>
+          <div class="gallery-mod-actions">
+            ${actionsHtml}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  document.getElementById('galleryFilters').addEventListener('click', (e) => {
+    const btn = e.target.closest('.gallery-filter-btn');
+    if (!btn) return;
+    document.querySelectorAll('.gallery-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentGalleryFilter = btn.dataset.filter;
+    renderGalleryModeration();
+  });
+
+  window.approveGalleryVideo = async function(videoId) {
+    if (!confirm('Одобрить это видео для публикации в галерее?')) return;
+    try {
+      const { error } = await supabaseClient.from('gallery_videos').update({
+        status: 'approved',
+        approved_at: new Date().toISOString(),
+        approved_by: currentUser.id
+      }).eq('id', videoId);
+      
+      if (error) throw error;
+      showToast('Видео одобрено и опубликовано в галерее!', 'success');
+      await loadGalleryVideos();
+    } catch (e) { showToast('Ошибка: ' + e.message, 'error'); }
+  };
+
+  window.rejectGalleryVideo = async function(videoId) {
+    if (!confirm('Отклонить это видео?')) return;
+    try {
+      const { error } = await supabaseClient.from('gallery_videos').update({
+        status: 'rejected',
+        approved_at: null,
+        approved_by: null
+      }).eq('id', videoId);
+      
+      if (error) throw error;
+      showToast('Видео отклонено', 'success');
+      await loadGalleryVideos();
+    } catch (e) { showToast('Ошибка: ' + e.message, 'error'); }
+  };
 
   initAdmin();
 })();
@@ -792,9 +859,7 @@
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.getRegistrations().then(registrations => {
-      for (let registration of registrations) {
-        registration.update();
-      }
+      for (let registration of registrations) { registration.update(); }
     });
   });
 }
