@@ -1,8 +1,12 @@
-// ===== AUTH.JS — Безопасная авторизация =====
-// Версия: 2.0.0 (с защитой от брутфорса)
+// ===== AUTH.JS — Безопасная авторизация Cliply =====
+// Версия: 2.0.0 (с защитой от брутфорса и enumeration)
+// Закрывает задачи: 5, 6, 20, 21, 26
 
 const SUPABASE_URL = 'https://djvdklcahpqbjotukmxt.supabase.co';
-const SUPABASE_ANON_KEY = 'твой_anon_key_сюда'; // ТОЛЬКО anon key!
+
+// ⚠️ ВАЖНО: Вставь сюда свой ANON PUBLIC KEY из настроек Supabase (Settings -> API)
+// НИКОГДА не вставляй сюда service_role key!
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqdmRrbGNhaHBxYmpvdHVrbXh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1NTE3NzIsImV4cCI6MjEwNjEyNzc3Mn0.7vKBE_sIlpnN0NMa1gWekDTpaKiGGipOGsmmoNpt7eI'; 
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -13,46 +17,41 @@ const ROLES = {
   4: { name: 'User', color: '#A1A1AA' }
 };
 
-// ===== БЕЗОПАСНЫЙ ВХОД =====
+// ===== БЕЗОПАСНЫЙ ВХОД (Защита от брутфорса и enumeration) =====
 async function safeLogin(email, password) {
-  // Валидация email
+  // 1. Проверка rate limit (если security.js загружен)
   if (typeof SecurityUtils !== 'undefined') {
-    if (!SecurityUtils.isValidEmail(email)) {
-      return { error: { message: 'Некорректный email' } };
-    }
-    
-    if (SecurityUtils.isDisposableEmail(email)) {
-      return { error: { message: 'Одноразовые email не поддерживаются' } };
-    }
-    
-    // Rate limit
     const limit = SecurityUtils.checkActionLimit('login');
     if (!limit.allowed) {
       return { error: { message: `Слишком много попыток. Подождите ${limit.waitSeconds} сек.` } };
     }
+    
+    if (!SecurityUtils.isValidEmail(email)) {
+      return { error: { message: 'Некорректный формат email' } };
+    }
   }
-  
+
   try {
     const { data, error } = await supabaseClient.auth.signInWithPassword({
       email: email.trim().toLowerCase(),
       password: password
     });
-    
+
     if (error) {
-      // Логируем неудачную попытку (если есть функция)
+      // Логируем подозрительную активность
       if (typeof SecurityUtils !== 'undefined') {
         SecurityUtils.suspiciousActivity.log('failed_login', { email: SecurityUtils.maskEmail(email) });
       }
       
-      // Одинаковое сообщение для всех ошибок (защита от enumeration)
+      // Одинаковое сообщение для всех ошибок (защита от перебора email)
       return { error: { message: 'Неверный email или пароль' } };
     }
-    
+
     // Успешный вход
     if (typeof SecurityUtils !== 'undefined') {
       SecurityUtils.suspiciousActivity.log('successful_login', {});
     }
-    
+
     return { data, error: null };
   } catch (e) {
     return { error: { message: 'Ошибка соединения. Попробуйте позже.' } };
@@ -61,46 +60,49 @@ async function safeLogin(email, password) {
 
 // ===== БЕЗОПАСНАЯ РЕГИСТРАЦИЯ =====
 async function safeSignup(email, password, fullName) {
+  // 1. Валидация на клиенте
   if (typeof SecurityUtils !== 'undefined') {
-    if (!SecurityUtils.isValidEmail(email)) {
-      return { error: { message: 'Некорректный email' } };
+    const limit = SecurityUtils.checkActionLimit('signup');
+    if (!limit.allowed) {
+      return { error: { message: `Слишком много попыток. Подождите ${limit.waitSeconds} сек.` } };
     }
-    
+
+    if (!SecurityUtils.isValidEmail(email)) {
+      return { error: { message: 'Некорректный формат email' } };
+    }
+
     if (SecurityUtils.isDisposableEmail(email)) {
       return { error: { message: 'Одноразовые email не поддерживаются' } };
     }
-    
+
     const pwdCheck = SecurityUtils.isStrongPassword(password);
     if (!pwdCheck.valid) {
       return { error: { message: pwdCheck.reason } };
     }
-    
-    const nameCheck = SecurityUtils.validateProductName(fullName);
+
+    const nameCheck = SecurityUtils.validateUserName(fullName);
     if (!nameCheck.valid) {
       return { error: { message: nameCheck.reason } };
     }
-    
-    const limit = SecurityUtils.checkActionLimit('login');
-    if (!limit.allowed) {
-      return { error: { message: `Слишком много попыток. Подождите ${limit.waitSeconds} сек.` } };
-    }
+    fullName = nameCheck.value;
   }
-  
+
   try {
     const { data, error } = await supabaseClient.auth.signUp({
       email: email.trim().toLowerCase(),
       password: password,
       options: {
         data: {
-          full_name: fullName.trim()
+          full_name: fullName
         }
       }
     });
-    
+
     if (error) {
-      return { error: { message: 'Ошибка регистрации. Возможно, email уже используется.' } };
+      // Одинаковое сообщение, чтобы не раскрывать занятость email
+      return { error: { message: 'Ошибка регистрации. Возможно, этот email уже используется.' } };
     }
-    
+
     return { data, error: null };
   } catch (e) {
     return { error: { message: 'Ошибка соединения. Попробуйте позже.' } };
@@ -112,20 +114,20 @@ async function getCurrentUser() {
   try {
     const { data: { user }, error } = await supabaseClient.auth.getUser();
     if (error || !user) return null;
-    
+
     const { data: profile } = await supabaseClient
       .from('profiles')
       .select('*')
       .eq('id', user.id)
       .single();
-    
+
     return { ...user, profile };
   } catch (e) {
     return null;
   }
 }
 
-// ===== ТРЕБОВАНИЕ АВТОРИЗАЦИИ =====
+// ===== ТРЕБОВАНИЕ АВТОРИЗАЦИИ (для защищенных страниц) =====
 async function requireAuth() {
   const user = await getCurrentUser();
   if (!user) {
@@ -140,7 +142,7 @@ async function logout() {
   try {
     await supabaseClient.auth.signOut();
     
-    // Очистка всех данных
+    // Полная очистка хранилища
     if (typeof SecurityUtils !== 'undefined') {
       SecurityUtils.secureStorage.clear();
     }
@@ -155,13 +157,13 @@ async function logout() {
   }
 }
 
-// ===== ПРОВЕРКА РЕФЕРАЛЬНОГО КОДА =====
+// ===== ПРОВЕРКА РЕФЕРАЛЬНОГО КОДА (защита от XSS в URL) =====
 function getReferralCode() {
   const params = new URLSearchParams(window.location.search);
   const ref = params.get('ref');
   
   if (ref && typeof SecurityUtils !== 'undefined') {
-    // Валидация реферального кода (только буквы и цифры, 8 символов)
+    // Разрешаем только заглавные буквы и цифры, ровно 8 символов
     if (/^[A-Z0-9]{8}$/.test(ref)) {
       return ref;
     }
@@ -169,3 +171,13 @@ function getReferralCode() {
   
   return null;
 }
+
+// Экспортируем функции в глобальную область
+window.supabaseClient = supabaseClient;
+window.ROLES = ROLES;
+window.safeLogin = safeLogin;
+window.safeSignup = safeSignup;
+window.getCurrentUser = getCurrentUser;
+window.requireAuth = requireAuth;
+window.logout = logout;
+window.getReferralCode = getReferralCode;
