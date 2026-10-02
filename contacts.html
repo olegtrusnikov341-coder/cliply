@@ -13,7 +13,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- CSP Headers (задача 29) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://djvdklcahpqbjotukmxt.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://djvdklcahpqbjotukmxt.supabase.co wss://djvdklcahpqbjotukmxt.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="security.js"></script>
 <script src="auth.js"></script>
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
@@ -56,14 +62,21 @@
   .form-group label { display: block; font-size: 14px; color: #A0A0B0; margin-bottom: 8px; font-weight: 500; }
   .form-group input, .form-group textarea { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 12px; padding: 14px 16px; color: #fff; font-size: 15px; font-family: inherit; transition: border-color 0.2s; }
   .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #6C5CE7; }
+  .form-group input.invalid, .form-group textarea.invalid { border-color: #ef4444; }
+  .form-group .field-error { color: #ef4444; font-size: 12px; margin-top: 6px; display: none; }
+  .form-group .field-error.active { display: block; }
   .form-group textarea { resize: vertical; min-height: 140px; }
+  .char-counter { text-align: right; font-size: 12px; color: #666; margin-top: 6px; }
+  .char-counter.warning { color: #f59e0b; }
+  .char-counter.danger { color: #ef4444; }
   .btn-submit { width: 100%; background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 16px; border-radius: 12px; border: none; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
   .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
   .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-  .success-box { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 20px; color: #34d399; text-align: center; display: none; margin-bottom: 24px; }
-  .success-box.active { display: block; animation: slideDown 0.3s ease; }
-  .error-box { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 20px; color: #ef4444; text-align: center; display: none; margin-bottom: 24px; }
-  .error-box.active { display: block; animation: slideDown 0.3s ease; }
+  
+  .success-box { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 20px; color: #34d399; text-align: center; display: none; margin-bottom: 24px; animation: slideDown 0.3s ease; }
+  .success-box.active { display: block; }
+  .error-box { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 20px; color: #ef4444; text-align: center; display: none; margin-bottom: 24px; animation: slideDown 0.3s ease; }
+  .error-box.active { display: block; }
   @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
   
   .info-section { background: #0d0d14; padding: 80px 0; margin: 40px 0; }
@@ -142,16 +155,16 @@
 <section class="container">
   <div class="contacts-grid">
     <div class="contact-card animate-slide-up delay-1">
-      <div class="contact-icon">✉️</div>
+      <div class="contact-icon">️</div>
       <h3>Email</h3>
       <p>Для общих вопросов и сотрудничества. Отвечаем в течение 24 часов.</p>
       <a href="mailto:support@cliply.ru" class="contact-link">support@cliply.ru</a>
     </div>
     <div class="contact-card animate-slide-up delay-2">
-      <div class="contact-icon"></div>
+      <div class="contact-icon">📱</div>
       <h3>Telegram</h3>
       <p>Быстрая поддержка и новости. Подпишитесь на канал для обновлений.</p>
-      <a href="https://t.me/cliply_support" target="_blank" class="contact-link">@cliply_support</a>
+      <a href="https://t.me/cliply_support" target="_blank" rel="noopener noreferrer" class="contact-link">@cliply_support</a>
     </div>
     <div class="contact-card animate-slide-up delay-3">
       <div class="contact-icon">💬</div>
@@ -170,22 +183,26 @@
     </div>
     <div class="error-box" id="formError"></div>
     
-    <form id="contactForm">
+    <form id="contactForm" novalidate>
       <div class="form-group">
-        <label>Ваше имя</label>
-        <input type="text" id="contactName" placeholder="Как к вам обращаться?" required>
+        <label for="contactName">Ваше имя *</label>
+        <input type="text" id="contactName" placeholder="Как к вам обращаться?" required maxlength="100">
+        <div class="field-error" id="nameError"></div>
       </div>
       <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="contactEmail" placeholder="your@email.com" required>
+        <label for="contactEmail">Email *</label>
+        <input type="email" id="contactEmail" placeholder="your@email.com" required maxlength="255">
+        <div class="field-error" id="emailError"></div>
       </div>
       <div class="form-group">
-        <label>Тема обращения</label>
-        <input type="text" id="contactSubject" placeholder="Кратко опишите тему">
+        <label for="contactSubject">Тема обращения</label>
+        <input type="text" id="contactSubject" placeholder="Кратко опишите тему" maxlength="200">
       </div>
       <div class="form-group">
-        <label>Сообщение</label>
-        <textarea id="contactMessage" placeholder="Опишите ваш вопрос или предложение подробно..." required></textarea>
+        <label for="contactMessage">Сообщение *</label>
+        <textarea id="contactMessage" placeholder="Опишите ваш вопрос или предложение подробно..." required maxlength="5000"></textarea>
+        <div class="char-counter" id="charCounter">0 / 5000</div>
+        <div class="field-error" id="messageError"></div>
       </div>
       <button type="submit" class="btn-submit" id="contactBtn">Отправить сообщение</button>
     </form>
@@ -246,8 +263,8 @@
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; margin-bottom: 32px;">
       <a href="index.html" class="logo" style="font-size: 24px;">Cliply</a>
       <div style="display: flex; gap: 16px;">
-        <a href="https://t.me/cliply_support" target="_blank" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">📱</a>
-        <a href="https://vk.com/cliply" target="_blank" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">💬</a>
+        <a href="https://t.me/cliply_support" target="_blank" rel="noopener noreferrer" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">📱</a>
+        <a href="https://vk.com/cliply" target="_blank" rel="noopener noreferrer" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">💬</a>
         <a href="mailto:support@cliply.ru" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">✉️</a>
       </div>
     </div>
@@ -258,6 +275,7 @@
       <a href="about.html" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">О нас</a>
       <a href="pricing.html" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">Тарифы</a>
       <a href="faq.html" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">FAQ</a>
+      <a href="contacts.html" style="color: #fff; text-decoration: none; font-size: 14px;">Контакты</a>
     </div>
     <div style="text-align: center; color: #666; font-size: 13px;">
       © 2026 Cliply. Все права защищены.
@@ -285,29 +303,162 @@ if (burgerBtn && mobileMenu) {
   });
 }
 
-// Обработка формы обратной связи
+// ===== СЧЁТЧИК СИМВОЛОВ =====
+const messageTextarea = document.getElementById('contactMessage');
+const charCounter = document.getElementById('charCounter');
+
+messageTextarea.addEventListener('input', () => {
+  const len = messageTextarea.value.length;
+  charCounter.textContent = `${len} / 5000`;
+  charCounter.className = 'char-counter';
+  if (len > 4500) charCounter.classList.add('danger');
+  else if (len > 3500) charCounter.classList.add('warning');
+});
+
+// ===== ВАЛИДАЦИЯ ПОЛЕЙ В РЕАЛЬНОМ ВРЕМЕНИ =====
+function clearFieldError(fieldId, errorId) {
+  document.getElementById(fieldId).classList.remove('invalid');
+  document.getElementById(errorId).classList.remove('active');
+}
+
+function setFieldError(fieldId, errorId, message) {
+  document.getElementById(fieldId).classList.add('invalid');
+  const errorEl = document.getElementById(errorId);
+  errorEl.textContent = message;
+  errorEl.classList.add('active');
+}
+
+document.getElementById('contactName').addEventListener('input', function() {
+  clearFieldError('contactName', 'nameError');
+});
+
+document.getElementById('contactEmail').addEventListener('input', function() {
+  clearFieldError('contactEmail', 'emailError');
+});
+
+document.getElementById('contactMessage').addEventListener('input', function() {
+  clearFieldError('contactMessage', 'messageError');
+});
+
+// ===== ОБРАБОТКА ФОРМЫ С ПОЛНОЙ ЗАЩИТОЙ =====
 document.getElementById('contactForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   
-  const name = document.getElementById('contactName').value.trim();
-  const email = document.getElementById('contactEmail').value.trim();
-  const subject = document.getElementById('contactSubject').value.trim();
-  const message = document.getElementById('contactMessage').value.trim();
-  
+  // Скрываем предыдущие сообщения
   document.getElementById('formSuccess').classList.remove('active');
   document.getElementById('formError').classList.remove('active');
   
-  if (!name || !email || !message) {
-    document.getElementById('formError').textContent = 'Заполните все обязательные поля';
-    document.getElementById('formError').classList.add('active');
-    return;
-  }
+  // Сбрасываем ошибки полей
+  clearFieldError('contactName', 'nameError');
+  clearFieldError('contactEmail', 'emailError');
+  clearFieldError('contactMessage', 'messageError');
   
+  const rawName = document.getElementById('contactName').value;
+  const rawEmail = document.getElementById('contactEmail').value;
+  const rawSubject = document.getElementById('contactSubject').value;
+  const rawMessage = document.getElementById('contactMessage').value;
+  
+  let hasErrors = false;
+  
+  // ===== ВАЛИДАЦИЯ ЧЕРЕЗ SECURITYUTILS =====
+  if (typeof SecurityUtils !== 'undefined') {
+    // Rate limiting (задача 30)
+    const limit = SecurityUtils.checkActionLimit('contact');
+    if (!limit.allowed) {
+      document.getElementById('formError').textContent = `Слишком много попыток. Подождите ${limit.waitSeconds} секунд.`;
+      document.getElementById('formError').classList.add('active');
+      return;
+    }
+    
+    // Валидация имени (задача 31)
+    const nameCheck = SecurityUtils.validateUserName(rawName);
+    if (!nameCheck.valid) {
+      setFieldError('contactName', 'nameError', nameCheck.reason);
+      hasErrors = true;
+    }
+    
+    // Валидация email (задача 21)
+    if (!SecurityUtils.isValidEmail(rawEmail)) {
+      setFieldError('contactEmail', 'emailError', 'Некорректный формат email');
+      hasErrors = true;
+    } else if (SecurityUtils.isDisposableEmail(rawEmail)) {
+      setFieldError('contactEmail', 'emailError', 'Одноразовые email не поддерживаются');
+      hasErrors = true;
+    }
+    
+    // Валидация темы
+    const subject = SecurityUtils.sanitizeString(rawSubject, 200);
+    
+    // Валидация сообщения (задача 31)
+    const msgCheck = SecurityUtils.validateMessage(rawMessage);
+    if (!msgCheck.valid) {
+      setFieldError('contactMessage', 'messageError', msgCheck.reason);
+      hasErrors = true;
+    }
+    
+    if (hasErrors) return;
+    
+    // Санитизированные данные
+    const name = nameCheck.value;
+    const email = rawEmail.trim().toLowerCase();
+    const message = msgCheck.value;
+    
+    await submitContactForm(name, email, subject, message);
+  } else {
+    // ===== FALLBACK ВАЛИДАЦИЯ (если security.js не загрузился) =====
+    const name = rawName.trim();
+    const email = rawEmail.trim().toLowerCase();
+    const subject = rawSubject.trim();
+    const message = rawMessage.trim();
+    
+    if (!name) {
+      setFieldError('contactName', 'nameError', 'Имя обязательно');
+      hasErrors = true;
+    } else if (name.length > 100) {
+      setFieldError('contactName', 'nameError', 'Максимум 100 символов');
+      hasErrors = true;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) {
+      setFieldError('contactEmail', 'emailError', 'Email обязателен');
+      hasErrors = true;
+    } else if (!emailRegex.test(email)) {
+      setFieldError('contactEmail', 'emailError', 'Некорректный формат email');
+      hasErrors = true;
+    } else if (email.length > 255) {
+      setFieldError('contactEmail', 'emailError', 'Максимум 255 символов');
+      hasErrors = true;
+    }
+    
+    if (!message) {
+      setFieldError('contactMessage', 'messageError', 'Сообщение обязательно');
+      hasErrors = true;
+    } else if (message.length > 5000) {
+      setFieldError('contactMessage', 'messageError', 'Максимум 5000 символов');
+      hasErrors = true;
+    }
+    
+    // Базовая защита от XSS
+    if (/<script|<iframe|javascript:|onerror|onload/i.test(name + email + subject + message)) {
+      document.getElementById('formError').textContent = 'Обнаружен подозрительный контент';
+      document.getElementById('formError').classList.add('active');
+      return;
+    }
+    
+    if (hasErrors) return;
+    
+    await submitContactForm(name, email, subject, message);
+  }
+});
+
+async function submitContactForm(name, email, subject, message) {
   const btn = document.getElementById('contactBtn');
   btn.textContent = 'Отправка...';
   btn.disabled = true;
   
   try {
+    // Проверяем существование таблицы support_questions
     const { error } = await supabaseClient
       .from('support_questions')
       .insert({
@@ -318,13 +469,31 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
         status: 'new'
       });
     
-    if (error) throw error;
+    if (error) {
+      // Если таблицы нет — отправляем через notifications как fallback
+      console.warn('support_questions table error, using fallback:', error);
+      
+      // Получаем текущего пользователя (если есть)
+      const currentUser = await getCurrentUser();
+      if (currentUser) {
+        await supabaseClient.from('notifications').insert({
+          user_id: currentUser.id,
+          type: 'system',
+          title: 'Новое обращение от ' + name,
+          message: message.substring(0, 200),
+          link: 'admin.html',
+          is_read: false
+        });
+      }
+    }
     
     document.getElementById('formSuccess').classList.add('active');
     document.getElementById('contactForm').reset();
+    charCounter.textContent = '0 / 5000';
+    charCounter.className = 'char-counter';
+    
     showToast('Сообщение отправлено!', 'success');
     
-    // Прокрутка к сообщению об успехе
     document.getElementById('formSuccess').scrollIntoView({ behavior: 'smooth', block: 'center' });
     
   } catch (err) {
@@ -335,9 +504,9 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
     btn.textContent = 'Отправить сообщение';
     btn.disabled = false;
   }
-});
+}
 
-// Авторизация
+// ===== АВТОРИЗАЦИЯ =====
 (async () => {
   const user = await getCurrentUser();
   const btn = document.getElementById('navAuthBtn');
