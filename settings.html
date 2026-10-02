@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
 <link rel="stylesheet" href="mobile.css">
+<link rel="stylesheet" href="scroll-animations.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; }
@@ -31,49 +32,51 @@
   .btn-logout { padding: 12px 16px; color: #A0A0B0; border-radius: 8px; font-size: 15px; border: 1px solid #27272a; text-align: center; transition: 0.2s; cursor: pointer; margin-top: 16px; background: transparent; }
   .btn-logout:hover { border-color: #6C5CE7; color: #fff; }
   
-  .main { padding: 32px 48px; max-width: 800px; }
+  .main { padding: 32px 48px; max-width: 900px; }
   .page-header { margin-bottom: 32px; }
   .page-header h1 { font-size: 28px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 8px; }
   .page-header p { color: #A0A0B0; font-size: 15px; }
   
-  .settings-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 32px; margin-bottom: 24px; }
-  .settings-card h2 { font-size: 20px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 24px; }
+  .settings-card { background: #141414; border: 1px solid #27272a; border-radius: 16px; padding: 28px; margin-bottom: 24px; }
+  .settings-card h2 { font-size: 20px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 8px; }
+  .settings-card .subtitle { color: #A0A0B0; font-size: 14px; margin-bottom: 24px; }
   
-  .setting-row { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid #1f1f2e; }
-  .setting-row:last-child { border-bottom: none; }
-  .setting-info { flex: 1; }
-  .setting-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-  .setting-desc { font-size: 13px; color: #A0A0B0; }
-  
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
   .form-group { margin-bottom: 20px; }
   .form-group label { display: block; font-size: 14px; color: #A0A0B0; margin-bottom: 8px; font-weight: 500; }
-  .form-group input, .form-group select { width: 100%; max-width: 400px; background: #0A0A0F; border: 1px solid #27272a; border-radius: 8px; padding: 12px 16px; color: #fff; font-size: 15px; font-family: inherit; }
-  .form-group input:focus, .form-group select:focus { outline: none; border-color: #6C5CE7; }
+  .form-group input { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 10px; padding: 12px 16px; color: #fff; font-size: 15px; font-family: inherit; transition: border-color 0.2s; }
+  .form-group input:focus { outline: none; border-color: #6C5CE7; }
+  .form-group input:disabled { opacity: 0.5; cursor: not-allowed; }
   
-  .btn-save { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 12px 24px; border-radius: 10px; border: none; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-  .btn-save:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
+  .btn-save { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 12px 24px; border-radius: 10px; border: none; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .btn-save:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4); }
   .btn-save:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   
-  .btn-danger { background: transparent; color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 10px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+  /* Переключатели (Toggles) */
+  .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #1f1f2e; }
+  .toggle-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .toggle-row:first-child { padding-top: 0; }
+  .toggle-info h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .toggle-info p { font-size: 13px; color: #A0A0B0; }
+  
+  .switch { position: relative; display: inline-block; width: 50px; height: 28px; flex-shrink: 0; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #27272a; transition: .3s; border-radius: 34px; }
+  .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: #fff; transition: .3s; border-radius: 50%; }
+  input:checked + .slider { background-color: #6C5CE7; }
+  input:checked + .slider:before { transform: translateX(22px); }
+  
+  /* Опасная зона */
+  .danger-zone { border-color: rgba(239, 68, 68, 0.3); }
+  .danger-zone h2 { color: #ef4444; }
+  .btn-danger { background: transparent; color: #ef4444; padding: 10px 20px; border-radius: 10px; border: 1px solid rgba(239, 68, 68, 0.3); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
   .btn-danger:hover { background: rgba(239, 68, 68, 0.1); border-color: #ef4444; }
-  
-  .toggle-switch { position: relative; width: 48px; height: 26px; }
-  .toggle-switch input { opacity: 0; width: 0; height: 0; }
-  .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #27272a; transition: 0.3s; border-radius: 26px; }
-  .toggle-slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: #fff; transition: 0.3s; border-radius: 50%; }
-  .toggle-switch input:checked + .toggle-slider { background-color: #6C5CE7; }
-  .toggle-switch input:checked + .toggle-slider:before { transform: translateX(22px); }
-  
-  .subscription-info { background: rgba(108, 92, 231, 0.1); border: 1px solid rgba(108, 92, 231, 0.3); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
-  .subscription-info h3 { font-size: 16px; margin-bottom: 8px; color: #A29BFE; }
-  .subscription-info p { font-size: 14px; color: #A0A0B0; }
-  .subscription-info strong { color: #fff; }
   
   @media (max-width: 768px) {
     .sidebar { display: none !important; }
     .layout { grid-template-columns: 1fr !important; }
     .main { padding: 20px 16px !important; }
-    .setting-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .form-row { grid-template-columns: 1fr !important; }
   }
 </style>
 </head>
@@ -81,105 +84,131 @@
 <div class="layout">
   <aside class="sidebar">
     <a href="index.html" class="sidebar-logo">Cliply</a>
-    <ul class="nav-menu">
+    <ul class="nav-menu" id="navMenu">
       <li><a href="dashboard.html">📊 Дашборд</a></li>
-      <li><a href="pricing.html"> Тарифы</a></li>
+      <li><a href="analytics.html">📈 Аналитика</a></li>
+      <li><a href="achievements.html">🏆 Достижения</a></li>
+      <li><a href="pricing.html">💎 Тарифы</a></li>
       <li><a href="settings.html" class="active">⚙️ Настройки</a></li>
-      <li><a href="support.html"> Техподдержка</a></li>
+      <li><a href="support.html">💬 Техподдержка</a></li>
     </ul>
     <button class="btn-logout" onclick="logout()">Выйти</button>
   </aside>
   
   <main class="main">
-    <div class="page-header">
-      <h1>Настройки</h1>
-      <p>Управление аккаунтом и подпиской</p>
+    <div class="page-header animate-fade-in">
+      <h1>️ Настройки</h1>
+      <p>Управление профилем, безопасностью и уведомлениями</p>
     </div>
     
-    <div class="subscription-info">
-      <h3>Текущий тариф: <span id="currentPlan">Starter</span></h3>
-      <p>Следующее списание: <strong id="nextBilling">—</strong></p>
-    </div>
-    
-    <div class="settings-card">
+    <!-- Профиль -->
+    <div class="settings-card animate-slide-up delay-1">
       <h2>Профиль</h2>
-      <div class="form-group">
-        <label>Имя</label>
-        <input type="text" id="userName" placeholder="Ваше имя">
+      <p class="subtitle">Основная информация о вашем аккаунте</p>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>Имя</label>
+          <input type="text" id="profileName" placeholder="Ваше имя">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="profileEmail" disabled>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="userEmail" placeholder="your@email.com" disabled style="opacity: 0.6;">
-      </div>
-      <button class="btn-save" onclick="saveProfile()" id="btnSaveProfile">Сохранить изменения</button>
+      
+      <button class="btn-save" id="btnSaveProfile" onclick="saveProfile()">Сохранить изменения</button>
     </div>
     
-    <div class="settings-card">
-      <h2>Уведомления</h2>
-      <div class="setting-row">
-        <div class="setting-info">
-          <div class="setting-title">Email-уведомления</div>
-          <div class="setting-desc">Получать уведомления о готовности видео</div>
-        </div>
-        <label class="toggle-switch">
-          <input type="checkbox" id="emailNotif" checked>
-          <span class="toggle-slider"></span>
-        </label>
-      </div>
-      <div class="setting-row">
-        <div class="setting-info">
-          <div class="setting-title">Маркетинговые рассылки</div>
-          <div class="setting-desc">Новости, обновления и специальные предложения</div>
-        </div>
-        <label class="toggle-switch">
-          <input type="checkbox" id="marketingNotif">
-          <span class="toggle-slider"></span>
-        </label>
-      </div>
-    </div>
-    
-    <div class="settings-card">
+    <!-- Безопасность -->
+    <div class="settings-card animate-slide-up delay-2">
       <h2>Безопасность</h2>
-      <div class="setting-row">
-        <div class="setting-info">
-          <div class="setting-title">Изменить пароль</div>
-          <div class="setting-desc">Обновите пароль для защиты аккаунта</div>
-        </div>
-        <button class="btn-save" onclick="changePassword()" style="background: transparent; border: 1px solid #6C5CE7; color: #6C5CE7;">Изменить</button>
+      <p class="subtitle">Настройки пароля и двухфакторной аутентификации</p>
+      
+      <div class="form-group">
+        <label>Новый пароль</label>
+        <input type="password" id="newPassword" placeholder="Минимум 8 символов">
       </div>
-      <div class="setting-row">
-        <div class="setting-info">
-          <div class="setting-title">Завершить все сеансы</div>
-          <div class="setting-desc">Выйти из аккаунта на всех устройствах</div>
-        </div>
-        <button class="btn-danger" onclick="logoutAll()">Завершить</button>
+      <div class="form-group">
+        <label>Подтвердите пароль</label>
+        <input type="password" id="confirmPassword" placeholder="Повторите пароль">
       </div>
-    </div>
-    
-    <div class="settings-card">
-      <h2>Подписка</h2>
-      <div class="setting-row">
-        <div class="setting-info">
-          <div class="setting-title">Отменить подписку</div>
-          <div class="setting-desc">Доступ сохранится до конца оплаченного периода</div>
+      
+      <button class="btn-save" id="btnChangePassword" onclick="changePassword()">Обновить пароль</button>
+      
+      <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #1f1f2e;">
+        <div class="toggle-row">
+          <div class="toggle-info">
+            <h4>Двухфакторная аутентификация (2FA)</h4>
+            <p>Дополнительный уровень защиты при входе в аккаунт</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="toggle2fa" disabled>
+            <span class="slider"></span>
+          </label>
         </div>
-        <button class="btn-danger" onclick="cancelSubscription()">Отменить</button>
-      </div>
-      <div class="setting-row">
-        <div class="setting-info">
-          <div class="setting-title">Сменить тариф</div>
-          <div class="setting-desc">Перейти на другой план</div>
-        </div>
-        <a href="pricing.html" class="btn-save" style="text-decoration: none; display: inline-block;">Выбрать тариф</a>
       </div>
     </div>
     
-    <div class="settings-card" style="border-color: rgba(239, 68, 68, 0.3);">
-      <h2 style="color: #ef4444;">Опасная зона</h2>
-      <div class="setting-row">
-        <div class="setting-info">
-          <div class="setting-title">Удалить аккаунт</div>
-          <div class="setting-desc">Все данные будут удалены без возможности восстановления</div>
+    <!-- Уведомления -->
+    <div class="settings-card animate-slide-up delay-3">
+      <h2>Уведомления</h2>
+      <p class="subtitle">Выберите, какие уведомления вы хотите получать</p>
+      
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <h4>Готовность видео</h4>
+          <p>Уведомлять, когда AI завершит генерацию видео</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="notifVideoDone" checked onchange="saveNotifSettings()">
+          <span class="slider"></span>
+        </label>
+      </div>
+      
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <h4>Ответы поддержки</h4>
+          <p>Уведомлять о новых сообщениях от техподдержки</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="notifSupport" checked onchange="saveNotifSettings()">
+          <span class="slider"></span>
+        </label>
+      </div>
+      
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <h4>Новости и обновления</h4>
+          <p>Информация о новых функциях и тарифах Cliply</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="notifNews" onchange="saveNotifSettings()">
+          <span class="slider"></span>
+        </label>
+      </div>
+      
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <h4>Маркетинговые рассылки</h4>
+          <p>Скидки, акции и специальные предложения</p>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="notifMarketing" onchange="saveNotifSettings()">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+    
+    <!-- Опасная зона -->
+    <div class="settings-card danger-zone animate-slide-up delay-4">
+      <h2>Опасная зона</h2>
+      <p class="subtitle">Необратимые действия с аккаунтом</p>
+      
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <div style="font-weight: 600; margin-bottom: 4px;">Удалить аккаунт</div>
+          <div style="font-size: 13px; color: #A0A0B0;">Все ваши данные, видео и достижения будут удалены навсегда</div>
         </div>
         <button class="btn-danger" onclick="deleteAccount()">Удалить аккаунт</button>
       </div>
@@ -194,84 +223,125 @@ async function initSettings() {
   currentUser = await requireAuth();
   if (!currentUser) return;
   
-  document.getElementById('userName').value = currentUser.profile?.full_name || '';
-  document.getElementById('userEmail').value = currentUser.email || '';
+  // Добавляем админ-панель если нужно
+  if (currentUser.profile.role_level <= 2) {
+    const menu = document.getElementById('navMenu');
+    const adminLink = document.createElement('li');
+    adminLink.innerHTML = '<a href="admin.html">👑 Админ-панель</a>';
+    menu.insertBefore(adminLink, menu.children[3]);
+  }
+  
+  // Заполняем форму профиля
+  document.getElementById('profileName').value = currentUser.profile.full_name || '';
+  document.getElementById('profileEmail').value = currentUser.email;
+  
+  // Загружаем настройки уведомлений (если есть в профиле)
+  const notifs = currentUser.profile.notifications || {};
+  if (notifs.video_done !== undefined) document.getElementById('notifVideoDone').checked = notifs.video_done;
+  if (notifs.support !== undefined) document.getElementById('notifSupport').checked = notifs.support;
+  if (notifs.news !== undefined) document.getElementById('notifNews').checked = notifs.news;
+  if (notifs.marketing !== undefined) document.getElementById('notifMarketing').checked = notifs.marketing;
 }
 
 async function saveProfile() {
-  const name = document.getElementById('userName').value.trim();
-  if (!name) {
-    showToast('Введите имя', 'warning');
-    return;
-  }
+  const newName = document.getElementById('profileName').value.trim();
+  if (!newName) { showToast('Имя не может быть пустым', 'warning'); return; }
   
   const btn = document.getElementById('btnSaveProfile');
-  btn.textContent = 'Сохранение...';
-  btn.disabled = true;
+  btn.textContent = 'Сохранение...'; btn.disabled = true;
   
   try {
     const { error } = await supabaseClient
       .from('profiles')
-      .update({ full_name: name })
+      .update({ full_name: newName, updated_at: new Date().toISOString() })
       .eq('id', currentUser.id);
     
     if (error) throw error;
     
-    showToast('Профиль обновлён', 'success');
+    currentUser.profile.full_name = newName;
+    showToast('Профиль успешно обновлён!', 'success');
   } catch (e) {
     showToast('Ошибка: ' + e.message, 'error');
   } finally {
-    btn.textContent = 'Сохранить изменения';
-    btn.disabled = false;
+    btn.textContent = 'Сохранить изменения'; btn.disabled = false;
   }
 }
 
-function changePassword() {
-  showToast('Функция смены пароля будет доступна в следующем обновлении', 'info');
-}
-
-function logoutAll() {
-  if (confirm('Завершить все сеансы?')) {
-    showToast('Все сеансы завершены', 'success');
-    logout();
+async function changePassword() {
+  const newPass = document.getElementById('newPassword').value;
+  const confirmPass = document.getElementById('confirmPassword').value;
+  
+  if (newPass.length < 8) { showToast('Пароль должен содержать минимум 8 символов', 'warning'); return; }
+  if (newPass !== confirmPass) { showToast('Пароли не совпадают', 'warning'); return; }
+  
+  const btn = document.getElementById('btnChangePassword');
+  btn.textContent = 'Обновление...'; btn.disabled = true;
+  
+  try {
+    const { error } = await supabaseClient.auth.updateUser({ password: newPass });
+    if (error) throw error;
+    
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmPassword').value = '';
+    showToast('Пароль успешно изменён!', 'success');
+  } catch (e) {
+    showToast('Ошибка: ' + e.message, 'error');
+  } finally {
+    btn.textContent = 'Обновить пароль'; btn.disabled = false;
   }
 }
 
-function cancelSubscription() {
-  if (confirm('Отменить подписку? Доступ сохранится до конца оплаченного периода.')) {
-    showToast('Подписка отменена. Доступ сохранится до конца периода.', 'success');
+async function saveNotifSettings() {
+  const settings = {
+    video_done: document.getElementById('notifVideoDone').checked,
+    support: document.getElementById('notifSupport').checked,
+    news: document.getElementById('notifNews').checked,
+    marketing: document.getElementById('notifMarketing').checked
+  };
+  
+  try {
+    const { error } = await supabaseClient
+      .from('profiles')
+      .update({ notifications: settings, updated_at: new Date().toISOString() })
+      .eq('id', currentUser.id);
+    
+    if (error) throw error;
+    showToast('Настройки уведомлений сохранены', 'success');
+  } catch (e) {
+    showToast('Ошибка сохранения', 'error');
   }
 }
 
 async function deleteAccount() {
-  if (!confirm('Вы уверены? Все данные будут удалены безвозвратно.')) return;
-  if (!confirm('Это действие нельзя отменить. Удалить аккаунт?')) return;
+  const confirmText = prompt('Для подтверждения удаления введите: УДАЛИТЬ');
+  if (confirmText !== 'УДАЛИТЬ') {
+    showToast('Удаление отменено', 'info');
+    return;
+  }
   
   try {
-    const { error } = await supabaseClient
-      .from('profiles')
-      .delete()
-      .eq('id', currentUser.id);
-    
+    // Удаляем профиль (каскадно удалит связанные данные благодаря RLS и foreign keys)
+    const { error } = await supabaseClient.from('profiles').delete().eq('id', currentUser.id);
     if (error) throw error;
     
-    showToast('Аккаунт удалён', 'success');
-    setTimeout(() => logout(), 1500);
+    // Выходим из системы
+    await supabaseClient.auth.signOut();
+    window.location.href = 'index.html';
   } catch (e) {
-    showToast('Ошибка: ' + e.message, 'error');
+    showToast('Ошибка удаления: ' + e.message, 'error');
   }
 }
 
 initSettings();
 </script>
 
+<script src="scroll-animations.js"></script>
+
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.getRegistrations().then(registrations => {
-      for (let registration of registrations) {
-        registration.update();
-      }
+      for (let registration of registrations) { registration.update(); }
     });
   });
 }
