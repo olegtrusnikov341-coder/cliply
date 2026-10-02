@@ -12,7 +12,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<!-- CSP Headers (задача 29) -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://djvdklcahpqbjotukmxt.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://djvdklcahpqbjotukmxt.supabase.co wss://djvdklcahpqbjotukmxt.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
@@ -26,7 +25,7 @@
 <link rel="stylesheet" href="scroll-animations.css">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; }
+  body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; min-height: 100vh; overflow-x: hidden; }
   .layout { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
   .sidebar { background: #141414; border-right: 1px solid #27272a; padding: 24px 16px; display: flex; flex-direction: column; }
   .sidebar-logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; margin-bottom: 40px; display: block; }
@@ -113,6 +112,7 @@
   .achievement-card.locked .achievement-icon { filter: grayscale(1); }
   .achievement-badge { font-size: 11px; padding: 4px 8px; border-radius: 6px; font-weight: 600; }
   .badge-unlocked { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+  .badge-secret { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
   
   .achievement-name { font-size: 18px; font-weight: 700; font-family: 'Manrope'; margin-bottom: 6px; }
   .achievement-description { font-size: 13px; color: #A0A0B0; line-height: 1.5; margin-bottom: 16px; min-height: 40px; }
@@ -138,7 +138,7 @@
     .sidebar { display: none !important; }
     .layout { grid-template-columns: 1fr !important; }
     .main { padding: 20px 16px !important; }
-    .profile-card { flex-direction: column; text-align: center; }
+    .profile-card { flex-direction: column; text-align: center; padding: 24px; }
     .profile-stats { justify-content: center; }
     .achievements-grid { grid-template-columns: 1fr !important; }
     .achievement-toast { right: 12px; left: 12px; max-width: none; }
@@ -151,7 +151,7 @@
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu" id="navMenu">
       <li><a href="dashboard.html">📊 Дашборд</a></li>
-      <li><a href="analytics.html"> Аналитика</a></li>
+      <li><a href="analytics.html">📈 Аналитика</a></li>
       <li><a href="achievements.html" class="active">🏆 Достижения</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
       <li><a href="settings.html">️ Настройки</a></li>
@@ -223,6 +223,9 @@ let allAchievements = [];
 let userAchievements = [];
 let currentCategory = 'all';
 
+// Скрытые достижения (не показываются пока не разблокированы)
+const HIDDEN_ACHIEVEMENTS = ['beloved', 'night_owl', 'perfectionist'];
+
 async function initPage() {
   currentUser = await requireAuth();
   if (!currentUser) return;
@@ -277,8 +280,21 @@ async function loadAchievements() {
 }
 
 function updateStats() {
-  const unlocked = userAchievements.length;
-  const total = allAchievements.length;
+  // Считаем только видимые достижения (не скрытые, если не разблокированы)
+  const visibleAchievements = allAchievements.filter(a => {
+    const isHidden = HIDDEN_ACHIEVEMENTS.includes(a.code) || a.is_hidden;
+    const isUnlocked = userAchievements.some(ua => ua.achievement_id === a.id);
+    return !isHidden || isUnlocked;
+  });
+  
+  const unlocked = userAchievements.filter(ua => {
+    const ach = allAchievements.find(a => a.id === ua.achievement_id);
+    if (!ach) return false;
+    const isHidden = HIDDEN_ACHIEVEMENTS.includes(ach.code) || ach.is_hidden;
+    return !isHidden || true; // Разблокированные скрытые тоже считаем
+  }).length;
+  
+  const total = visibleAchievements.length;
   const percent = total > 0 ? Math.round((unlocked / total) * 100) : 0;
   
   document.getElementById('statUnlocked').textContent = unlocked;
@@ -290,7 +306,7 @@ function updateStats() {
   document.getElementById('progressRemaining').textContent = `Осталось: ${total - unlocked}`;
   
   const counts = { 'Начало': 0, 'Продуктивность': 0, 'Мастерство': 0, 'Сообщество': 0, 'Статус': 0 };
-  allAchievements.forEach(a => { if (counts[a.category] !== undefined) counts[a.category]++; });
+  visibleAchievements.forEach(a => { if (counts[a.category] !== undefined) counts[a.category]++; });
   
   document.getElementById('countAll').textContent = total;
   document.getElementById('countStart').textContent = counts['Начало'];
@@ -304,9 +320,15 @@ function renderAchievements() {
   const grid = document.getElementById('achievementsGrid');
   if (!grid) return;
   
-  let filtered = allAchievements;
+  // Фильтруем: показываем только видимые ИЛИ разблокированные скрытые
+  let filtered = allAchievements.filter(a => {
+    const isHidden = HIDDEN_ACHIEVEMENTS.includes(a.code) || a.is_hidden;
+    const isUnlocked = userAchievements.some(ua => ua.achievement_id === a.id);
+    return !isHidden || isUnlocked;
+  });
+  
   if (currentCategory !== 'all') {
-    filtered = allAchievements.filter(a => a.category === currentCategory);
+    filtered = filtered.filter(a => a.category === currentCategory);
   }
   
   if (filtered.length === 0) {
@@ -324,11 +346,11 @@ function renderAchievements() {
       ? new Date(userAch.unlocked_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' })
       : null;
     
+    const isHidden = HIDDEN_ACHIEVEMENTS.includes(achievement.code) || achievement.is_hidden;
     const cardClass = isUnlocked ? 'achievement-card unlocked' : 'achievement-card locked';
     const delayClass = `delay-${(index % 6) + 1}`;
     
-    // Санитизация всех полей из БД (задача 14)
-    const safeIcon = SecurityUtils ? SecurityUtils.sanitizeHTML(achievement.icon || '🏆') : (achievement.icon || '🏆');
+    const safeIcon = SecurityUtils ? SecurityUtils.sanitizeHTML(achievement.icon || '🏆') : (achievement.icon || '');
     const safeName = SecurityUtils ? SecurityUtils.sanitizeHTML(achievement.name) : achievement.name;
     const safeDesc = SecurityUtils ? SecurityUtils.sanitizeHTML(achievement.description) : achievement.description;
     const safeCategory = SecurityUtils ? SecurityUtils.sanitizeHTML(achievement.category) : achievement.category;
@@ -337,7 +359,12 @@ function renderAchievements() {
       <div class="${cardClass} animate-slide-up ${delayClass}">
         <div class="achievement-header">
           <span class="achievement-icon">${safeIcon}</span>
-          ${isUnlocked ? `<span class="achievement-badge badge-unlocked">✓ Получено</span>` : ''}
+          ${isUnlocked 
+            ? (isHidden 
+                ? '<span class="achievement-badge badge-secret">🔒 Секретное</span>' 
+                : '<span class="achievement-badge badge-unlocked">✓ Получено</span>')
+            : ''
+          }
         </div>
         <div class="achievement-category-tag">${safeCategory}</div>
         <div class="achievement-name">${safeName}</div>
@@ -351,7 +378,7 @@ function renderAchievements() {
             <span>${Math.round(progressPercent)}%</span>
           </div>
         ` : `
-          <div class="achievement-date"> Получено ${unlockedDate}</div>
+          <div class="achievement-date">📅 Получено ${unlockedDate}</div>
         `}
       </div>
     `;
