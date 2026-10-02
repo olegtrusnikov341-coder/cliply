@@ -12,7 +12,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- CSP Headers (задача 29) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://djvdklcahpqbjotukmxt.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://djvdklcahpqbjotukmxt.supabase.co wss://djvdklcahpqbjotukmxt.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="security.js"></script>
 <script src="auth.js"></script>
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
@@ -47,12 +53,20 @@
   .form-group input { width: 100%; background: #0A0A0F; border: 1px solid #27272a; border-radius: 10px; padding: 12px 16px; color: #fff; font-size: 15px; font-family: inherit; transition: border-color 0.2s; }
   .form-group input:focus { outline: none; border-color: #6C5CE7; }
   .form-group input:disabled { opacity: 0.5; cursor: not-allowed; }
+  .form-group input.invalid { border-color: #ef4444; }
+  .form-group .field-error { color: #ef4444; font-size: 12px; margin-top: 6px; display: none; }
+  .form-group .field-error.active { display: block; }
+  .form-group .field-hint { font-size: 12px; color: #666; margin-top: 4px; }
+  
+  .password-strength { margin-top: 8px; }
+  .password-strength-bar { height: 4px; background: #27272a; border-radius: 100px; overflow: hidden; margin-bottom: 4px; }
+  .password-strength-fill { height: 100%; transition: width 0.3s, background 0.3s; border-radius: 100px; }
+  .password-strength-text { font-size: 12px; color: #A0A0B0; }
   
   .btn-save { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 12px 24px; border-radius: 10px; border: none; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
   .btn-save:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4); }
   .btn-save:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   
-  /* Переключатели (Toggles) */
   .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #1f1f2e; }
   .toggle-row:last-child { border-bottom: none; padding-bottom: 0; }
   .toggle-row:first-child { padding-top: 0; }
@@ -66,11 +80,14 @@
   input:checked + .slider { background-color: #6C5CE7; }
   input:checked + .slider:before { transform: translateX(22px); }
   
-  /* Опасная зона */
   .danger-zone { border-color: rgba(239, 68, 68, 0.3); }
   .danger-zone h2 { color: #ef4444; }
   .btn-danger { background: transparent; color: #ef4444; padding: 10px 20px; border-radius: 10px; border: 1px solid rgba(239, 68, 68, 0.3); font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
   .btn-danger:hover { background: rgba(239, 68, 68, 0.1); border-color: #ef4444; }
+  
+  .success-box { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 10px; padding: 12px 16px; color: #34d399; font-size: 13px; margin-bottom: 16px; display: none; }
+  .success-box.active { display: block; animation: slideDown 0.3s ease; }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
   
   @media (max-width: 768px) {
     .sidebar { display: none !important; }
@@ -85,11 +102,11 @@
   <aside class="sidebar">
     <a href="index.html" class="sidebar-logo">Cliply</a>
     <ul class="nav-menu" id="navMenu">
-      <li><a href="dashboard.html">📊 Дашборд</a></li>
-      <li><a href="analytics.html">📈 Аналитика</a></li>
-      <li><a href="achievements.html">🏆 Достижения</a></li>
+      <li><a href="dashboard.html"> Дашборд</a></li>
+      <li><a href="analytics.html"> Аналитика</a></li>
+      <li><a href="achievements.html"> Достижения</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
-      <li><a href="settings.html" class="active">⚙️ Настройки</a></li>
+      <li><a href="settings.html" class="active">️ Настройки</a></li>
       <li><a href="support.html">💬 Техподдержка</a></li>
     </ul>
     <button class="btn-logout" onclick="logout()">Выйти</button>
@@ -97,7 +114,7 @@
   
   <main class="main">
     <div class="page-header animate-fade-in">
-      <h1>️ Настройки</h1>
+      <h1>⚙️ Настройки</h1>
       <p>Управление профилем, безопасностью и уведомлениями</p>
     </div>
     
@@ -106,14 +123,18 @@
       <h2>Профиль</h2>
       <p class="subtitle">Основная информация о вашем аккаунте</p>
       
+      <div class="success-box" id="profileSuccess">✓ Профиль успешно обновлён!</div>
+      
       <div class="form-row">
         <div class="form-group">
           <label>Имя</label>
-          <input type="text" id="profileName" placeholder="Ваше имя">
+          <input type="text" id="profileName" placeholder="Ваше имя" maxlength="100">
+          <div class="field-error" id="nameError"></div>
         </div>
         <div class="form-group">
           <label>Email</label>
           <input type="email" id="profileEmail" disabled>
+          <div class="field-hint">Email нельзя изменить</div>
         </div>
       </div>
       
@@ -125,13 +146,23 @@
       <h2>Безопасность</h2>
       <p class="subtitle">Настройки пароля и двухфакторной аутентификации</p>
       
+      <div class="success-box" id="passwordSuccess">✓ Пароль успешно изменён!</div>
+      
       <div class="form-group">
         <label>Новый пароль</label>
-        <input type="password" id="newPassword" placeholder="Минимум 8 символов">
+        <input type="password" id="newPassword" placeholder="Минимум 8 символов" maxlength="128" oninput="checkPasswordStrength(this.value)">
+        <div class="password-strength">
+          <div class="password-strength-bar">
+            <div class="password-strength-fill" id="strengthFill" style="width: 0%; background: #27272a;"></div>
+          </div>
+          <div class="password-strength-text" id="strengthText">Введите пароль</div>
+        </div>
+        <div class="field-error" id="passwordError"></div>
       </div>
       <div class="form-group">
         <label>Подтвердите пароль</label>
-        <input type="password" id="confirmPassword" placeholder="Повторите пароль">
+        <input type="password" id="confirmPassword" placeholder="Повторите пароль" maxlength="128">
+        <div class="field-error" id="confirmError"></div>
       </div>
       
       <button class="btn-save" id="btnChangePassword" onclick="changePassword()">Обновить пароль</button>
@@ -223,7 +254,6 @@ async function initSettings() {
   currentUser = await requireAuth();
   if (!currentUser) return;
   
-  // Добавляем админ-панель если нужно
   if (currentUser.profile.role_level <= 2) {
     const menu = document.getElementById('navMenu');
     const adminLink = document.createElement('li');
@@ -231,11 +261,13 @@ async function initSettings() {
     menu.insertBefore(adminLink, menu.children[3]);
   }
   
-  // Заполняем форму профиля
-  document.getElementById('profileName').value = currentUser.profile.full_name || '';
-  document.getElementById('profileEmail').value = currentUser.email;
+  // Санитизация данных профиля (задача 14)
+  const safeName = SecurityUtils ? SecurityUtils.sanitizeHTML(currentUser.profile.full_name || '') : (currentUser.profile.full_name || '');
+  const safeEmail = SecurityUtils ? SecurityUtils.sanitizeHTML(currentUser.email) : currentUser.email;
   
-  // Загружаем настройки уведомлений (если есть в профиле)
+  document.getElementById('profileName').value = safeName;
+  document.getElementById('profileEmail').value = safeEmail;
+  
   const notifs = currentUser.profile.notifications || {};
   if (notifs.video_done !== undefined) document.getElementById('notifVideoDone').checked = notifs.video_done;
   if (notifs.support !== undefined) document.getElementById('notifSupport').checked = notifs.support;
@@ -243,23 +275,111 @@ async function initSettings() {
   if (notifs.marketing !== undefined) document.getElementById('notifMarketing').checked = notifs.marketing;
 }
 
+function clearFieldError(fieldId, errorId) {
+  document.getElementById(fieldId).classList.remove('invalid');
+  document.getElementById(errorId).classList.remove('active');
+}
+
+function setFieldError(fieldId, errorId, message) {
+  document.getElementById(fieldId).classList.add('invalid');
+  const errorEl = document.getElementById(errorId);
+  errorEl.textContent = message;
+  errorEl.classList.add('active');
+}
+
+document.getElementById('profileName').addEventListener('input', function() {
+  clearFieldError('profileName', 'nameError');
+});
+
+document.getElementById('newPassword').addEventListener('input', function() {
+  clearFieldError('newPassword', 'passwordError');
+  clearFieldError('confirmPassword', 'confirmError');
+});
+
+document.getElementById('confirmPassword').addEventListener('input', function() {
+  clearFieldError('confirmPassword', 'confirmError');
+});
+
+function checkPasswordStrength(password) {
+  const fill = document.getElementById('strengthFill');
+  const text = document.getElementById('strengthText');
+  
+  if (!password) {
+    fill.style.width = '0%';
+    fill.style.background = '#27272a';
+    text.textContent = 'Введите пароль';
+    return;
+  }
+  
+  let score = 0;
+  if (password.length >= 8) score++;
+  if (password.length >= 12) score++;
+  if (/[A-Z]/.test(password)) score++;
+  if (/[0-9]/.test(password)) score++;
+  if (/[^A-Za-z0-9]/.test(password)) score++;
+  
+  const levels = [
+    { width: '20%', color: '#ef4444', text: 'Очень слабый' },
+    { width: '40%', color: '#f59e0b', text: 'Слабый' },
+    { width: '60%', color: '#fbbf24', text: 'Средний' },
+    { width: '80%', color: '#10b981', text: 'Хороший' },
+    { width: '100%', color: '#10b981', text: 'Отличный' }
+  ];
+  
+  const level = levels[Math.min(score, 4)];
+  fill.style.width = level.width;
+  fill.style.background = level.color;
+  text.textContent = level.text;
+  text.style.color = level.color;
+}
+
 async function saveProfile() {
-  const newName = document.getElementById('profileName').value.trim();
-  if (!newName) { showToast('Имя не может быть пустым', 'warning'); return; }
+  document.getElementById('profileSuccess').classList.remove('active');
+  clearFieldError('profileName', 'nameError');
+  
+  const rawName = document.getElementById('profileName').value;
+  
+  // Валидация через SecurityUtils (задача 31)
+  if (typeof SecurityUtils !== 'undefined') {
+    const nameCheck = SecurityUtils.validateUserName(rawName);
+    if (!nameCheck.valid) {
+      setFieldError('profileName', 'nameError', nameCheck.reason);
+      return;
+    }
+  } else {
+    const name = rawName.trim();
+    if (!name) {
+      setFieldError('profileName', 'nameError', 'Имя обязательно');
+      return;
+    }
+    if (name.length > 100) {
+      setFieldError('profileName', 'nameError', 'Максимум 100 символов');
+      return;
+    }
+  }
   
   const btn = document.getElementById('btnSaveProfile');
   btn.textContent = 'Сохранение...'; btn.disabled = true;
   
   try {
+    const safeName = typeof SecurityUtils !== 'undefined' 
+      ? SecurityUtils.validateUserName(rawName).value 
+      : rawName.trim();
+    
     const { error } = await supabaseClient
       .from('profiles')
-      .update({ full_name: newName, updated_at: new Date().toISOString() })
+      .update({ full_name: safeName, updated_at: new Date().toISOString() })
       .eq('id', currentUser.id);
     
     if (error) throw error;
     
-    currentUser.profile.full_name = newName;
+    currentUser.profile.full_name = safeName;
+    document.getElementById('profileSuccess').classList.add('active');
     showToast('Профиль успешно обновлён!', 'success');
+    
+    setTimeout(() => {
+      document.getElementById('profileSuccess').classList.remove('active');
+    }, 3000);
   } catch (e) {
     showToast('Ошибка: ' + e.message, 'error');
   } finally {
@@ -268,11 +388,37 @@ async function saveProfile() {
 }
 
 async function changePassword() {
+  document.getElementById('passwordSuccess').classList.remove('active');
+  clearFieldError('newPassword', 'passwordError');
+  clearFieldError('confirmPassword', 'confirmError');
+  
   const newPass = document.getElementById('newPassword').value;
   const confirmPass = document.getElementById('confirmPassword').value;
   
-  if (newPass.length < 8) { showToast('Пароль должен содержать минимум 8 символов', 'warning'); return; }
-  if (newPass !== confirmPass) { showToast('Пароли не совпадают', 'warning'); return; }
+  // Rate limiting (задача 30)
+  if (typeof SecurityUtils !== 'undefined') {
+    const limit = SecurityUtils.checkActionLimit('password_reset');
+    if (!limit.allowed) {
+      setFieldError('newPassword', 'passwordError', `Слишком много попыток. Подождите ${limit.waitSeconds} сек.`);
+      return;
+    }
+    
+    const pwdCheck = SecurityUtils.isStrongPassword(newPass);
+    if (!pwdCheck.valid) {
+      setFieldError('newPassword', 'passwordError', pwdCheck.reason);
+      return;
+    }
+  } else {
+    if (newPass.length < 8) {
+      setFieldError('newPassword', 'passwordError', 'Минимум 8 символов');
+      return;
+    }
+  }
+  
+  if (newPass !== confirmPass) {
+    setFieldError('confirmPassword', 'confirmError', 'Пароли не совпадают');
+    return;
+  }
   
   const btn = document.getElementById('btnChangePassword');
   btn.textContent = 'Обновление...'; btn.disabled = true;
@@ -283,9 +429,17 @@ async function changePassword() {
     
     document.getElementById('newPassword').value = '';
     document.getElementById('confirmPassword').value = '';
+    document.getElementById('strengthFill').style.width = '0%';
+    document.getElementById('strengthText').textContent = 'Введите пароль';
+    
+    document.getElementById('passwordSuccess').classList.add('active');
     showToast('Пароль успешно изменён!', 'success');
+    
+    setTimeout(() => {
+      document.getElementById('passwordSuccess').classList.remove('active');
+    }, 3000);
   } catch (e) {
-    showToast('Ошибка: ' + e.message, 'error');
+    setFieldError('newPassword', 'passwordError', 'Ошибка: ' + e.message);
   } finally {
     btn.textContent = 'Обновить пароль'; btn.disabled = false;
   }
@@ -320,11 +474,9 @@ async function deleteAccount() {
   }
   
   try {
-    // Удаляем профиль (каскадно удалит связанные данные благодаря RLS и foreign keys)
     const { error } = await supabaseClient.from('profiles').delete().eq('id', currentUser.id);
     if (error) throw error;
     
-    // Выходим из системы
     await supabaseClient.auth.signOut();
     window.location.href = 'index.html';
   } catch (e) {
