@@ -13,7 +13,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- CSP Headers (задача 29) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://djvdklcahpqbjotukmxt.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://djvdklcahpqbjotukmxt.supabase.co wss://djvdklcahpqbjotukmxt.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="security.js"></script>
 <script src="auth.js"></script>
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
@@ -282,7 +288,7 @@
         <p>Плавные переходы, тайминг и эффекты без ручного монтажа</p>
       </div>
       <div class="ai-feature animate-scale-in delay-5">
-        <div class="ai-feature-icon">📊</div>
+        <div class="ai-feature-icon"></div>
         <h4>Анализ товара</h4>
         <p>AI определяет ключевые преимущества и УТП товара</p>
       </div>
@@ -323,7 +329,7 @@
         <div class="export-desc">Квадратное видео для постов в соцсетях</div>
       </div>
       <div class="export-card animate-slide-up delay-3">
-        <div class="export-icon">🖥️</div>
+        <div class="export-icon">️</div>
         <div class="export-name">16:9</div>
         <div class="export-desc">Горизонтальное видео для YouTube и сайтов</div>
       </div>
