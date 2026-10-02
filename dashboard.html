@@ -58,34 +58,13 @@
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
   
   .notifications-wrapper { position: relative; }
-  .notifications-btn {
-    width: 42px; height: 42px; border-radius: 12px;
-    background: #141414; border: 1px solid #27272a;
-    color: #A0A0B0; font-size: 20px;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s; position: relative;
-  }
+  .notifications-btn { width: 42px; height: 42px; border-radius: 12px; background: #141414; border: 1px solid #27272a; color: #A0A0B0; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; position: relative; }
   .notifications-btn:hover { background: #1f1f23; border-color: #6C5CE7; color: #fff; }
-  .notifications-badge {
-    position: absolute; top: -6px; right: -6px;
-    background: #ef4444; color: #fff;
-    font-size: 11px; font-weight: 700;
-    min-width: 20px; height: 20px;
-    border-radius: 100px; padding: 0 6px;
-    display: flex; align-items: center; justify-content: center;
-    border: 2px solid #0A0A0F;
-    animation: badgePulse 2s ease infinite;
-  }
+  .notifications-badge { position: absolute; top: -6px; right: -6px; background: #ef4444; color: #fff; font-size: 11px; font-weight: 700; min-width: 20px; height: 20px; border-radius: 100px; padding: 0 6px; display: flex; align-items: center; justify-content: center; border: 2px solid #0A0A0F; animation: badgePulse 2s ease infinite; }
   .notifications-badge.hidden { display: none; }
   @keyframes badgePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
   
-  .notifications-dropdown {
-    position: absolute; top: calc(100% + 12px); right: 0;
-    width: 380px; max-height: 500px;
-    background: #141414; border: 1px solid #27272a;
-    border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    z-index: 1000; overflow: hidden; display: none;
-  }
+  .notifications-dropdown { position: absolute; top: calc(100% + 12px); right: 0; width: 380px; max-height: 500px; background: #141414; border: 1px solid #27272a; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); z-index: 1000; overflow: hidden; display: none; }
   .notifications-dropdown.active { display: block; animation: dropdownAppear 0.2s ease; }
   @keyframes dropdownAppear { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
   .notifications-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #1f1f2e; }
@@ -198,7 +177,7 @@
   .offline-banner.active { display: flex; }
   .mobile-header { display: none; }
   
-  /* ===== ОНБОРДИНГ ===== */
+  /* ОНБОРДИНГ */
   .onboarding-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px); z-index: 9998; display: none; }
   .onboarding-overlay.active { display: block; }
   .onboarding-tooltip { position: fixed; z-index: 9999; background: #141414; border: 2px solid #6C5CE7; border-radius: 16px; padding: 24px; max-width: 420px; width: 90%; box-shadow: 0 20px 60px rgba(108, 92, 231, 0.4); display: none; }
@@ -241,182 +220,9 @@
   .welcome-btn-secondary { background: transparent; color: #A0A0B0; border: 1px solid #27272a; }
   .welcome-btn-secondary:hover { border-color: #6C5CE7; color: #fff; }
   
-  /* ===== ДОСТИЖЕНИЯ ===== */
-  .achievements-section {
-    background: #141414;
-    border: 1px solid #27272a;
-    border-radius: 16px;
-    padding: 32px;
-    margin-bottom: 40px;
-  }
-  .achievements-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  .achievements-header h2 {
-    font-size: 22px;
-    font-weight: 700;
-    font-family: 'Manrope';
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .achievements-stats {
-    display: flex;
-    gap: 24px;
-  }
-  .achievements-stat {
-    text-align: center;
-  }
-  .achievements-stat-value {
-    font-size: 24px;
-    font-weight: 800;
-    font-family: 'Manrope';
-    color: #6C5CE7;
-  }
-  .achievements-stat-label {
-    font-size: 12px;
-    color: #A0A0B0;
-    margin-top: 2px;
-  }
-  .achievements-categories {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
-  }
-  .achievement-category-btn {
-    padding: 8px 16px;
-    border-radius: 100px;
-    border: 1px solid #27272a;
-    background: transparent;
-    color: #A0A0B0;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .achievement-category-btn:hover {
-    border-color: #6C5CE7;
-    color: #fff;
-  }
-  .achievement-category-btn.active {
-    background: #6C5CE7;
-    border-color: #6C5CE7;
-    color: #fff;
-  }
-  .achievements-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 16px;
-  }
-  .achievement-card {
-    background: #0A0A0F;
-    border: 1px solid #1f1f2e;
-    border-radius: 14px;
-    padding: 20px;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
-  .achievement-card.unlocked {
-    border-color: rgba(108, 92, 231, 0.4);
-    background: linear-gradient(135deg, rgba(108, 92, 231, 0.08), rgba(162, 155, 254, 0.04));
-  }
-  .achievement-card.unlocked:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgba(108, 92, 231, 0.2);
-  }
-  .achievement-card.locked {
-    opacity: 0.5;
-    filter: grayscale(0.7);
-  }
-  .achievement-card.locked:hover {
-    opacity: 0.7;
-  }
-  .achievement-icon {
-    font-size: 40px;
-    margin-bottom: 12px;
-    display: block;
-  }
-  .achievement-card.locked .achievement-icon {
-    filter: grayscale(1);
-  }
-  .achievement-name {
-    font-size: 16px;
-    font-weight: 700;
-    font-family: 'Manrope';
-    margin-bottom: 6px;
-    color: #fff;
-  }
-  .achievement-description {
-    font-size: 13px;
-    color: #A0A0B0;
-    line-height: 1.5;
-    margin-bottom: 12px;
-    min-height: 40px;
-  }
-  .achievement-progress {
-    height: 6px;
-    background: #27272a;
-    border-radius: 100px;
-    overflow: hidden;
-    margin-bottom: 8px;
-  }
-  .achievement-progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #6C5CE7, #A29BFE);
-    border-radius: 100px;
-    transition: width 0.5s ease;
-  }
-  .achievement-progress-text {
-    font-size: 12px;
-    color: #666;
-    display: flex;
-    justify-content: space-between;
-  }
-  .achievement-unlocked-date {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    font-size: 11px;
-    color: #6C5CE7;
-    font-weight: 600;
-    background: rgba(108, 92, 231, 0.15);
-    padding: 4px 8px;
-    border-radius: 6px;
-  }
-  .achievement-lock-icon {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    font-size: 16px;
-    opacity: 0.5;
-  }
-  .achievement-toast {
-    position: fixed;
-    top: 24px;
-    right: 24px;
-    background: #141414;
-    border: 2px solid #6C5CE7;
-    border-radius: 16px;
-    padding: 20px 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    box-shadow: 0 20px 60px rgba(108, 92, 231, 0.4);
-    z-index: 10001;
-    animation: achievementSlideIn 0.5s ease;
-    max-width: 400px;
-  }
-  @keyframes achievementSlideIn {
-    from { opacity: 0; transform: translateX(100px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
+  /* Toast для достижений */
+  .achievement-toast { position: fixed; top: 24px; right: 24px; background: #141414; border: 2px solid #6C5CE7; border-radius: 16px; padding: 20px 24px; display: flex; align-items: center; gap: 16px; box-shadow: 0 20px 60px rgba(108, 92, 231, 0.4); z-index: 10001; animation: achievementSlideIn 0.5s ease; max-width: 400px; }
+  @keyframes achievementSlideIn { from { opacity: 0; transform: translateX(100px); } to { opacity: 1; transform: translateX(0); } }
   .achievement-toast-icon { font-size: 48px; flex-shrink: 0; }
   .achievement-toast-content { flex: 1; }
   .achievement-toast-label { font-size: 11px; color: #6C5CE7; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
@@ -429,18 +235,13 @@
     .welcome-content { padding: 32px 24px !important; }
     .welcome-features { grid-template-columns: 1fr !important; }
     .onboarding-tooltip { max-width: 90% !important; padding: 20px !important; }
-    .achievements-grid { grid-template-columns: 1fr !important; }
-    .achievements-header { flex-direction: column; align-items: flex-start; }
     .achievement-toast { right: 12px; left: 12px; max-width: none; }
   }
 </style>
 </head>
 <body>
 
-<!-- Онбординг overlay -->
 <div class="onboarding-overlay" id="onboardingOverlay"></div>
-
-<!-- Онбординг tooltip -->
 <div class="onboarding-tooltip" id="onboardingTooltip">
   <div class="onboarding-tooltip-header">
     <span class="onboarding-step-counter" id="onboardingStepCounter">Шаг 1 из 4</span>
@@ -456,29 +257,16 @@
   </div>
 </div>
 
-<!-- Приветственное модальное окно -->
 <div class="welcome-modal" id="welcomeModal">
   <div class="welcome-content">
-    <div class="welcome-icon">👋</div>
+    <div class="welcome-icon"></div>
     <h2>Добро пожаловать в Cliply!</h2>
     <p>Давайте познакомимся с сервисом за 30 секунд — и вы сможете создать своё первое продающее видео.</p>
     <div class="welcome-features">
-      <div class="welcome-feature">
-        <div class="welcome-feature-icon">📸</div>
-        <div class="welcome-feature-text">Загрузите 3-5 фото товара</div>
-      </div>
-      <div class="welcome-feature">
-        <div class="welcome-feature-icon">✨</div>
-        <div class="welcome-feature-text">AI создаст продающий сценарий</div>
-      </div>
-      <div class="welcome-feature">
-        <div class="welcome-feature-icon">🎬</div>
-        <div class="welcome-feature-text">Получите видео за 2 минуты</div>
-      </div>
-      <div class="welcome-feature">
-        <div class="welcome-feature-icon">📈</div>
-        <div class="welcome-feature-text">+34% к конверсии карточки</div>
-      </div>
+      <div class="welcome-feature"><div class="welcome-feature-icon">📸</div><div class="welcome-feature-text">Загрузите 3-5 фото товара</div></div>
+      <div class="welcome-feature"><div class="welcome-feature-icon">✨</div><div class="welcome-feature-text">AI создаст продающий сценарий</div></div>
+      <div class="welcome-feature"><div class="welcome-feature-icon">🎬</div><div class="welcome-feature-text">Получите видео за 2 минуты</div></div>
+      <div class="welcome-feature"><div class="welcome-feature-icon">📈</div><div class="welcome-feature-text">+34% к конверсии карточки</div></div>
     </div>
     <div class="welcome-actions">
       <button class="welcome-btn welcome-btn-secondary" id="welcomeSkip">Пропустить тур</button>
@@ -493,6 +281,7 @@
     <ul class="nav-menu" id="navMenu">
       <li><a href="dashboard.html" class="active">📊 Дашборд</a></li>
       <li><a href="analytics.html">📈 Аналитика</a></li>
+      <li><a href="achievements.html">🏆 Достижения</a></li>
       <li><a href="pricing.html">💎 Тарифы</a></li>
       <li><a href="settings.html">⚙️ Настройки</a></li>
       <li><a href="support.html">💬 Техподдержка</a></li>
@@ -510,8 +299,9 @@
   <div class="mobile-menu" id="mobileMenu">
     <a href="dashboard.html" class="active">📊 Дашборд</a>
     <a href="analytics.html">📈 Аналитика</a>
+    <a href="achievements.html"> Достижения</a>
     <a href="pricing.html">💎 Тарифы</a>
-    <a href="settings.html">⚙️ Настройки</a>
+    <a href="settings.html">️ Настройки</a>
     <a href="support.html">💬 Техподдержка</a>
     <a href="index.html" class="btn-nav-mobile">← На главную</a>
     <a href="#" onclick="logout(); return false;" style="color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); margin-top: 16px;">Выйти</a>
@@ -519,7 +309,7 @@
   
   <main class="main">
     <div id="offlineBanner" class="offline-banner">
-      <span>⚠️</span>
+      <span>️</span>
       <span>Нет подключения к интернету. Некоторые функции могут быть недоступны.</span>
     </div>
     <div class="header">
@@ -592,39 +382,6 @@
       </div>
       <button class="btn-generate" onclick="startGeneration()" id="btnGenerate">Сгенерировать видео →</button>
     </div>
-    
-    <!-- ===== ДОСТИЖЕНИЯ ===== -->
-    <div class="achievements-section" id="achievementsSection">
-      <div class="achievements-header">
-        <h2>🏆 Мои достижения</h2>
-        <div class="achievements-stats">
-          <div class="achievements-stat">
-            <div class="achievements-stat-value" id="unlockedCount">0</div>
-            <div class="achievements-stat-label">Получено</div>
-          </div>
-          <div class="achievements-stat">
-            <div class="achievements-stat-value" id="totalCount">0</div>
-            <div class="achievements-stat-label">Всего</div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="achievements-categories" id="achievementCategories">
-        <button class="achievement-category-btn active" data-category="all">Все</button>
-        <button class="achievement-category-btn" data-category="Начало">Начало</button>
-        <button class="achievement-category-btn" data-category="Продуктивность">Продуктивность</button>
-        <button class="achievement-category-btn" data-category="Мастерство">Мастерство</button>
-        <button class="achievement-category-btn" data-category="Сообщество">Сообщество</button>
-        <button class="achievement-category-btn" data-category="Статус">Статус</button>
-      </div>
-      
-      <div class="achievements-grid" id="achievementsGrid">
-        <div style="text-align: center; padding: 40px; color: #A0A0B0; grid-column: 1 / -1;">
-          Загрузка достижений...
-        </div>
-      </div>
-    </div>
-    
     <div class="videos-section">
       <div class="videos-section-header">
         <h2>Ваши видео</h2>
@@ -642,6 +399,7 @@
     </div>
   </main>
 </div>
+
 <script>
 let uploadedPhotos = [];
 let draftManager = null;
@@ -654,117 +412,28 @@ let notificationsCheckInterval = null;
 // ===== ДОСТИЖЕНИЯ =====
 let allAchievements = [];
 let userAchievements = [];
-let currentAchievementCategory = 'all';
 
 async function loadAchievements() {
   if (!currentUser) return;
-  
   try {
-    const { data: achievements, error: achError } = await supabaseClient
-      .from('achievements')
-      .select('*')
-      .order('category', { ascending: true });
-    
+    const { data: achievements, error: achError } = await supabaseClient.from('achievements').select('*').order('category', { ascending: true });
     if (achError) throw achError;
     allAchievements = achievements || [];
-    
-    const { data: userAch, error: userAchError } = await supabaseClient
-      .from('user_achievements')
-      .select('achievement_id, unlocked_at, progress')
-      .eq('user_id', currentUser.id);
-    
+    const { data: userAch, error: userAchError } = await supabaseClient.from('user_achievements').select('achievement_id, unlocked_at, progress').eq('user_id', currentUser.id);
     if (userAchError) throw userAchError;
     userAchievements = userAch || [];
-    
-    renderAchievements();
-    
-  } catch (e) {
-    console.error('Load achievements error:', e);
-  }
+  } catch (e) { console.error('Load achievements error:', e); }
 }
-
-function renderAchievements() {
-  const grid = document.getElementById('achievementsGrid');
-  if (!grid) return;
-  
-  let filtered = allAchievements;
-  if (currentAchievementCategory !== 'all') {
-    filtered = allAchievements.filter(a => a.category === currentAchievementCategory);
-  }
-  
-  if (filtered.length === 0) {
-    grid.innerHTML = '<div style="text-align: center; padding: 40px; color: #A0A0B0; grid-column: 1 / -1;">Нет достижений в этой категории</div>';
-    return;
-  }
-  
-  const unlockedCount = userAchievements.length;
-  document.getElementById('unlockedCount').textContent = unlockedCount;
-  document.getElementById('totalCount').textContent = allAchievements.length;
-  
-  grid.innerHTML = filtered.map(achievement => {
-    const userAch = userAchievements.find(ua => ua.achievement_id === achievement.id);
-    const isUnlocked = !!userAch;
-    const progress = userAch ? userAch.progress : 0;
-    const progressPercent = Math.min((progress / achievement.requirement) * 100, 100);
-    
-    const unlockedDate = userAch 
-      ? new Date(userAch.unlocked_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' })
-      : null;
-    
-    const cardClass = isUnlocked ? 'achievement-card unlocked' : 'achievement-card locked';
-    
-    return `
-      <div class="${cardClass}">
-        ${isUnlocked 
-          ? `<div class="achievement-unlocked-date">${unlockedDate}</div>`
-          : `<div class="achievement-lock-icon">🔒</div>`
-        }
-        <span class="achievement-icon">${achievement.icon}</span>
-        <div class="achievement-name">${achievement.name}</div>
-        <div class="achievement-description">${achievement.description}</div>
-        ${!isUnlocked ? `
-          <div class="achievement-progress">
-            <div class="achievement-progress-bar" style="width: ${progressPercent}%"></div>
-          </div>
-          <div class="achievement-progress-text">
-            <span>${progress} / ${achievement.requirement}</span>
-            <span>${Math.round(progressPercent)}%</span>
-          </div>
-        ` : ''}
-      </div>
-    `;
-  }).join('');
-}
-
-document.getElementById('achievementCategories').addEventListener('click', (e) => {
-  if (e.target.classList.contains('achievement-category-btn')) {
-    document.querySelectorAll('.achievement-category-btn').forEach(btn => btn.classList.remove('active'));
-    e.target.classList.add('active');
-    currentAchievementCategory = e.target.dataset.category;
-    renderAchievements();
-  }
-});
 
 async function checkAndAwardAchievements() {
-  if (!currentUser) return;
+  if (!currentUser || allAchievements.length === 0) return;
   
   try {
-    const { count: videoCount } = await supabaseClient
-      .from('videos')
-      .select('*', { count: 'exact', head: true })
-      .eq('user_id', currentUser.id);
-    
-    const { count: reviewCount } = await supabaseClient
-      .from('reviews')
-      .select('*', { count: 'exact', head: true })
-      .eq('user_id', currentUser.id);
-    
-    const { data: scenarios } = await supabaseClient
-      .from('videos')
-      .select('scenario')
-      .eq('user_id', currentUser.id);
-    
+    const { count: videoCount } = await supabaseClient.from('videos').select('*', { count: 'exact', head: true }).eq('user_id', currentUser.id);
+    const { count: reviewCount } = await supabaseClient.from('reviews').select('*', { count: 'exact', head: true }).eq('user_id', currentUser.id);
+    const { data: scenarios } = await supabaseClient.from('videos').select('scenario').eq('user_id', currentUser.id);
     const uniqueScenarios = [...new Set(scenarios?.map(v => v.scenario).filter(Boolean))];
+    const { count: supportCount } = await supabaseClient.from('support_conversations').select('*', { count: 'exact', head: true }).eq('user_id', currentUser.id);
     
     for (const achievement of allAchievements) {
       const alreadyUnlocked = userAchievements.some(ua => ua.achievement_id === achievement.id);
@@ -774,31 +443,38 @@ async function checkAndAwardAchievements() {
       let shouldUnlock = false;
       
       switch (achievement.code) {
-        case 'first_video':
-        case 'five_videos':
-        case 'ten_videos':
-        case 'fifty_videos':
+        case 'first_video': case 'five_videos': case 'ten_videos': case 'fifty_videos':
           currentProgress = videoCount || 0;
           shouldUnlock = currentProgress >= achievement.requirement;
           break;
-        
-        case 'first_review':
-        case 'five_reviews':
+        case 'first_review': case 'five_reviews':
           currentProgress = reviewCount || 0;
           shouldUnlock = currentProgress >= achievement.requirement;
           break;
-        
         case 'all_scenarios':
           currentProgress = uniqueScenarios.length;
           shouldUnlock = currentProgress >= achievement.requirement;
           break;
-        
-        case 'support_user':
-        case 'onboarding_done':
-        case 'pro_seller':
-        case 'early_adopter':
-        case 'five_photos':
-          continue;
+        case 'social_butterfly':
+          currentProgress = supportCount || 0;
+          shouldUnlock = currentProgress >= achievement.requirement;
+          break;
+        case 'beloved':
+          const name = (currentUser.profile?.full_name || '').toLowerCase().trim();
+          shouldUnlock = name === 'богдана' || name === 'богдан';
+          currentProgress = shouldUnlock ? 1 : 0;
+          break;
+        case 'night_owl':
+          const hour = new Date().getHours();
+          shouldUnlock = hour >= 0 && hour < 5;
+          currentProgress = shouldUnlock ? 1 : 0;
+          break;
+        case 'perfectionist':
+          const desc = document.getElementById('productDescription')?.value || '';
+          shouldUnlock = desc.length > 200;
+          currentProgress = shouldUnlock ? desc.length : 0;
+          break;
+        default: continue;
       }
       
       if (shouldUnlock) {
@@ -807,80 +483,36 @@ async function checkAndAwardAchievements() {
         await updateAchievementProgress(achievement.id, currentProgress);
       }
     }
-    
-    await loadAchievements();
-    
-  } catch (e) {
-    console.error('Check achievements error:', e);
-  }
+  } catch (e) { console.error('Check achievements error:', e); }
 }
 
 async function unlockAchievement(achievement, progress) {
   if (!currentUser) return;
-  
   try {
-    const { error } = await supabaseClient
-      .from('user_achievements')
-      .insert({
-        user_id: currentUser.id,
-        achievement_id: achievement.id,
-        progress: progress,
-        unlocked_at: new Date().toISOString()
-      });
-    
-    if (error) {
-      if (error.code === '23505') {
-        await supabaseClient
-          .from('user_achievements')
-          .update({ progress: progress, unlocked_at: new Date().toISOString() })
-          .eq('user_id', currentUser.id)
-          .eq('achievement_id', achievement.id);
-      } else {
-        throw error;
-      }
-    }
-    
+    const { error } = await supabaseClient.from('user_achievements').insert({
+      user_id: currentUser.id, achievement_id: achievement.id, progress: progress, unlocked_at: new Date().toISOString()
+    });
+    if (error && error.code !== '23505') throw error;
     showAchievementToast(achievement);
-    
-    await createNotification(
-      'achievement',
-      `Достижение разблокировано: ${achievement.name}`,
-      achievement.description,
-      'dashboard.html'
-    );
-    
-  } catch (e) {
-    console.error('Unlock achievement error:', e);
-  }
+    await createNotification('achievement', `Достижение разблокировано: ${achievement.name}`, achievement.description, 'achievements.html');
+  } catch (e) { console.error('Unlock achievement error:', e); }
 }
 
 async function updateAchievementProgress(achievementId, progress) {
   if (!currentUser) return;
-  
   try {
-    const { error } = await supabaseClient
-      .from('user_achievements')
-      .upsert({
-        user_id: currentUser.id,
-        achievement_id: achievementId,
-        progress: progress
-      }, { onConflict: 'user_id,achievement_id' });
-    
-    if (error) console.error('Update progress error:', error);
-  } catch (e) {
-    console.error('Update progress error:', e);
-  }
+    await supabaseClient.from('user_achievements').upsert({
+      user_id: currentUser.id, achievement_id: achievementId, progress: progress
+    }, { onConflict: 'user_id,achievement_id' });
+  } catch (e) { console.error('Update progress error:', e); }
 }
 
 async function unlockAchievementByCode(code, progress) {
   const achievement = allAchievements.find(a => a.code === code);
   if (!achievement) return;
-  
   const alreadyUnlocked = userAchievements.some(ua => ua.achievement_id === achievement.id);
   if (alreadyUnlocked) return;
-  
   await unlockAchievement(achievement, progress);
-  await loadAchievements();
 }
 
 function showAchievementToast(achievement) {
@@ -894,23 +526,17 @@ function showAchievementToast(achievement) {
       <div class="achievement-toast-desc">${achievement.description}</div>
     </div>
   `;
-  
   document.body.appendChild(toast);
-  
-  setTimeout(() => {
-    toast.style.animation = 'achievementSlideIn 0.5s ease reverse';
-    setTimeout(() => toast.remove(), 500);
-  }, 4000);
+  setTimeout(() => { toast.style.animation = 'achievementSlideIn 0.5s ease reverse'; setTimeout(() => toast.remove(), 500); }, 4000);
 }
 
 // ===== ОНБОРДИНГ =====
 const ONBOARDING_STEPS = [
-  { selector: '#uploadZone', icon: '📸', title: 'Шаг 1: Загрузите фото товара', text: 'Перетащите сюда 3-5 фотографий товара или нажмите, чтобы выбрать. Подойдут фото из карточки WB или Ozon — главное, чтобы товар был хорошо виден.', position: 'bottom' },
-  { selector: '#descriptionGroup', icon: '✍️', title: 'Шаг 2: Опишите товар', text: 'Расскажите, чем ваш товар лучше аналогов. Можно коротко — AI сам превратит это в продающий сценарий с ключевыми акцентами.', position: 'bottom' },
-  { selector: '#scenarioGroup', icon: '🎬', title: 'Шаг 3: Выберите сценарий', text: '6 готовых форматов под разные задачи: обзор, 3 причины купить, распаковка, проблема-решение, отзыв, сравнение с конкурентами.', position: 'top' },
-  { selector: '#btnGenerate', icon: '🚀', title: 'Шаг 4: Сгенерируйте видео', text: 'Нажмите кнопку — и через 2 минуты получите готовый ролик 9:16 с музыкой, озвучкой и титрами. Скачайте и загружайте в карточку!', position: 'top' }
+  { selector: '#uploadZone', icon: '', title: 'Шаг 1: Загрузите фото товара', text: 'Перетащите сюда 3-5 фотографий товара или нажмите, чтобы выбрать.', position: 'bottom' },
+  { selector: '#descriptionGroup', icon: '✍️', title: 'Шаг 2: Опишите товар', text: 'Расскажите, чем ваш товар лучше аналогов. AI сам превратит это в продающий сценарий.', position: 'bottom' },
+  { selector: '#scenarioGroup', icon: '', title: 'Шаг 3: Выберите сценарий', text: '6 готовых форматов под разные задачи: обзор, распаковка, отзыв и другие.', position: 'top' },
+  { selector: '#btnGenerate', icon: '', title: 'Шаг 4: Сгенерируйте видео', text: 'Нажмите кнопку — и через 2 минуты получите готовый ролик 9:16.', position: 'top' }
 ];
-
 let currentOnboardingStep = 0;
 let highlightedElement = null;
 
@@ -918,47 +544,31 @@ async function checkOnboardingStatus() {
   if (!currentUser) return false;
   try {
     const { data, error } = await supabaseClient.from('onboarding_status').select('*').eq('user_id', currentUser.id).single();
-    if (error && error.code !== 'PGRST116') { console.error('Onboarding check error:', error); return false; }
+    if (error && error.code !== 'PGRST116') return false;
     return !data || !data.completed;
-  } catch (e) { console.error('Onboarding check error:', e); return false; }
+  } catch (e) { return false; }
 }
 
 async function saveOnboardingStatus(completed, currentStep = 0) {
   if (!currentUser) return;
   try {
-    const { error } = await supabaseClient.from('onboarding_status').upsert({
+    await supabaseClient.from('onboarding_status').upsert({
       user_id: currentUser.id, completed: completed, current_step: currentStep, updated_at: new Date().toISOString()
     }, { onConflict: 'user_id' });
-    if (error) console.error('Save onboarding error:', error);
-  } catch (e) { console.error('Save onboarding error:', e); }
+  } catch (e) { console.error(e); }
 }
 
 function showWelcomeModal() {
   const modal = document.getElementById('welcomeModal');
   if (modal) modal.classList.add('active');
-  
-  document.getElementById('welcomeStart').addEventListener('click', () => {
-    modal.classList.remove('active');
-    startOnboarding();
-  });
-  
-  document.getElementById('welcomeSkip').addEventListener('click', () => {
-    modal.classList.remove('active');
-    saveOnboardingStatus(true);
-    showToast('Вы можете пройти тур позже в настройках', 'info');
-  });
+  document.getElementById('welcomeStart').addEventListener('click', () => { modal.classList.remove('active'); startOnboarding(); });
+  document.getElementById('welcomeSkip').addEventListener('click', () => { modal.classList.remove('active'); saveOnboardingStatus(true); showToast('Вы можете пройти тур позже в настройках', 'info'); });
 }
 
-function startOnboarding() {
-  currentOnboardingStep = 0;
-  showOnboardingStep();
-}
+function startOnboarding() { currentOnboardingStep = 0; showOnboardingStep(); }
 
 function showOnboardingStep() {
-  if (currentOnboardingStep >= ONBOARDING_STEPS.length) {
-    finishOnboarding();
-    return;
-  }
+  if (currentOnboardingStep >= ONBOARDING_STEPS.length) { finishOnboarding(); return; }
   const step = ONBOARDING_STEPS[currentOnboardingStep];
   const element = document.querySelector(step.selector);
   if (!element) { currentOnboardingStep++; showOnboardingStep(); return; }
@@ -978,7 +588,7 @@ function showOnboardingStep() {
     return `<div class="${cls}"></div>`;
   }).join('');
   document.getElementById('onboardingPrev').style.display = currentOnboardingStep > 0 ? 'block' : 'none';
-  document.getElementById('onboardingNext').textContent = currentOnboardingStep === ONBOARDING_STEPS.length - 1 ? 'Завершить 🎉' : 'Далее →';
+  document.getElementById('onboardingNext').textContent = currentOnboardingStep === ONBOARDING_STEPS.length - 1 ? 'Завершить ' : 'Далее →';
   positionTooltip(element, step.position);
   document.getElementById('onboardingOverlay').classList.add('active');
   document.getElementById('onboardingTooltip').classList.add('active');
@@ -999,16 +609,8 @@ function positionTooltip(element, position) {
   tooltip.style.left = left + 'px';
 }
 
-function nextOnboardingStep() {
-  if (highlightedElement) { highlightedElement.classList.remove('highlight-element'); highlightedElement = null; }
-  currentOnboardingStep++;
-  showOnboardingStep();
-}
-
-function prevOnboardingStep() {
-  if (highlightedElement) { highlightedElement.classList.remove('highlight-element'); highlightedElement = null; }
-  if (currentOnboardingStep > 0) { currentOnboardingStep--; showOnboardingStep(); }
-}
+function nextOnboardingStep() { if (highlightedElement) { highlightedElement.classList.remove('highlight-element'); highlightedElement = null; } currentOnboardingStep++; showOnboardingStep(); }
+function prevOnboardingStep() { if (highlightedElement) { highlightedElement.classList.remove('highlight-element'); highlightedElement = null; } if (currentOnboardingStep > 0) { currentOnboardingStep--; showOnboardingStep(); } }
 
 async function finishOnboarding() {
   if (highlightedElement) { highlightedElement.classList.remove('highlight-element'); highlightedElement = null; }
@@ -1032,41 +634,19 @@ function initOnboarding() {
   document.getElementById('onboardingPrev').addEventListener('click', prevOnboardingStep);
   document.getElementById('onboardingSkip').addEventListener('click', skipOnboarding);
   document.getElementById('onboardingOverlay').addEventListener('click', skipOnboarding);
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      const tooltip = document.getElementById('onboardingTooltip');
-      if (tooltip.classList.contains('active')) skipOnboarding();
-    }
-  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { const tooltip = document.getElementById('onboardingTooltip'); if (tooltip.classList.contains('active')) skipOnboarding(); } });
 }
 
 async function initDashboard() {
   showVideoCardSkeleton('#projectsGrid', 4);
   
   networkManager = new NetworkManager({
-    onOffline: () => {
-      document.getElementById('offlineBanner').classList.add('active');
-      const dot = document.getElementById('onlineDot');
-      if (dot) dot.className = 'offline-dot';
-      const zone = document.getElementById('uploadZone');
-      if (zone) zone.classList.add('disabled');
-    },
-    onOnline: () => {
-      document.getElementById('offlineBanner').classList.remove('active');
-      const dot = document.getElementById('onlineDot');
-      if (dot) dot.className = 'online-dot';
-      const zone = document.getElementById('uploadZone');
-      if (zone) zone.classList.remove('disabled');
-      loadVideos();
-    }
+    onOffline: () => { document.getElementById('offlineBanner').classList.add('active'); const dot = document.getElementById('onlineDot'); if (dot) dot.className = 'offline-dot'; const zone = document.getElementById('uploadZone'); if (zone) zone.classList.add('disabled'); },
+    onOnline: () => { document.getElementById('offlineBanner').classList.remove('active'); const dot = document.getElementById('onlineDot'); if (dot) dot.className = 'online-dot'; const zone = document.getElementById('uploadZone'); if (zone) zone.classList.remove('disabled'); loadVideos(); }
   });
   window.networkManager = networkManager;
   
-  if (!networkManager.isOnline) {
-    document.getElementById('offlineBanner').classList.add('active');
-    const dot = document.getElementById('onlineDot');
-    if (dot) dot.className = 'offline-dot';
-  }
+  if (!networkManager.isOnline) { document.getElementById('offlineBanner').classList.add('active'); const dot = document.getElementById('onlineDot'); if (dot) dot.className = 'offline-dot'; }
   
   currentUser = await requireAuth();
   if (!currentUser) return;
@@ -1091,16 +671,12 @@ async function initDashboard() {
     const menu = document.getElementById('navMenu');
     const adminLink = document.createElement('li');
     adminLink.innerHTML = '<a href="admin.html">👑 Админ-панель</a>';
-    menu.insertBefore(adminLink, menu.children[1]);
+    menu.insertBefore(adminLink, menu.children[3]);
   }
   
   draftManager = new DraftManager({
-    userId: currentUser.id,
-    descriptionSelector: '#productDescription',
-    scenarioSelector: '#scenarioSelect',
-    indicatorSelector: '#draftIndicator',
-    clearButtonSelector: '#clearDraftBtn',
-    debounceMs: 500
+    userId: currentUser.id, descriptionSelector: '#productDescription', scenarioSelector: '#scenarioSelect',
+    indicatorSelector: '#draftIndicator', clearButtonSelector: '#clearDraftBtn', debounceMs: 500
   });
   draftManager.init();
   
@@ -1111,46 +687,43 @@ async function initDashboard() {
   initNotificationsUI();
   initOnboarding();
   
-  const needsOnboarding = await checkOnboardingStatus();
-  if (needsOnboarding) {
-    setTimeout(() => showWelcomeModal(), 1500);
-  }
+  // Проверяем "Любимая" при входе
+  await checkBelovedAchievement();
   
-  if (window.microAnimations) {
-    window.microAnimations.initRipple();
-  }
+  const needsOnboarding = await checkOnboardingStatus();
+  if (needsOnboarding) setTimeout(() => showWelcomeModal(), 1500);
+  
+  if (window.microAnimations) window.microAnimations.initRipple();
   
   const burgerBtn = document.getElementById('burgerBtn');
   const mobileMenu = document.getElementById('mobileMenu');
   if (burgerBtn && mobileMenu) {
-    burgerBtn.addEventListener('click', () => {
-      burgerBtn.classList.toggle('active');
-      mobileMenu.classList.toggle('active');
-      document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
-    });
-    mobileMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        burgerBtn.classList.remove('active');
-        mobileMenu.classList.remove('active');
-        document.body.style.overflow = '';
-      });
-    });
+    burgerBtn.addEventListener('click', () => { burgerBtn.classList.toggle('active'); mobileMenu.classList.toggle('active'); document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : ''; });
+    mobileMenu.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => { burgerBtn.classList.remove('active'); mobileMenu.classList.remove('active'); document.body.style.overflow = ''; }); });
   }
   
   await checkReviewEligibility();
 }
 
-// ===== УВЕДОМЛЕНИЯ =====
+// Проверка "Любимая" при входе
+async function checkBelovedAchievement() {
+  if (!currentUser) return;
+  const name = (currentUser.profile?.full_name || '').toLowerCase().trim();
+  if (name === 'богдана' || name === 'богдан') {
+    await unlockAchievementByCode('beloved', 1);
+  }
+}
 
+// ===== УВЕДОМЛЕНИЯ =====
 async function loadNotifications() {
   if (!currentUser) return;
   try {
     const { data, error } = await supabaseClient.from('notifications').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }).limit(50);
-    if (error) { console.error('Notifications error:', error); return; }
+    if (error) return;
     allNotifications = data || [];
     renderNotifications();
     updateNotificationsBadge();
-  } catch (e) { console.error('Load notifications error:', e); }
+  } catch (e) { console.error(e); }
 }
 
 function updateNotificationsBadge() {
@@ -1159,17 +732,13 @@ function updateNotificationsBadge() {
   if (!badge) return;
   if (unreadCount > 0) { badge.textContent = unreadCount > 99 ? '99+' : unreadCount; badge.classList.remove('hidden'); }
   else { badge.classList.add('hidden'); }
-  if (unreadCount > 0) { document.title = `(${unreadCount}) Личный кабинет Cliply`; }
-  else { document.title = 'Личный кабинет Cliply — создание видео'; }
+  document.title = unreadCount > 0 ? `(${unreadCount}) Личный кабинет Cliply` : 'Личный кабинет Cliply — создание видео';
 }
 
 function renderNotifications() {
   const list = document.getElementById('notificationsList');
   if (!list) return;
-  if (allNotifications.length === 0) {
-    list.innerHTML = `<div class="notifications-empty"><div class="notifications-empty-icon">🔔</div><div>У вас пока нет уведомлений</div></div>`;
-    return;
-  }
+  if (allNotifications.length === 0) { list.innerHTML = `<div class="notifications-empty"><div class="notifications-empty-icon"></div><div>У вас пока нет уведомлений</div></div>`; return; }
   list.innerHTML = allNotifications.map(notif => {
     const unreadClass = notif.is_read ? '' : 'unread';
     const time = formatNotificationTime(notif.created_at);
@@ -1178,33 +747,12 @@ function renderNotifications() {
   }).join('');
 }
 
-function getNotificationIcon(type) {
-  const icons = { 'video_done': '🎬', 'support_reply': '💬', 'review': '⭐', 'system': '📢', 'achievement': '🏆' };
-  return icons[type] || '🔔';
-}
-
-function formatNotificationTime(dateStr) {
-  const date = new Date(dateStr);
-  const now = new Date();
-  const diff = now - date;
-  const minutes = Math.floor(diff / 60000);
-  const hours = Math.floor(diff / 3600000);
-  const days = Math.floor(diff / 86400000);
-  if (minutes < 1) return 'только что';
-  if (minutes < 60) return `${minutes} мин. назад`;
-  if (hours < 24) return `${hours} ч. назад`;
-  if (days < 7) return `${days} дн. назад`;
-  return date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
-}
+function getNotificationIcon(type) { const icons = { 'video_done': '🎬', 'support_reply': '💬', 'review': '⭐', 'system': '', 'achievement': '🏆' }; return icons[type] || '🔔'; }
+function formatNotificationTime(dateStr) { const date = new Date(dateStr); const diff = new Date() - date; const minutes = Math.floor(diff / 60000); const hours = Math.floor(diff / 3600000); const days = Math.floor(diff / 86400000); if (minutes < 1) return 'только что'; if (minutes < 60) return `${minutes} мин. назад`; if (hours < 24) return `${hours} ч. назад`; if (days < 7) return `${days} дн. назад`; return date.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' }); }
 
 async function handleNotificationClick(notifId, link) {
   const notif = allNotifications.find(n => n.id === notifId);
-  if (notif && !notif.is_read) {
-    await supabaseClient.from('notifications').update({ is_read: true }).eq('id', notifId);
-    notif.is_read = true;
-    renderNotifications();
-    updateNotificationsBadge();
-  }
+  if (notif && !notif.is_read) { await supabaseClient.from('notifications').update({ is_read: true }).eq('id', notifId); notif.is_read = true; renderNotifications(); updateNotificationsBadge(); }
   if (link) window.location.href = link;
 }
 
@@ -1224,38 +772,27 @@ function initNotificationsUI() {
   const markAllBtn = document.getElementById('markAllRead');
   if (btn && dropdown) {
     btn.addEventListener('click', (e) => { e.stopPropagation(); dropdown.classList.toggle('active'); });
-    document.addEventListener('click', (e) => {
-      if (!dropdown.contains(e.target) && !btn.contains(e.target)) dropdown.classList.remove('active');
-    });
+    document.addEventListener('click', (e) => { if (!dropdown.contains(e.target) && !btn.contains(e.target)) dropdown.classList.remove('active'); });
   }
   if (markAllBtn) markAllBtn.addEventListener('click', markAllAsRead);
 }
 
-function startNotificationsCheck() {
-  if (notificationsCheckInterval) clearInterval(notificationsCheckInterval);
-  notificationsCheckInterval = setInterval(loadNotifications, 30000);
-}
+function startNotificationsCheck() { if (notificationsCheckInterval) clearInterval(notificationsCheckInterval); notificationsCheckInterval = setInterval(loadNotifications, 30000); }
 
 async function createNotification(type, title, message, link = null) {
   if (!currentUser) return;
   try {
-    const { error } = await supabaseClient.from('notifications').insert({
-      user_id: currentUser.id, type: type, title: title, message: message, link: link, is_read: false
-    });
-    if (error) { console.error('Create notification error:', error); return; }
+    const { error } = await supabaseClient.from('notifications').insert({ user_id: currentUser.id, type: type, title: title, message: message, link: link, is_read: false });
+    if (error) return;
     await loadNotifications();
     showToast(`${getNotificationIcon(type)} ${title}`, 'info');
-  } catch (e) { console.error('Create notification error:', e); }
+  } catch (e) { console.error(e); }
 }
 
 // ===== ВИДЕО =====
-
 async function loadVideos() {
   try {
-    const { data, error } = await networkManager.supabaseRequest(
-      () => supabaseClient.from('videos').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }),
-      'Загрузка видео'
-    );
+    const { data, error } = await networkManager.supabaseRequest(() => supabaseClient.from('videos').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }), 'Загрузка видео');
     if (error) { showToast('Ошибка загрузки видео: ' + error.message, 'error'); return; }
     allVideos = data || [];
     renderVideos();
@@ -1279,23 +816,19 @@ function renderVideos() {
     const statusClass = video.status === 'done' ? 'status-done' : video.status === 'processing' ? 'status-progress' : 'status-failed';
     const statusText = video.status === 'done' ? 'Готово' : video.status === 'processing' ? 'В процессе' : 'Ошибка';
     const date = new Date(video.created_at).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-    return `<div class="project-card content-fade-in"><div class="project-preview">${video.status === 'done' ? '🎬' : video.status === 'processing' ? '⏳' : '❌'}<span class="project-status ${statusClass}">${statusText}</span></div><div class="project-info"><div class="project-title">${video.product_name || 'Без названия'}</div><div class="project-date">${date}</div><div class="project-actions">${video.status === 'done' ? `<button class="btn-small primary" onclick="downloadVideo('${video.id}')">Скачать</button>` : ''}<button class="btn-small" onclick="regenerateVideo('${video.id}')">Перегенерировать</button><button class="btn-small danger" onclick="deleteVideo('${video.id}')">Удалить</button></div></div></div>`;
+    return `<div class="project-card content-fade-in"><div class="project-preview">${video.status === 'done' ? '' : video.status === 'processing' ? '' : '❌'}<span class="project-status ${statusClass}">${statusText}</span></div><div class="project-info"><div class="project-title">${video.product_name || 'Без названия'}</div><div class="project-date">${date}</div><div class="project-actions">${video.status === 'done' ? `<button class="btn-small primary" onclick="downloadVideo('${video.id}')">Скачать</button>` : ''}<button class="btn-small" onclick="regenerateVideo('${video.id}')">Перегенерировать</button><button class="btn-small danger" onclick="deleteVideo('${video.id}')">Удалить</button></div></div></div>`;
   }).join('');
 }
 
 async function downloadVideo(videoId) {
   const video = allVideos.find(v => v.id === videoId);
   if (!video || !video.video_url) { showToast('Видео недоступно', 'error'); return; }
-  const link = document.createElement('a');
-  link.href = video.video_url; link.download = `${video.product_name || 'video'}.mp4`; link.target = '_blank';
+  const link = document.createElement('a'); link.href = video.video_url; link.download = `${video.product_name || 'video'}.mp4`; link.target = '_blank';
   document.body.appendChild(link); link.click(); document.body.removeChild(link);
   showToast('Скачивание началось', 'success');
 }
 
-async function regenerateVideo(videoId) {
-  showToast('Перегенерация начата (демо)', 'info');
-  setTimeout(() => showToast('Видео перегенерировано (демо)', 'success'), 3000);
-}
+async function regenerateVideo(videoId) { showToast('Перегенерация начата (демо)', 'info'); setTimeout(() => showToast('Видео перегенерировано (демо)', 'success'), 3000); }
 
 async function deleteVideo(videoId) {
   if (!confirm('Удалить это видео?')) return;
@@ -1317,30 +850,19 @@ const uploadProgress = document.getElementById('uploadProgress');
 const uploadProgressBar = document.getElementById('uploadProgressBar');
 const uploadProgressText = document.getElementById('uploadProgressText');
 
-uploadZone.addEventListener('click', (e) => {
-  if (e.target.closest('.photo-remove')) return;
-  if (!networkManager.isOnline) { showToast('Загрузка фото недоступна без интернета', 'error'); return; }
-  fileInput.click();
-});
-
+uploadZone.addEventListener('click', (e) => { if (e.target.closest('.photo-remove')) return; if (!networkManager.isOnline) { showToast('Загрузка фото недоступна без интернета', 'error'); return; } fileInput.click(); });
 uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); if (!networkManager.isOnline) return; uploadZone.classList.add('drag-over'); });
 uploadZone.addEventListener('dragleave', (e) => { e.preventDefault(); if (!uploadZone.contains(e.relatedTarget)) uploadZone.classList.remove('drag-over'); });
 uploadZone.addEventListener('drop', (e) => { e.preventDefault(); uploadZone.classList.remove('drag-over'); if (!networkManager.isOnline) { showToast('Загрузка фото недоступна без интернета', 'error'); return; } handleFiles(Array.from(e.dataTransfer.files)); });
 fileInput.addEventListener('change', (e) => { handleFiles(Array.from(e.target.files)); fileInput.value = ''; });
 
-function formatFileSize(bytes) {
-  if (bytes < 1024) return bytes + ' Б';
-  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' КБ';
-  return (bytes / (1024 * 1024)).toFixed(2) + ' МБ';
-}
-
+function formatFileSize(bytes) { if (bytes < 1024) return bytes + ' Б'; if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' КБ'; return (bytes / (1024 * 1024)).toFixed(2) + ' МБ'; }
 function getTotalSize() { return uploadedPhotos.reduce((sum, f) => sum + f.size, 0); }
 
 async function handleFiles(files) {
   const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
   const maxSize = 10 * 1024 * 1024;
-  const errors = [];
-  const filesToAdd = [];
+  const errors = []; const filesToAdd = [];
   for (const file of files) {
     if (uploadedPhotos.length + filesToAdd.length >= 5) { errors.push(`${file.name}: максимум 5 фото`); continue; }
     if (!validTypes.includes(file.type)) { errors.push(`${file.name}: неподдерживаемый формат`); continue; }
@@ -1349,16 +871,10 @@ async function handleFiles(files) {
   }
   const errorsContainer = document.getElementById('validationErrors');
   const errorsList = document.getElementById('validationErrorsList');
-  if (errors.length > 0) {
-    errorsList.innerHTML = errors.map(e => `<li>${e}</li>`).join('');
-    errorsContainer.classList.add('active');
-    setTimeout(() => errorsContainer.classList.remove('active'), 5000);
-  } else { errorsContainer.classList.remove('active'); }
+  if (errors.length > 0) { errorsList.innerHTML = errors.map(e => `<li>${e}</li>`).join(''); errorsContainer.classList.add('active'); setTimeout(() => errorsContainer.classList.remove('active'), 5000); }
+  else { errorsContainer.classList.remove('active'); }
   if (filesToAdd.length === 0) return;
-  uploadZone.classList.add('uploading');
-  uploadProgress.classList.add('active');
-  uploadProgressText.classList.add('active');
-  uploadProgressText.textContent = 'Загрузка фото...';
+  uploadZone.classList.add('uploading'); uploadProgress.classList.add('active'); uploadProgressText.classList.add('active'); uploadProgressText.textContent = 'Загрузка фото...';
   for (let i = 0; i < filesToAdd.length; i++) {
     const progress = ((uploadedPhotos.length + i + 1) / 5) * 100;
     uploadProgressBar.style.width = progress + '%';
@@ -1366,22 +882,11 @@ async function handleFiles(files) {
     await new Promise(resolve => setTimeout(resolve, 400));
     uploadedPhotos.push(filesToAdd[i]);
   }
-  uploadZone.classList.remove('uploading');
-  uploadZone.classList.add('success');
-  uploadProgressText.textContent = '✓ Фото загружены';
-  setTimeout(() => {
-    uploadProgress.classList.remove('active');
-    uploadProgressText.classList.remove('active');
-    uploadProgressBar.style.width = '0%';
-    uploadZone.classList.remove('success');
-  }, 1500);
+  uploadZone.classList.remove('uploading'); uploadZone.classList.add('success'); uploadProgressText.textContent = '✓ Фото загружены';
+  setTimeout(() => { uploadProgress.classList.remove('active'); uploadProgressText.classList.remove('active'); uploadProgressBar.style.width = '0%'; uploadZone.classList.remove('success'); }, 1500);
   updatePhotoPreview();
   showToast(`Загружено фото: ${filesToAdd.length}`, 'success');
-  
-  // Проверяем достижение "Фотограф"
-  if (uploadedPhotos.length >= 5) {
-    await unlockAchievementByCode('five_photos', 5);
-  }
+  if (uploadedPhotos.length >= 5) await unlockAchievementByCode('five_photos', 5);
 }
 
 function updatePhotoPreview() {
@@ -1390,15 +895,12 @@ function updatePhotoPreview() {
   const count = document.getElementById('photoCount');
   const size = document.getElementById('photoSize');
   if (uploadedPhotos.length === 0) { counter.style.display = 'none'; container.innerHTML = ''; return; }
-  counter.style.display = 'block';
-  count.textContent = uploadedPhotos.length;
-  size.textContent = formatFileSize(getTotalSize());
+  counter.style.display = 'block'; count.textContent = uploadedPhotos.length; size.textContent = formatFileSize(getTotalSize());
   container.innerHTML = '';
   uploadedPhotos.forEach((photo, index) => {
     const reader = new FileReader();
     reader.onload = (e) => {
-      const div = document.createElement('div');
-      div.className = 'photo-preview';
+      const div = document.createElement('div'); div.className = 'photo-preview';
       div.innerHTML = `<div class="photo-status-icon valid">✓</div><img src="${e.target.result}" alt="${photo.name}" loading="lazy"><div class="photo-info">${photo.name}</div><button class="photo-remove" onclick="removePhoto(${index})" title="Удалить">×</button>`;
       container.appendChild(div);
     };
@@ -1406,12 +908,7 @@ function updatePhotoPreview() {
   });
 }
 
-function removePhoto(index) {
-  const name = uploadedPhotos[index].name;
-  uploadedPhotos.splice(index, 1);
-  updatePhotoPreview();
-  showToast(`Фото "${name}" удалено`, 'info');
-}
+function removePhoto(index) { const name = uploadedPhotos[index].name; uploadedPhotos.splice(index, 1); updatePhotoPreview(); showToast(`Фото "${name}" удалено`, 'info'); }
 
 async function generatePrompt() {
   const textarea = document.getElementById('productDescription');
@@ -1520,35 +1017,22 @@ function showReviewModal() {
   let selectedRating = 5;
   const stars = modal.querySelectorAll('#ratingStars span');
   stars.forEach(star => {
-    star.addEventListener('click', () => {
-      selectedRating = parseInt(star.dataset.rating);
-      stars.forEach((s, i) => { s.style.color = i < selectedRating ? '#6C5CE7' : '#27272a'; });
-    });
-    star.addEventListener('mouseenter', () => {
-      const r = parseInt(star.dataset.rating);
-      stars.forEach((s, i) => { s.style.color = i < r ? '#A29BFE' : '#27272a'; });
-    });
+    star.addEventListener('click', () => { selectedRating = parseInt(star.dataset.rating); stars.forEach((s, i) => { s.style.color = i < selectedRating ? '#6C5CE7' : '#27272a'; }); });
+    star.addEventListener('mouseenter', () => { const r = parseInt(star.dataset.rating); stars.forEach((s, i) => { s.style.color = i < r ? '#A29BFE' : '#27272a'; }); });
   });
-  modal.querySelector('#ratingStars').addEventListener('mouseleave', () => {
-    stars.forEach((s, i) => { s.style.color = i < selectedRating ? '#6C5CE7' : '#27272a'; });
-  });
+  modal.querySelector('#ratingStars').addEventListener('mouseleave', () => { stars.forEach((s, i) => { s.style.color = i < selectedRating ? '#6C5CE7' : '#27272a'; }); });
   modal.querySelector('#submitReviewBtn').addEventListener('click', async () => {
     const text = modal.querySelector('#reviewText').value.trim();
     const category = modal.querySelector('#reviewCategory').value;
     if (!text) { showToast('Напишите отзыв', 'warning'); return; }
-    const btn = modal.querySelector('#submitReviewBtn');
-    btn.textContent = 'Публикация...'; btn.disabled = true;
+    const btn = modal.querySelector('#submitReviewBtn'); btn.textContent = 'Публикация...'; btn.disabled = true;
     const { error } = await supabaseClient.from('reviews').insert({
       user_id: currentUser.id, user_name: currentUser.profile.full_name || currentUser.email,
       user_role: ROLES[currentUser.profile.role_level]?.name || 'Селлер',
       rating: selectedRating, review_text: text, product_category: category
     });
     if (error) { showToast('Ошибка: ' + error.message, 'error'); btn.textContent = 'Опубликовать отзыв'; btn.disabled = false; }
-    else { 
-      showToast('Спасибо за отзыв! ⭐', 'success'); 
-      modal.remove();
-      await checkAndAwardAchievements();
-    }
+    else { showToast('Спасибо за отзыв! ', 'success'); modal.remove(); await checkAndAwardAchievements(); }
   });
 }
 
@@ -1558,9 +1042,7 @@ initDashboard();
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.getRegistrations().then(registrations => {
-      for (let registration of registrations) { registration.update(); }
-    });
+    navigator.serviceWorker.getRegistrations().then(registrations => { for (let registration of registrations) { registration.update(); } });
   });
 }
 </script>
