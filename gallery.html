@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<title>Галерея Cliply — лучшие работы селлеров</title>
+<meta name="description" content="Посмотрите видео, созданные селлерами на Cliply. Вдохновляйтесь и создавайте свои шедевры!">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#6C5CE7">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth.js"></script>
+<link rel="stylesheet" href="toast.css">
+<script src="toast.js"></script>
+<link rel="stylesheet" href="mobile.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; line-height: 1.6; }
+  h1, h2, h3 { font-family: 'Manrope', sans-serif; font-weight: 800; }
+  .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+  
+  nav { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f1f2e; }
+  .logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+  .nav-links { display: flex; gap: 24px; }
+  .nav-links a { color: #A0A0B0; text-decoration: none; font-size: 14px; transition: color 0.2s; }
+  .nav-links a:hover { color: #fff; }
+  .nav-btn { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 10px 24px; border-radius: 100px; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+  .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
+  
+  .hero { padding: 80px 0 60px; text-align: center; }
+  .hero-label { font-size: 13px; font-weight: 700; color: #6C5CE7; letter-spacing: 3px; margin-bottom: 16px; text-transform: uppercase; }
+  .hero h1 { font-size: 56px; margin-bottom: 16px; }
+  .hero h1 span { background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero p { font-size: 18px; color: #A0A0B0; max-width: 600px; margin: 0 auto; }
+  
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    padding: 32px 0;
+    margin-bottom: 48px;
+    border-top: 1px solid #1f1f2e;
+    border-bottom: 1px solid #1f1f2e;
+  }
+  .stat-item { text-align: center; }
+  .stat-value { font-size: 32px; font-weight: 800; font-family: 'Manrope'; color: #6C5CE7; }
+  .stat-label { font-size: 14px; color: #A0A0B0; margin-top: 4px; }
+  
+  .filters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .filter-btn {
+    padding: 10px 20px;
+    border-radius: 100px;
+    border: 1px solid #27272a;
+    background: transparent;
+    color: #A0A0B0;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover { border-color: #6C5CE7; color: #fff; }
+  .filter-btn.active { background: #6C5CE7; border-color: #6C5CE7; color: #fff; }
+  
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    padding-bottom: 80px;
+  }
+  
+  .gallery-card {
+    background: #141414;
+    border: 1px solid #27272a;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .gallery-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(108, 92, 231, 0.3);
+    border-color: #6C5CE7;
+  }
+  
+  .gallery-thumbnail {
+    height: 200px;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
+    position: relative;
+  }
+  .gallery-play {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: rgba(108, 92, 231, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    transition: transform 0.2s;
+  }
+  .gallery-card:hover .gallery-play { transform: scale(1.1); }
+  .gallery-duration {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(0,0,0,0.8);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .gallery-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #6C5CE7;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  
+  .gallery-info { padding: 20px; }
+  .gallery-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .gallery-description { font-size: 14px; color: #A0A0B0; line-height: 1.5; margin-bottom: 16px; min-height: 42px; }
+  .gallery-meta { display: flex; justify-content: space-between; align-items: center; }
+  .gallery-author { display: flex; align-items: center; gap: 10px; }
+  .gallery-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .gallery-author-name { font-size: 13px; color: #A0A0B0; }
+  .gallery-stats { display: flex; gap: 16px; font-size: 13px; color: #666; }
+  .gallery-stat { display: flex; align-items: center; gap: 4px; }
+  
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: #A0A0B0;
+    grid-column: 1 / -1;
+  }
+  .empty-state-icon { font-size: 80px; margin-bottom: 20px; opacity: 0.5; }
+  .empty-state h3 { font-size: 24px; margin-bottom: 12px; color: #fff; }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal-content {
+    background: #141414;
+    border: 1px solid #27272a;
+    border-radius: 20px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(0,0,0,0.5);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 10;
+  }
+  .modal-close:hover { background: rgba(0,0,0,0.8); }
+  .modal-video {
+    width: 100%;
+    height: 500px;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 120px;
+  }
+  .modal-info { padding: 32px; }
+  .modal-title { font-size: 28px; font-weight: 700; margin-bottom: 16px; }
+  .modal-description { font-size: 16px; color: #A0A0B0; line-height: 1.6; margin-bottom: 24px; }
+  .modal-author { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+  .modal-author-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+  }
+  .modal-author-info h4 { font-size: 18px; margin-bottom: 4px; }
+  .modal-author-info p { font-size: 14px; color: #A0A0B0; }
+  .modal-actions { display: flex; gap: 12px; }
+  .modal-btn {
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .modal-btn-primary { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; }
+  .modal-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
+  .modal-btn-secondary { background: transparent; color: #A0A0B0; border: 1px solid #27272a; }
+  .modal-btn-secondary:hover { border-color: #6C5CE7; color: #fff; }
+  
+  .burger { display: none; flex-direction: column; gap: 5px; background: transparent; border: none; cursor: pointer; padding: 8px; }
+  .burger span { display: block; width: 24px; height: 2px; background: #fff; transition: all 0.3s; border-radius: 2px; }
+  .burger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .burger.active span:nth-child(2) { opacity: 0; }
+  .burger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .mobile-menu { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(10,10,15,0.98); backdrop-filter: blur(20px); z-index: 999; padding: 80px 24px 24px; flex-direction: column; gap: 8px; }
+  .mobile-menu.active { display: flex; }
+  .mobile-menu a { display: block; padding: 16px; color: #fff; text-decoration: none; font-size: 18px; border-radius: 8px; text-align: center; }
+  .mobile-menu a:hover { background: rgba(108, 92, 231, 0.15); }
+  
+  @media (max-width: 768px) {
+    .nav-links { display: none !important; }
+    .burger { display: flex !important; }
+    .hero h1 { font-size: 36px !important; }
+    .hero p { font-size: 16px; }
+    .stats-bar { flex-direction: column; gap: 24px; }
+    .gallery-grid { grid-template-columns: 1fr !important; }
+    .modal-video { height: 300px; }
+    .modal-info { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;width:100%;">
+    <a href="index.html" class="logo">Cliply</a>
+    <div class="nav-links">
+      <a href="index.html">Главная</a>
+      <a href="examples.html">Примеры</a>
+      <a href="gallery.html" style="color: #fff;">Галерея</a>
+      <a href="pricing.html">Тарифы</a>
+      <a href="faq.html">FAQ</a>
+      <a href="dashboard.html" class="nav-btn" id="navAuthBtn">Войти</a>
+    </div>
+    <button class="burger" id="burgerBtn" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Главная</a>
+  <a href="examples.html">Примеры</a>
+  <a href="gallery.html" style="color: #6C5CE7;">Галерея</a>
+  <a href="pricing.html">Тарифы</a>
+  <a href="faq.html">FAQ</a>
+  <a href="dashboard.html" id="mobileAuthBtn">Войти</a>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-label">ГАЛЕРЕЯ РАБОТ</div>
+    <h1>Вдохновляйтесь <span>лучшими видео</span></h1>
+    <p>Смотрите, что создают селлеры на Cliply. Публикуйте свои работы и получайте лайки!</p>
+  </div>
+</section>
+
+<section class="container">
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-value" id="statVideos">0</div>
+      <div class="stat-label">Видео опубликовано</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" id="statAuthors">0</div>
+      <div class="stat-label">Авторов</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" id="statLikes">0</div>
+      <div class="stat-label">Лайков</div>
+    </div>
+  </div>
+  
+  <div class="filters" id="galleryFilters">
+    <button class="filter-btn active" data-filter="all">Все</button>
+    <button class="filter-btn" data-filter="cosmetics">Косметика</button>
+    <button class="filter-btn" data-filter="electronics">Электроника</button>
+    <button class="filter-btn" data-filter="clothing">Одежда</button>
+    <button class="filter-btn" data-filter="home">Для дома</button>
+    <button class="filter-btn" data-filter="health">Здоровье</button>
+    <button class="filter-btn" data-filter="sport">Спорт</button>
+  </div>
+  
+  <div class="gallery-grid" id="galleryGrid">
+    <div class="empty-state">
+      <div class="empty-state-icon">🎬</div>
+      <h3>Загрузка галереи...</h3>
+      <p>Скоро здесь появятся лучшие работы селлеров</p>
+    </div>
+  </div>
+</section>
+
+<div class="modal-overlay" id="videoModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-video" id="modalVideo">🎬</div>
+    <div class="modal-info">
+      <h2 class="modal-title" id="modalTitle">Название видео</h2>
+      <p class="modal-description" id="modalDescription">Описание товара</p>
+      <div class="modal-author">
+        <div class="modal-author-avatar" id="modalAvatar">?</div>
+        <div class="modal-author-info">
+          <h4 id="modalAuthorName">Автор</h4>
+          <p id="modalAuthorRole">Селлер</p>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-primary" id="modalLikeBtn" onclick="likeVideo()">
+          <span>❤️</span>
+          <span id="modalLikeCount">0</span>
+        </button>
+        <button class="modal-btn modal-btn-secondary" onclick="shareVideo()">
+          <span>📤</span>
+          <span>Поделиться</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentUser = null;
+let galleryVideos = [];
+let currentFilter = 'all';
+let currentVideoId = null;
+
+const burgerBtn = document.getElementById('burgerBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+
+if (burgerBtn && mobileMenu) {
+  burgerBtn.addEventListener('click', () => {
+    burgerBtn.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+    document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+  });
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      burgerBtn.classList.remove('active');
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  });
+}
+
+(async () => {
+  currentUser = await getCurrentUser();
+  const btn = document.getElementById('navAuthBtn');
+  if (currentUser && btn) {
+    btn.textContent = 'Дашборд';
+    btn.href = 'dashboard.html';
+    if (document.getElementById('mobileAuthBtn')) {
+      document.getElementById('mobileAuthBtn').textContent = 'Дашборд';
+      document.getElementById('mobileAuthBtn').href = 'dashboard.html';
+    }
+  }
+  
+  await loadGallery();
+  initFilters();
+})();
+
+async function loadGallery() {
+  try {
+    const { data, error } = await supabaseClient
+      .from('gallery_videos')
+      .select('*')
+      .eq('status', 'approved')
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    galleryVideos = data || [];
+    
+    updateStats();
+    renderGallery();
+  } catch (e) {
+    console.error('Load gallery error:', e);
+  }
+}
+
+function updateStats() {
+  const totalVideos = galleryVideos.length;
+  const uniqueAuthors = [...new Set(galleryVideos.map(v => v.user_id))].length;
+  const totalLikes = galleryVideos.reduce((sum, v) => sum + (v.likes_count || 0), 0);
+  
+  document.getElementById('statVideos').textContent = totalVideos;
+  document.getElementById('statAuthors').textContent = uniqueAuthors;
+  document.getElementById('statLikes').textContent = totalLikes;
+}
+
+function renderGallery() {
+  const grid = document.getElementById('galleryGrid');
+  
+  let filtered = galleryVideos;
+  if (currentFilter !== 'all') {
+    filtered = galleryVideos.filter(v => {
+      const category = getCategoryFromDescription(v.product_description);
+      return category === currentFilter;
+    });
+  }
+  
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">🎬</div>
+        <h3>Пока нет видео в этой категории</h3>
+        <p>Будьте первым — создайте и опубликуйте своё видео!</p>
+      </div>
+    `;
+    return;
+  }
+  
+  grid.innerHTML = filtered.map(video => {
+    const initial = video.user_name.charAt(0).toUpperCase();
+    const duration = '0:15';
+    const category = getCategoryFromDescription(video.product_description);
+    
+    return `
+      <div class="gallery-card" onclick="openVideo('${video.id}')">
+        <div class="gallery-thumbnail">
+          <div class="gallery-play">▶</div>
+          <div class="gallery-duration">${duration}</div>
+          ${category ? `<div class="gallery-badge">${getCategoryName(category)}</div>` : ''}
+        </div>
+        <div class="gallery-info">
+          <div class="gallery-title">${video.product_name}</div>
+          <div class="gallery-description">${video.product_description || 'Без описания'}</div>
+          <div class="gallery-meta">
+            <div class="gallery-author">
+              <div class="gallery-avatar">${initial}</div>
+              <div class="gallery-author-name">${video.user_name}</div>
+            </div>
+            <div class="gallery-stats">
+              <div class="gallery-stat">❤️ ${video.likes_count || 0}</div>
+              <div class="gallery-stat">👁 ${video.views_count || 0}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function getCategoryFromDescription(desc) {
+  if (!desc) return null;
+  const lower = desc.toLowerCase();
+  if (lower.includes('космет') || lower.includes('крем') || lower.includes('макияж')) return 'cosmetics';
+  if (lower.includes('электрон') || lower.includes('наушник') || lower.includes('телефон')) return 'electronics';
+  if (lower.includes('одежд') || lower.includes('футболк') || lower.includes('платье')) return 'clothing';
+  if (lower.includes('дом') || lower.includes('кухн') || lower.includes('интерьер')) return 'home';
+  if (lower.includes('здоров') || lower.includes('витамин') || lower.includes('бад')) return 'health';
+  if (lower.includes('спорт') || lower.includes('фитнес') || lower.includes('тренировк')) return 'sport';
+  return null;
+}
+
+function getCategoryName(category) {
+  const names = {
+    'cosmetics': 'Косметика',
+    'electronics': 'Электроника',
+    'clothing': 'Одежда',
+    'home': 'Для дома',
+    'health': 'Здоровье',
+    'sport': 'Спорт'
+  };
+  return names[category] || category;
+}
+
+function initFilters() {
+  document.getElementById('galleryFilters').addEventListener('click', (e) => {
+    if (e.target.classList.contains('filter-btn')) {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      e.target.classList.add('active');
+      currentFilter = e.target.dataset.filter;
+      renderGallery();
+    }
+  });
+}
+
+function openVideo(videoId) {
+  const video = galleryVideos.find(v => v.id === videoId);
+  if (!video) return;
+  
+  currentVideoId = videoId;
+  
+  document.getElementById('modalTitle').textContent = video.product_name;
+  document.getElementById('modalDescription').textContent = video.product_description || 'Без описания';
+  document.getElementById('modalAuthorName').textContent = video.user_name;
+  document.getElementById('modalAuthorRole').textContent = video.user_role || 'Селлер';
+  document.getElementById('modalAvatar').textContent = video.user_name.charAt(0).toUpperCase();
+  document.getElementById('modalLikeCount').textContent = video.likes_count || 0;
+  
+  document.getElementById('videoModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  
+  // Увеличиваем счётчик просмотров
+  incrementViews(videoId);
+}
+
+function closeModal() {
+  document.getElementById('videoModal').classList.remove('active');
+  document.body.style.overflow = '';
+  currentVideoId = null;
+}
+
+async function likeVideo() {
+  if (!currentVideoId) return;
+  
+  if (!currentUser) {
+    showToast('Войдите, чтобы поставить лайк', 'warning');
+    return;
+  }
+  
+  try {
+    const video = galleryVideos.find(v => v.id === currentVideoId);
+    if (!video) return;
+    
+    const newLikes = (video.likes_count || 0) + 1;
+    
+    const { error } = await supabaseClient
+      .from('gallery_videos')
+      .update({ likes_count: newLikes })
+      .eq('id', currentVideoId);
+    
+    if (error) throw error;
+    
+    video.likes_count = newLikes;
+    document.getElementById('modalLikeCount').textContent = newLikes;
+    renderGallery();
+    updateStats();
+    
+    showToast('❤️ Лайк поставлен!', 'success');
+  } catch (e) {
+    console.error('Like error:', e);
+    showToast('Ошибка', 'error');
+  }
+}
+
+async function incrementViews(videoId) {
+  try {
+    const video = galleryVideos.find(v => v.id === videoId);
+    if (!video) return;
+    
+    const newViews = (video.views_count || 0) + 1;
+    
+    await supabaseClient
+      .from('gallery_videos')
+      .update({ views_count: newViews })
+      .eq('id', videoId);
+    
+    video.views_count = newViews;
+  } catch (e) {
+    console.error('Views error:', e);
+  }
+}
+
+function shareVideo() {
+  const video = galleryVideos.find(v => v.id === currentVideoId);
+  if (!video) return;
+  
+  const url = window.location.href;
+  const text = `Посмотри это видео на Cliply: ${video.product_name}`;
+  
+  if (navigator.share) {
+    navigator.share({ title: video.product_name, text: text, url: url });
+  } else {
+    navigator.clipboard.writeText(url);
+    showToast('Ссылка скопирована!', 'success');
+  }
+}
+
+document.getElementById('videoModal').addEventListener('click', (e) => {
+  if (e.target.id === 'videoModal') closeModal();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      for (let registration of registrations) { registration.update(); }
+    });
+  });
+}
+</script>
+</body>
+</html>
