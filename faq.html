@@ -13,7 +13,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- CSP Headers (задача 29) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://djvdklcahpqbjotukmxt.supabase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://djvdklcahpqbjotukmxt.supabase.co wss://djvdklcahpqbjotukmxt.supabase.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="security.js"></script>
 <script src="auth.js"></script>
 <link rel="stylesheet" href="toast.css">
 <script src="toast.js"></script>
@@ -336,20 +342,22 @@ function renderFaq() {
   
   faqList.innerHTML = filtered.map((item, index) => {
     const delayClass = `delay-${(index % 6) + 1}`;
+    const safeQuestion = SecurityUtils ? SecurityUtils.sanitizeHTML(item.question) : item.question;
+    const safeAnswer = SecurityUtils ? SecurityUtils.sanitizeHTML(item.answer) : item.answer;
+    
     return `
       <div class="faq-item animate-slide-up ${delayClass}">
         <div class="faq-question" onclick="toggleFaq(this)">
-          <span class="faq-question-text">${item.question}</span>
+          <span class="faq-question-text">${safeQuestion}</span>
           <div class="faq-toggle">+</div>
         </div>
         <div class="faq-answer">
-          <p>${item.answer}</p>
+          <p>${safeAnswer}</p>
         </div>
       </div>
     `;
   }).join('');
   
-  // Переинициализируем анимации для новых элементов
   if (window.scrollAnimations) {
     window.scrollAnimations.init();
   }
@@ -362,7 +370,6 @@ function toggleFaq(element) {
   if (!wasActive) item.classList.add('active');
 }
 
-// Фильтрация по категориям
 document.getElementById('faqCategories').addEventListener('click', (e) => {
   if (e.target.classList.contains('faq-category-btn')) {
     document.querySelectorAll('.faq-category-btn').forEach(btn => btn.classList.remove('active'));
@@ -372,13 +379,11 @@ document.getElementById('faqCategories').addEventListener('click', (e) => {
   }
 });
 
-// Поиск
 document.getElementById('faqSearch').addEventListener('input', (e) => {
   searchQuery = e.target.value;
   renderFaq();
 });
 
-// Авторизация
 (async () => {
   const user = await getCurrentUser();
   const btn = document.getElementById('navAuthBtn');
@@ -389,7 +394,6 @@ document.getElementById('faqSearch').addEventListener('input', (e) => {
   }
 })();
 
-// Первоначальный рендер
 renderFaq();
 </script>
 
