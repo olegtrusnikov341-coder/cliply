@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<title>О нас Cliply — Команда AI-видео для селлеров</title>
+<meta name="description" content="Узнайте больше о команде Cliply. Мы создаем AI-инструменты, которые помогают селлерам увеличивать продажи на маркетплейсах.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#6C5CE7">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth.js"></script>
+<link rel="stylesheet" href="toast.css">
+<script src="toast.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #0A0A0F; color: #fff; line-height: 1.6; }
+  h1, h2, h3, h4 { font-family: 'Manrope', sans-serif; font-weight: 800; line-height: 1.1; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  
+  nav { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: rgba(10,10,15,0.95); backdrop-filter: blur(10px); z-index: 100; border-bottom: 1px solid #1f1f2e; }
+  .logo { font-weight: 800; font-size: 22px; font-family: 'Manrope'; background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+  .nav-links { display: flex; align-items: center; gap: 24px; }
+  .nav-links a { color: #A0A0B0; text-decoration: none; font-size: 14px; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: #fff; }
+  .nav-btn-login { color: #fff !important; border: 1px solid #27272a; padding: 8px 20px; border-radius: 100px; }
+  .nav-btn-login:hover { border-color: #6C5CE7; }
+  .nav-btn-cta { background: linear-gradient(135deg, #6C5CE7, #A29BFE) !important; color: #fff !important; padding: 10px 24px !important; border-radius: 100px; font-weight: 600 !important; border: none; }
+  
+  .hero { padding: 100px 0 60px; text-align: center; }
+  .hero-badge { display: inline-block; background: rgba(108, 92, 231, 0.15); color: #A29BFE; padding: 8px 20px; border-radius: 100px; font-size: 13px; font-weight: 600; margin-bottom: 32px; border: 1px solid rgba(108, 92, 231, 0.3); letter-spacing: 2px; }
+  .hero h1 { font-size: 64px; margin-bottom: 24px; max-width: 900px; margin-left: auto; margin-right: auto; }
+  .hero h1 span { background: linear-gradient(135deg, #6C5CE7, #A29BFE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero p { font-size: 20px; color: #A0A0B0; max-width: 700px; margin: 0 auto; line-height: 1.6; }
+  
+  .stats-bar { display: flex; justify-content: center; gap: 64px; padding: 60px 0; border-top: 1px solid #1f1f2e; border-bottom: 1px solid #1f1f2e; margin: 60px 0; flex-wrap: wrap; }
+  .stat-item { text-align: center; }
+  .stat-value { font-size: 48px; font-weight: 800; font-family: 'Manrope'; color: #6C5CE7; margin-bottom: 8px; }
+  .stat-label { font-size: 16px; color: #A0A0B0; }
+  
+  .section { padding: 80px 0; }
+  .section-label { font-size: 13px; font-weight: 700; color: #6C5CE7; letter-spacing: 3px; margin-bottom: 16px; text-transform: uppercase; }
+  .section-title { font-size: 48px; margin-bottom: 24px; max-width: 800px; }
+  .section-subtitle { font-size: 18px; color: #A0A0B0; max-width: 600px; line-height: 1.6; margin-bottom: 48px; }
+  
+  .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .team-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; padding: 32px 24px; text-align: center; transition: all 0.3s; }
+  .team-card:hover { border-color: #6C5CE7; transform: translateY(-4px); }
+  .team-avatar { width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #6C5CE7, #A29BFE); display: flex; align-items: center; justify-content: center; font-size: 40px; font-weight: 800; font-family: 'Manrope'; margin: 0 auto 24px; color: #fff; }
+  .team-name { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .team-role { color: #6C5CE7; font-size: 14px; font-weight: 600; margin-bottom: 16px; }
+  .team-bio { color: #A0A0B0; font-size: 14px; line-height: 1.5; }
+  
+  .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .value-card { background: #141414; border: 1px solid #1f1f2e; border-radius: 20px; padding: 40px 32px; transition: all 0.3s; }
+  .value-card:hover { border-color: #6C5CE7; }
+  .value-icon { font-size: 48px; margin-bottom: 24px; }
+  .value-title { font-size: 24px; font-weight: 700; margin-bottom: 16px; }
+  .value-desc { color: #A0A0B0; font-size: 15px; line-height: 1.6; }
+  
+  .cta-section { text-align: center; padding: 100px 0; background: linear-gradient(180deg, transparent, rgba(108, 92, 231, 0.05)); }
+  .cta-section h2 { font-size: 56px; margin-bottom: 24px; }
+  .cta-section p { font-size: 20px; color: #A0A0B0; margin-bottom: 40px; }
+  .btn-primary { background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: #fff; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 16px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; border: none; cursor: pointer; box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(108, 92, 231, 0.6); }
+  
+  footer { padding: 60px 0 40px; border-top: 1px solid #1f1f2e; }
+  
+  .burger { display: none; flex-direction: column; gap: 5px; background: transparent; border: none; cursor: pointer; padding: 8px; }
+  .burger span { display: block; width: 24px; height: 2px; background: #fff; transition: all 0.3s; border-radius: 2px; }
+  .burger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .burger.active span:nth-child(2) { opacity: 0; }
+  .burger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .mobile-menu { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(10,10,15,0.98); backdrop-filter: blur(20px); z-index: 1000; padding: 80px 24px 24px; flex-direction: column; gap: 8px; }
+  .mobile-menu.active { display: flex; }
+  .mobile-menu a { display: block; padding: 16px; color: #fff; text-decoration: none; font-size: 18px; border-radius: 8px; text-align: center; }
+  
+  @media (max-width: 768px) {
+    .nav-links { display: none !important; }
+    .burger { display: flex !important; }
+    .hero h1 { font-size: 36px !important; }
+    .hero p { font-size: 16px; }
+    .stats-bar { gap: 32px; }
+    .stat-value { font-size: 36px; }
+    .section-title { font-size: 32px !important; }
+    .team-grid, .values-grid { grid-template-columns: 1fr !important; }
+    .cta-section h2 { font-size: 36px !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Cliply</a>
+  <div class="nav-links">
+    <a href="features.html">Возможности</a>
+    <a href="examples.html">Примеры</a>
+    <a href="gallery.html">Галерея</a>
+    <a href="about.html" class="active">О нас</a>
+    <a href="index.html#pricing">Тарифы</a>
+    <a href="faq.html">FAQ</a>
+    <a href="contacts.html">Контакты</a>
+    <a href="login.html" class="nav-btn-login" id="navAuthBtn">Войти</a>
+    <a href="login.html" class="nav-btn-cta">Попробовать</a>
+  </div>
+  <button class="burger" id="burgerBtn" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="features.html">Возможности</a>
+  <a href="examples.html">Примеры</a>
+  <a href="gallery.html">Галерея</a>
+  <a href="about.html" style="color: #6C5CE7;">О нас</a>
+  <a href="index.html#pricing">Тарифы</a>
+  <a href="faq.html">FAQ</a>
+  <a href="contacts.html">Контакты</a>
+  <a href="login.html" id="mobileAuthBtn">Войти</a>
+  <a href="login.html" class="btn-nav-mobile" style="background: linear-gradient(135deg, #6C5CE7, #A29BFE) !important; font-weight: 700 !important;">Попробовать бесплатно</a>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">О КОМПАНИИ</div>
+    <h1>Мы делаем <span>AI-видео</span> доступным для каждого селлера</h1>
+    <p>Cliply — это команда энтузиастов, которые верят, что качественный видеоконтент должен быть не привилегией крупных брендов, а инструментом для любого предпринимателя.</p>
+  </div>
+</section>
+
+<div class="container">
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-value" id="statUsers">—</div>
+      <div class="stat-label">Активных селлеров</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">50 000+</div>
+      <div class="stat-label">Созданных видео</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">+34%</div>
+      <div class="stat-label">Средний рост конверсии</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">24/7</div>
+      <div class="stat-label">Поддержка и генерация</div>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="section-label">НАША КОМАНДА</div>
+    <h2 class="section-title">Люди, которые создают Cliply</h2>
+    <p class="section-subtitle">Мы объединили опыт в AI, e-commerce и видеопроизводстве, чтобы создать идеальный инструмент.</p>
+    
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">А</div>
+        <div class="team-name">Александр Петров</div>
+        <div class="team-role">CEO & Founder</div>
+        <div class="team-bio">10 лет в e-commerce. Ранее руководил видео-продакшеном для топ-селлеров WB.</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">М</div>
+        <div class="team-name">Мария Иванова</div>
+        <div class="team-role">Head of AI</div>
+        <div class="team-bio">PhD в Computer Vision. Разрабатывает нейросети для генерации и монтажа видео.</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">Д</div>
+        <div class="team-name">Дмитрий Соколов</div>
+        <div class="team-role">CTO</div>
+        <div class="team-bio">Архитектор высоконагруженных систем. Отвечает за скорость и стабильность сервиса.</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">Е</div>
+        <div class="team-name">Елена Смирнова</div>
+        <div class="team-role">Head of Design</div>
+        <div class="team-bio">Создает интерфейсы, в которых разобраться может даже новичок в технологиях.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: #0d0d14;">
+  <div class="container">
+    <div class="section-label">НАШИ ЦЕННОСТИ</div>
+    <h2 class="section-title">Что нами движет</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">🚀</div>
+        <div class="value-title">Скорость результата</div>
+        <div class="value-desc">Селлер не должен ждать неделями. Видео должно быть готово за минуты, а не за дни.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">💡</div>
+        <div class="value-title">Доступность технологий</div>
+        <div class="value-desc">Сложный AI должен быть завернут в простой интерфейс. Никаких промптов и настроек.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon"></div>
+        <div class="value-title">Фокус на клиенте</div>
+        <div class="value-desc">Мы слушаем селлеров. Каждая новая функция рождается из реальных запросов пользователей.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <h2>Присоединяйтесь к тысячам селлеров</h2>
+    <p>Создайте первое видео бесплатно и оцените разницу в конверсии.</p>
+    <a href="login.html" class="btn-primary">Начать бесплатно →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; margin-bottom: 32px;">
+      <a href="index.html" class="logo" style="font-size: 24px;">Cliply</a>
+      <div style="display: flex; gap: 16px;">
+        <a href="https://t.me/cliply_support" target="_blank" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">📱</a>
+        <a href="https://vk.com/cliply" target="_blank" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">💬</a>
+        <a href="mailto:support@cliply.ru" style="color: #A0A0B0; text-decoration: none; font-size: 20px;">✉️</a>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; margin-bottom: 24px; border-top: 1px solid #1f1f2e; padding-top: 24px;">
+      <a href="features.html" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">Возможности</a>
+      <a href="examples.html" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">Примеры</a>
+      <a href="gallery.html" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">Галерея</a>
+      <a href="about.html" style="color: #fff; text-decoration: none; font-size: 14px;">О нас</a>
+      <a href="index.html#pricing" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">Тарифы</a>
+      <a href="faq.html" style="color: #A0A0B0; text-decoration: none; font-size: 14px;">FAQ</a>
+    </div>
+    <div style="text-align: center; color: #666; font-size: 13px;">© 2026 Cliply. Все права защищены.</div>
+  </div>
+</footer>
+
+<script>
+const burgerBtn = document.getElementById('burgerBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+
+if (burgerBtn && mobileMenu) {
+  burgerBtn.addEventListener('click', () => {
+    burgerBtn.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+    document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+  });
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      burgerBtn.classList.remove('active');
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  });
+}
+
+(async () => {
+  const user = await getCurrentUser();
+  const btn = document.getElementById('navAuthBtn');
+  if (user && btn) {
+    btn.textContent = 'Дашборд';
+    btn.href = 'dashboard.html';
+    const mobileAuthBtn = document.getElementById('mobileAuthBtn');
+    if (mobileAuthBtn) { mobileAuthBtn.textContent = 'Дашборд'; mobileAuthBtn.href = 'dashboard.html'; }
+  }
+  
+  try {
+    const { count } = await supabaseClient.from('profiles').select('*', { count: 'exact', head: true });
+    if (count !== null) document.getElementById('statUsers').textContent = count.toLocaleString('ru-RU');
+  } catch (e) {}
+})();
+</script>
+</body>
+</html>
